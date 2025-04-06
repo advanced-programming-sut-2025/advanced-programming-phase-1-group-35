@@ -9,11 +9,12 @@ public class ArtisanProduct extends Item {
     private int energy;
     private ArrayList<Item> ingredients;
 
+
     public int getProcessingTime() {
         return processingTime;
     }
 
-    public void setProcessingTime(int processingTime) {
+    public void setProcessingTime(int processingTime) {d
         this.processingTime = processingTime;
     }
 

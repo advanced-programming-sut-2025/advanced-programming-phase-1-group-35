@@ -8,4 +8,6 @@ public class AnimalProduct extends Item {
         super.name = name;
         super.price = price;
     }
+
+
 }
