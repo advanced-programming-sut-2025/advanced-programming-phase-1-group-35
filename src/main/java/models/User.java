@@ -2,6 +2,8 @@ package models;
 
 import models.NPCs.NPC;
 import models.NPCs.Quest;
+import models.TradeAndGift.Gift;
+import models.TradeAndGift.Trade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +13,7 @@ public class User {
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
-    private ArrayList<Trade> Gifts;
+    private ArrayList<Gift> Gifts;
     private HashMap<NPC , Integer> npcFriendship;
 
     public void talk (User user){
@@ -23,7 +25,7 @@ public class User {
     public Result gift (User user , Item item){
 
     }
-    public Result RateGift(Trade gift){
+    public Result RateGift(Gift gift){
 
     }
     public void showGiftList(User user){
@@ -41,7 +43,7 @@ public class User {
     public Result respondToMarriageRequest(User user){
 
     }
-    public Result trade(User user , String type , Item item , int price , Item item2){
+    public Result trade(User user , String type , Item item , int amount , int price , Item item2){
 
     }
     public void listTradeRequests(){
@@ -95,11 +97,11 @@ public class User {
         this.lv3Friends = lv3Friends;
     }
 
-    public ArrayList<Trade> getGifts() {
+    public ArrayList<Gift> getGifts() {
         return Gifts;
     }
 
-    public void setGifts(ArrayList<Trade> gifts) {
+    public void setGifts(ArrayList<Gift> gifts) {
         Gifts = gifts;
     }
 

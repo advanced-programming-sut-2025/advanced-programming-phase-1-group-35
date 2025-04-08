@@ -1,5 +1,6 @@
 package enums.machines;
 
+import models.Item;
 import models.machines.ArtisanProduct;
 
 public enum ArtisanProductDetails {
@@ -21,6 +22,8 @@ public enum ArtisanProductDetails {
     Raisins,
 
     Coal;
+    public int energy , processingTime , sellPrice ;
+    public Item[] ingredients;
 
     public ArtisanProduct getArtisanProduct() {
         return new ArtisanProduct();

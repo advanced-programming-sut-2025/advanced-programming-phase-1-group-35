@@ -1,6 +1,6 @@
 package models.machines;
 
-import models.Building;
+import models.Buildings.Building;
 import models.Result;
 
 import java.util.ArrayList;

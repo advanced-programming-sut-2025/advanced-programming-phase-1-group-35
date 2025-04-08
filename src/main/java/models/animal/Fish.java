@@ -1,6 +1,8 @@
 package models.animal;
 
-public class Fish {
+import models.Item;
+
+public class Fish extends Item {
     private String name;
     private int basePrice;
     private String season;
@@ -12,6 +14,11 @@ public class Fish {
         this.season = season;
         this.rarity = rarity;
     }
+
+    public int getSellingPrice() {
+
+    }
+
 
     public String getName() {
         return name;

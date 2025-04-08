@@ -1,13 +1,11 @@
 package models.Shops;
 
-import models.Building;
-import models.Item;
+public class BlackSmith extends Shop {
 
-import java.util.HashMap;
+    // TODO : tool upgrades
 
-public class BlackSmith {
-    private Building building;
-
-    private HashMap<Item , Integer> permanentStock;
-
+    @Override
+    public void showProducts(){
+        super.showProducts();
+    }
 }
