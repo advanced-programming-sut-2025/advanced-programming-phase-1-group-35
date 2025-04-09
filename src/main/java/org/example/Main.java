@@ -1,4 +1,4 @@
-package org.example;
+package main.java.org.example;
 
 import View.AppView;
 
