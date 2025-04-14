@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "username": "mahdi",
+      "password": "(1jYuN0Sv\\\\8",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "female",
+      "securityQuestion": "Question1",
+      "securityAnswer": "bache ke boodam mordam"
+    },
+    {
+      "username": "mamad",
+      "password": "pP123{}[]\\/",
+      "nickname": "mamad",
+      "email": "mamad@gmail.com",
+      "gender": "female",
+      "securityQuestion": "Question2",
+      "securityAnswer": "javabe hame gharare 100000 bashe"
+    }
+  ],
+  "games": [],
+  "loggedInUser": {
+    "username": "mamad",
+    "password": "pP123{}[]\\/",
+    "nickname": "mamad",
+    "email": "mamad@gmail.com",
+    "gender": "female",
+    "securityQuestion": "Question2",
+    "securityAnswer": "javabe hame gharare 100000 bashe"
+  },
+  "stayLoggedIn": true,
+  "currentMenu": "MainMenu"
+}
