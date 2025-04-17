@@ -3,10 +3,7 @@ package Controller;
 import Model.App;
 import Model.Result;
 import Model.User;
-import Model.enums.Gender;
-import Model.enums.Menu;
-import Model.enums.Regexes;
-import Model.enums.SecurityQuestions;
+import Model.enums.*;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenuController {
@@ -58,10 +56,23 @@ public class LoginMenuController {
             System.out.println(question.question);
         }
         SecurityQuestions question = null;
+        String answer = null;
         System.out.println("choose a security question . (1/2/3/4)");
         while (true){
             String input = scanner.nextLine().trim();
-            if(!input.matches("[1-4]")) continue;
+            Matcher matcher = LoginMenuCommands.pickQuestion.getMatcher(input);
+            if(matcher == null) continue;
+            int qNumber = Integer.parseInt(matcher.group("questionNumber"));
+            answer = matcher.group("answer");
+            String answer2 = matcher.group("answerConfirm");
+            if(qNumber < 1 || qNumber > 4) {
+                System.out.println("Invalid question number");
+                continue;
+            }
+            if(!answer.equals(answer2)) {
+                System.out.println("answers do not match");
+                continue;
+            }
             question = switch (input) {
                 case "1" -> SecurityQuestions.Question1;
                 case "2" -> SecurityQuestions.Question2;
@@ -71,8 +82,6 @@ public class LoginMenuController {
             };
             break;
         }
-        System.out.println("write your answer for the question");
-        String answer = scanner.nextLine().trim();
         App.users.add(new User(username , password , nickname , email , genderEnum , question , answer));
         return new Result(true , "user successfully registered , now you can log in");
     }
@@ -97,8 +106,10 @@ public class LoginMenuController {
         if(user == null) {
             return new Result(false, "User not found");
         }
-        String answer = scanner.nextLine().trim();
-        if(!answer.equalsIgnoreCase(user.getSecurityAnswer())) {
+        String input = scanner.nextLine().trim();
+        Matcher matcher = LoginMenuCommands.answerQuestion.getMatcher(input);
+        if(matcher == null) return new Result(false, "Invalid answer question");
+        if(!matcher.group("answer").equalsIgnoreCase(user.getSecurityAnswer())) {
             return new Result(false, "Wrong answer");
         }
         System.out.println("choose a new password . (random for random generated password)");

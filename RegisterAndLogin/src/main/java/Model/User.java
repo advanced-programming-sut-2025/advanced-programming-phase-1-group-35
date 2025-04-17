@@ -18,6 +18,9 @@ public class User {
     private Gender gender;
     private SecurityQuestions securityQuestion ;
     private String securityAnswer;
+    private int highScore = 0;
+    private int gamesPlayed = 0;
+
     private Map map;
     private Inventory inventory;
     private ArrayList<User> lv1Friends;
@@ -195,5 +198,21 @@ public class User {
 
     public void setSecurityAnswer(String sequrityAnswer) {
         this.securityAnswer = sequrityAnswer;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 }
