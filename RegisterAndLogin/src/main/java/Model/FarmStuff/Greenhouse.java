@@ -1,6 +1,6 @@
 package Model.FarmStuff;
 
-public class Greenhouse extends Farm {
+public class Greenhouse {
     private int rows;
     private int cols;
 }

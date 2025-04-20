@@ -1,4 +1,4 @@
 package Model.FarmStuff;
 
-public class Quarry extends Farm {
+public class Quarry{
 }

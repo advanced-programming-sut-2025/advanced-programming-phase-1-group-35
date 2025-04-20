@@ -61,7 +61,10 @@ public class LoginMenuController {
         while (true){
             String input = scanner.nextLine().trim();
             Matcher matcher = LoginMenuCommands.pickQuestion.getMatcher(input);
-            if(matcher == null) continue;
+            if(matcher == null) {
+                System.out.println("invalid input");
+                continue;
+            }
             int qNumber = Integer.parseInt(matcher.group("questionNumber"));
             answer = matcher.group("answer");
             String answer2 = matcher.group("answerConfirm");

@@ -7,11 +7,39 @@ public class Game {
     private User playingUser;
     private GameCalender gameCalender;
     private Weather weather;
-    private ArrayList<Map> maps;
+    private Map map;
+
+    public Game(ArrayList<User> players, User playingUser) {
+        this.players = players;
+        this.playingUser = playingUser;
+    }
 
 
     public void makeRandomMaps() {
 
     }
 
+    public ArrayList<User> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<User> players) {
+        this.players = players;
+    }
+
+    public User getPlayingUser() {
+        return playingUser;
+    }
+
+    public void setPlayingUser(User playingUser) {
+        this.playingUser = playingUser;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
 }

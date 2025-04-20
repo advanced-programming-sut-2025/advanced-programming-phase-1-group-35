@@ -1,10 +1,32 @@
 package Model;
 
+import Model.FarmStuff.Farm;
+
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Map {
-    private ArrayList<Model.FarmStuff.Farm> farms;
+    private ArrayList<Farm> farms = new ArrayList<>();
     public ArrayList<Model.Buildings.Building> buildings;
     public ArrayList<Model.Shops.Shop> shops;
+
+    public Map() {
+        for (int i = 0; i < 4; i++) {
+            farms.add(new Farm(i+1));
+        }
+
+    }
+    public void buildMap() {
+    }
+
+    public ArrayList<Farm> getFarms() {
+        return farms;
+    }
+
+    public void setFarms(ArrayList<Farm> farms) {
+        this.farms = farms;
+    }
+
 
 }
