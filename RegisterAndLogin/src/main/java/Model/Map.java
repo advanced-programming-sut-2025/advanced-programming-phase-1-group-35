@@ -6,5 +6,6 @@ public class Map {
     private ArrayList<Model.FarmStuff.Farm> farms;
     public ArrayList<Model.Buildings.Building> buildings;
     public ArrayList<Model.Shops.Shop> shops;
+    public ArrayList<Model.Tile> tiles;
 
 }

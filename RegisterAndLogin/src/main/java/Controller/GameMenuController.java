@@ -1,7 +1,11 @@
 package Controller;
 
+import Model.Game;
 import Model.Result;
+import Model.Tile;
 import Model.Tools.FishingPole;
+import Model.Weather;
+import Model.enums.Seasons;
 
 public class GameMenuController {
     public Result createNewGame(String username1, String username2, String username3) {
@@ -168,6 +172,19 @@ public class GameMenuController {
     }
     public Result Sell(){
         return null;
+    }
+    public void changeSeason(Seasons season){
+       //TODO: discuss where to use current game
+        Game currentGame = null;
+        currentGame.setSeason(currentGame.getSeason().findNextSeason(currentGame.getSeason()));
+    }
+    //TODO:
+    public Tile findRandomTile(){
+    return null;
+    }
+    public String showCurrentWeather(){
+        Game currentGame = null;
+        return currentGame.getWeather().toString();
     }
 
 }

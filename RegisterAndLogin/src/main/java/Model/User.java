@@ -20,6 +20,8 @@ public class User {
     private String securityAnswer;
     private int highScore = 0;
     private int gamesPlayed = 0;
+    //TODO:nothing to do but just a reminder!
+    public Energy energy;
 
     private Map map;
     private Inventory inventory;
