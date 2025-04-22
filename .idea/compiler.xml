@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="RegisterAndLogin" />
+        <module name="advanced-programming-phase-1-group-35" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
