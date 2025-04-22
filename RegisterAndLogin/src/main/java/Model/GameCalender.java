@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 
 public class GameCalender {
     private LocalDateTime gameDateTime;
-    private final int minutesPerTurn = 60;
-    private final int daysPerSeason = 28;
     private Seasons season;
+
+    public GameCalender() {
+        this.gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
+        this.season = Seasons.Spring;
+    }
 
     public LocalDateTime getGameDateTime() {
         return gameDateTime;
@@ -16,10 +19,6 @@ public class GameCalender {
 
     public void setGameDateTime(LocalDateTime gameDateTime) {
         this.gameDateTime = gameDateTime;
-    }
-
-    public int getMinutesPerTurn() {
-        return minutesPerTurn;
     }
 
     public Seasons getSeason() {
@@ -31,22 +30,44 @@ public class GameCalender {
     }
 
     public void updateTimeAndDateAndSeasonAfterTurns() {
+        gameDateTime = gameDateTime.plusHours(1);
+        if (gameDateTime.getHour() == 22) {
+            gameDateTime = gameDateTime.plusHours(11);
+        }
+        if (gameDateTime.getDayOfMonth() == 29) {
+            goToNextSeason();
+            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
+        }
+    }
 
+    private void goToNextSeason() {
+        if (season == Seasons.Spring) {
+            season = Seasons.Summer;
+        } else if (season == Seasons.Summer) {
+            season = Seasons.Fall;
+        } else if (season == Seasons.Fall) {
+            season = Seasons.Winter;
+        } else if (season == Seasons.Winter) {
+            season = Seasons.Spring;
+        }
     }
 
     public void goToNextDay() {
-    //TODO: where is the clock?
-        //if(clock.hour==22)
-        //clock.hour.setHour(9)
-        User currentPlayer = null;
-        int neededEnergyAmount = 10;
-        if(currentPlayer.energy.getEnergyAmount()<neededEnergyAmount){
-            //TODO:currentPlayer.faint();
+        gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
+        if (gameDateTime.getDayOfMonth() == 29) {
+            goToNextSeason();
+            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
-        //currentPlayer.farm.growCrops();
-        //currentPlayer.farm.generateRandomForaging();
-        //TODO(mhdsdg):currentPlayer.farm.shop.emptyShippingBin();
     }
+
+//    int neededEnergyAmount = 10;
+//        if(currentPlayer.energy.getEnergyAmount()<neededEnergyAmount){
+//        TODO:currentPlayer.faint();
+//    }
+//    currentPlayer.farm.growCrops();
+//    currentPlayer.farm.generateRandomForaging();
+//    TODO(mhdsdg):currentPlayer.farm.shop.emptyShippingBin();
 
 
 }
+

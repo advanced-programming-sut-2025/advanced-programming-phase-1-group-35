@@ -25,6 +25,11 @@ public enum GameMenuCommands implements AppMenu {
     showEnergy(""),
     showInventory(""),
     inventoryTrash(""),
+    toolEquip("tools equip (?<toolName>\\S.*\\S)"),
+    showCurrentTool("tools show current"),
+    showAllTools("tools show available"),
+    useTool("tools use -d (?<direction>\\S+)"),
+
 
 
 

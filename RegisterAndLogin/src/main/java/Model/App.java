@@ -18,6 +18,7 @@ public class App {
     private static User loggedInUser = null;
     private static boolean stayLoggedIn = false;
     private static Menu currentMenu = Menu.LoginMenu;
+    public static Game currentGame = null;
 
     public static void serializeApp() throws IOException { // to save the progress
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())

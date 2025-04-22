@@ -24,7 +24,7 @@ public class User {
     public Energy energy;
 
     private Map map;
-    private Inventory inventory;
+    public Inventory inventory;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
@@ -198,8 +198,8 @@ public class User {
         return securityAnswer;
     }
 
-    public void setSecurityAnswer(String sequrityAnswer) {
-        this.securityAnswer = sequrityAnswer;
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
     }
 
     public int getHighScore() {
@@ -216,5 +216,29 @@ public class User {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public Energy getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(Energy energy) {
+        this.energy = energy;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public Tool getCurrentTool() {
+        return currentTool;
+    }
+
+    public void setCurrentTool(Tool currentTool) {
+        this.currentTool = currentTool;
     }
 }

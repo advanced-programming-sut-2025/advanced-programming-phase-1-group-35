@@ -5,18 +5,18 @@ import Model.enums.Seasons;
 import java.util.ArrayList;
 
 public class Game {
-    private ArrayList<User> players;
-    private User playingUser;
-    private GameCalender gameCalender;
-    private Weather weather;
-    private ArrayList<Map> maps;
-    private Seasons currentSeason;
+    private static ArrayList<User> players;
+    public static User playingUser;
+    private static GameCalender gameCalender;
+    private static Weather weather;
+    private static ArrayList<Map> maps;
+    private static Seasons currentSeason;
 
     public void setSeason(Seasons season){
-        this.currentSeason = season;
+        currentSeason = season;
     }
     public Seasons getSeason(){
-        return this.currentSeason;
+        return currentSeason;
     }
 
     public Weather getWeather() {
@@ -24,7 +24,7 @@ public class Game {
     }
 
     public void setWeather(Weather weather) {
-        this.weather = weather;
+        Game.weather = weather;
     }
 
     public void makeRandomMaps() {
