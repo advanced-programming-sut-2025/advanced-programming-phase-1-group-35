@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map {
+    private Tile[][] tiles = new Tile[300][250];
     private ArrayList<Farm> farms = new ArrayList<>();
     public ArrayList<Model.Buildings.Building> buildings;
     public ArrayList<Model.Shops.Shop> shops;
 
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < 4; i++) {
-            farms.add(new Farm(i+1 , owners[i] , types[i]));
+            farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
         }
     }
 
@@ -26,4 +27,11 @@ public class Map {
     }
 
 
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
 }

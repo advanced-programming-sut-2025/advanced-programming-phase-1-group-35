@@ -24,7 +24,7 @@ public class Farm {
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
 
-    public Farm(int number , User owner , int type) {
+    public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
         int x = 0 , y = 0;
         switch (number) {
@@ -43,6 +43,11 @@ public class Farm {
         }
         bounds = new Rectangle(75 , 55 );
         bounds.setLocation(x, y);
+        for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
+            for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
+                tiles[i][j].setOwner(owner);
+            }
+        }
     }
 
     public User getOwner() {

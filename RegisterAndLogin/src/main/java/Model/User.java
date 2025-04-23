@@ -23,6 +23,7 @@ public class User {
     private int energyConsumedInTurn = 0;
 
     private Game currentGame = null;
+    private Tile currentTile = null;
     private Inventory inventory;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
@@ -224,5 +225,13 @@ public class User {
 
     public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
         this.energyConsumedInTurn = energyConsumedInTurn;
+    }
+
+    public Tile getCurrentTile() {
+        return currentTile;
+    }
+
+    public void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
     }
 }

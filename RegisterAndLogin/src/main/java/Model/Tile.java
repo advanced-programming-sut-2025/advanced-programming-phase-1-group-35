@@ -7,6 +7,7 @@ import Model.enums.TileContents;
 import java.util.ArrayList;
 
 public class Tile {
+    private User owner = null;
     private Coordination coordination;
     private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;
@@ -22,4 +23,11 @@ public class Tile {
 
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 }
