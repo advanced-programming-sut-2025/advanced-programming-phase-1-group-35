@@ -1,5 +1,7 @@
 package Model;
 
+import Model.enums.Crops.Crop;
+import Model.enums.Crops.PlantAble;
 import Model.enums.TileContents;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ public class Tile {
     private Coordination coordination;
     private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;
-
+    private PlantAble planted;
     public void setGotHitWithThunder(boolean gotHitWithThunder) {
         this.gotHitWithThunder = gotHitWithThunder;
     }

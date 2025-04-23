@@ -22,6 +22,7 @@ public enum Seasons {
     },
             3),
     Winter(new WeatherCondition[]{
+            WeatherCondition.sunny,
             WeatherCondition.snow,
     },
             4);
