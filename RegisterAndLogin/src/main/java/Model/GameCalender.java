@@ -35,6 +35,17 @@ public class GameCalender {
     }
 
     public void goToNextDay() {
+        //TODO: where is the clock?
+        //if(clock.hour==22)
+        //clock.hour.setHour(9)
+        User currentPlayer = null;
+        int neededEnergyAmount = 10;
+//        if(currentPlayer.energy.getEnergyAmount()<neededEnergyAmount){
+            //TODO:currentPlayer.faint();
+//        }
+        //currentPlayer.farm.growCrops();
+        //currentPlayer.farm.generateRandomForaging();
+        //TODO(mhdsdg):currentPlayer.farm.shop.emptyShippingBin();
 
     }
 
