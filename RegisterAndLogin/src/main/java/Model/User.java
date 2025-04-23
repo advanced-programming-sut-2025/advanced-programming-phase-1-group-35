@@ -20,10 +20,9 @@ public class User {
     private String securityAnswer;
     private int highScore = 0;
     private int gamesPlayed = 0;
-    //TODO:nothing to do but just a reminder!
-    public Energy energy;
+    private int energyConsumedInTurn = 0;
 
-    private Map map;
+    private Game currentGame = null;
     private Inventory inventory;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
@@ -139,13 +138,6 @@ public class User {
         this.gender = gender;
     }
 
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
     public ArrayList<User> getLv1Friends() {
         return lv1Friends;
     }
@@ -198,8 +190,8 @@ public class User {
         return securityAnswer;
     }
 
-    public void setSecurityAnswer(String sequrityAnswer) {
-        this.securityAnswer = sequrityAnswer;
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
     }
 
     public int getHighScore() {
@@ -216,5 +208,21 @@ public class User {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public int getEnergyConsumedInTurn() {
+        return energyConsumedInTurn;
+    }
+
+    public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
+        this.energyConsumedInTurn = energyConsumedInTurn;
     }
 }

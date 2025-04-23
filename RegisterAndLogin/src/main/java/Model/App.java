@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 public class App {
     public static ArrayList<User> users = new ArrayList<>();
     public static ArrayList<Game> games = new ArrayList<>();
+    private static Game currentGame = null;
     private static User loggedInUser = null;
     private static boolean stayLoggedIn = false;
     private static Menu currentMenu = Menu.LoginMenu;
@@ -58,5 +59,13 @@ public class App {
 
     public static void setStayLoggedIn(boolean stayLoggedIn) {
         App.stayLoggedIn = stayLoggedIn;
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        App.currentGame = currentGame;
     }
 }

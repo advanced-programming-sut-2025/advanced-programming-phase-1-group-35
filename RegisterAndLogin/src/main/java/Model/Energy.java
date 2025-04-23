@@ -16,12 +16,4 @@ public class Energy {
     public void faint() {
 
     }
-
-    public int getEnergyAmount() {
-        return energyAmount;
-    }
-
-    public void setEnergyAmount(int energyAmount) {
-        this.energyAmount = energyAmount;
-    }
 }
