@@ -46,8 +46,6 @@ public class GameMenuController {
         for (User player : players) {
             player.setCurrentGame(game);
         }
-
-        game.getMap().buildMap();
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
@@ -56,7 +54,11 @@ public class GameMenuController {
         return true;
     }
 
-    public void chooseMap(Game game , ArrayList<User> players , Scanner scanner) {
+    public void chooseMap(Scanner scanner) {
+        Game game = App.getCurrentGame();
+        ArrayList<User> players = game.getPlayers();
+        User[] users = new User[4];
+        int[] types = new int[4];
         for (int i = 0; i < players.size();) { // choosing maps
             System.out.println("choosing map for " + players.get(i).getUsername());
             String input = scanner.nextLine();
@@ -66,18 +68,25 @@ public class GameMenuController {
                 continue;
             }
             int number = Integer.parseInt(matcher.group("number"));
+            int type = Integer.parseInt(matcher.group("type"));
             if(number < 1 || number > 4) {
                 System.out.println("invalid number");
+                continue;
+            }
+            if(type < 0 || type > 3) {
+                System.out.println("invalid type");
                 continue;
             }
             if(game.getMap().getFarms().get(number - 1).getOwner() != null) {
                 System.out.println("this farm is taken");
                 continue;
             }
-            game.getMap().getFarms().get(number - 1).setOwner(players.get(i));
+            users[number - 1] = players.get(i);
+            types[number - 1] = type;
             System.out.println("farm number " + number + " has been chosen by " + players.get(i).getUsername());
             i++;
         }
+        game.getMap().buildMap(users , types);
     }
 
     public Result loadGame() {

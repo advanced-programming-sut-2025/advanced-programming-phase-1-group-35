@@ -11,13 +11,10 @@ public class Map {
     public ArrayList<Model.Buildings.Building> buildings;
     public ArrayList<Model.Shops.Shop> shops;
 
-    public Map() {
+    public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < 4; i++) {
-            farms.add(new Farm(i+1));
+            farms.add(new Farm(i+1 , owners[i] , types[i]));
         }
-
-    }
-    public void buildMap() {
     }
 
     public ArrayList<Farm> getFarms() {

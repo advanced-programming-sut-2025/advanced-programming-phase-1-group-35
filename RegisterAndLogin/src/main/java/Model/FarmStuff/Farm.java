@@ -24,8 +24,25 @@ public class Farm {
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
 
-    public Farm(int number) {
-
+    public Farm(int number , User owner , int type) {
+        this.owner = owner;
+        int x = 0 , y = 0;
+        switch (number) {
+            case 1:
+                x = 10;
+                y = 10;
+            case 2:
+                x = 10;
+                y = 145;
+            case 3:
+                x = 185;
+                y = 10;
+            case 4:
+                x = 185;
+                y = 145;
+        }
+        bounds = new Rectangle(75 , 55 );
+        bounds.setLocation(x, y);
     }
 
     public User getOwner() {
