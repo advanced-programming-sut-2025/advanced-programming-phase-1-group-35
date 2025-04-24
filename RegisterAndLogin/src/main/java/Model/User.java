@@ -24,7 +24,8 @@ public class User {
 
     private Game currentGame = null;
     private Tile currentTile = null;
-    private Inventory inventory;
+    private Map map;
+    public Inventory inventory;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
@@ -139,6 +140,13 @@ public class User {
         this.gender = gender;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
     public ArrayList<User> getLv1Friends() {
         return lv1Friends;
     }
@@ -233,5 +241,29 @@ public class User {
 
     public void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
+    }
+
+    public Energy getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(Energy energy) {
+        this.energy = energy;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public Tool getCurrentTool() {
+        return currentTool;
+    }
+
+    public void setCurrentTool(Tool currentTool) {
+        this.currentTool = currentTool;
     }
 }

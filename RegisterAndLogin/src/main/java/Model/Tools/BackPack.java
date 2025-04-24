@@ -1,7 +1,12 @@
 package Model.Tools;
 
+import Model.Item;
+
+import java.util.ArrayList;
+
 public class BackPack extends Tool {
-    private int capacity;
+    public ArrayList<Tool> tools;
+    private int capacity = 12;
 
 
 
