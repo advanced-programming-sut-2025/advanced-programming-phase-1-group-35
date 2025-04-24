@@ -32,6 +32,7 @@ public class User {
     private ArrayList<Gift> Gifts;
     private HashMap<NPC, Integer> npcFriendship;
     protected Tool currentTool;
+    private Energy energy;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {

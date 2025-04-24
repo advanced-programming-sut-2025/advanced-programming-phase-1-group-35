@@ -7,7 +7,7 @@ import Model.enums.ToolTypes;
 
 public class ToolsController {
     public Result toolEquip(String toolName) {
-        User playingUser = Game.playingUser;
+        User playingUser = App.getCurrentGame().getPlayingUser();
         Inventory inventory = playingUser.inventory;
         BackPack backPack = inventory.backPack;
         ToolTypes toolType;
@@ -26,15 +26,15 @@ public class ToolsController {
     }
 
     public Result showCurrentTool() {
-        if (Game.playingUser.getCurrentTool() == null) {
+        if (App.getCurrentGame().getPlayingUser().getCurrentTool() == null) {
             return new Result(false,"there is no tool equipped!");
         } else {
-            return new Result(true,Game.playingUser.getCurrentTool().getToolName().toString());
+            return new Result(true,App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().toString());
         }
     }
 
     public Result showTools() {
-        BackPack backPack = Game.playingUser.inventory.backPack;
+        BackPack backPack = App.getCurrentGame().getPlayingUser().inventory.backPack;
         for (Tool tool : backPack.tools) {
             System.out.println(tool.getToolName().toString());
         }
