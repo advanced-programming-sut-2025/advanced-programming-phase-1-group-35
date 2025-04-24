@@ -1,18 +1,18 @@
 package Model.enums.Crops;
 
-public enum MixedSeeds {
-    SPRING(new String[]{"Cauliflower", "Parsnip", "Potato", "Blue Jazz", "Tulip"}),
-    SUMMER(new String[]{"Corn", "Hot Pepper", "Radish", "Wheat", "Poppy", "Sunflower", "Summer Spangle"}),
-    FALL(new String[]{"Artichoke", "Corn", "Eggplant", "Pumpkin", "Sunflower", "Fairy Rose"}),
-    WINTER(new String[]{"Powdermelon"});
+public enum MixedSeeds  implements PlantAble {
+    SPRING(new Crop[]{Crop.CAULIFLOWER, Crop.PARSNIP, Crop.POTATO, Crop.BLUE_JAZZ, Crop.TULIP}),
+    SUMMER(new Crop[]{Crop.CORN, Crop.HOT_PEPPER, Crop.RADISH, Crop.WHEAT, Crop.POPPY, Crop.SUNFLOWER, Crop.SUMMER_SPANGLE}),
+    FALL(new Crop[]{Crop.ARTICHOKE, Crop.CORN, Crop.EGGPLANT, Crop.PUMPKIN, Crop.SUNFLOWER, Crop.FAIRY_ROSE}),
+    WINTER(new Crop[]{Crop.POWDERMELON});
 
-    private final String[] possibleCrops;
+    private final Crop[] possibleCrops;
 
-    MixedSeeds (String[] possibleCrops) {
+    MixedSeeds (Crop[] possibleCrops) {
         this.possibleCrops = possibleCrops;
     }
 
-    public String[] getPossibleCrops() {
+    public Crop[] getPossibleCrops() {
         return possibleCrops;
     }
 }

@@ -1,61 +1,78 @@
 package Model.enums.Crops;
 
-public enum Trees {
-    APRICOT_TREE("Apricot Tree", "Apricot Sapling", "7-7-7-7", 28, "Apricot",
-            "1", "59", "TRUE", "38", "17", "Spring"),
-    CHERRY_TREE("Cherry Tree", "Cherry Sapling", "7-7-7-7", 28, "Cherry",
-            "1", "80", "TRUE", "38", "17", "Spring"),
-    BANANA_TREE("Banana Tree", "Banana Sapling", "7-7-7-7", 28, "Banana",
-            "1", "150", "TRUE", "75", "33", "Summer"),
-    MANGO_TREE("Mango Tree", "Mango Sapling", "7-7-7-7", 28, "Mango",
-            "1", "130", "TRUE", "100", "45", "Summer"),
-    ORANGE_TREE("Orange Tree", "Orange Sapling", "7-7-7-7", 28, "Orange",
-            "1", "100", "TRUE", "38", "17", "Summer"),
-    PEACH_TREE("Peach Tree", "Peach Sapling", "7-7-7-7", 28, "Peach",
-            "1", "140", "TRUE", "38", "17", "Summer"),
-    APPLE_TREE("Apple Tree", "Apple Sapling", "7-7-7-7", 28, "Apple",
-            "1", "100", "TRUE", "38", "17", "Fall"),
-    POMEGRANATE_TREE("Pomegranate Tree", "Pomegranate Sapling", "7-7-7-7", 28,
-            "Pomegranate", "1", "140", "TRUE", "38", "17", "Fall"),
-    OAK_TREE("Oak Tree", "Acorns", "7-7-7-7", 28, "Oak Resin",
-            "7", "150", "FALSE", "-", "-", "Special"),
-    MAPLE_TREE("Maple Tree", "Maple Seeds", "7-7-7-7", 28, "Maple Syrup",
-            "9", "200", "FALSE", "-", "-", "Special"),
-    PINE_TREE("Pine Tree", "Pine Cones", "7-7-7-7", 28, "Pine Tar",
-            "5", "100", "FALSE", "-", "-", "Special"),
-    MAHOGANY_TREE("Mahogany Tree", "Mahogany Seeds", "7-7-7-7", 28, "Sap",
-            "1", "2", "TRUE", "-2", "0", "Special"),
-    MUSHROOM_TREE("Mushroom Tree", "Mushroom Tree Seeds", "7-7-7-7", 28,
-            "Common Mushroom", "1", "40", "TRUE", "38", "17", "Special"),
-    MYSTIC_TREE("Mystic Tree", "Mystic Tree Seeds", "7-7-7-7", 28, "Mystic Syrup",
-            "7", "1000", "TRUE", "500", "225", "Special");
+import java.util.List;
 
-    private final String Name;
-    private final String Source;
-    private final String Stages;
-    private final int TotalHarvestTime;
-    private final String Fruit;
-    private final String FruitHarvestCycle;
-    private final String FruitBaseSellPrice;
-    private final String IsFruitEdible;
-    private final String FruitEnergy;
-    private final String FruitBaseHealth;
-    private final String Season;
+public enum Trees implements PlantAble {
+    APRICOT_TREE("Apricot Tree", "Apricot Sapling", 28, Fruit.APRICOT),
+    CHERRY_TREE("Cherry Tree", "Cherry Sapling", 28, Fruit.CHERRY),
+    BANANA_TREE("Banana Tree", "Banana Sapling", 28, Fruit.BANANA),
+    MANGO_TREE("Mango Tree", "Mango Sapling", 28, Fruit.MANGO),
+    ORANGE_TREE("Orange Tree", "Orange Sapling", 28, Fruit.ORANGE),
+    PEACH_TREE("Peach Tree", "Peach Sapling", 28, Fruit.PEACH),
+    APPLE_TREE("Apple Tree", "Apple Sapling", 28, Fruit.APPLE),
+    POMEGRANATE_TREE("Pomegranate Tree", "Pomegranate Sapling", 28, Fruit.POMEGRANATE),
+    OAK_TREE("Oak Tree", "Acorns", 28, Fruit.OAK_RESIN),
+    MAPLE_TREE("Maple Tree", "Maple Seeds", 28, Fruit.MAPLE_SYRUP),
+    PINE_TREE("Pine Tree", "Pine Cones", 28, Fruit.PINE_TAR),
+    MAHOGANY_TREE("Mahogany Tree", "Mahogany Seeds", 28, Fruit.SAP),
+    MUSHROOM_TREE("Mushroom Tree", "Mushroom Tree Seeds", 28, Fruit.COMMON_MUSHROOM),
+    MYSTIC_TREE("Mystic Tree", "Mystic Tree Seeds", 28, Fruit.MYSTIC_SYRUP);
 
-    Trees(String Name, String Source, String Stages, int totalHarvestTime, String Fruit, String FruitHarvestCycle,
-          String FruitBaseSellPrice, String IsFruitEdible, String FruitEnergy, String FruitBaseHealth, String Season) {
-        this.Name = Name;
-        this.Source = Source;
-        this.Stages = Stages;
-        this.TotalHarvestTime = totalHarvestTime;
-        this.Fruit = Fruit;
-        this.FruitHarvestCycle = FruitHarvestCycle;
-        this.FruitBaseSellPrice = FruitBaseSellPrice;
-        this.IsFruitEdible = IsFruitEdible;
-        this.FruitEnergy = FruitEnergy;
-        this.FruitBaseHealth = FruitBaseHealth;
-        this.Season = Season;
+    private final String name;
+    private final String source;
+    private final List<Integer> stages;
+    private final int totalHarvestTime;
+    private final Fruit fruit;
+
+    Trees(String name, String source, int totalHarvestTime, Fruit fruit) {
+        this.name = name;
+        this.source = source;
+        this.stages = List.of(7, 7, 7, 7);
+        this.totalHarvestTime = totalHarvestTime;
+        this.fruit = fruit;
     }
 
-    // Getters can be added here if needed
+    public String getName() {
+        return name;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public List<Integer> getStages() {
+        return stages;
+    }
+
+    public int getTotalHarvestTime() {
+        return totalHarvestTime;
+    }
+
+    public Fruit getFruit() {
+        return fruit;
+    }
+
+    public String getSeason() {
+        return fruit.getSeason();
+    }
+
+    public boolean isFruitEdible() {
+        return fruit.isEdible();
+    }
+
+    public int getFruitEnergy() {
+        return fruit.getEnergy();
+    }
+
+    public int getFruitBaseHealth() {
+        return fruit.getBaseHealth();
+    }
+
+    public int getFruitellPrice() {
+        return fruit.getBaseSellPrice();
+    }
+
+    public int getFruitHarvestCycle() {
+        return fruit.getHarvestCycle();
+    }
 }
