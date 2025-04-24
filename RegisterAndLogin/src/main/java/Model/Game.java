@@ -13,8 +13,8 @@ public class Game {
     private static Seasons currentSeason;
 
     public Game(ArrayList<User> players, User playingUser) {
-        this.players = players;
-        this.playingUser = playingUser;
+        Game.players = players;
+        Game.playingUser = playingUser;
     }
 
 
@@ -42,7 +42,7 @@ public class Game {
     }
 
     public void setPlayers(ArrayList<User> players) {
-        this.players = players;
+        Game.players = players;
     }
 
     public User getPlayingUser() {
@@ -50,14 +50,6 @@ public class Game {
     }
 
     public void setPlayingUser(User playingUser) {
-        this.playingUser = playingUser;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
+        Game.playingUser = playingUser;
     }
 }
