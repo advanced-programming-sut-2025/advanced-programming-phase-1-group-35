@@ -13,8 +13,19 @@ public class Map {
     public ArrayList<Model.Shops.Shop> shops;
 
     public void buildMap(User[] owners , int[] types) {
+        for (Tile[] tile : tiles) {
+            for (Tile tile1 : tile) {
+                tile1 = new Tile();
+            }
+        }
         for (int i = 0; i < 4; i++) {
             farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
+        }
+        for (Tile[] tile : tiles) {
+            for (Tile tile1 : tile) {
+                System.out.println(tile1.getSymbol());
+            }
+            System.out.println();
         }
     }
 

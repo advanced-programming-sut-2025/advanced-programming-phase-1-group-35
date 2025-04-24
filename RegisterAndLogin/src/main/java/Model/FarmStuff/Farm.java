@@ -46,8 +46,11 @@ public class Farm {
         for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
             for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);
+                tiles[i][j].setSymbol('.');
+                tiles[i][j].setWalkable(true);
             }
         }
+        cabin = new Cabin(this , tiles);
     }
 
     public User getOwner() {
@@ -56,5 +59,20 @@ public class Farm {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+    public void setBounds(Rectangle bounds) {
+        this.bounds = bounds;
+    }
+
+    public Cabin getCabin() {
+        return cabin;
+    }
+
+    public void setCabin(Cabin cabin) {
+        this.cabin = cabin;
     }
 }

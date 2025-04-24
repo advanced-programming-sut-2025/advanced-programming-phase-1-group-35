@@ -5,11 +5,11 @@ import Model.enums.Seasons;
 import java.util.ArrayList;
 
 public class Game {
-    private ArrayList<User> players;
+    private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
     private GameCalender gameCalender;
     private Weather weather;
-    private Map map;
+    private Map map = new Map();
     private Seasons currentSeason;
 
     public Game(ArrayList<User> players, User playingUser) {

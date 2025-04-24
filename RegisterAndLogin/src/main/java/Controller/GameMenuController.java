@@ -37,6 +37,7 @@ public class GameMenuController {
         for (String playerName : playerNames) {
             User user = loginMenuController.getUser(playerName);
             if(user == null) return new Result(false, playerName + "does not exist");
+            if(user.equals(App.getLoggedInUser())) return new Result(false, "your bipolar shit doesn't make sense");
             if(isUserInOtherGame(user)) return new Result(false, playerName + "is already in a game");
             players.add(user);
         }
@@ -46,6 +47,7 @@ public class GameMenuController {
         for (User player : players) {
             player.setCurrentGame(game);
         }
+        chooseMap(scanner);
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
@@ -77,7 +79,7 @@ public class GameMenuController {
                 System.out.println("invalid type");
                 continue;
             }
-            if(game.getMap().getFarms().get(number - 1).getOwner() != null) {
+            if(users[number - 1] != null) {
                 System.out.println("this farm is taken");
                 continue;
             }
