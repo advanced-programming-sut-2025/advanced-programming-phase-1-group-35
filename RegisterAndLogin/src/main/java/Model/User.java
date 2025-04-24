@@ -20,9 +20,10 @@ public class User {
     private String securityAnswer;
     private int highScore = 0;
     private int gamesPlayed = 0;
-    //TODO:nothing to do but just a reminder!
-    public Energy energy;
+    private int energyConsumedInTurn = 0;
 
+    private Game currentGame = null;
+    private Tile currentTile = null;
     private Map map;
     public Inventory inventory;
     private ArrayList<User> lv1Friends;
@@ -216,6 +217,30 @@ public class User {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public int getEnergyConsumedInTurn() {
+        return energyConsumedInTurn;
+    }
+
+    public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
+        this.energyConsumedInTurn = energyConsumedInTurn;
+    }
+
+    public Tile getCurrentTile() {
+        return currentTile;
+    }
+
+    public void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
     }
 
     public Energy getEnergy() {

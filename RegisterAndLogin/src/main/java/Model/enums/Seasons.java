@@ -22,6 +22,7 @@ public enum Seasons {
     },
             3),
     Winter(new WeatherCondition[]{
+            WeatherCondition.sunny,
             WeatherCondition.snow,
     },
             4);
@@ -35,7 +36,7 @@ public enum Seasons {
     public Seasons findNextSeason(Seasons currentSeason){
         for(Seasons season : Seasons.values()){
             if(season.numberInorder == currentSeason.numberInorder+1 ||
-            season.numberInorder == currentSeason.numberInorder-3){
+                    season.numberInorder == currentSeason.numberInorder-3){
                 return season;
             }
         }

@@ -4,7 +4,7 @@ import Model.Tile;
 
 import java.util.ArrayList;
 
-public class Greenhouse extends Farm {
+public class Greenhouse {
     private int rows = 6;
     private int cols = 7;
     private boolean isFixed = false;
@@ -21,3 +21,4 @@ public class Greenhouse extends Farm {
     }
     //TODO:add the watering and other farming related stuff after the farm part has been implemented
 }
+

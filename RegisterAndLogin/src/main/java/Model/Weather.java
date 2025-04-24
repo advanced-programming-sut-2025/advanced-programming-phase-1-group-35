@@ -23,10 +23,10 @@ public class Weather {
     }
 
     public void hitTileWithThunder(Tile tile){
-        tile.setGotHitWithThunder(true);
+      //  tile.setGotHitWithThunder(true);
     }
     public WeatherCondition randomWeatherCondition(Seasons season) {
-        Game currentGame = new Game();
+        Game currentGame;//TODO: = new Game();
         int randomNumber = (int)((Math.random()*4) + 1);
         for(WeatherCondition condition : WeatherCondition.values()){
             if(condition.getNumber() == randomNumber){
@@ -35,6 +35,8 @@ public class Weather {
         }
         return null;
     }
+
+
 
 
     @Override

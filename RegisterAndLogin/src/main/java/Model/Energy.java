@@ -19,9 +19,9 @@ public class Energy {
 
     public int getEnergyAmount() {
         return energyAmount;
-    }
+}
 
     public void setEnergyAmount(int energyAmount) {
         this.energyAmount = energyAmount;
-    }
+}
 }

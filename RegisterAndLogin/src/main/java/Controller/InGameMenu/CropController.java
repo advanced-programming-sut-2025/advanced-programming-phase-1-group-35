@@ -25,7 +25,9 @@ public class CropController {
             StringBuilder sb = new StringBuilder();
             sb.append("Name: ").append(crop.getName()).append("\n");
             sb.append("Source: ").append(crop.getSource()).append("\n");
-            sb.append("Stages: ").append(java.util.Arrays.stream(crop.getStages().split("-")).collect(Collectors.joining("-"))).append("\n");
+            sb.append("Stages: ").append(crop.getStages().stream().map(String::valueOf)
+                            .collect(Collectors.joining("-")))
+                    .append("\n");
             sb.append("Total Harvest Time: ").append(crop.getTotalHarvestTime()).append("\n");
             sb.append("One Time: ").append(crop.isOneTime()).append("\n");
             sb.append("Regrowth Time: ").append(crop.isOneTime() ? "" : crop.getRegrowthTime()).append("\n");

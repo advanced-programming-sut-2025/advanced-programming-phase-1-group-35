@@ -1,43 +1,153 @@
 package Controller;
 
+import Model.App;
 import Model.Game;
 import Model.Result;
-import Model.Tile;
 import Model.Tools.FishingPole;
-import Model.Weather;
-import Model.enums.Seasons;
+import Model.User;
+import Model.enums.GameMenuCommands;
+import Model.enums.Menu;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.regex.Matcher;
 
 public class GameMenuController {
-    public Result createNewGame(String username1, String username2, String username3) {
-        return null;
+    public void exitMenu() throws IOException {
+        if(!App.isStayLoggedIn()) {
+            App.setLoggedInUser(null);
+            App.setCurrentMenu(Menu.LoginMenu);
+        }
+        else App.setCurrentMenu(Menu.MainMenu);
+        App.setCurrentGame(null);
+        App.serializeApp();
+        App.setCurrentMenu(Menu.ExitMenu);
+    }
+    public Result createNewGame(String username1, String username2, String username3 , Scanner scanner) {
+        LoginMenuController loginMenuController = new LoginMenuController();
+        ArrayList<String> playerNames = new ArrayList<>();
+        ArrayList<User> players = new ArrayList<>();
+        if(username1 != null) playerNames.add(username1);
+        if(username2 != null) playerNames.add(username2);
+        if(username3 != null) playerNames.add(username3);
+        players.add(App.getLoggedInUser());
+        if(playerNames.isEmpty()) return new Result(false, "You have to choose at least one player");
+        for (String playerName : playerNames) {
+            User user = loginMenuController.getUser(playerName);
+            if(user == null) return new Result(false, playerName + "does not exist");
+            if(isUserInOtherGame(user)) return new Result(false, playerName + "is already in a game");
+            players.add(user);
+        }
+        Game game = new Game(players , App.getLoggedInUser());
+        App.games.add(game);
+        App.setCurrentGame(game);
+        for (User player : players) {
+            player.setCurrentGame(game);
+        }
+        return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
-    private boolean isUserInOtherGame(String username) {
-        return false;
+    private boolean isUserInOtherGame(User user) {
+        if(user.getCurrentGame() == null) return false;
+        return true;
     }
 
-    public Result chooseMap() {
-        return null;
+    public void chooseMap(Scanner scanner) {
+        Game game = App.getCurrentGame();
+        ArrayList<User> players = game.getPlayers();
+        User[] users = new User[4];
+        int[] types = new int[4];
+        for (int i = 0; i < players.size();) { // choosing maps
+            System.out.println("choosing map for " + players.get(i).getUsername());
+            String input = scanner.nextLine();
+            Matcher matcher = GameMenuCommands.chooseMap.getMatcher(input);
+            if(matcher == null) {
+                System.out.println("invalid input");
+                continue;
+            }
+            int number = Integer.parseInt(matcher.group("number"));
+            int type = Integer.parseInt(matcher.group("type"));
+            if(number < 1 || number > 4) {
+                System.out.println("invalid number");
+                continue;
+            }
+            if(type < 0 || type > 3) {
+                System.out.println("invalid type");
+                continue;
+            }
+            if(game.getMap().getFarms().get(number - 1).getOwner() != null) {
+                System.out.println("this farm is taken");
+                continue;
+            }
+            users[number - 1] = players.get(i);
+            types[number - 1] = type;
+            System.out.println("farm number " + number + " has been chosen by " + players.get(i).getUsername());
+            i++;
+        }
+        game.getMap().buildMap(users , types);
     }
 
     public Result loadGame() {
-        return null;
-    }
-
-    public Result saveGame() {
-        return null;
+        Game game = App.getLoggedInUser().getCurrentGame();
+        if(game == null) {
+            return new Result(false, "You have no ongoing game");
+        }
+        App.setCurrentGame(game);
+        return new Result(true, "You have successfully loaded game");
     }
 
     public Result exitGame() {
-        return null;
+        Game game = App.getLoggedInUser().getCurrentGame();
+        if(game == null) return new Result(false, "You have no ongoing game");
+        if(!game.getPlayers().get(0).equals(game.getPlayingUser())) {
+            return new Result(false, game.getPlayingUser() + " is not the creator");
+        }
+        App.setCurrentGame(null);
+        return new Result(true, "You have successfully exited the game , you may create or load another game .");
     }
 
-    public Result deleteCurrentGame() {
-        return null;
+    public Result deleteCurrentGame(Scanner scanner) {
+        Game game = App.getCurrentGame();
+        User requester = game.getPlayingUser();
+        if(game == null) return new Result(false, "You have no ongoing game");
+        HashMap<User , Boolean> terminationVotes = new HashMap<>();
+        int positiveVotes = 1;
+        terminationVotes.put(requester, true);
+        for (User player : game.getPlayers()) {
+            if(player.equals(requester)) continue;
+            System.out.println(player.getUsername() + " must vote about termination : (y/n)");
+            while(true) {
+                String input = scanner.nextLine().trim();
+                if (input.equalsIgnoreCase("y")) {
+                    terminationVotes.put(player, true);
+                    positiveVotes++;
+                    break;
+                } else if (input.equalsIgnoreCase("n")) {
+                    terminationVotes.put(player, false);
+                    break;
+                }
+                System.out.println("invalid input");
+            }
+        }
+        if(positiveVotes == game.getPlayers().size()) {
+            App.setCurrentGame(null);
+            for (User player : game.getPlayers()) {
+                player.setCurrentGame(null);
+            }
+            return new Result(true, "You have successfully deleted the current game");
+        }
+        else {
+            return new Result(false, "insufficient amount of votes , game continues");
+        }
     }
 
     public void goToNextTurn() {
-
+        int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
+        i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
+        App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
+        System.out.println("going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
     }
 
     public Result showTime() {
@@ -172,19 +282,6 @@ public class GameMenuController {
     }
     public Result Sell(){
         return null;
-    }
-    public void changeSeason(Seasons season){
-       //TODO: discuss where to use current game
-        Game currentGame = null;
-        currentGame.setSeason(currentGame.getSeason().findNextSeason(currentGame.getSeason()));
-    }
-    //TODO:
-    public Tile findRandomTile(){
-    return null;
-    }
-    public String showCurrentWeather(){
-        Game currentGame = null;
-        return currentGame.getWeather().toString();
     }
 
 }

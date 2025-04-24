@@ -21,6 +21,10 @@ public class GameCalender {
         this.gameDateTime = gameDateTime;
     }
 
+    public int getMinutesPerTurn() {
+        return minutesPerTurn;
+    }
+
     public Seasons getSeason() {
         return season;
     }
@@ -70,4 +74,3 @@ public class GameCalender {
 
 
 }
-

@@ -1,11 +1,37 @@
 package Model;
 
+import Model.FarmStuff.Farm;
+
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Map {
-    private ArrayList<Model.FarmStuff.Farm> farms;
+    private Tile[][] tiles = new Tile[300][250];
+    private ArrayList<Farm> farms = new ArrayList<>();
     public ArrayList<Model.Buildings.Building> buildings;
     public ArrayList<Model.Shops.Shop> shops;
-    public ArrayList<Model.Tile> tiles;
 
+    public void buildMap(User[] owners , int[] types) {
+        for (int i = 0; i < 4; i++) {
+            farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
+        }
+    }
+
+    public ArrayList<Farm> getFarms() {
+        return farms;
+    }
+
+    public void setFarms(ArrayList<Farm> farms) {
+        this.farms = farms;
+    }
+
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
 }
