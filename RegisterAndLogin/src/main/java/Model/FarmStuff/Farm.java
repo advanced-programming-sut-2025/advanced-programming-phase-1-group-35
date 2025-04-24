@@ -54,6 +54,7 @@ public class Farm {
             }
         }
         cabin = new Cabin(this , tiles);
+        greenhouse = new Greenhouse(this , tiles);
     }
 
     public User getOwner() {
