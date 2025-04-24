@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Tile {
     private User owner = null;
-    private char symbol;
+    private char symbol = '0';
     private Coordination coordination;
     private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;

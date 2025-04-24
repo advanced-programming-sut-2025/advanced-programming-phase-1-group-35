@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Farm {
     private User owner = null;
-    private Rectangle bounds;
+    private Rectangle bounds = new Rectangle();
     private Cabin cabin;
     private Lake lake;
     private Greenhouse greenhouse;
@@ -31,18 +31,21 @@ public class Farm {
             case 1:
                 x = 10;
                 y = 10;
+                break;
             case 2:
                 x = 10;
                 y = 145;
+                break;
             case 3:
                 x = 185;
                 y = 10;
+                break;
             case 4:
                 x = 185;
                 y = 145;
+                break;
         }
-        bounds = new Rectangle(75 , 55 );
-        bounds.setLocation(x, y);
+        bounds.setBounds(x , y , 75 , 55);
         for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
             for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);

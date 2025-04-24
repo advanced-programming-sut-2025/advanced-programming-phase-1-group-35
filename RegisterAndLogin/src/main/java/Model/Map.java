@@ -13,17 +13,17 @@ public class Map {
     public ArrayList<Model.Shops.Shop> shops;
 
     public void buildMap(User[] owners , int[] types) {
-        for (Tile[] tile : tiles) {
-            for (Tile tile1 : tile) {
-                tile1 = new Tile();
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                tiles[i][j] = new Tile();
             }
         }
         for (int i = 0; i < 4; i++) {
             farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
         }
-        for (Tile[] tile : tiles) {
-            for (Tile tile1 : tile) {
-                System.out.println(tile1.getSymbol());
+        for (int i = 0; i < 250; i++) {
+            for (int j = 0; j < 300; j++) {
+                System.out.print(tiles[j][i].getSymbol());
             }
             System.out.println();
         }
