@@ -4,7 +4,7 @@
 package Model.animal;
 
 import Model.Result;
-import Model.Coordination;
+import Model.Point;
 
 
 public class Animal {
@@ -14,7 +14,7 @@ public class Animal {
     private final AnimalProduct[] products;
     private final String confinement;
     private int friendship;
-    private Coordination coordination;
+    private Point coordination;
     private int daysPastLastProduction;
     private boolean isInHouse;
 
@@ -90,11 +90,11 @@ public class Animal {
         this.daysPastLastProduction = daysPastLastProduction;
     }
 
-    public Coordination getCoordination() {
+    public Point getCoordination() {
         return coordination;
     }
 
-    public void setCoordination(Coordination coordination) {
+    public void setCoordination(Point coordination) {
         this.coordination = coordination;
     }
 

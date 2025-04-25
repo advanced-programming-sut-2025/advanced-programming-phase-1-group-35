@@ -1,10 +1,7 @@
 package Controller;
 
-import Model.App;
-import Model.Game;
-import Model.Result;
+import Model.*;
 import Model.Tools.FishingPole;
-import Model.User;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
 
@@ -184,8 +181,20 @@ public class GameMenuController {
 
     }
 
-    public void walk(int x, int y) {
-
+    public Result walk(int x, int y) {
+        User player = App.getCurrentGame().getPlayingUser();
+        Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        PathFinder p = new PathFinder(tiles);
+        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y);
+        if(!path.reachable()) {
+            return new Result(false, path.message());
+        }
+        // TODO : deducting energy and faint system
+        startTile.setContentSymbol('0');
+        player.setCurrentTile(tiles[x][y]);
+        tiles[x][y].setContentSymbol(player.getSymbol());
+        return new Result(true, path.message());
     }
 
     private boolean isThereAnyWayToGetToTheDestination() {
@@ -196,12 +205,34 @@ public class GameMenuController {
 
     }
 
-    public Result printMap() {
-        return null;
+    public Result printMap(int x , int y , int size) {
+        Result validate = validateCoordinates(x , y);
+        if(!validate.isSuccess())return validate;
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        for (int i = y; i < Math.min(y + size , 250); i++) {
+            for (int j = x; j < Math.min(x + size , 300); j++) {
+                System.out.print(tiles[j][i].getSymbol());
+            }
+            System.out.println();
+        }
+        return new Result(true, "here is your map Arbab");
     }
 
-    public Result helpReadingTheMap() {
-        return null;
+    public Result validateCoordinates(int x, int y) {
+        if(x < 0 || y < 0 || x > 299 || y > 249) {
+            return new Result(false, "invalid coordinates");
+        }
+        return new Result(true, "coordinates good to go");
+    }
+
+    public void helpReadingTheMap() {
+        System.out.println(
+                ". : ground\n" +
+                "numbers(1-4) : players" +
+                "# : cabin tiles" +
+                "@ : greenhouse tiles" +
+                "0 : not walkable"
+        );
     }
 
     public Result showEnergy() {

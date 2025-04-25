@@ -55,6 +55,14 @@ public class Farm {
         }
         cabin = new Cabin(this , tiles);
         greenhouse = new Greenhouse(this , tiles);
+
+        if(owner != null) {
+            Rectangle bounds = cabin.getBounds();
+            Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
+            owner.setCurrentTile(spawnTile);
+            owner.setSymbol((char)('0' + number));
+            spawnTile.setContentSymbol((char) ('0' + number));
+        }
     }
 
     public User getOwner() {
@@ -78,5 +86,13 @@ public class Farm {
 
     public void setCabin(Cabin cabin) {
         this.cabin = cabin;
+    }
+
+    public Greenhouse getGreenhouse() {
+        return greenhouse;
+    }
+
+    public void setGreenhouse(Greenhouse greenhouse) {
+        this.greenhouse = greenhouse;
     }
 }

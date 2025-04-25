@@ -24,6 +24,7 @@ public class User {
 
     private Game currentGame = null;
     private Tile currentTile = null;
+    private char symbol;
     private Map map;
     public Inventory inventory;
     private ArrayList<User> lv1Friends;
@@ -266,5 +267,13 @@ public class User {
 
     public void setCurrentTool(Tool currentTool) {
         this.currentTool = currentTool;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 }

@@ -2,9 +2,7 @@ package Model;
 
 import Model.FarmStuff.Farm;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Map {
     private Tile[][] tiles = new Tile[300][250];
@@ -15,7 +13,7 @@ public class Map {
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = new Tile();
+                tiles[i][j] = new Tile(new Point(i , j));
             }
         }
         for (int i = 0; i < 4; i++) {
