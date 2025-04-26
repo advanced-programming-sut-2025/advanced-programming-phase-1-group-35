@@ -2,7 +2,7 @@ package Model.enums.Crops;
 
 import java.util.List;
 
-public enum Trees implements PlantAble {
+public enum TreeEnum {
     APRICOT_TREE("Apricot Tree", "Apricot Sapling", 28, Fruit.APRICOT),
     CHERRY_TREE("Cherry Tree", "Cherry Sapling", 28, Fruit.CHERRY),
     BANANA_TREE("Banana Tree", "Banana Sapling", 28, Fruit.BANANA),
@@ -24,7 +24,7 @@ public enum Trees implements PlantAble {
     private final int totalHarvestTime;
     private final Fruit fruit;
 
-    Trees(String name, String source, int totalHarvestTime, Fruit fruit) {
+    TreeEnum(String name, String source, int totalHarvestTime, Fruit fruit) {
         this.name = name;
         this.source = source;
         this.stages = List.of(7, 7, 7, 7);

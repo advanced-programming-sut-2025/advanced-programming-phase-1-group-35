@@ -1,0 +1,62 @@
+package Model.CropClasses;
+
+import Model.enums.Crops.CropEnum;
+import Model.enums.Crops.PlantAble;
+import Model.enums.Crops.SeedEnum;
+import Model.enums.Seasons;
+
+import java.util.List;
+
+public class Crop implements PlantAble {
+    private final String name;
+    private final SeedEnum source;
+    private final List<Integer> stages;
+    private final int totalHarvestTime;
+    private final boolean oneTime;
+    private final int regrowthTime;
+    private final int baseSellPrice;
+    private final boolean isEdible;
+    private final int energy;
+    private final List<Seasons> season;
+    private final boolean canBecomeGiant;
+    private boolean isForaging;
+    private int currentState;
+    private int daysSinceLastGrowth;
+
+    public Crop(CropEnum cropEnum) {
+        this.name = cropEnum.getName();
+        this.source = cropEnum.getSource();
+        this.stages = cropEnum.getStages();
+        this.totalHarvestTime = cropEnum.getTotalHarvestTime();
+        this.oneTime = cropEnum.isOneTime();
+        this.regrowthTime = cropEnum.getRegrowthTime();
+        this.baseSellPrice = cropEnum.getBaseSellPrice();
+        this.isEdible = cropEnum.isEdible();
+        this.energy = cropEnum.getEnergy();
+        this.season = cropEnum.getSeasons();
+        this.canBecomeGiant = cropEnum.canBecomeGiant();
+        this.daysSinceLastGrowth = 0;
+        this.currentState = 1;
+    }
+
+    //TODO:use this at the end of the day(if current tile is fertilized do it twice)
+    //actually this is pretty complicated because i need to keep in mind how many days have passed and then use this;
+    //my current idea is this
+
+
+    public void grow(){
+        if(this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
+            this.currentState++;
+            this.daysSinceLastGrowth = 0;
+        }
+        else{
+            daysSinceLastGrowth++;
+        }
+
+    }
+    public Seed HarvestAndDropSeed() {
+        Seed seed = new Seed(this.source);
+        //TODO:how many seeds should i return?
+        return seed.getSeed(1);
+    }
+}

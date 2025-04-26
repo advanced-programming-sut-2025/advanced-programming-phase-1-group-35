@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.InGameMenu.CropController;
 import Model.App;
 import Model.Game;
 import Model.Result;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
+    CropController cropController = new CropController();
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);
