@@ -1,6 +1,5 @@
 package Model.Buildings;
 
-import Model.Coordination;
 import Model.FarmStuff.Farm;
 import Model.Tile;
 
@@ -37,5 +36,12 @@ public class Building {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+    public void setBounds(Rectangle bounds) {
+        this.bounds = bounds;
     }
 }

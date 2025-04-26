@@ -2,21 +2,20 @@ package Controller.InGameMenu;
 
 import Model.enums.Crops.CropEnum;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CropController {
-        private List<CropEnum> cropEnumList;
-        public CropController(List<CropEnum> cropEnumList) {
-            this.cropEnumList = cropEnumList;
-        }
 
-        public CropEnum findCropByName(String name) {
-            return cropEnumList.stream()
-                    .filter(c -> c.getName().equalsIgnoreCase(name))
-                    .findFirst()
-                    .orElse(null);
-        }
+    public CropEnum findCropByName(String name) {
+        return Arrays.stream(CropEnum.values())
+                .filter(c -> c.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+    }
+
 
         public String getCropInfo(String name) {
             CropEnum cropEnum = findCropByName(name);
@@ -41,6 +40,7 @@ public class CropController {
 
             return sb.toString();
         }
+
     }
 
 

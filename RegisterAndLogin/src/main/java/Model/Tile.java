@@ -8,11 +8,17 @@ import java.util.ArrayList;
 public class Tile {
     private User owner = null;
     private char symbol = '0';
-    private Coordination coordination;
+    private char contentSymbol = '0';
+    public Point coordination;
     private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
+
+    public Tile(Point coordination) {
+        this.coordination = coordination;
+    }
+
     public void setGotHitWithThunder(boolean gotHitWithThunder) {
         this.gotHitWithThunder = gotHitWithThunder;
     }
@@ -33,6 +39,9 @@ public class Tile {
     }
 
     public char getSymbol() {
+        if(contentSymbol != '0'){
+            return contentSymbol;
+        }
         return symbol;
     }
 
@@ -46,5 +55,13 @@ public class Tile {
 
     public void setWalkable(boolean walkable) {
         isWalkable = walkable;
+    }
+
+    public char getContentSymbol() {
+        return contentSymbol;
+    }
+
+    public void setContentSymbol(char contentSymbol) {
+        this.contentSymbol = contentSymbol;
     }
 }
