@@ -146,6 +146,9 @@ public class GameMenuController {
         int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
         i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
         App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
+        if(i == 0){
+            App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
+        }
         System.out.println("going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
     }
 
@@ -185,24 +188,28 @@ public class GameMenuController {
         User player = App.getCurrentGame().getPlayingUser();
         Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
-        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y);
+        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy());
         if(!path.reachable()) {
             return new Result(false, path.message());
         }
-        // TODO : deducting energy and faint system
-        startTile.setContentSymbol('0');
-        player.setCurrentTile(tiles[x][y]);
-        tiles[x][y].setContentSymbol(player.getSymbol());
+        for (Point point : path.path()) {
+            if(player.getEnergy().getEnergyAmount() <= 0) {
+                player.getEnergy().faint();
+                return new Result(false, "you have no energy left");
+            }
+            if(!player.getEnergy().TurnEnergyLeft()){
+                goToNextTurn();
+                player.getEnergy().endTurn();
+                return new Result(true, "next turn");
+            }
+            startTile.setContentSymbol('0');
+            player.setCurrentTile(tiles[point.x][point.y]);
+            tiles[point.x][point.y].setContentSymbol(player.getSymbol());
+            player.getEnergy().consumeEnergy(point.energy);
+        }
         return new Result(true, path.message());
-    }
-
-    private boolean isThereAnyWayToGetToTheDestination() {
-        return false;
-    }
-
-    private void findTheBestWayToGetToTheDestination() {
-
     }
 
     public Result printMap(int x , int y , int size) {
@@ -225,18 +232,40 @@ public class GameMenuController {
         return new Result(true, "coordinates good to go");
     }
 
-    public void helpReadingTheMap() {
-        System.out.println(
-                ". : ground\n" +
+    public Result helpReadingTheMap() {
+        String message = ". : ground\n" +
                 "numbers(1-4) : players" +
                 "# : cabin tiles" +
                 "@ : greenhouse tiles" +
-                "0 : not walkable"
-        );
+                "0 : not walkable";
+        return new Result(true, message);
+    }
+
+    public Result cheatEnergySet(String energyString){
+        User player = App.getCurrentGame().getPlayingUser();
+        int energy = Integer.parseInt(energyString);
+        if(energy > player.getEnergy().getEnergyCapacity()){
+            player.getEnergy().setEnergyCapacity(energy);
+        }
+        player.getEnergy().setEnergyAmount(energy);
+        return new Result(true, "cheat energy set");
+    }
+
+    public Result cheatEnergyUnlimited(){
+        User player = App.getCurrentGame().getPlayingUser();
+        Energy energy = player.getEnergy();
+        energy.setEnergyCapacity(Double.POSITIVE_INFINITY);
+        energy.setEnergyAmount(Double.POSITIVE_INFINITY);
+        energy.setCurrentTurnCapacity(Double.POSITIVE_INFINITY);
+        return new Result(true, "cheat energy unlimited");
     }
 
     public Result showEnergy() {
-        return null;
+        Energy energy = App.getCurrentGame().getPlayingUser().getEnergy();
+        return new Result(true, "" +
+                "energy left: " + energy.getEnergyAmount() +
+                "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
+                "energy capacity: " + energy.getEnergyCapacity());
     }
 
     public Result showInventory() {

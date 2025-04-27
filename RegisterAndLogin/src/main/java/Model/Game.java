@@ -60,4 +60,12 @@ public class Game {
     public void setMap(Map map) {
         this.map = map;
     }
+
+    public GameCalender getGameCalender() {
+        return gameCalender;
+    }
+
+    public void setGameCalender(GameCalender gameCalender) {
+        this.gameCalender = gameCalender;
+    }
 }
