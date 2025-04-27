@@ -1,5 +1,6 @@
 package Model.CropClasses;
 
+import Model.Tile;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
@@ -22,6 +23,7 @@ public class Crop implements PlantAble {
     private boolean isForaging;
     private int currentState;
     private int daysSinceLastGrowth;
+    private Tile cropTile;
 
     public Crop(CropEnum cropEnum) {
         this.name = cropEnum.getName();
@@ -39,6 +41,90 @@ public class Crop implements PlantAble {
         this.currentState = 1;
     }
 
+    public void EmptyTile() {
+        this.cropTile = null;
+        this.cropTile.changeTileContents(null);
+    }
+    public Tile getcropTile() {
+        try{
+            return this.cropTile;
+        }catch (NullPointerException e){
+            System.out.println("Crop Tile Not Set!");
+            return null;
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SeedEnum getSource() {
+        return source;
+    }
+
+    public List<Integer> getStages() {
+        return stages;
+    }
+
+    public int getTotalHarvestTime() {
+        return totalHarvestTime;
+    }
+
+    public boolean isOneTime() {
+        return oneTime;
+    }
+
+    public int getRegrowthTime() {
+        return regrowthTime;
+    }
+
+    public int getBaseSellPrice() {
+        return baseSellPrice;
+    }
+
+    public boolean isEdible() {
+        return isEdible;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public List<Seasons> getSeason() {
+        return season;
+    }
+
+    public boolean isCanBecomeGiant() {
+        return canBecomeGiant;
+    }
+
+    public boolean isForaging() {
+        return isForaging;
+    }
+
+    public void setForaging(boolean foraging) {
+        isForaging = foraging;
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public int getDaysSinceLastGrowth() {
+        return daysSinceLastGrowth;
+    }
+
+    public void setDaysSinceLastGrowth(int daysSinceLastGrowth) {
+        this.daysSinceLastGrowth = daysSinceLastGrowth;
+    }
+
+    public Tile getCropTile() {
+        return cropTile;
+    }
+
+    public void setCropTile(Tile cropTile) {
+        this.cropTile = cropTile;
+    }
     //TODO:use this at the end of the day(if current tile is fertilized do it twice)
     //actually this is pretty complicated because i need to keep in mind how many days have passed and then use this;
     //my current idea is this
@@ -55,7 +141,7 @@ public class Crop implements PlantAble {
 
     }
     public Seed HarvestAndDropSeed() {
-        Seed seed = new Seed(this.source);
+        Seed seed = new Seed(this.source,null);
         //TODO:how many seeds should i return?
         return seed.getSeed(1);
     }

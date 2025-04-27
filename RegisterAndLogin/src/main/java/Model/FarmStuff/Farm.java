@@ -9,6 +9,7 @@ import Model.FarmStuff.Greenhouse;
 import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
 import Model.FarmStuff.Tree;
+import Model.enums.Crops.PlantAble;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Farm {
     private Lake lake;
     private Greenhouse greenhouse;
     private Quarry quarry;
+    private ArrayList<PlantAble> plants = new ArrayList<>();
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
@@ -94,5 +96,13 @@ public class Farm {
 
     public void setGreenhouse(Greenhouse greenhouse) {
         this.greenhouse = greenhouse;
+    }
+
+    public void AddPlants(PlantAble planted) {
+        this.plants.add(planted);
+    }
+
+    public ArrayList<PlantAble> getPlants() {
+        return plants;
     }
 }

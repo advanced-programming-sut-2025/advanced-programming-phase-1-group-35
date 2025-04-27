@@ -12,4 +12,12 @@ public class Point {
     public boolean isItCloseEnough(Point other) {
         return false;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

@@ -1,10 +1,18 @@
 package Controller.InGameMenu;
 
+import Model.App;
+import Model.CropClasses.Crop;
+import Model.CropClasses.Seed;
+import Model.Map;
+import Model.Tile;
 import Model.enums.Crops.CropEnum;
+import Model.enums.Crops.MixedSeeds;
+import Model.enums.Seasons;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class CropController {
@@ -19,7 +27,7 @@ public class CropController {
 
         public String getCropInfo(String name) {
             CropEnum cropEnum = findCropByName(name);
-            if (cropEnum == null) return "Crop not found.";
+            if (cropEnum == null) return "Crop not found,try something valid!";
 
             StringBuilder sb = new StringBuilder();
             sb.append("Name: ").append(cropEnum.getName()).append("\n");
@@ -40,6 +48,11 @@ public class CropController {
 
             return sb.toString();
         }
+//        public boolean CheckSideTilesForMixedSeeds(Tile tile) {
+//        boolean result = false;
+//        if()
+//        }
+
 
     }
 

@@ -9,11 +9,33 @@ public class Tile {
     private User owner = null;
     private char symbol = '0';
     private char contentSymbol = '0';
+
+    public Point getCoordination() {
+        return coordination;
+    }
+
     public Point coordination;
     private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
+    private boolean isPlowed = false;
+
+    public boolean isPlowed() {
+        return isPlowed;
+    }
+
+    public void setPlowed(boolean plowed) {
+        isPlowed = plowed;
+    }
+
+    public PlantAble getPlanted() {
+        return planted;
+    }
+
+    public void setPlanted(PlantAble planted) {
+        this.planted = planted;
+    }
 
     public Tile(Point coordination) {
         this.coordination = coordination;
@@ -26,8 +48,8 @@ public class Tile {
         return gotHitWithThunder;
     }
 
-    public void changeTileContents() {
-
+    public void changeTileContents(PlantAble planted) {
+    this.planted = planted;
     }
 
     public User getOwner() {
@@ -64,4 +86,6 @@ public class Tile {
     public void setContentSymbol(char contentSymbol) {
         this.contentSymbol = contentSymbol;
     }
+
+
 }

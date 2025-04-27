@@ -94,7 +94,7 @@
         public int getEnergy() { return energy; }
         public List<Seasons> getSeasons() { return season; }
         public boolean canBecomeGiant() { return canBecomeGiant; }
-      
+        public CropEnum getCrop() {return this;}
 
 
     }
