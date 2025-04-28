@@ -2,7 +2,7 @@ package Model.animal;
 
 import Model.Item;
 
-public class Fish extends Item {
+public class Fish implements Item {
     private String name;
     private int basePrice;
     private String season;

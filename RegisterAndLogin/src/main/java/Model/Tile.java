@@ -20,6 +20,24 @@ public class Tile {
     private boolean isWalkable = false;
     private PlantAble planted;
     private boolean isPlowed = false;
+    public boolean isFertilized = false;
+    public boolean isWatered = false;
+
+    public boolean isWatered() {
+        return isWatered;
+    }
+
+    public void setWatered(boolean watered) {
+        isWatered = watered;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
 
     public boolean isPlowed() {
         return isPlowed;

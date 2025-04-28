@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.InGameMenu.CropController;
+import Controller.InGameMenu.FarmingController;
 import Model.*;
 import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
@@ -14,6 +15,7 @@ import java.util.regex.Matcher;
 
 public class GameMenuController {
     CropController cropController = new CropController();
+    FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);

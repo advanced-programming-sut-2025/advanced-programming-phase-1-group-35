@@ -24,6 +24,15 @@ public class Crop implements PlantAble {
     private int currentState;
     private int daysSinceLastGrowth;
     private Tile cropTile;
+    private boolean isGiant;
+
+    public boolean isGiant() {
+        return isGiant;
+    }
+
+    public void setGiant(boolean giant) {
+        isGiant = giant;
+    }
 
     public Crop(CropEnum cropEnum) {
         this.name = cropEnum.getName();

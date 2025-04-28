@@ -3,7 +3,7 @@ package Model.Tools;
 import Model.Item;
 import Model.enums.ToolTypes;
 
-public abstract class Tool extends Item {
+public abstract class Tool implements Item {
     protected ToolTypes toolName;
     protected int defaultEnergyCost;
     public abstract void reduceEnergy();

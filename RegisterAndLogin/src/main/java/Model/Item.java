@@ -1,5 +1,4 @@
 package Model;
 
-public class Item {
-    public String name;
+public interface Item {
 }

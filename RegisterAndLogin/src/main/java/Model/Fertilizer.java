@@ -1,4 +1,4 @@
 package Model;
 
-public class Fertilizer extends Item{
+public class Fertilizer implements Item{
 }

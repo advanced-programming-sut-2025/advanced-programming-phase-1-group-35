@@ -1,6 +1,7 @@
 package Model.FarmStuff;
 
 import Model.*;
+import Model.CropClasses.Tree;
 import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
 import Model.*;
@@ -8,7 +9,6 @@ import Model.FarmStuff.Foraging;
 import Model.FarmStuff.Greenhouse;
 import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
-import Model.FarmStuff.Tree;
 import Model.enums.Crops.PlantAble;
 
 import java.awt.*;

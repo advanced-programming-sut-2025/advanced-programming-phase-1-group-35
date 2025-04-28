@@ -4,7 +4,7 @@ import Model.Item;
 
 import java.util.ArrayList;
 
-public class ArtisanProduct extends Item {
+public class ArtisanProduct implements Item {
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;

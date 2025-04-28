@@ -1,4 +1,8 @@
 package Model.enums.Crops;
 
-public interface PlantAble {
+import Model.CropClasses.Crop;
+import Model.Item;
+
+public interface PlantAble extends Item{
+
 }

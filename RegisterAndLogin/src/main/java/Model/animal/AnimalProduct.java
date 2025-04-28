@@ -2,10 +2,11 @@ package Model.animal;
 
 import Model.Item;
 
-public class AnimalProduct extends Item {
+public class AnimalProduct implements Item {
     private int price;
+    private String name;
     public AnimalProduct(String name , int price) {
-        super.name = name;
+        this.name = name;
         this.price = price;
     }
 
