@@ -10,7 +10,7 @@ import java.util.*;
             this.tiles = tiles;
         }
 
-        public Path walk(int startX, int startY, int destX, int destY) {
+        public Path walk(int startX, int startY, int destX, int destY, Energy energy) {
             if(startX == destX && startY == destY) {
                 return new Path(false , Collections.emptyList() , 0 ,
                         "congratulations! You are already at destination.");
@@ -31,6 +31,7 @@ import java.util.*;
 
             Point start = new Point(startX, startY);
             openSet.add(new Node(start, null, 0, 0));
+            start.energy = 0;
             energyMap.put(start, 0.0);
 
             while (!openSet.isEmpty()) {
@@ -66,6 +67,7 @@ import java.util.*;
                         energyMap.put(neighbor, newEnergy);
                         cameFrom.put(neighbor, current.point);
                         openSet.add(new Node(neighbor, current, newEnergy, energyCost));
+                        neighbor.energy = energyCost;
                     }
                 }
             }

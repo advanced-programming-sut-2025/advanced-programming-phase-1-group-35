@@ -20,7 +20,6 @@ public class User {
     private String securityAnswer;
     private int highScore = 0;
     private int gamesPlayed = 0;
-    private int energyConsumedInTurn = 0;
 
     private Game currentGame = null;
     private Tile currentTile = null;
@@ -227,14 +226,6 @@ public class User {
 
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
-    }
-
-    public int getEnergyConsumedInTurn() {
-        return energyConsumedInTurn;
-    }
-
-    public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
-        this.energyConsumedInTurn = energyConsumedInTurn;
     }
 
     public Tile getCurrentTile() {
