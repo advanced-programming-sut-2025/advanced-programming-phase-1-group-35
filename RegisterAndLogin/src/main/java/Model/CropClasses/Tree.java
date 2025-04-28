@@ -20,4 +20,24 @@ public class Tree implements PlantAble {
         this.totalHarvestTime = Tree.getTotalHarvestTime();
         this.fruit = Tree.getFruit();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public List<Integer> getStages() {
+        return stages;
+    }
+
+    public int getTotalHarvestTime() {
+        return totalHarvestTime;
+    }
+
+    public Fruit getFruit() {
+        return fruit;
+    }
 }

@@ -4,11 +4,13 @@ import Model.enums.Seasons;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import static Model.enums.Crops.CropEnum.*;
 import static Model.enums.Seasons.*;
 
-public enum ForagingSeeds implements PlantAble {
+public enum ForagingSeeds {
     JAZZ(Arrays.asList(Spring), CropEnum.BLUE_JAZZ, SeedEnum.JAZZ),
     CARROT(Arrays.asList(Spring), CropEnum.CARROT, SeedEnum.CARROT),
     CAULIFLOWER(Arrays.asList(Spring), CropEnum.CAULIFLOWER, SeedEnum.CAULIFLOWER),
@@ -66,8 +68,28 @@ public enum ForagingSeeds implements PlantAble {
         return seasons;
     }
 
+    public static ForagingSeeds findForagingSeeds(SeedEnum seedEnum) {
+        for (ForagingSeeds foragingSeeds : ForagingSeeds.values()) {
+            if (foragingSeeds.seedEnum.equals(seedEnum)) {
+                return foragingSeeds;
+            }
+        }
+        return null;
+    }
+
     public CropEnum getCrop() {
         return cropEnum;
     }
 
+    public static SeedEnum getRandomForagingCrop() {
+        List<ForagingSeeds> foragingSeeds = List.of(ForagingSeeds.values()).stream()
+                .collect(Collectors.toList());
+
+        if (foragingSeeds.isEmpty()) {
+            return null; // or throw an exception if you prefer
+        }
+
+        Random random = new Random();
+        return foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum;
+    }
 }

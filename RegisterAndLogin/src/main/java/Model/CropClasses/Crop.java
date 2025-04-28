@@ -25,6 +25,14 @@ public class Crop implements PlantAble {
     private int daysSinceLastGrowth;
     private Tile cropTile;
     private boolean isGiant;
+    private int daysSincePlanted = 0;
+
+    public void updateDaysSincePlanted() {
+        daysSincePlanted++;
+    }
+    public int getDaysSincePlanted() {
+        return daysSincePlanted;
+    }
 
     public boolean isGiant() {
         return isGiant;

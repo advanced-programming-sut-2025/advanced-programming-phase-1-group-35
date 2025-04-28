@@ -124,7 +124,24 @@
         public List<Seasons> getSeasons() { return season; }
         public boolean canBecomeGiant() { return canBecomeGiant; }
         public CropEnum getCrop() {return this;}
+        public boolean isForaging() {return isForaging;}
+        public List<Seasons> getSeason() {return season;}
+        public boolean isCanBecomeGiant() {return canBecomeGiant;}
+        public int getCurrentState() {return currentState;}
+        public int getDaysSinceLastGrowth() {return daysSinceLastGrowth;}
 
+        public static CropEnum getRandomForagingCrop() {
+            List<CropEnum> foragingCrops = List.of(CropEnum.values()).stream()
+                    .filter(CropEnum::isForaging)
+                    .collect(Collectors.toList());
+
+            if (foragingCrops.isEmpty()) {
+                return null; // or throw an exception if you prefer
+            }
+
+            Random random = new Random();
+            return foragingCrops.get(random.nextInt(foragingCrops.size()));
+        }
 
 
     }

@@ -8,7 +8,6 @@ import Model.enums.Crops.SeedEnum;
 public class Seed implements PlantAble {
     private final String seedName;
     private final boolean isMixed;
-    private final boolean isForaging;
     private final CropEnum cropEnum;
     private int seedAmount;
     private Tile tile;
@@ -16,7 +15,6 @@ public class Seed implements PlantAble {
     public Seed(SeedEnum seedEnum, Tile tile) {
         this.seedName = seedEnum.getSeedName();
         this.isMixed = seedEnum.isMixed();
-        this.isForaging = seedEnum.isForaging();
         this.cropEnum = seedEnum.getCrop();
         this.tile = tile;
     }
@@ -36,10 +34,6 @@ public class Seed implements PlantAble {
 
     public boolean isMixed() {
         return isMixed;
-    }
-
-    public boolean isForaging() {
-        return isForaging;
     }
 
     public CropEnum getCropEnum() {

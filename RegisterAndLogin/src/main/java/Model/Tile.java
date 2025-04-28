@@ -22,6 +22,27 @@ public class Tile {
     private boolean isPlowed = false;
     public boolean isFertilized = false;
     public boolean isWatered = false;
+    private int daysSinceWatered = 0;
+
+    public int getDaysSinceWatered() {
+        return daysSinceWatered;
+    }
+
+    public void setDaysSinceWatered(int daysSinceWatered) {
+        this.daysSinceWatered = daysSinceWatered;
+    }
+
+    public boolean isGotHitWithThunder() {
+        return gotHitWithThunder;
+    }
+
+    public ArrayList<TileContents> getContents() {
+        return contents;
+    }
+
+    public void setContents(ArrayList<TileContents> contents) {
+        this.contents = contents;
+    }
 
     public boolean isWatered() {
         return isWatered;

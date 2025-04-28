@@ -20,4 +20,9 @@ public class Point {
     public int getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return  x + " " + y;
+    }
 }

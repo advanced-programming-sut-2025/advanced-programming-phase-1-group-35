@@ -7,21 +7,19 @@ import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
-import Model.enums.Crops.CropEnum;
-import Model.enums.Crops.MixedSeeds;
-import Model.enums.Crops.TreeEnum;
+import Model.enums.Crops.*;
 import Model.enums.Seasons;
 import java.util.Random;
 
 public class FarmingController {
-    private Tile[][] map = new Tile[300][250];
+    private Tile[][] map;
 
     public FarmingController(Tile[][] map) {
         this.map = map;
     }
 
     private boolean isFloorplowed(Tile tile) {
-        return false;
+        return tile.isPlowed();
     }
 
     private void plowFloor(Tile tile) {
@@ -79,10 +77,55 @@ public class FarmingController {
     }
 
 
-    private Result plantSeed(Seed seed, Tile tile) {
+    public Result plantSeed(String seedName, String direction) {
+        Seed seed = null;
+        Tile tile;
+        Tile[][] map = App.getCurrentGame().getMap().getTiles();
+        if(!direction.matches("up|down|left|right|\\d+ \\d+")) {
+            return new Result(false, "Invalid direction,you can use\"up\",\"down\",\"left\",\"right\"");
+        }
+        switch (direction) {
+            case "up":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX()]
+                          [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()+1];
+        break;
+            case "down":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()-1];
+                break;
+            case "left":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x-1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+            break;
+            case "right":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x+1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "here":
+                tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+                break;
+            default:
+                String[] parts = direction.split(" ");
+                tile = map[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
+        }
+        for(SeedEnum seedEnum : SeedEnum.values()) {
+            if(seedEnum.name().equals(seedName)){
+                seed = new Seed(seedEnum,tile);
+                break;
+            }
+        }
+        if(seed == null) {
+            return new Result(false, "please enter a valid seed name");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getInventory().items.contains(seed)) {
+            return new Result(false, "you don't have the required seed in your inventory");
+        }
+
     if (!isFloorplowed(tile)) {
     return new Result(false, "Floor is not plowed");
     }
+    //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
+    App.getCurrentGame().getPlayingUser().getInventory().items.remove(seed);
         tile.setPlowed(false);
         tile.changeTileContents(new Crop(seed.getCropEnum()));
         if(findTilesWithSameSeed(tile) !=null){
@@ -104,19 +147,19 @@ public class FarmingController {
     return new Result(true, "seed planted");
     }
 
-    private void fertilize(Fertilizer fertilize, Tile tile) {
+    public void fertilize(Fertilizer fertilize, Tile tile) {
         tile.setFertilized(true);
     }
 
-    private void watering(Tile tile) {
+    public void watering(Tile tile) {
         tile.setWatered(true);
     }
 
-    private int waterAmount() {
+    public int waterAmount() {
         return 0;
     }
 
-    private void harvestCrop(Tile tile) {
+    public void harvestCrop(Tile tile) {
         if (tile.getPlanted().getClass() == Crop.class) {
             Crop crop = (Crop) tile.getPlanted();
             App.getCurrentGame().getPlayingUser().getInventory().addItem(crop);
@@ -169,6 +212,113 @@ public class FarmingController {
     }
     }
     public void addForagingCrop(){
-
+        Random random1 = new Random();
+        for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
+            for (Tile tile : tile1) {
+                if (tile.getPlanted() == null && tile.isPlowed()){
+                    if(random1.nextInt(100) < 1){
+                        Crop crop;
+                        do {
+                            crop = new Crop(CropEnum.getRandomForagingCrop());
+                        }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
+                        tile.setPlanted(crop);
+                    }
+                }
+            }
+        }
     }
+    //TODO: because the chance is so small we should add a way to make sure something spawns
+    public void addForagingSeeds(){
+        Random random1 = new Random();
+        for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
+            for (Tile tile : tile1) {
+                if (tile.getPlanted() == null && tile.isPlowed()){
+                    if(random1.nextInt(100) < 1){
+                        Seed seed;
+                        do{
+                        seed = new Seed(ForagingSeeds.getRandomForagingCrop(),tile);
+                        }while(!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
+                                getSeasons().contains(App.getCurrentGame().getSeason()));
+                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+                    }
+                }
+            }
+        }
+    }
+    public Result ShowCrop(int x, int y) {
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        if(tiles[x][y].getPlanted() == null){
+            return new Result(false, "nothing is planted here");
+        }
+        String type = tiles[x][y].getPlanted().getClass().getName();
+        StringBuilder sb = new StringBuilder();
+        switch (type){
+            case "Crop":
+                Crop crop = (Crop) tiles[x][y].getPlanted();
+                sb.append("======================================\n");
+                sb.append("Crop name: " + crop.getName());
+                sb.append("**************************************\n");
+                sb.append("days until full growth: " + (crop.getTotalHarvestTime()-crop.getDaysSincePlanted()));
+                sb.append("**************************************\n");
+                sb.append("current state: " + crop.getCurrentState());
+                sb.append("**************************************\n");
+                sb.append("has crop been watered ? " + tiles[x][y].isWatered());
+                sb.append("**************************************\n");
+                sb.append("has crop been fertilized ? " + tiles[x][y].isFertilized());
+                sb.append("======================================\n");
+            return new Result(true, sb.toString());
+            case "Tree":
+                Tree tree = (Tree) tiles[x][y].getPlanted();
+                sb.append("======================================\n");
+                sb.append("Tree name: " + tree.getName());
+                sb.append("**************************************\n");
+                sb.append("fruit name: " + tree.getFruit().getName());
+                sb.append("**************************************\n");
+                sb.append("current state: " + tree.getStages().get(0)); //TODO
+                sb.append("======================================\n");
+                return new Result(true, sb.toString());
+        }
+        return new Result(false, "nothing is planted here");
+    }
+
+    public Result Fertilize(String fertilizerName, String direction){
+        Fertilizer fertilizer = null; //TODO: add different type of fertilizers
+        Tile tile;
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        switch (direction){
+            case "up":
+                tile = tiles[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y-1];
+                break;
+                case "down":
+            tile = tiles[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x]
+                            [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y+1];
+                    break;
+                    case "left":
+            tile = tiles[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x-1]
+                                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y];
+                        break;
+            case "right":
+                            tile = tiles[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+                                    [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y];
+            default:
+                tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+        }
+        if(App.getCurrentGame().getPlayingUser().getInventory().items.contains(fertilizer)){
+            return new Result(false, "you don't have the said fertilizer");
+        }
+        if(tile.getPlanted() == null){
+            return new Result(false, "nothing is planted here");
+        }
+        tile.setFertilized(true);
+        return new Result(true, "the fertilizer has been used");
+    }
+        public String showWater(){
+        //TODO:
+        //return App.getCurrentGame().getPlayingUser().getInventory().items
+        return "yay water!";
+    }
+
+
+
 }
