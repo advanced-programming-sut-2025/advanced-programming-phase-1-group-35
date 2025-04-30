@@ -2,11 +2,13 @@ package Model;
 
 import Model.enums.Crops.PlantAble;
 import Model.enums.TileContents;
+import Model.enums.TileType;
 
 import java.util.ArrayList;
 
 public class Tile {
     private User owner = null;
+    private TileType tileType = TileType.OutSideFarm;
     private char symbol = '0';
     private char contentSymbol = '0';
 
@@ -127,4 +129,11 @@ public class Tile {
     }
 
 
+    public TileType getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(TileType tileType) {
+        this.tileType = tileType;
+    }
 }
