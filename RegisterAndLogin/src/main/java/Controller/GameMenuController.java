@@ -14,8 +14,14 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
-    CropController cropController = new CropController();
-    FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+    CropController cropController ;
+    FarmingController farmingController ;
+    Game CurrentGame = null ;
+
+    public void setFarmingController() {
+        cropController = new CropController();
+        farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+    }
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);
@@ -45,6 +51,8 @@ public class GameMenuController {
         Game game = new Game(players , App.getLoggedInUser());
         App.games.add(game);
         App.setCurrentGame(game);
+        CurrentGame = game;
+        setFarmingController();
         for (User player : players) {
             player.setCurrentGame(game);
         }
@@ -239,8 +247,8 @@ public class GameMenuController {
     public Result helpReadingTheMap() {
         String message = ". : ground\n" +
                 "numbers(1-4) : players" +
-                "# : cabin tiles" +
-                "@ : greenhouse tiles" +
+                "# : cabin floorTiles" +
+                "@ : greenhouse floorTiles" +
                 "0 : not walkable";
         return new Result(true, message);
     }

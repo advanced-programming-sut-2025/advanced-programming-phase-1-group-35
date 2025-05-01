@@ -5,6 +5,6 @@ public enum TileType {
     Rock,
     Water,
     OutSideFarm,
-    OccupiedGround,
+    BuildingTile,
     ;
 }

@@ -10,6 +10,7 @@ import Model.FarmStuff.Greenhouse;
 import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
 import Model.enums.Crops.PlantAble;
+import Model.enums.TileType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class Farm {
                 tiles[i][j].setOwner(owner);
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
+                tiles[i][j].setTileType(TileType.Soil);
             }
         }
         cabin = new Cabin(this , tiles);

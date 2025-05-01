@@ -82,6 +82,10 @@ public class Tile {
         this.coordination = coordination;
     }
 
+    public Tile(){
+
+    }
+
     public void setGotHitWithThunder(boolean gotHitWithThunder) {
         this.gotHitWithThunder = gotHitWithThunder;
     }
