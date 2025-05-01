@@ -2,10 +2,12 @@ package Model;
 
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
+import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
 import Model.enums.Gender;
 import Model.TradeAndGift.Gift;
 import Model.enums.SecurityQuestions;
+import Model.enums.Skill;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,10 @@ public class User {
     private char symbol;
     private Map map;
     public Inventory inventory;
+    private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
+    private SkillLevel miningSkill = Skill.mining.getSkillLevel();
+    private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
+    private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
@@ -266,5 +272,37 @@ public class User {
 
     public void setSymbol(char symbol) {
         this.symbol = symbol;
+    }
+
+    public SkillLevel getFarmingSkill() {
+        return farmingSkill;
+    }
+
+    public void setFarmingSkill(SkillLevel farmingSkill) {
+        this.farmingSkill = farmingSkill;
+    }
+
+    public SkillLevel getMiningSkill() {
+        return miningSkill;
+    }
+
+    public void setMiningSkill(SkillLevel miningSkill) {
+        this.miningSkill = miningSkill;
+    }
+
+    public SkillLevel getForagingSkill() {
+        return foragingSkill;
+    }
+
+    public void setForagingSkill(SkillLevel foragingSkill) {
+        this.foragingSkill = foragingSkill;
+    }
+
+    public SkillLevel getFishingSkill() {
+        return fishingSkill;
+    }
+
+    public void setFishingSkill(SkillLevel fishingSkill) {
+        this.fishingSkill = fishingSkill;
     }
 }
