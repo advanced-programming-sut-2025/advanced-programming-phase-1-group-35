@@ -4,7 +4,7 @@ import View.AppMenu;
 
 import java.util.Scanner;
 
-public enum ProfileMenuCommands implements AppMenu {
+public enum ProfileMenuCommands {
     changeUsername(""),
     changePassword(""),
     changeEmail(""),
@@ -20,8 +20,4 @@ public enum ProfileMenuCommands implements AppMenu {
     }
 
 
-    @Override
-    public void check(Scanner scanner) {
-
-    }
 }

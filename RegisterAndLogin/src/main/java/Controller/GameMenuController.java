@@ -6,6 +6,8 @@ import Model.*;
 import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import View.GameMenu;
+import View.LoginMenu;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class GameMenuController {
         App.serializeApp();
         App.setCurrentMenu(Menu.ExitMenu);
     }
-    public Result createNewGame(String username1, String username2, String username3 , Scanner scanner) {
+    public Result createNewGame(String username1, String username2, String username3) throws IOException {
         LoginMenuController loginMenuController = new LoginMenuController();
         ArrayList<String> playerNames = new ArrayList<>();
         ArrayList<User> players = new ArrayList<>();
@@ -56,7 +58,7 @@ public class GameMenuController {
         for (User player : players) {
             player.setCurrentGame(game);
         }
-        chooseMap(scanner);
+        chooseMap();
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
@@ -65,36 +67,36 @@ public class GameMenuController {
         return true;
     }
 
-    public void chooseMap(Scanner scanner) {
+    public void chooseMap() throws IOException {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
         User[] users = new User[4];
         int[] types = new int[4];
         for (int i = 0; i < players.size();) { // choosing maps
-            System.out.println("choosing map for " + players.get(i).getUsername());
-            String input = scanner.nextLine();
+            GameMenu.print("choosing map for " + players.get(i).getUsername());
+            String input = GameMenu.scan();
             Matcher matcher = GameMenuCommands.chooseMap.getMatcher(input);
             if(matcher == null) {
-                System.out.println("invalid input");
+                GameMenu.print("invalid input");
                 continue;
             }
             int number = Integer.parseInt(matcher.group("number"));
             int type = Integer.parseInt(matcher.group("type"));
             if(number < 1 || number > 4) {
-                System.out.println("invalid number");
+                GameMenu.print("invalid number");
                 continue;
             }
             if(type < 0 || type > 3) {
-                System.out.println("invalid type");
+                GameMenu.print("invalid type");
                 continue;
             }
             if(users[number - 1] != null) {
-                System.out.println("this farm is taken");
+                GameMenu.print("this farm is taken");
                 continue;
             }
             users[number - 1] = players.get(i);
             types[number - 1] = type;
-            System.out.println("farm number " + number + " has been chosen by " + players.get(i).getUsername());
+            GameMenu.print("farm number " + number + " has been chosen by " + players.get(i).getUsername());
             i++;
         }
         game.getMap().buildMap(users , types);
