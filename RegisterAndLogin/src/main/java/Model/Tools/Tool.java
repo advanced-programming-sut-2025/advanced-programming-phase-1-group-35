@@ -6,6 +6,11 @@ import Model.enums.ToolTypes;
 public abstract class Tool extends Item {
     protected ToolTypes toolName;
     protected int defaultEnergyCost;
+
+    public Tool(String name) {
+        super(name);
+    }
+
     public abstract void reduceEnergy();
     private double price;
 

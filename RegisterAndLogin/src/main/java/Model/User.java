@@ -1,8 +1,11 @@
 package Model;
 
+import Model.FarmStuff.Home.Cabin;
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
+import Model.Tools.BackPack;
 import Model.Tools.Tool;
+import Model.enums.CookingRecipes;
 import Model.enums.Gender;
 import Model.TradeAndGift.Gift;
 import Model.enums.SecurityQuestions;
@@ -26,14 +29,16 @@ public class User {
     private Tile currentTile = null;
     private char symbol;
     private Map map;
-    public Inventory inventory;
+    public BackPack backPack;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
     private ArrayList<Gift> Gifts;
     private HashMap<NPC, Integer> npcFriendship;
     protected Tool currentTool;
-    private Energy energy;
+    public Energy energy;
+    public Cabin cabin;
+    public ArrayList<CookingRecipes> learnedRecipes = new ArrayList<>();
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -251,14 +256,6 @@ public class User {
 
     public void setEnergy(Energy energy) {
         this.energy = energy;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     public Tool getCurrentTool() {
