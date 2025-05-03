@@ -127,7 +127,9 @@ public class FarmingController {
     //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
     App.getCurrentGame().getPlayingUser().getInventory().items.remove(seed);
         tile.setPlowed(false);
-        tile.changeTileContents(new Crop(seed.getCropEnum()));
+        Crop crop = new Crop(seed.getCropEnum());
+        tile.changeTileContents(crop);
+        App.getCurrentGame().getMap().AddCrop(crop);
         if(findTilesWithSameSeed(tile) !=null){
             Crop temp = (Crop) tile.getPlanted();
             for(Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -173,11 +175,13 @@ public class FarmingController {
             }
         }
             crop.getCropTile().setPlanted(null);
+            App.getCurrentGame().getMap().getCrops().remove(crop);
         }
     }
-    public static void crowAttack(int cropAmount) {
-//        if(App.getCurrentGame().getMap().getFarms().get
-        //TODO
+    public static void crowAttack() {
+        if(App.getCurrentGame().getMap().getCrops().size() > 16){
+         App.getCurrentGame().getMap().getCrops().remove(App.getCurrentGame().getMap().getCrops().get(0)); //TODO:make it random
+        }
     }
 
 
@@ -206,6 +210,7 @@ public class FarmingController {
                 if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
+                    App.getCurrentGame().getMap().addTrees(tree);
                 }
             }
         }
@@ -222,6 +227,7 @@ public class FarmingController {
                             crop = new Crop(CropEnum.getRandomForagingCrop());
                         }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
                         tile.setPlanted(crop);
+                        App.getCurrentGame().getMap().AddCrop(crop);
                     }
                 }
             }

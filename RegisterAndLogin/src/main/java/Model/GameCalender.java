@@ -41,19 +41,21 @@ public class GameCalender {
     }
 
     private void goToNextSeason() {
-        if (season == Seasons.Spring) {
-            season = Seasons.Summer;
-        } else if (season == Seasons.Summer) {
-            season = Seasons.Fall;
-        } else if (season == Seasons.Fall) {
-            season = Seasons.Winter;
-        } else if (season == Seasons.Winter) {
-            season = Seasons.Spring;
-        }
+//        if (season == Seasons.Spring) {
+//            season = Seasons.Summer;
+//        } else if (season == Seasons.Summer) {
+//            season = Seasons.Fall;
+//        } else if (season == Seasons.Fall) {
+//            season = Seasons.Winter;
+//        } else if (season == Seasons.Winter) {
+//            season = Seasons.Spring;
+//        }
+    season = season.findNextSeason(season);
     }
 
     public void goToNextDay() {
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
+
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
