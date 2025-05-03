@@ -25,7 +25,7 @@ public class Energy {
 
     public void goToNextDay(){
         energy = energyCapacity ;
-        if(fainted) energy %= 75;
+        if(fainted) energy *= 0.75;
         fainted = false;
     }
 
