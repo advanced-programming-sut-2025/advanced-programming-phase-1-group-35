@@ -57,7 +57,7 @@ public class User {
     public void talkHistory(User user){
 
     }
-    public Result gift (User user , Item item){
+    public Result gift (User user , ItemInterface itemInterface){
         return null;
     }
     public Result RateGift(Gift gift){
@@ -78,7 +78,7 @@ public class User {
     public Result respondToMarriageRequest(User user){
         return null;
     }
-    public Result trade(User user , String type , Item item , int amount , int price , Item item2){
+    public Result trade(User user , String type , ItemInterface itemInterface, int amount , int price , ItemInterface itemInterface2){
         return null;
     }
     public void listTradeRequests(){

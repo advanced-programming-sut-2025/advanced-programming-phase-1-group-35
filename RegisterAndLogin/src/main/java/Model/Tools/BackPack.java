@@ -1,7 +1,5 @@
 package Model.Tools;
 
-import Model.Item;
-
 import java.util.ArrayList;
 
 public class BackPack extends Tool {

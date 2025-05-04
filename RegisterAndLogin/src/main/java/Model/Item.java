@@ -1,4 +1,5 @@
 package Model;
 
-public interface Item {
+public class Item implements ItemInterface{
+    
 }

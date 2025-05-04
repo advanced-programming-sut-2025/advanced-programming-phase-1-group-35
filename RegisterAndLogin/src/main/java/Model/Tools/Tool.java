@@ -1,9 +1,9 @@
 package Model.Tools;
 
-import Model.Item;
+import Model.ItemInterface;
 import Model.enums.ToolTypes;
 
-public abstract class Tool implements Item {
+public abstract class Tool implements ItemInterface {
     protected ToolTypes toolName;
     protected int defaultEnergyCost;
     public abstract void reduceEnergy();

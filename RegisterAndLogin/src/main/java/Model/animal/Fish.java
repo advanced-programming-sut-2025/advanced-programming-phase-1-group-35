@@ -1,8 +1,8 @@
 package Model.animal;
 
-import Model.Item;
+import Model.ItemInterface;
 
-public class Fish implements Item {
+public class Fish implements ItemInterface {
     private String name;
     private int basePrice;
     private String season;

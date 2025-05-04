@@ -1,4 +1,4 @@
 package Model;
 
-public class Fertilizer implements Item{
+public class Fertilizer implements ItemInterface {
 }

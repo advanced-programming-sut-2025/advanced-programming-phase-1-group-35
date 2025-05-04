@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Model.enums.Menu;
@@ -22,7 +23,7 @@ public class App {
 
     public static void serializeApp() throws IOException { // to save the progress
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-                .setPrettyPrinting().create();
+                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).setPrettyPrinting().create();
         AppHolder appHolder = new AppHolder();
         try (FileWriter fw = new FileWriter("app.json")) {
             gson.toJson(appHolder, fw);
@@ -30,7 +31,7 @@ public class App {
     }
     public static void deserializeApp() throws IOException{ // to open a save
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-                .setPrettyPrinting().create();
+                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).setPrettyPrinting().create();
         try(FileReader fr = new FileReader("app.json")) {
             AppHolder appHolder = gson.fromJson(fr, AppHolder.class);
             appHolder.restoreApp();

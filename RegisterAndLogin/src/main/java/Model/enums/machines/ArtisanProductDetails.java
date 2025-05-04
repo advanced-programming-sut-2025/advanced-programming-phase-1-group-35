@@ -1,6 +1,6 @@
 package Model.enums.machines;
 
-import Model.Item;
+import Model.ItemInterface;
 import Model.machines.ArtisanProduct;
 
 public enum ArtisanProductDetails {
@@ -23,7 +23,7 @@ public enum ArtisanProductDetails {
 
     Coal;
     public int energy , processingTime , sellPrice ;
-    public Item[] ingredients;
+    public ItemInterface[] ingredients;
 
     public ArtisanProduct getArtisanProduct() {
         return new ArtisanProduct();
