@@ -211,6 +211,8 @@ public class FarmingController {
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);
+                    tile.addContents(tree);
+                    tree.setTile(tile);
                 }
             }
         }
@@ -228,6 +230,7 @@ public class FarmingController {
                         }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
                         tile.setPlanted(crop);
                         App.getCurrentGame().getMap().AddCrop(crop);
+                        tile.addContents(crop);
                     }
                 }
             }
@@ -245,7 +248,8 @@ public class FarmingController {
                         seed = new Seed(ForagingSeeds.getRandomForagingCrop(),tile);
                         }while(!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
-                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+                        tile.addContents(seed);
                     }
                 }
             }

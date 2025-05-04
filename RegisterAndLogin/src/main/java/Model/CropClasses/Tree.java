@@ -1,8 +1,10 @@
 package Model.CropClasses;
 
+import Model.Tile;
 import Model.enums.Crops.Fruit;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.TreeEnum;
+import Model.enums.Seasons;
 
 import java.util.List;
 
@@ -12,13 +14,15 @@ public class Tree implements PlantAble {
     private final List<Integer> stages;
     private final int totalHarvestTime;
     private final Fruit fruit;
-
+    private final List<Seasons> seasons;
+    private Tile tile;
     public Tree(TreeEnum Tree){
         this.name = Tree.getName();
         this.source = Tree.getSource();
         this.stages = Tree.getStages();
         this.totalHarvestTime = Tree.getTotalHarvestTime();
         this.fruit = Tree.getFruit();
+        this.seasons = Tree.getSeasons();
     }
 
     public String getName() {
@@ -39,5 +43,15 @@ public class Tree implements PlantAble {
 
     public Fruit getFruit() {
         return fruit;
+    }
+
+    public List<Seasons> getSeasons() {
+        return seasons;
+    }
+    public Tile getTile() {
+        return tile;
+    }
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 }

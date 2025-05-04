@@ -131,8 +131,8 @@ public class Crop implements PlantAble {
         return daysSinceLastGrowth;
     }
 
-    public void setDaysSinceLastGrowth(int daysSinceLastGrowth) {
-        this.daysSinceLastGrowth = daysSinceLastGrowth;
+    public void addDaysSinceLastGrowth() {
+        this.daysSinceLastGrowth ++;
     }
 
     public Tile getCropTile() {
