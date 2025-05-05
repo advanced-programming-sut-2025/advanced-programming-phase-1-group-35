@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class MainMenu implements AppMenu {
+public class MainMenu extends AppMenu {
     MainMenuController controller = new MainMenuController();
     @Override
     public void check(Scanner scanner) throws IOException {
         Matcher matcher ;
-        String input = scanner.nextLine();
+        String input = scan();
         if((matcher = MainMenuCommands.menuEnter.getMatcher(input)) != null){
             System.out.println(controller.goToMenu(matcher.group("menuName")));
         }

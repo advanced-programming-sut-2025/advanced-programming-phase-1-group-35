@@ -9,7 +9,7 @@ import View.AppMenu;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class FarmingMenu implements AppMenu {
+public class FarmingMenu extends AppMenu {
     FarmingController controller = new FarmingController(App.getCurrentGame().getMap().getTiles());
     CropController cropController = new CropController();
     @Override

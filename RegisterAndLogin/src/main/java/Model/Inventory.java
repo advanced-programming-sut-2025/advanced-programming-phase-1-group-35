@@ -5,14 +5,14 @@ import Model.Tools.BackPack;
 import java.util.ArrayList;
 
 public class Inventory {
-    public ArrayList<Item> items;
+    public ArrayList<ItemInterface> itemInterfaces;
     public BackPack backPack;
 
-    public void addItem(Item item) {
+    public void addItem(ItemInterface itemInterface) {
 
     }
 
-    public void removeItem(Item item) {
+    public void removeItem(ItemInterface itemInterface) {
 
     }
 }

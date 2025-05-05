@@ -1,10 +1,10 @@
 package Model.NPCs;
 
-import Model.Item;
+import Model.ItemInterface;
 
 public class Quest {
-    private Item item;
-    private Item reward;
+    private ItemInterface itemInterface;
+    private ItemInterface reward;
     private int rewardMoney;
     private boolean completed = false;
 
@@ -20,11 +20,11 @@ public class Quest {
         return rewardMoney;
     }
 
-    public Item getReward() {
+    public ItemInterface getReward() {
         return reward;
     }
 
-    public Item getItem() {
-        return item;
+    public ItemInterface getItem() {
+        return itemInterface;
     }
 }

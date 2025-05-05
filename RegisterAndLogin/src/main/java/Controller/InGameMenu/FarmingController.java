@@ -117,7 +117,7 @@ public class FarmingController {
         if(seed == null) {
             return new Result(false, "please enter a valid seed name");
         }
-        if(!App.getCurrentGame().getPlayingUser().getInventory().items.contains(seed)) {
+        if(!App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.contains(seed)) {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
@@ -125,7 +125,7 @@ public class FarmingController {
     return new Result(false, "Floor is not plowed");
     }
     //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
-    App.getCurrentGame().getPlayingUser().getInventory().items.remove(seed);
+    App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.remove(seed);
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum());
         tile.changeTileContents(crop);
@@ -320,7 +320,7 @@ public class FarmingController {
             default:
                 tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         }
-        if(App.getCurrentGame().getPlayingUser().getInventory().items.contains(fertilizer)){
+        if(App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.contains(fertilizer)){
             return new Result(false, "you don't have the said fertilizer");
         }
         if(tile.getPlanted() == null){

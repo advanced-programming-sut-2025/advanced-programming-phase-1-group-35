@@ -142,6 +142,4 @@
             Random random = new Random();
             return foragingCrops.get(random.nextInt(foragingCrops.size()));
         }
-
-
     }

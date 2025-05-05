@@ -3,17 +3,17 @@ package Model.enums;
 import Model.Tools.SkillLevel;;
 
 public enum Skill {
-    farming(new SkillLevel(1),5),
-    mining(new SkillLevel(1),10),
-    foraging(new SkillLevel(1), 10),
-    fishing(new SkillLevel(1), 5);
+    farming(5),
+    mining(10),
+    foraging(10),
+    fishing(5);
 
-    SkillLevel skillLevel;
-    int gainedXP;
-
-    Skill(SkillLevel skillLevel, int gainedXP) {
-        this.skillLevel = skillLevel;
-        this.gainedXP = gainedXP;
+    int gainedXp ;
+    Skill(int gainedXp) {
+        this.gainedXp = gainedXp;
     }
 
+    public SkillLevel getSkillLevel() {
+        return new SkillLevel(1 , this.gainedXp);
+    }
 }

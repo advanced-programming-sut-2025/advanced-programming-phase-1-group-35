@@ -1,15 +1,15 @@
 package Model.TradeAndGift;
 
-import Model.Item;
+import Model.ItemInterface;
 import Model.User;
 
 public class Trade {
     User sender;
     User recipient;
-    Item item;
+    ItemInterface itemInterface;
     int amount;
     int price;
-    Item priceItem = null;
+    ItemInterface priceItemInterface = null;
     int id;
     public static int idCounter;
 

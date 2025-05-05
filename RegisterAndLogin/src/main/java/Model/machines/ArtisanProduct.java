@@ -1,14 +1,12 @@
 package Model.machines;
 
-import Model.Item;
+import Model.ItemInterface;
 
-import java.util.ArrayList;
-
-public class ArtisanProduct implements Item {
+public class ArtisanProduct implements ItemInterface {
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;
-    private Item[] ingredients;
+    private ItemInterface[] ingredients;
 
 
     public int getProcessingTime() {
@@ -27,11 +25,11 @@ public class ArtisanProduct implements Item {
         this.energy = energy;
     }
 
-    public Item[] getIngredients() {
+    public ItemInterface[] getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Item[] ingredients) {
+    public void setIngredients(ItemInterface[] ingredients) {
         this.ingredients = ingredients;
     }
 }

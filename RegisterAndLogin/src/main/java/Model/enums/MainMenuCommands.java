@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum MainMenuCommands implements AppMenu {
+public enum MainMenuCommands {
     menuEnter("\\s*menu\\s+enter\\s+(?<menuName>.+?)\\s*"),
     menuExit("\\s*menu\\s+exit\\s*"),
     showCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
@@ -27,9 +27,5 @@ public enum MainMenuCommands implements AppMenu {
             return matcher;
         }
         return null;
-    }
-    @Override
-    public void check(Scanner scanner) {
-
     }
 }

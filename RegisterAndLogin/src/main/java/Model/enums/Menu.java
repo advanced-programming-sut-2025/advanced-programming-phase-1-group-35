@@ -21,4 +21,8 @@ public enum Menu {
     public void checkCommand(Scanner scanner) throws IOException {
         this.menu.check(scanner);
     }
+
+    public AppMenu getMenu() {
+        return this.menu;
+    }
 }

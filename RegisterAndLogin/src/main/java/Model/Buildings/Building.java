@@ -2,11 +2,13 @@ package Model.Buildings;
 
 import Model.FarmStuff.Farm;
 import Model.Tile;
+import Model.enums.TileType;
 
 import java.awt.*;
 
 public class Building {
     protected Farm farm ;
+    protected Tile[][] floorTiles;
     String name;
     protected Rectangle bounds = new Rectangle();
     int buildingID;
@@ -18,6 +20,11 @@ public class Building {
             for (int j = bounds.y ; j < bounds.y + bounds.height ; j++) {
                 tiles[i][j].setSymbol(symbol);
                 tiles[j][i].setWalkable(false);
+                tiles[j][i].setTileType(TileType.BuildingTile);
+                if(i != bounds.x && j != bounds.y && i != bounds.x + bounds.width - 1 &&
+                        j != bounds.y + bounds.height - 1) {
+                    floorTiles[i - bounds.x - 1][j - bounds.y - 1] = tiles[i][j];
+                }
             }
         }
     }
