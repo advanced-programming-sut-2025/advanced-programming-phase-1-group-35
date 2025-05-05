@@ -1,11 +1,12 @@
 package Model.CropClasses;
 
+import Model.Item;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 
-public class Seed implements PlantAble {
+public class Seed extends Item implements PlantAble {
     private final String seedName;
     private final boolean isMixed;
     private final CropEnum cropEnum;

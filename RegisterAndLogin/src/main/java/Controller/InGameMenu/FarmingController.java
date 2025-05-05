@@ -251,7 +251,7 @@ public class FarmingController {
                     if(random1.nextInt(100) < 1){
                         Seed seed;
                         do{
-                        seed = new Seed(ForagingSeeds.getRandomForagingCrop(),tile);
+                        seed = new Seed(ForagingSeeds.getRandomForagingSeed(),tile);
                         }while(!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
 //                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));

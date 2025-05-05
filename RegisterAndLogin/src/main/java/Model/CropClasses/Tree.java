@@ -1,5 +1,7 @@
 package Model.CropClasses;
 
+import Model.Item;
+import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.Fruit;
 import Model.enums.Crops.PlantAble;
@@ -8,7 +10,7 @@ import Model.enums.Seasons;
 
 import java.util.List;
 
-public class Tree implements PlantAble {
+public class Tree extends Item implements PlantAble {
     private final String name;
     private final String source;
     private final List<Integer> stages;
