@@ -16,6 +16,8 @@ public class Tree implements PlantAble {
     private final Fruit fruit;
     private final List<Seasons> seasons;
     private Tile tile;
+    private int daysSinceLastGrowth;
+    private int currentState;
     public Tree(TreeEnum Tree){
         this.name = Tree.getName();
         this.source = Tree.getSource();
@@ -23,6 +25,8 @@ public class Tree implements PlantAble {
         this.totalHarvestTime = Tree.getTotalHarvestTime();
         this.fruit = Tree.getFruit();
         this.seasons = Tree.getSeasons();
+        this.daysSinceLastGrowth = 0;
+        this.currentState = 1;
     }
 
     public String getName() {
@@ -54,4 +58,15 @@ public class Tree implements PlantAble {
     public void setTile(Tile tile) {
         this.tile = tile;
     }
+
+    public void grow(){
+        if(this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
+            this.currentState++;
+            this.daysSinceLastGrowth = 0;
+            return;
+        }
+        this.daysSinceLastGrowth++;
+    }
+
+
 }

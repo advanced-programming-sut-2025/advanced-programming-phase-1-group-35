@@ -142,7 +142,6 @@ public class FarmingController {
                 tile1.setPlowed(false);
                 tile1.changeTileContents(temp);
                 temp.setGiant(true);
-                //TODO:add this crop and any other planted crop to farms planted arraylist
             }
             return new Result(true, "seed planted,giant crop incoming");
         }
@@ -171,11 +170,18 @@ public class FarmingController {
                 App.getCurrentGame().getPlayingUser().getInventory().addItem(crop.HarvestAndDropSeed());
             if(crop.isOneTime()){
                 crop.getCropTile().setPlanted(null);
+                App.getCurrentGame().getMap().getCrops().remove(crop);
+            }
+            else{
+                crop.setCurrentState(crop.getCurrentState()-1);
+                crop.setDaysSinceLastGrowth(0);
             }
             }
         }
-            crop.getCropTile().setPlanted(null);
-            App.getCurrentGame().getMap().getCrops().remove(crop);
+        }
+        else if(tile.getPlanted().getClass() == Tree.class){
+            Tree tree = (Tree) tile.getPlanted();
+            App.getCurrentGame().getPlayingUser().getInventory().addItem(tree.getFruit());
         }
     }
     public static void crowAttack() {

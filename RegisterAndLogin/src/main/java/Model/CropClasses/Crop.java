@@ -127,6 +127,14 @@ public class Crop implements PlantAble {
         return currentState;
     }
 
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
+    }
+
+    public void setDaysSinceLastGrowth(int daysSinceLastGrowth) {
+        this.daysSinceLastGrowth = daysSinceLastGrowth;
+    }
+
     public int getDaysSinceLastGrowth() {
         return daysSinceLastGrowth;
     }

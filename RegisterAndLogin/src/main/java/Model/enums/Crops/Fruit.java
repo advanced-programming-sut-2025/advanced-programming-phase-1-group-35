@@ -1,6 +1,8 @@
 package Model.enums.Crops;
 
-public enum Fruit {
+import Model.Item;
+
+public enum Fruit implements Item {
     APRICOT("Apricot", 1, 59, true, 38, 17, "Spring"),
     CHERRY("Cherry", 1, 80, true, 38, 17, "Spring"),
     BANANA("Banana", 1, 150, true, 75, 33, "Summer"),

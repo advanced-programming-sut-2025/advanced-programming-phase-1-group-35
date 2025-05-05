@@ -73,6 +73,12 @@ public class GameCalender {
         for(Crop crop: App.getCurrentGame().getMap().getCrops()){
             crop.grow();
         }
+        for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
+            tree.grow();
+            if(tree.getTile().isFertilized()){
+                tree.grow();
+            }
+        }
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
