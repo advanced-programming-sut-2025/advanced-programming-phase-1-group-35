@@ -1,6 +1,6 @@
 package Model.enums.Shops.Products;
 
-public enum SaloonProducts {
+public enum SaloonProducts implements ShopProduct{
     BEER("Food", "Beer", "Drink in moderation.", 400, Double.POSITIVE_INFINITY),
     SALAD("Food","Salad", "A healthy garden salad.", 220, Double.POSITIVE_INFINITY),
     BREAD("Food","Bread", "A crusty baguette.", 120, Double.POSITIVE_INFINITY),
