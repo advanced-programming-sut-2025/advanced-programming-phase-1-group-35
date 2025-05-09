@@ -20,9 +20,6 @@ public class Map {
     private ArrayList<Farm> farms = new ArrayList<>();
     public ArrayList<Building> buildings;
     public ArrayList<Shop> shops = new ArrayList<>();
-
-    public ArrayList<Model.Buildings.Building> buildings;
-    public ArrayList<Model.Shops.Shop> shops;
     private ArrayList<Crop> Crop = new ArrayList<>();
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
