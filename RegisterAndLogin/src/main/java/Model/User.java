@@ -1,5 +1,6 @@
 package Model;
 
+import Model.FarmStuff.Farm;
 import Model.FarmStuff.Home.Cabin;
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
@@ -24,6 +25,8 @@ public class User {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
+    private int money = 0;
+    public Farm farm; // TODO : find the farm of this player and set it to this object
 
     private Game currentGame = null;
     private Tile currentTile = null;
@@ -49,6 +52,38 @@ public class User {
         this.gender = gender;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public BackPack getBackPack() {
+        return backPack;
+    }
+
+    public void setBackPack(BackPack backPack) {
+        this.backPack = backPack;
+    }
+
+    public Cabin getCabin() {
+        return cabin;
+    }
+
+    public void setCabin(Cabin cabin) {
+        this.cabin = cabin;
+    }
+
+    public ArrayList<CookingRecipes> getLearnedRecipes() {
+        return learnedRecipes;
+    }
+
+    public void setLearnedRecipes(ArrayList<CookingRecipes> learnedRecipes) {
+        this.learnedRecipes = learnedRecipes;
     }
 
     public void talk (User user){

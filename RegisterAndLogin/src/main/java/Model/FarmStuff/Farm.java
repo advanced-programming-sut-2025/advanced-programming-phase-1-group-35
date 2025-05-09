@@ -9,6 +9,7 @@ import Model.FarmStuff.Greenhouse;
 import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
 import Model.FarmStuff.Tree;
+import Model.animal.Animal;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Farm {
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
+    public ArrayList<Animal> animals = new ArrayList<>();
 
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
@@ -94,5 +96,23 @@ public class Farm {
 
     public void setGreenhouse(Greenhouse greenhouse) {
         this.greenhouse = greenhouse;
+    }
+
+    public boolean isAnimalNameExist(String animalName) {
+        for (Animal animal : animals) {
+            if (animal.getName().equals(animalName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Animal findAnimal(String animalName) {
+        for (Animal animal : animals) {
+            if (animal.getName().equals(animalName)) {
+                return animal;
+            }
+        }
+        return null;
     }
 }
