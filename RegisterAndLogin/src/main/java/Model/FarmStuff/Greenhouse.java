@@ -15,6 +15,7 @@ public class Greenhouse extends Building {
     public Greenhouse(Farm farm , Tile[][] tiles) {
         floorTiles = new Tile[cols][rows];
         super.farm = farm;
+        doorTile = tiles[farm.getBounds().x + 27][farm.getBounds().y + 13];
         placeBuilding('@' , 23 , 6 , 8 , 7 , tiles);
     }
 

@@ -20,8 +20,8 @@ public class Building {
         for (int i = bounds.x ; i < bounds.x + bounds.width ; i++) {
             for (int j = bounds.y ; j < bounds.y + bounds.height ; j++) {
                 tiles[i][j].setSymbol(symbol);
-                tiles[j][i].setWalkable(false);
-                tiles[j][i].setTileType(TileType.BuildingTile);
+                tiles[i][j].setWalkable(false);
+                tiles[i][j].setTileType(TileType.BuildingTile);
                 if(i != bounds.x && j != bounds.y && i != bounds.x + bounds.width - 1 &&
                         j != bounds.y + bounds.height - 1) {
                     floorTiles[i - bounds.x - 1][j - bounds.y - 1] = tiles[i][j];
@@ -29,6 +29,7 @@ public class Building {
                 }
             }
         }
+        if(doorTile != null)doorTile.setWalkable(true);
     }
 
     public int getBuildingID() {
