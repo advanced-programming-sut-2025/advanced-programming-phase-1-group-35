@@ -22,6 +22,9 @@ public class Map {
         }
         for (int i = 0; i < 4; i++) {
             farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
+            if(owners[i] != null){
+                owners[i].setCurrentGameFarmIndex(i);
+            }
         }
         shops.add(ShopEnum.BlackSmith.createShop());
         shops.add(ShopEnum.CarpenterShop.createShop());

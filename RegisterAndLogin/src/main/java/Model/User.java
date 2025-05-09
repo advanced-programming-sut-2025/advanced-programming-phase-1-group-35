@@ -1,5 +1,6 @@
 package Model;
 
+import Model.FarmStuff.Farm;
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
 import Model.Tools.SkillLevel;
@@ -26,6 +27,7 @@ public class User {
     private int gamesPlayed = 0;
 
     private Game currentGame = null;
+    private int currentGameFarmIndex = -1;
     private int currentGameID = 0;
     private Tile currentTile = null;
     private Point currentPoint = null;
@@ -335,5 +337,19 @@ public class User {
 
     public void setCurrentPoint(Point currentPoint) {
         this.currentPoint = currentPoint;
+    }
+
+    public Farm getFarm(){
+        if(currentGame == null) return null;
+        if(App.getCurrentGame() == null) return null;
+        return App.getCurrentGame().getMap().getFarms().get(currentGameFarmIndex);
+    }
+
+    public int getCurrentGameFarmIndex() {
+        return currentGameFarmIndex;
+    }
+
+    public void setCurrentGameFarmIndex(int currentGameFarmIndex) {
+        this.currentGameFarmIndex = currentGameFarmIndex;
     }
 }
