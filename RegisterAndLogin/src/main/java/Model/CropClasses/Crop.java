@@ -1,5 +1,7 @@
 package Model.CropClasses;
 
+import Model.Item;
+import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
@@ -8,7 +10,7 @@ import Model.enums.Seasons;
 
 import java.util.List;
 
-public class Crop implements PlantAble {
+public class Crop implements PlantAble, ItemInterface {
     private final String name;
     private final SeedEnum source;
     private final List<Integer> stages;
@@ -27,6 +29,7 @@ public class Crop implements PlantAble {
     private boolean isGiant;
     private int daysSincePlanted = 0;
     private int price ;
+    private int daysSinceWatered;
 
     public void updateDaysSincePlanted() {
         daysSincePlanted++;
@@ -57,6 +60,8 @@ public class Crop implements PlantAble {
         this.canBecomeGiant = cropEnum.canBecomeGiant();
         this.daysSinceLastGrowth = 0;
         this.currentState = 1;
+        this.daysSincePlanted = 0;
+        this.daysSinceWatered = 0;
     }
 
     public void EmptyTile() {
@@ -128,12 +133,20 @@ public class Crop implements PlantAble {
         return currentState;
     }
 
-    public int getDaysSinceLastGrowth() {
-        return daysSinceLastGrowth;
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
     }
 
     public void setDaysSinceLastGrowth(int daysSinceLastGrowth) {
         this.daysSinceLastGrowth = daysSinceLastGrowth;
+    }
+
+    public int getDaysSinceLastGrowth() {
+        return daysSinceLastGrowth;
+    }
+
+    public void addDaysSinceLastGrowth() {
+        this.daysSinceLastGrowth ++;
     }
 
     public Tile getCropTile() {
@@ -155,9 +168,27 @@ public class Crop implements PlantAble {
         }
         else{
             daysSinceLastGrowth++;
+            daysSinceWatered++;
         }
 
     }
+
+    public void addDaysSincePlanted() {
+        this.daysSincePlanted++;
+    }
+
+    public void setDaysSincePlanted(int daysSincePlanted) {
+        this.daysSincePlanted = daysSincePlanted;
+    }
+
+    public int getDaysSinceWatered() {
+        return daysSinceWatered;
+    }
+
+    public void setDaysSinceWatered(int daysSinceWatered) {
+        this.daysSinceWatered = daysSinceWatered;
+    }
+
     public Seed HarvestAndDropSeed() {
         Seed seed = new Seed(this.source,null);
         //TODO:how many seeds should i return?

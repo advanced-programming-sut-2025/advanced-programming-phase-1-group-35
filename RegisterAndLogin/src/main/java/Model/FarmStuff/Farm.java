@@ -1,6 +1,8 @@
 package Model.FarmStuff;
 
 import Model.*;
+import Model.Buildings.Building;
+import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
@@ -9,6 +11,7 @@ import Model.FarmStuff.Foraging;
 import Model.FarmStuff.Greenhouse;
 import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
+import Model.Shops.Shop;
 import Model.enums.Crops.PlantAble;
 import Model.enums.FarmType;
 import Model.enums.TileType;
@@ -23,7 +26,7 @@ public class Farm {
     private Lake lake;
     private Greenhouse greenhouse;
     private Quarry quarry;
-    private ArrayList<PlantAble> plants = new ArrayList<>();
+    private ArrayList<Model.CropClasses.Crop> Crop = new ArrayList<>();
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
@@ -105,11 +108,44 @@ public class Farm {
         this.greenhouse = greenhouse;
     }
 
-    public void AddPlants(PlantAble planted) {
-        this.plants.add(planted);
-    }
-
-    public ArrayList<PlantAble> getPlants() {
-        return plants;
-    }
+//    public void AddCrop(Crop crop) {
+//        this.Crop.add(crop);
+//    }
+//
+//    public ArrayList<Crop> getCrops() {
+//        return Crop;
+//    }
+//
+//    public ArrayList<Building> getBuildings() {
+//        return buildings;
+//    }
+//
+//    public void addBuildings(Building building) {
+//        this.buildings.add(building);
+//    }
+//    public void addTrees(Tree tree) {
+//        this.trees.add(tree);
+//    }
+//    public void addRocks(Rock rock) {
+//        this.rocks.add(rock);
+//    }
+//    public void addForages(Foraging forage) {
+//        this.forages.add(forage);
+//    }
+//
+//    public ArrayList<Shop> getShops() {
+//        return shops;
+//    }
+//
+//    public ArrayList<Tree> getTrees() {
+//        return trees;
+//    }
+//
+//    public ArrayList<Rock> getRocks() {
+//        return rocks;
+//    }
+//
+//    public ArrayList<Foraging> getForages() {
+//        return forages;
+//    }
 }

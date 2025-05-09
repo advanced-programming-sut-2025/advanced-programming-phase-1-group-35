@@ -1,6 +1,9 @@
 package Model.enums.Crops;
 
-public enum Fruit {
+import Model.Item;
+import Model.ItemInterface;
+
+public enum Fruit implements ItemInterface {
     APRICOT("Apricot", 1, 59, true, 38, 17, "Spring"),
     CHERRY("Cherry", 1, 80, true, 38, 17, "Spring"),
     BANANA("Banana", 1, 150, true, 75, 33, "Summer"),
@@ -34,16 +37,17 @@ public enum Fruit {
         this.season = season;
     }
 
+    @Override
+    public int getPrice() {
+        return baseSellPrice;
+    }
+
     public String getName() {
         return name;
     }
 
     public int getHarvestCycle() {
         return harvestCycle;
-    }
-
-    public int getBaseSellPrice() {
-        return baseSellPrice;
     }
 
     public boolean isEdible() {

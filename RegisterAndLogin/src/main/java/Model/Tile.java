@@ -20,7 +20,7 @@ public class Tile {
     }
 
     public Point coordination;
-    private ArrayList<Object> contents;
+    private ArrayList<TileContents> contents;
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
@@ -41,12 +41,16 @@ public class Tile {
         return gotHitWithThunder;
     }
 
-    public ArrayList<Object> getContents() {
+    public ArrayList<ItemInterface> getContents() {
         return contents;
     }
 
-    public void setContents(ArrayList<Object> contents) {
+    public void setContents(ArrayList<ItemInterface> contents) {
         this.contents = contents;
+    }
+
+    public void addContents(ItemInterface content) {
+        this.contents.add(content);
     }
 
     public boolean isWatered() {

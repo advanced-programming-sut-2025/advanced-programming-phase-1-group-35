@@ -81,7 +81,7 @@ public enum ForagingSeeds {
         return cropEnum;
     }
 
-    public static SeedEnum getRandomForagingCrop() {
+    public static SeedEnum getRandomForagingSeed() {
         List<ForagingSeeds> foragingSeeds = List.of(ForagingSeeds.values()).stream()
                 .collect(Collectors.toList());
 

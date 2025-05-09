@@ -1,5 +1,7 @@
 package Model;
 
+import Model.CropClasses.Tree;
+import Model.enums.Crops.PlantAble;
 import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
@@ -23,7 +25,10 @@ public class Weather {
     }
 
     public void hitTileWithThunder(Tile tile){
-      //  tile.setGotHitWithThunder(true);
+        tile.setGotHitWithThunder(true);
+        if(tile.getPlanted().getClass() == Tree.class){
+            //TODO:replace tree with coal
+        }
     }
     public WeatherCondition randomWeatherCondition(Seasons season) {
         Game currentGame;//TODO: = new Game();

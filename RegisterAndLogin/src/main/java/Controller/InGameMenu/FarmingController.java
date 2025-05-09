@@ -2,11 +2,13 @@ package Controller.InGameMenu;
 
 import Model.App;
 import Model.CropClasses.Crop;
+import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
+import Model.Tools.Tool;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
 import java.util.Random;
@@ -127,7 +129,9 @@ public class FarmingController {
     //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
     App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.remove(seed);
         tile.setPlowed(false);
-        tile.changeTileContents(new Crop(seed.getCropEnum()));
+        Crop crop = new Crop(seed.getCropEnum());
+        tile.changeTileContents(crop);
+        App.getCurrentGame().getMap().AddCrop(crop);
         if(findTilesWithSameSeed(tile) !=null){
             Crop temp = (Crop) tile.getPlanted();
             for(Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -140,11 +144,56 @@ public class FarmingController {
                 tile1.setPlowed(false);
                 tile1.changeTileContents(temp);
                 temp.setGiant(true);
-                //TODO:add this crop and any other planted crop to farms planted arraylist
             }
             return new Result(true, "seed planted,giant crop incoming");
         }
     return new Result(true, "seed planted");
+    }
+
+    public Result plantSapling(String saplingName, String direction) {
+        Sapling sapling = null;
+        Tile tile = null;
+        switch (direction) {
+            case "up":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX()]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()+1];
+                break;
+            case "down":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()-1];
+                break;
+            case "left":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x-1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "right":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x+1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "here":
+                tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+                break;
+            default:
+                String[] parts = direction.split(" ");
+                tile = map[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
+        }
+        for(SaplingEnum saplingEnum : SaplingEnum.values()) {
+            if(saplingEnum.name().substring(0,saplingEnum.name().indexOf("_")).equals(saplingName)){
+                sapling = new Sapling(saplingEnum.getTree());
+            }
+        }
+        if(sapling == null) {
+            return new Result(false, "please enter a valid sapling name");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.contains(sapling)) {
+            return new Result(false, "you don't have the required sapling in your inventory");
+        }
+        Tree tree = new Tree(sapling.getTree());
+        tile.changeTileContents(tree);
+        tile.setPlanted(tree);
+        App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.remove(sapling);
+        App.getCurrentGame().getMap().addTrees(tree);
+        return new Result(true, "sapling planted");
     }
 
     public void fertilize(Fertilizer fertilize, Tile tile) {
@@ -153,13 +202,18 @@ public class FarmingController {
 
     public void watering(Tile tile) {
         tile.setWatered(true);
+        Crop crop = (Crop)tile.getPlanted();
+        crop.setDaysSinceWatered(0);
     }
 
     public int waterAmount() {
         return 0;
     }
 
-    public void harvestCrop(Tile tile) {
+    public Result harvestCrop(Tile tile) {
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().equals("HOE")){
+            return new Result(false, "you need a hoe to harvest crop");
+        }
         if (tile.getPlanted().getClass() == Crop.class) {
             Crop crop = (Crop) tile.getPlanted();
             App.getCurrentGame().getPlayingUser().getInventory().addItem(crop);
@@ -169,15 +223,28 @@ public class FarmingController {
                 App.getCurrentGame().getPlayingUser().getInventory().addItem(crop.HarvestAndDropSeed());
             if(crop.isOneTime()){
                 crop.getCropTile().setPlanted(null);
+                App.getCurrentGame().getMap().getCrops().remove(crop);
+                return new Result(true, "crop harvested");
+            }
+            else{
+                crop.setCurrentState(crop.getCurrentState()-1);
+                crop.setDaysSinceLastGrowth(0);
+                return new Result(true, "crop harvested and is now regrowing");
             }
             }
         }
-            crop.getCropTile().setPlanted(null);
         }
+        else if(tile.getPlanted().getClass() == Tree.class){
+            Tree tree = (Tree) tile.getPlanted();
+            App.getCurrentGame().getPlayingUser().getInventory().addItem(tree.getFruit());
+            return new Result(true, "fruit picked! 8)");
+        }
+        return new Result(false, "no crop nor tree found there");
     }
-    public static void crowAttack(int cropAmount) {
-//        if(App.getCurrentGame().getMap().getFarms().get
-        //TODO
+    public static void crowAttack() {
+        if(App.getCurrentGame().getMap().getCrops().size() > 16){
+         App.getCurrentGame().getMap().getCrops().remove(App.getCurrentGame().getMap().getCrops().get(0)); //TODO:make it random
+        }
     }
 
 
@@ -206,6 +273,9 @@ public class FarmingController {
                 if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
+                    App.getCurrentGame().getMap().addTrees(tree);
+                    tile.addContents(tree);
+                    tree.setTile(tile);
                 }
             }
         }
@@ -222,6 +292,8 @@ public class FarmingController {
                             crop = new Crop(CropEnum.getRandomForagingCrop());
                         }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
                         tile.setPlanted(crop);
+                        App.getCurrentGame().getMap().AddCrop(crop);
+                        tile.addContents(crop);
                     }
                 }
             }
@@ -236,10 +308,11 @@ public class FarmingController {
                     if(random1.nextInt(100) < 1){
                         Seed seed;
                         do{
-                        seed = new Seed(ForagingSeeds.getRandomForagingCrop(),tile);
+                        seed = new Seed(ForagingSeeds.getRandomForagingSeed(),tile);
                         }while(!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
-                        plantSeed(seed.getName(), (tile.getCoordination().toString()));
+//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+                        tile.addContents(seed);
                     }
                 }
             }
