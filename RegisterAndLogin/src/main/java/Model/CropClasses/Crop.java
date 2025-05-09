@@ -1,6 +1,7 @@
 package Model.CropClasses;
 
 import Model.Item;
+import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
@@ -9,7 +10,7 @@ import Model.enums.Seasons;
 
 import java.util.List;
 
-public class Crop extends Item implements PlantAble {
+public class Crop implements PlantAble, ItemInterface {
     private final String name;
     private final SeedEnum source;
     private final List<Integer> stages;
@@ -28,6 +29,7 @@ public class Crop extends Item implements PlantAble {
     private boolean isGiant;
     private int daysSincePlanted = 0;
     private int price ;
+    private int daysSinceWatered;
 
     public void updateDaysSincePlanted() {
         daysSincePlanted++;
@@ -58,6 +60,8 @@ public class Crop extends Item implements PlantAble {
         this.canBecomeGiant = cropEnum.canBecomeGiant();
         this.daysSinceLastGrowth = 0;
         this.currentState = 1;
+        this.daysSincePlanted = 0;
+        this.daysSinceWatered = 0;
     }
 
     public void EmptyTile() {

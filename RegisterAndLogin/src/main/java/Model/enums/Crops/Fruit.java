@@ -37,16 +37,17 @@ public enum Fruit implements ItemInterface {
         this.season = season;
     }
 
+    @Override
+    public int getPrice() {
+        return baseSellPrice;
+    }
+
     public String getName() {
         return name;
     }
 
     public int getHarvestCycle() {
         return harvestCycle;
-    }
-
-    public int getBaseSellPrice() {
-        return baseSellPrice;
     }
 
     public boolean isEdible() {

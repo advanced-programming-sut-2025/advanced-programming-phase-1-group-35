@@ -81,8 +81,8 @@ public enum TreeEnum {
         return fruit.getBaseHealth();
     }
 
-    public int getFruitellPrice() {
-        return fruit.getBaseSellPrice();
+    public int getFruitSellPrice() {
+        return fruit.getPrice();
     }
 
     public int getFruitHarvestCycle() {

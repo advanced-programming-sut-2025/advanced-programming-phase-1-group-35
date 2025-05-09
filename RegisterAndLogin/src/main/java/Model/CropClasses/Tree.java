@@ -10,7 +10,7 @@ import Model.enums.Seasons;
 
 import java.util.List;
 
-public class Tree extends Item implements PlantAble {
+public class Tree implements PlantAble,ItemInterface {
     private final String name;
     private final String source;
     private final List<Integer> stages;

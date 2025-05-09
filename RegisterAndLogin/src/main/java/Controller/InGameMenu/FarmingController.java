@@ -2,6 +2,7 @@ package Controller.InGameMenu;
 
 import Model.App;
 import Model.CropClasses.Crop;
+import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.Fertilizer;
@@ -147,6 +148,52 @@ public class FarmingController {
             return new Result(true, "seed planted,giant crop incoming");
         }
     return new Result(true, "seed planted");
+    }
+
+    public Result plantSapling(String saplingName, String direction) {
+        Sapling sapling = null;
+        Tile tile = null;
+        switch (direction) {
+            case "up":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX()]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()+1];
+                break;
+            case "down":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()-1];
+                break;
+            case "left":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x-1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "right":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x+1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "here":
+                tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+                break;
+            default:
+                String[] parts = direction.split(" ");
+                tile = map[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
+        }
+        for(SaplingEnum saplingEnum : SaplingEnum.values()) {
+            if(saplingEnum.name().substring(0,saplingEnum.name().indexOf("_")).equals(saplingName)){
+                sapling = new Sapling(saplingEnum.getTree());
+            }
+        }
+        if(sapling == null) {
+            return new Result(false, "please enter a valid sapling name");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.contains(sapling)) {
+            return new Result(false, "you don't have the required sapling in your inventory");
+        }
+        Tree tree = new Tree(sapling.getTree());
+        tile.changeTileContents(tree);
+        tile.setPlanted(tree);
+        App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.remove(sapling);
+        App.getCurrentGame().getMap().addTrees(tree);
+        return new Result(true, "sapling planted");
     }
 
     public void fertilize(Fertilizer fertilize, Tile tile) {
