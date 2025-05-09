@@ -132,6 +132,7 @@ public class FarmingController {
         Crop crop = new Crop(seed.getCropEnum());
         tile.changeTileContents(crop);
         App.getCurrentGame().getMap().AddCrop(crop);
+        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
         if(findTilesWithSameSeed(tile) !=null){
             Crop temp = (Crop) tile.getPlanted();
             for(Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -193,6 +194,7 @@ public class FarmingController {
         tile.setPlanted(tree);
         App.getCurrentGame().getPlayingUser().getInventory().itemInterfaces.remove(sapling);
         App.getCurrentGame().getMap().addTrees(tree);
+        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
         return new Result(true, "sapling planted");
     }
 
@@ -224,6 +226,7 @@ public class FarmingController {
             if(crop.isOneTime()){
                 crop.getCropTile().setPlanted(null);
                 App.getCurrentGame().getMap().getCrops().remove(crop);
+                App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
                 return new Result(true, "crop harvested");
             }
             else{
@@ -242,8 +245,9 @@ public class FarmingController {
         return new Result(false, "no crop nor tree found there");
     }
     public static void crowAttack() {
-        if(App.getCurrentGame().getMap().getCrops().size() > 16){
+        if(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16){
          App.getCurrentGame().getMap().getCrops().remove(App.getCurrentGame().getMap().getCrops().get(0)); //TODO:make it random
+            App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(0));
         }
     }
 
@@ -274,6 +278,7 @@ public class FarmingController {
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);
+                    App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
                     tile.addContents(tree);
                     tree.setTile(tile);
                 }
@@ -293,6 +298,7 @@ public class FarmingController {
                         }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
                         tile.setPlanted(crop);
                         App.getCurrentGame().getMap().AddCrop(crop);
+                        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
                         tile.addContents(crop);
                     }
                 }

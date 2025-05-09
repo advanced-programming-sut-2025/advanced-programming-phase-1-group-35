@@ -30,7 +30,8 @@ public class Farm {
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
-
+    private ArrayList<Shop> shops;
+    private ArrayList<Building> buildings;
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
         FarmType farmType = FarmType.values()[type];
@@ -108,44 +109,44 @@ public class Farm {
         this.greenhouse = greenhouse;
     }
 
-//    public void AddCrop(Crop crop) {
-//        this.Crop.add(crop);
-//    }
-//
-//    public ArrayList<Crop> getCrops() {
-//        return Crop;
-//    }
-//
-//    public ArrayList<Building> getBuildings() {
-//        return buildings;
-//    }
-//
-//    public void addBuildings(Building building) {
-//        this.buildings.add(building);
-//    }
-//    public void addTrees(Tree tree) {
-//        this.trees.add(tree);
-//    }
-//    public void addRocks(Rock rock) {
-//        this.rocks.add(rock);
-//    }
-//    public void addForages(Foraging forage) {
-//        this.forages.add(forage);
-//    }
-//
-//    public ArrayList<Shop> getShops() {
-//        return shops;
-//    }
-//
-//    public ArrayList<Tree> getTrees() {
-//        return trees;
-//    }
-//
-//    public ArrayList<Rock> getRocks() {
-//        return rocks;
-//    }
-//
-//    public ArrayList<Foraging> getForages() {
-//        return forages;
-//    }
+    public void AddCrop(Crop crop) {
+        this.Crop.add(crop);
+    }
+
+    public ArrayList<Crop> getCrops() {
+        return Crop;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void addBuildings(Building building) {
+        this.buildings.add(building);
+    }
+    public void addTrees(Tree tree) {
+        this.trees.add(tree);
+    }
+    public void addRocks(Rock rock) {
+        this.rocks.add(rock);
+    }
+    public void addForages(Foraging forage) {
+        this.forages.add(forage);
+    }
+
+    public ArrayList<Shop> getShops() {
+        return shops;
+    }
+
+    public ArrayList<Tree> getTrees() {
+        return trees;
+    }
+
+    public ArrayList<Rock> getRocks() {
+        return rocks;
+    }
+
+    public ArrayList<Foraging> getForages() {
+        return forages;
+    }
 }
