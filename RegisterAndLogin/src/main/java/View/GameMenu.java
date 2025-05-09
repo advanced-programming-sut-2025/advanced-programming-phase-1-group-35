@@ -17,5 +17,24 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.createNewGame(matcher.group("user1") , matcher.group("user2") ,
                     matcher.group("user3")));
         }
+        else if((matcher = GameMenuCommands.loadGame.getMatcher(input) )!= null){
+            System.out.println(controller.loadGame());
+        }
+        else if((matcher = GameMenuCommands.deleteGame.getMatcher(input) )!= null){
+            System.out.println(controller.deleteCurrentGame());
+        }
+        else if((matcher = GameMenuCommands.exitGame.getMatcher(input) )!= null){
+            System.out.println(controller.exitGame());
+        }
+        else if((matcher = GameMenuCommands.nextTurn.getMatcher(input) )!= null){
+            System.out.println(controller.goToNextTurn());
+        }
+        else if((matcher = GameMenuCommands.walk.getMatcher(input) )!= null){
+            System.out.println(controller.walk(matcher.group("x") , matcher.group("y")));
+        }
+        else if((matcher = GameMenuCommands.printMap.getMatcher(input) )!= null){
+            System.out.println(controller.printMap(matcher.group("x") , matcher.group("y") , matcher.group("size")));
+        }
+
     }
 }

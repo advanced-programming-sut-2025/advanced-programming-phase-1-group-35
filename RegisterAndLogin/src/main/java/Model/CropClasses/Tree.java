@@ -16,6 +16,7 @@ public class Tree extends Item implements PlantAble {
     private final List<Integer> stages;
     private final int totalHarvestTime;
     private final Fruit fruit;
+    private int price;
     private final List<Seasons> seasons;
     private Tile tile;
     private int daysSinceLastGrowth;
@@ -71,4 +72,13 @@ public class Tree extends Item implements PlantAble {
     }
 
 
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

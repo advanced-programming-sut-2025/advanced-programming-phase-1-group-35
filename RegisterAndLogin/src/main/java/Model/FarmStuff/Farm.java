@@ -13,6 +13,7 @@ import Model.FarmStuff.Lake;
 import Model.FarmStuff.Quarry;
 import Model.Shops.Shop;
 import Model.enums.Crops.PlantAble;
+import Model.enums.FarmType;
 import Model.enums.TileType;
 
 import java.awt.*;
@@ -32,6 +33,7 @@ public class Farm {
 
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
+        FarmType farmType = FarmType.values()[type];
         int x = 0 , y = 0;
         switch (number) {
             case 1:
@@ -62,8 +64,10 @@ public class Farm {
         }
         cabin = new Cabin(this , tiles);
         greenhouse = new Greenhouse(this , tiles);
+        lake = new Lake(farmType , tiles , this);
+        quarry = new Quarry(farmType , tiles , this);
 
-        if(owner != null) {
+        if(owner != null) { // placing the player
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);

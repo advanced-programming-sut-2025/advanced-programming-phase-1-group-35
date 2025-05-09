@@ -1,6 +1,6 @@
 package Model.enums.Crops;
 
-public enum MixedSeeds  implements PlantAble {
+public enum MixedSeeds {
     SPRING(new CropEnum[]{CropEnum.CAULIFLOWER, CropEnum.PARSNIP, CropEnum.POTATO, CropEnum.BLUE_JAZZ, CropEnum.TULIP}),
     SUMMER(new CropEnum[]{CropEnum.CORN, CropEnum.HOT_PEPPER, CropEnum.RADISH, CropEnum.WHEAT, CropEnum.POPPY, CropEnum.SUNFLOWER, CropEnum.SUMMER_SPANGLE}),
     FALL(new CropEnum[]{CropEnum.ARTICHOKE, CropEnum.CORN, CropEnum.EGGPLANT, CropEnum.PUMPKIN, CropEnum.SUNFLOWER, CropEnum.FAIRY_ROSE}),

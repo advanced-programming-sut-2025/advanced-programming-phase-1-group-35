@@ -121,7 +121,7 @@ public class GameMenuController {
         return new Result(true, "You have successfully exited the game , you may create or load another game .");
     }
 
-    public Result deleteCurrentGame(Scanner scanner) {
+    public Result deleteCurrentGame() throws IOException {
         Game game = App.getCurrentGame();
         User requester = game.getPlayingUser();
         if(game == null) return new Result(false, "You have no ongoing game");
@@ -132,7 +132,7 @@ public class GameMenuController {
             if(player.equals(requester)) continue;
             System.out.println(player.getUsername() + " must vote about termination : (y/n)");
             while(true) {
-                String input = scanner.nextLine().trim();
+                String input = GameMenu.scan();
                 if (input.equalsIgnoreCase("y")) {
                     terminationVotes.put(player, true);
                     positiveVotes++;
@@ -156,14 +156,14 @@ public class GameMenuController {
         }
     }
 
-    public void goToNextTurn() {
+    public Result goToNextTurn() {
         int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
         i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
         App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
         if(i == 0){
             App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
         }
-        System.out.println("going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
+        return new Result(true , "going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
     }
 
     public Result showTime() {
@@ -198,7 +198,9 @@ public class GameMenuController {
 
     }
 
-    public Result walk(int x, int y) {
+    public Result walk(String xString, String yString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
         User player = App.getCurrentGame().getPlayingUser();
         Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
@@ -218,7 +220,7 @@ public class GameMenuController {
                 player.getEnergy().endTurn();
                 return new Result(true, "next turn");
             }
-            startTile.setContentSymbol('0');
+            player.getCurrentTile().setContentSymbol('0');
             player.setCurrentTile(tiles[point.x][point.y]);
             tiles[point.x][point.y].setContentSymbol(player.getSymbol());
             player.getEnergy().consumeEnergy(point.energy);
@@ -226,7 +228,10 @@ public class GameMenuController {
         return new Result(true, path.message());
     }
 
-    public Result printMap(int x , int y , int size) {
+    public Result printMap(String xString , String yString , String sizeString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        int size = Integer.parseInt(sizeString);
         Result validate = validateCoordinates(x , y);
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();

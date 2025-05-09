@@ -1,6 +1,6 @@
 package Model.enums.Shops.Products;
 
-public enum GeneralStoreProducts {
+public enum GeneralStoreProducts implements ShopProduct{
     BOUQUET("Item","Bouquet", "A gift that shows your romantic interest.", 1000, 2.0),
     WEDDING_RING("Item","Wedding Ring", "It's used to ask for another farmer's hand in marriage.", 10000, 2.0),
     DEHYDRATOR_RECIPE("CraftingRecipe", "Dehydrator (Recipe)", "A recipe to make Dehydrator", 10000, 1.0),

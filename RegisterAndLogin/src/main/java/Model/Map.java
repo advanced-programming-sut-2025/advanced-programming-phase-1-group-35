@@ -37,6 +37,11 @@ public class Map {
         }
     }
 
+    public void changeTileSymbol(Tile tile , char symbol , char contentSymbol) {
+        tile.setSymbol(symbol);
+        tile.setContentSymbol(contentSymbol);
+    }
+
     public ArrayList<Farm> getFarms() {
         return farms;
     }

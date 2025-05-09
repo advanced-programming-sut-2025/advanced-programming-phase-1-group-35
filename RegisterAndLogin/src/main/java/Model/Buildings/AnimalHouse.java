@@ -1,6 +1,6 @@
 package Model.Buildings;
 
-public class AnimalHouse extends FarmBuilding {
+public class AnimalHouse extends Building {
     private String type ;
     private String level;
 

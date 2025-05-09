@@ -1,20 +1,20 @@
 package Model.CropClasses;
 
-import Model.Item;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 
-public class Seed extends Item implements PlantAble {
-    private final String seedName;
+public class Seed implements PlantAble {
+    private final String name;
     private final boolean isMixed;
     private final CropEnum cropEnum;
     private int seedAmount;
     private Tile tile;
+    private int price;
 
     public Seed(SeedEnum seedEnum, Tile tile) {
-        this.seedName = seedEnum.getSeedName();
+        this.name = seedEnum.getSeedName();
         this.isMixed = seedEnum.isMixed();
         this.cropEnum = seedEnum.getCrop();
         this.tile = tile;
@@ -29,8 +29,8 @@ public class Seed extends Item implements PlantAble {
         return tile;
     }
 
-    public String getSeedName() {
-        return seedName;
+    public String getName() {
+        return name;
     }
 
     public boolean isMixed() {
@@ -43,5 +43,14 @@ public class Seed extends Item implements PlantAble {
 
     public int getSeedAmount() {
         return seedAmount;
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
