@@ -44,11 +44,11 @@ public class LoginMenuController {
         Result managePasswordResult = managePassword(password , confirmPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else password = managePasswordResult.toString();
-        Gender genderEnum = null;
-        switch (gender.toLowerCase()){
-            case "male": genderEnum = Gender.male;
-            case "female": genderEnum = Gender.female;
-        }
+        Gender genderEnum = switch (gender.toLowerCase()) {
+            case "male" -> Gender.male;
+            case "female" -> Gender.female;
+            default -> null;
+        };
         if(genderEnum == null) {
             return new Result(false, "I'm a CE major , I believe in binary");
         }

@@ -15,10 +15,9 @@ public class Fish implements ItemInterface {
         this.rarity = rarity;
     }
 
-    public int getSellingPrice() {
+    public int getPrice() {
         return 0;
     }
-
 
     public String getName() {
         return name;

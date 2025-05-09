@@ -12,7 +12,7 @@ public class Tree implements PlantAble {
     private final List<Integer> stages;
     private final int totalHarvestTime;
     private final Fruit fruit;
-
+    private int price;
     public Tree(TreeEnum Tree){
         this.name = Tree.getName();
         this.source = Tree.getSource();
@@ -39,5 +39,14 @@ public class Tree implements PlantAble {
 
     public Fruit getFruit() {
         return fruit;
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

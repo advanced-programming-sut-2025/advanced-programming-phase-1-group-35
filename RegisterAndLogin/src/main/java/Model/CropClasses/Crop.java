@@ -26,6 +26,7 @@ public class Crop implements PlantAble {
     private Tile cropTile;
     private boolean isGiant;
     private int daysSincePlanted = 0;
+    private int price ;
 
     public void updateDaysSincePlanted() {
         daysSincePlanted++;
@@ -161,5 +162,14 @@ public class Crop implements PlantAble {
         Seed seed = new Seed(this.source,null);
         //TODO:how many seeds should i return?
         return seed.getSeed(1);
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

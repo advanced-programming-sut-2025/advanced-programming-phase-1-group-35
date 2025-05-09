@@ -3,7 +3,7 @@ package Model.Tools;
 import Model.ItemInterface;
 import Model.enums.ToolTypes;
 
-public abstract class Tool implements ItemInterface {
+public abstract class Tool {
     protected ToolTypes toolName;
     protected int defaultEnergyCost;
     public abstract void reduceEnergy();
@@ -25,8 +25,8 @@ public abstract class Tool implements ItemInterface {
         this.defaultEnergyCost = defaultEnergyCost;
     }
 
-    public double getPrice() {
-        return price;
+    public int getPrice() {
+        return 0;
     }
 
     public void setPrice(double price) {

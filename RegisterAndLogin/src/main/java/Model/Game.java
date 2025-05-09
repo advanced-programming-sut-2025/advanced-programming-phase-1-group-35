@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
-    private GameCalender gameCalender;
+    private GameCalender gameCalender = new GameCalender();
     private Weather weather;
     private Map map = new Map();
     private Seasons currentSeason;

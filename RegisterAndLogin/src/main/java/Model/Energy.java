@@ -4,7 +4,7 @@ public class Energy {
     private double energy = 200;
     private double energyCapacity = 200;
     private double CurrentTurnConsumedEnergy; // positive number
-    private double CurrentTurnCapacity;
+    private double CurrentTurnCapacity = 50;
     private boolean fainted = false;
 
     public void consumeEnergy(double energyAmount) {

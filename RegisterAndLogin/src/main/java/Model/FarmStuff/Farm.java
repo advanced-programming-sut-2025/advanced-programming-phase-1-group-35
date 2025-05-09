@@ -62,6 +62,7 @@ public class Farm {
         cabin = new Cabin(this , tiles);
         greenhouse = new Greenhouse(this , tiles);
         lake = new Lake(farmType , tiles , this);
+        quarry = new Quarry(farmType , tiles , this);
 
         if(owner != null) { // placing the player
             Rectangle bounds = cabin.getBounds();

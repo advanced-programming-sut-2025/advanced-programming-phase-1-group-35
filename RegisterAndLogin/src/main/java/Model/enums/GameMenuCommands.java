@@ -20,7 +20,7 @@ public enum GameMenuCommands {
     getDayOfTheWeek(""),
     showWeather(""),
     weatherForecast(""),
-    walk(""),
+    walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s+(?<y>\\d+)\\s*"),
     printMap("\\s*print\\s+map\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>\\s+-s\\s+(?<size>\\d+)"),
     helpReadingMap("\\s*help\\s+reading\\s+map\\s*"),
     showEnergy(""),

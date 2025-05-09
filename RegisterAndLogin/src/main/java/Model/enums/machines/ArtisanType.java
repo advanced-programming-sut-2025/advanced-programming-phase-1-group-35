@@ -9,6 +9,7 @@ public enum ArtisanType {
     Dehydrator,
     CharcoalKiln;
 
+    ArtisanProductDetails[] productDetails;
     public Artisan createArtisan() {
         return new Artisan();
     }

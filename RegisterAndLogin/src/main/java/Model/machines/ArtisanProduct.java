@@ -3,6 +3,7 @@ package Model.machines;
 import Model.ItemInterface;
 
 public class ArtisanProduct implements ItemInterface {
+    private String name;
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;
@@ -31,5 +32,13 @@ public class ArtisanProduct implements ItemInterface {
 
     public void setIngredients(ItemInterface[] ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return sellingPrice;
     }
 }
