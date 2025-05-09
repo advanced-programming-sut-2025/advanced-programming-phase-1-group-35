@@ -7,6 +7,7 @@ import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
+import Model.Tools.Tool;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
 import java.util.Random;
@@ -154,13 +155,18 @@ public class FarmingController {
 
     public void watering(Tile tile) {
         tile.setWatered(true);
+        Crop crop = (Crop)tile.getPlanted();
+        crop.setDaysSinceWatered(0);
     }
 
     public int waterAmount() {
         return 0;
     }
 
-    public void harvestCrop(Tile tile) {
+    public Result harvestCrop(Tile tile) {
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().equals("HOE")){
+            return new Result(false, "you need a hoe to harvest crop");
+        }
         if (tile.getPlanted().getClass() == Crop.class) {
             Crop crop = (Crop) tile.getPlanted();
             App.getCurrentGame().getPlayingUser().getInventory().addItem(crop);
@@ -171,10 +177,12 @@ public class FarmingController {
             if(crop.isOneTime()){
                 crop.getCropTile().setPlanted(null);
                 App.getCurrentGame().getMap().getCrops().remove(crop);
+                return new Result(true, "crop harvested");
             }
             else{
                 crop.setCurrentState(crop.getCurrentState()-1);
                 crop.setDaysSinceLastGrowth(0);
+                return new Result(true, "crop harvested and is now regrowing");
             }
             }
         }
@@ -182,7 +190,9 @@ public class FarmingController {
         else if(tile.getPlanted().getClass() == Tree.class){
             Tree tree = (Tree) tile.getPlanted();
             App.getCurrentGame().getPlayingUser().getInventory().addItem(tree.getFruit());
+            return new Result(true, "fruit picked! 8)");
         }
+        return new Result(false, "no crop nor tree found there");
     }
     public static void crowAttack() {
         if(App.getCurrentGame().getMap().getCrops().size() > 16){

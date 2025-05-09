@@ -27,6 +27,7 @@ public class Crop extends Item implements PlantAble {
     private Tile cropTile;
     private boolean isGiant;
     private int daysSincePlanted = 0;
+    private int daysSinceWatered = 0;
 
     public void updateDaysSincePlanted() {
         daysSincePlanted++;
@@ -163,9 +164,27 @@ public class Crop extends Item implements PlantAble {
         }
         else{
             daysSinceLastGrowth++;
+            daysSinceWatered++;
         }
 
     }
+
+    public void addDaysSincePlanted() {
+        this.daysSincePlanted++;
+    }
+
+    public void setDaysSincePlanted(int daysSincePlanted) {
+        this.daysSincePlanted = daysSincePlanted;
+    }
+
+    public int getDaysSinceWatered() {
+        return daysSinceWatered;
+    }
+
+    public void setDaysSinceWatered(int daysSinceWatered) {
+        this.daysSinceWatered = daysSinceWatered;
+    }
+
     public Seed HarvestAndDropSeed() {
         Seed seed = new Seed(this.source,null);
         //TODO:how many seeds should i return?
