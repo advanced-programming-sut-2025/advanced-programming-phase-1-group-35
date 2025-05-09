@@ -14,7 +14,15 @@ public class Shop {
     private LocalTime ClosingTime;
     private ArrayList<ShopItem> products = new ArrayList<>();
 
-
+    public Shop(String name, Building building, NPC owner , LocalTime OpeningTime,
+                LocalTime ClosingTime, ArrayList<ShopItem> products) {
+        this.name = name;
+        this.building = building;
+        this.owner = owner;
+        this.OpeningTime = OpeningTime;
+        this.ClosingTime = ClosingTime;
+        this.products = products;
+    }
 
 
 

@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum RanchProducts implements ShopProduct{
     HAY("Item", "Hay", "Dried grass used as animal food.", 50, Double.POSITIVE_INFINITY),
     MILK_PAIL("Tool", "Milk Pail", "Gather milk from your animals.", 1000, 1.0),
@@ -25,5 +27,38 @@ public enum RanchProducts implements ShopProduct{
         this.description = description;
         this.price = price;
         this.dailyLimit = dailyLimit;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

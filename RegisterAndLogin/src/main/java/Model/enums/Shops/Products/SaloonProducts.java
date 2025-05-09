@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum SaloonProducts implements ShopProduct{
     BEER("Food", "Beer", "Drink in moderation.", 400, Double.POSITIVE_INFINITY),
     SALAD("Food","Salad", "A healthy garden salad.", 220, Double.POSITIVE_INFINITY),
@@ -28,5 +30,38 @@ public enum SaloonProducts implements ShopProduct{
         this.description = description;
         this.price = price;
         this.dailyLimit = dailyLimit;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

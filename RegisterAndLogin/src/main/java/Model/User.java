@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User {
+    private int ID ;
+    private int IDCounter = 1;
     private String username;
     private String password;
     private String nickname;
@@ -24,7 +26,9 @@ public class User {
     private int gamesPlayed = 0;
 
     private Game currentGame = null;
+    private int currentGameID = 0;
     private Tile currentTile = null;
+    private Point currentPoint = null;
     private char symbol;
     private Map map;
     public Inventory inventory;
@@ -49,6 +53,7 @@ public class User {
         this.gender = gender;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.ID = IDCounter++;
     }
 
     public void talk (User user){
@@ -232,6 +237,8 @@ public class User {
 
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
+        currentGameID = 0;
+        if(currentGame != null)currentGameID = currentGame.getGameID();
     }
 
     public Tile getCurrentTile() {
@@ -304,5 +311,29 @@ public class User {
 
     public void setFishingSkill(SkillLevel fishingSkill) {
         this.fishingSkill = fishingSkill;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public int getCurrentGameID() {
+        return currentGameID;
+    }
+
+    public void setCurrentGameID(int currentGameID) {
+        this.currentGameID = currentGameID;
+    }
+
+    public Point getCurrentPoint() {
+        return currentPoint;
+    }
+
+    public void setCurrentPoint(Point currentPoint) {
+        this.currentPoint = currentPoint;
     }
 }

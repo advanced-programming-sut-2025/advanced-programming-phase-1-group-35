@@ -1,14 +1,18 @@
 package Model;
 
+import Model.Buildings.Building;
 import Model.FarmStuff.Farm;
+import Model.Shops.Shop;
+import Model.enums.Shops.ShopEnum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Map {
     private Tile[][] tiles = new Tile[300][250];
     private ArrayList<Farm> farms = new ArrayList<>();
-    public ArrayList<Model.Buildings.Building> buildings;
-    public ArrayList<Model.Shops.Shop> shops;
+    public ArrayList<Building> buildings;
+    public ArrayList<Shop> shops = new ArrayList<>();
 
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < tiles.length; i++) {
@@ -19,9 +23,16 @@ public class Map {
         for (int i = 0; i < 4; i++) {
             farms.add(new Farm(i+1 , owners[i] , types[i] ,  tiles));
         }
+        shops.add(ShopEnum.BlackSmith.createShop());
+        shops.add(ShopEnum.CarpenterShop.createShop());
+        shops.add(ShopEnum.FishShop.createShop());
+        shops.add(ShopEnum.GeneralStore.createShop());
+        shops.add(ShopEnum.JojaMart.createShop());
+        shops.add(ShopEnum.Ranch.createShop());
+        shops.add(ShopEnum.Saloon.createShop());
         for (int i = 0; i < 250; i++) {
             for (int j = 0; j < 300; j++) {
-                System.out.print(tiles[j][i].getSymbol());
+                System.out.printf("%2c" , tiles[j][i].getSymbol());
             }
             System.out.println();
         }

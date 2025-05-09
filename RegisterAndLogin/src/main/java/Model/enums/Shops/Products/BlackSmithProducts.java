@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum BlackSmithProducts implements ShopProduct{
     COPPER_ORE("Mineral","Copper Ore", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
     IRON_ORE("Mineral","Iron Ore", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),
@@ -25,4 +27,38 @@ public enum BlackSmithProducts implements ShopProduct{
         this.dailyLimit = dailyLimit;
         this.type = type;
     }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
 }

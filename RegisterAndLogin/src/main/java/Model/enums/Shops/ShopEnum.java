@@ -3,11 +3,13 @@ package Model.enums.Shops;
 import Model.Buildings.Building;
 import Model.NPCs.NPC;
 import Model.Shops.Shop;
+import Model.Shops.ShopItem;
 import Model.enums.Buildings.ShopBuildings;
 import Model.enums.NPCs.NPCs;
 import Model.enums.Shops.Products.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +52,12 @@ public enum ShopEnum {
     }
 
     public Shop createShop() {
-        return new Shop();
+        ArrayList<ShopItem> shopItems = new ArrayList<>();
+        for (ShopProduct sp : shopProducts) {
+            shopItems.add(new ShopItem(sp.getName(), sp.getPrice() , sp.getDailyLimit() ,
+                    sp.getSeason() , sp.getType() , sp.getDescription()));
+        }
+        return new Shop(this.toString(), building , owner , openTime ,
+                closeTime , shopItems);
     }
 }

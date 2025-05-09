@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import Model.FarmStuff.Rock;
 import Model.enums.Menu;
 import com.fatboyindustrial.gsonjavatime.LocalDateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import Model.TypeAdapters.*;
 
 public class App {
     public static ArrayList<User> users = new ArrayList<>();
@@ -23,7 +24,10 @@ public class App {
 
     public static void serializeApp() throws IOException { // to save the progress
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).setPrettyPrinting().create();
+                .registerTypeAdapter(Tile.class, new TileAdapter())
+                .registerTypeAdapter(Rock.class, new RockAdapter()).
+                registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).
+                setPrettyPrinting().create();
         AppHolder appHolder = new AppHolder();
         try (FileWriter fw = new FileWriter("app.json")) {
             gson.toJson(appHolder, fw);
@@ -31,7 +35,10 @@ public class App {
     }
     public static void deserializeApp() throws IOException{ // to open a save
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).setPrettyPrinting().create();
+                .registerTypeAdapter(Tile.class, new TileAdapter())
+                .registerTypeAdapter(Rock.class, new RockAdapter()).
+                registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).
+                setPrettyPrinting().create();
         try(FileReader fr = new FileReader("app.json")) {
             AppHolder appHolder = gson.fromJson(fr, AppHolder.class);
             appHolder.restoreApp();

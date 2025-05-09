@@ -20,7 +20,8 @@ public class Quarry{
     public void placeQuarry(Tile[][] tiles){
         for (int i = bounds.x ; i < bounds.x + bounds.width ; i++) {
             for (int j = bounds.y ; j < bounds.y + bounds.height ; j++) {
-                new Rock(tiles[i][j]);
+                Rock rock = new Rock();
+                rock.place(tiles[i][j]);
             }
         }
     }

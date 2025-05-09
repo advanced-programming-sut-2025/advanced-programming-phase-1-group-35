@@ -5,9 +5,12 @@ import Model.enums.TileContents;
 import Model.enums.TileType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Tile {
     private User owner = null;
+    private int ownerID = 0;
     private TileType tileType = TileType.OutSideFarm;
     private char symbol = '0';
     private char contentSymbol = '0';
@@ -17,7 +20,7 @@ public class Tile {
     }
 
     public Point coordination;
-    private ArrayList<TileContents> contents;
+    private ArrayList<Object> contents;
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
@@ -38,11 +41,11 @@ public class Tile {
         return gotHitWithThunder;
     }
 
-    public ArrayList<TileContents> getContents() {
+    public ArrayList<Object> getContents() {
         return contents;
     }
 
-    public void setContents(ArrayList<TileContents> contents) {
+    public void setContents(ArrayList<Object> contents) {
         this.contents = contents;
     }
 
@@ -139,5 +142,13 @@ public class Tile {
 
     public void setTileType(TileType tileType) {
         this.tileType = tileType;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 }

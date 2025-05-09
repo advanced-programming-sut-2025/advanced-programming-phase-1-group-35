@@ -63,4 +63,37 @@ public enum JojaMartProducts implements ShopProduct{
         this.dailyLimit = dailyLimit;
         this.season = season;
     }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return season;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

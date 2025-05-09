@@ -5,6 +5,8 @@ import Model.enums.Seasons;
 import java.util.ArrayList;
 
 public class Game {
+    private int gameID;
+    private int IDCounter = 1;
     private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
     private GameCalender gameCalender = new GameCalender();
@@ -15,6 +17,7 @@ public class Game {
     public Game(ArrayList<User> players, User playingUser) {
         this.players = players;
         this.playingUser = playingUser;
+        this.gameID = IDCounter++;
     }
 
 
@@ -67,5 +70,13 @@ public class Game {
 
     public void setGameCalender(GameCalender gameCalender) {
         this.gameCalender = gameCalender;
+    }
+
+    public int getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
     }
 }

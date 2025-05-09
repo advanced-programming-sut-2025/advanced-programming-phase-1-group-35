@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum GeneralStoreProducts implements ShopProduct{
     BOUQUET("Item","Bouquet", "A gift that shows your romantic interest.", 1000, 2.0),
     WEDDING_RING("Item","Wedding Ring", "It's used to ask for another farmer's hand in marriage.", 10000, 2.0),
@@ -30,5 +32,38 @@ public enum GeneralStoreProducts implements ShopProduct{
         this.price = price;
         this.dailyLimit = dailyLimit;
         this.type = type;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum FishShopProducts implements ShopProduct{
     FISH_SMOKER_RECIPE("CraftingRecipe", "Fish Smoker (Recipe)", "A recipe to make Fish Smoker", 10000, 1.0),
     TROUT_SOUP("Food", "Trout Soup", "Pretty salty.", 250, 1.0),
@@ -18,5 +20,38 @@ public enum FishShopProducts implements ShopProduct{
         this.price = price;
         this.dailyLimit = dailyLimit;
         this.type = type;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

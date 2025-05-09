@@ -54,6 +54,7 @@ public class Farm {
         for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
             for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);
+                if(owner != null)tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
                 tiles[i][j].setTileType(TileType.Soil);

@@ -11,6 +11,7 @@ public enum GameMenuCommands {
     chooseMap("\\s*game\\s+map\\s+(?<number>\\d+)(\\s+(?<type>\\d+))?\\s*"),
     loadGame("\\s*load\\s+game\\s*"),
     exitGame("\\s*exit\\s+game\\s*"),
+    menuExit("menu\\s+exit"),
     deleteGame("\\s*force\\s+terminate\\s+game\\s*"),
     nextTurn("\\s*next\\s+turn\\s*"),
     getTime(""),

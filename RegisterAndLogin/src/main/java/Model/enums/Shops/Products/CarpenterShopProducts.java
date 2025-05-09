@@ -1,5 +1,7 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.Seasons;
+
 public enum CarpenterShopProducts implements ShopProduct{
     WOOD("Item", "Wood", "A sturdy, yet flexible plant material with a wide variety of uses.", 10, Double.POSITIVE_INFINITY),
     STONE("Item", "Stone", "A common material with many uses in crafting and building.", 20, Double.POSITIVE_INFINITY),
@@ -22,5 +24,38 @@ public enum CarpenterShopProducts implements ShopProduct{
         this.description = description;
         this.price = price;
         this.dailyLimit = dailyLimit;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 }
