@@ -2,13 +2,15 @@ package Model.machines;
 
 import Model.Item;
 
-import java.util.ArrayList;
-
 public class ArtisanProduct extends Item {
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;
     private Item[] ingredients;
+
+    public ArtisanProduct() {
+        super("");
+    }
 
 
     public int getProcessingTime() {
