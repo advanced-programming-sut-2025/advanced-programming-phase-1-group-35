@@ -4,7 +4,6 @@ import Model.*;
 import Model.animal.Fish;
 import Model.enums.CookingIngredient;
 import Model.enums.animal.AnimalProductDetails;
-import Model.enums.animal.FishType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

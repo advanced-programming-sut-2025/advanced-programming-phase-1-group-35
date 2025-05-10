@@ -79,7 +79,7 @@ public class CookingController {
         } else if (!doesPlayerHaveIngredientsForThisFood(recipe, player)) {
             return new Result(false, "You don't have enough ingredients to cook this recipe");
         }
-        player.energy.setEnergyAmount(player.energy.getEnergyAmount() - 3);
+        player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() - 3);
         for (Map.Entry<CookingIngredient, Integer> entry : recipe.getIngredients().entrySet()) {
             CookingIngredient ingredient = entry.getKey();
             int requiredAmount = entry.getValue();
@@ -118,7 +118,7 @@ public class CookingController {
             return new Result(false, "You don't have this food in your backpack!");
         }
         player.backPack.foods.remove(food);
-        player.energy.setEnergyAmount(player.energy.getEnergyAmount() + food.recipe.getEnergy());
+        player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() + food.recipe.getEnergy());
         // TODO : buff
         return new Result(true, "you ate a " + food.recipe.getDisplayName());
     }

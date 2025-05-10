@@ -1,4 +1,32 @@
 package View.InGameMenu;
 
-public class CookingMenu {
+import Controller.InGameMenu.CookingController;
+import Model.enums.Commands.CookingCommands;
+import View.AppMenu;
+
+import java.util.Scanner;
+import java.util.regex.Matcher;
+
+public class CookingMenu extends AppMenu {
+    CookingController controller = new CookingController();
+
+    public void check(Scanner scanner) {
+        String command = scanner.nextLine().trim();
+        Matcher matcher;
+        while (!command.equals("exit")) {
+            if ((matcher = CookingCommands.placeItemInFridge.getMatcher(command)) != null) {
+                System.out.println(controller.placeItemInFridge(matcher.group(1)));
+            } else if ((matcher = CookingCommands.pickItemFromFridge.getMatcher(command)) != null) {
+                System.out.println(controller.pickItemFromFridge(matcher.group(1)));
+            } else if ((matcher = CookingCommands.showCookingRecipes.getMatcher(command)) != null) {
+                System.out.println(controller.showCookingRecipes());
+            } else if ((matcher = CookingCommands.cook.getMatcher(command)) != null) {
+                System.out.println(controller.cook(matcher.group(1)));
+            } else if ((matcher = CookingCommands.eatFood.getMatcher(command)) != null) {
+                System.out.println(controller.eatFood(matcher.group(1)));
+            } else {
+                System.out.println("Invalid command");
+            }
+        }
+    }
 }

@@ -8,7 +8,7 @@ public abstract class Tool {
     protected int defaultEnergyCost;
 
     public Tool(String name) {
-        super(name);
+        super();
     }
 
     public abstract void reduceEnergy();
