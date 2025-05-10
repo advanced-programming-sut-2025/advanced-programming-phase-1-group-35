@@ -59,7 +59,7 @@ public class Map {
                     System.out.printf("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET);
                 }
                 else {
-                    System.out.printf("%2c", tiles[j][i].getSymbol());
+                    System.out.printf("%s%2c%s",Colors.WHITE, tiles[j][i].getSymbol(), RESET);
                 }
             }
             System.out.println();
@@ -68,19 +68,19 @@ public class Map {
 
     private void DrawPathWays() {
         DrawHorizontalPath(
-                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width]
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width + 1]
                         [farms.get(0).getBounds().y + farms.get(0).getBounds().height/2],
                 tiles[village.getBounds().x + village.getBounds().width/2]
                         [farms.get(0).getBounds().y + farms.get(0).getBounds().height/2]
         );
         DrawHorizontalPath(
-                tiles[village.getBounds().x + village.getBounds().width/2]
+                tiles[village.getBounds().x + village.getBounds().width/2 + 1]
                         [farms.get(3).getBounds().y + farms.get(3).getBounds().height/2],
                 tiles[farms.get(3).getBounds().x]
                         [farms.get(3).getBounds().y + farms.get(3).getBounds().height/2]
         );
         DrawHorizontalPath(
-                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2 + 1]
                         [village.getBounds().y + village.getBounds().height/2],
                 tiles[village.getBounds().x]
                         [village.getBounds().y + village.getBounds().height/2]
@@ -99,9 +99,21 @@ public class Map {
         );
         DrawVerticalPath(
                 tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
-                        [village.getBounds().y + village.getBounds().height/2],
+                        [village.getBounds().y + village.getBounds().height/2 - 2],
                 tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
-                        [farms.get(1).getBounds().x]
+                        [farms.get(1).getBounds().y]
+        );
+        DrawVerticalPath(
+                tiles[farms.get(2).getBounds().x + farms.get(2).getBounds().width/2]
+                        [farms.get(2).getBounds().y + farms.get(2).getBounds().height],
+                tiles[farms.get(2).getBounds().x + farms.get(2).getBounds().width/2]
+                        [village.getBounds().y + village.getBounds().height/2+3]
+        );
+        DrawVerticalPath(
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [village.getBounds().y + village.getBounds().height + 1],
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [farms.get(3).getBounds().y + farms.get(3).getBounds().height/2 + 3]
         );
     }
     private void DrawHorizontalPath(Tile begin, Tile end) {
