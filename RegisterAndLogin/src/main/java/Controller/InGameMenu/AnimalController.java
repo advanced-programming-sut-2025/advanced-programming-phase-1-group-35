@@ -16,8 +16,7 @@ import java.util.Arrays;
 
 public class AnimalController {
     public Result buildAnimalHouse(String name, int x, int y) {
-        if (false) {
-            // TODO : if tile is not empty or not in player's farm
+        if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
             return new Result(false, "there are something else on this tile!");
         }
         try {
@@ -149,8 +148,8 @@ public class AnimalController {
         } else if (animal.getDaysPastLastProduction() == 0) {
             return new Result(false, animalName + "you already collect its products");
         }
-        player.backPack.animalProducts.put(animal.getProducts()[0].getProductDetails(),
-                player.backPack.animalProducts.getOrDefault(animal.getProducts()[0].getProductDetails(), 0) + animal.getProductionRate());
+        player.backPack.items.put(animal.getProducts()[0],
+                player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + animal.getProductionRate());
         animal.setDaysPastLastProduction(0);
         return new Result(true, animal.getName() + "has collected its products! it was " +
                 animal.getProductionRate() + " units of " + animal.getProducts()[0].getProductDetails().name);
@@ -204,8 +203,8 @@ public class AnimalController {
         }
 
         Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
-        App.getCurrentGame().getPlayingUser().backPack.fishes.put(fish,
-                App.getCurrentGame().getPlayingUser().backPack.fishes.getOrDefault(fish, 0) + fishCount);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
+                App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
         return new Result(true, fishCount + " of " + fish.getName() + "has been caught!");
     }
 

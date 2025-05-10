@@ -15,11 +15,14 @@ public class ToolsController {
         } catch (IllegalArgumentException e) {
             return new Result(false, "Invalid tool name!");
         }
-        for (Tool tool : backPack.tools) {
-            if (tool.getToolName().equals(toolType)) {
-                playingUser.setCurrentTool(tool);
-                return new Result(true, tool.getToolName() + " is equipped!");
+        for (ItemInterface item : backPack.items.keySet()) {
+            if (item instanceof Tool tool) {
+                if (tool.getToolName().equals(toolType)) {
+                    playingUser.setCurrentTool(tool);
+                    return new Result(true, tool.getToolName() + " is equipped!");
+                }
             }
+
         }
         return new Result(false, toolType + " not found!");
     }
@@ -35,9 +38,11 @@ public class ToolsController {
     public Result showTools() {
         BackPack backPack = App.getCurrentGame().getPlayingUser().backPack;
         StringBuilder output = new StringBuilder();
-        for (Tool tool : backPack.tools) {
-            output.append(tool.getToolName().toString());
-            output.append("\n");
+        for (ItemInterface item : backPack.items.keySet()) {
+            if (item instanceof Tool tool) {
+                output.append(tool.getToolName().toString());
+                output.append("\n");
+            }
         }
         output.append("end of tools!");
         return new Result(true, output.toString());

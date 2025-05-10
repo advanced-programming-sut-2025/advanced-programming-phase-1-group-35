@@ -12,19 +12,19 @@ public class CookingController {
     public Result placeItemInFridge(String itemName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        CookingIngredient ingredient = null;
-        try {
-            ingredient = CookingIngredient.valueOf(itemName);
-        } catch (IllegalArgumentException e) {
-            return new Result(false, "Invalid item name");
+        CookingMaterial ingredient = null;
+        for (ItemInterface item : player.backPack.items.keySet()) {
+            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
+                ingredient = (CookingMaterial) item;
+            }
         }
-        if (!player.backPack.ingredients.containsKey(ingredient)) {
+        if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
             return new Result(false, "You don't have a item in your inventory");
         }
         player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
-        player.backPack.ingredients.put(ingredient, player.backPack.ingredients.get(ingredient) - 1);
-        if (player.backPack.ingredients.get(ingredient) == 0) {
-            player.backPack.ingredients.remove(ingredient);
+        player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
+        if (player.backPack.items.get(ingredient) == 0) {
+            player.backPack.items.remove(ingredient);
         }
         return new Result(true, "successfully added ingredient to the refrigerator");
     }
@@ -32,19 +32,19 @@ public class CookingController {
     public Result pickItemFromFridge(String itemName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        CookingIngredient ingredient = null;
-        try {
-            ingredient = CookingIngredient.valueOf(itemName);
-        } catch (IllegalArgumentException e) {
-            return new Result(false, "Invalid item name");
+        CookingMaterial ingredient = null;
+        for (CookingMaterial material : player.cabin.refrigerator.ingredients.keySet()) {
+            if (itemName.equals(material.getName())) {
+                ingredient = material;
+            }
         }
-        if (!player.cabin.refrigerator.ingredients.containsKey(ingredient)) {
+        if (ingredient == null) {
             return new Result(false, "You don't have a item in your refrigerator");
         }
         player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.get(ingredient) - 1);
-        player.backPack.ingredients.put(ingredient, player.backPack.ingredients.getOrDefault(ingredient, 0) + 1);
+        player.backPack.items.put(ingredient, player.backPack.items.getOrDefault(ingredient, 0) + 1);
         if (player.cabin.refrigerator.ingredients.get(ingredient) == 0) {
-            player.backPack.ingredients.remove(ingredient);
+            player.cabin.refrigerator.ingredients.remove(ingredient);
         }
         return new Result(true, "successfully added ingredient to the refrigerator");
     }
@@ -82,26 +82,28 @@ public class CookingController {
         player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() - 3);
         for (Map.Entry<CookingIngredient, Integer> entry : recipe.getIngredients().entrySet()) {
             CookingIngredient ingredient = entry.getKey();
+            CookingMaterial material = player.backPack.getCookingMaterial(entry.getKey());
             int requiredAmount = entry.getValue();
-            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0);
-            int availableAmountInBackPack = player.backPack.ingredients.getOrDefault(ingredient, 0);
+            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(material, 0);
+            int availableAmountInBackPack = player.backPack.items.getOrDefault(material, 0);
 
             if (availableAmountInBackPack >= requiredAmount) {
-                player.backPack.ingredients.put(ingredient, player.backPack.ingredients.get(ingredient) - requiredAmount);
+                player.backPack.items.put(material, player.backPack.items.get(material) - requiredAmount);
             } else {
-                player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.get(ingredient) - requiredAmount);
+                player.cabin.refrigerator.ingredients.put(material, player.cabin.refrigerator.ingredients.get(material) - requiredAmount);
             }
         }
-        player.backPack.foods.add(new Food(recipe));
+        player.backPack.items.put(new Food(recipe), 1);
         return new Result(true, "you cooked " + recipeName + " successfully! It looks delicious!");
     }
 
     private boolean doesPlayerHaveIngredientsForThisFood(CookingRecipes recipe, User player) {
         for (Map.Entry<CookingIngredient, Integer> entry : recipe.getIngredients().entrySet()) {
             CookingIngredient ingredient = entry.getKey();
+            CookingMaterial material = player.backPack.getCookingMaterial(ingredient);
             int requiredAmount = entry.getValue();
-            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0);
-            int availableAmountInBackPack = player.backPack.ingredients.getOrDefault(ingredient, 0);
+            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(material, 0);
+            int availableAmountInBackPack = player.backPack.items.getOrDefault(material, 0);
 
             if (availableAmountInBackPack < requiredAmount && availableAmountInFridge < requiredAmount) {
                 return false;
@@ -117,7 +119,7 @@ public class CookingController {
         if (food == null) {
             return new Result(false, "You don't have this food in your backpack!");
         }
-        player.backPack.foods.remove(food);
+        player.backPack.items.remove(food);
         player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() + food.recipe.getEnergy());
         // TODO : buff
         return new Result(true, "you ate a " + food.recipe.getDisplayName());

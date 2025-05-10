@@ -1,23 +1,21 @@
 package Model.Tools;
 
 import Model.*;
-import Model.animal.Fish;
 import Model.enums.CookingIngredient;
-import Model.enums.animal.AnimalProductDetails;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BackPack extends Tool {
-    public ArrayList<Tool> tools;
-    public ArrayList<Food> foods;
-    public HashMap<CookingIngredient, Integer> ingredients;
-    public HashMap<AnimalProductDetails, Integer> animalProducts;
-    public HashMap<Fish, Integer> fishes;
+public class BackPack {
+    public HashMap<ItemInterface, Integer> items;
     private int capacity = 12;
 
-    public BackPack(String name) {
-        super(name);
+    public BackPack() {
+        // TODO : initial tools that everyone have
+    }
+
+    public boolean doesBackPackHasSpace() {
+        return items.size() <= capacity;
     }
 
     public void setCapacity(int capacity) {
@@ -35,16 +33,24 @@ public class BackPack extends Tool {
     public Food getFood(String foodName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        for (Food food : foods) {
-            if (food.recipe.getDisplayName().equals(foodName)) {
-                return food;
+        for (ItemInterface item : items.keySet()) {
+            if (item instanceof Food food) {
+                if (food.recipe.getDisplayName().equals(foodName)) {
+                    return food;
+                }
             }
         }
         return null;
     }
 
-    @Override
-    public void reduceEnergy() {
-
+    public CookingMaterial getCookingMaterial(CookingIngredient ingredient) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        for (ItemInterface item : items.keySet()) {
+            if (item instanceof CookingMaterial && ingredient.toString().equals(((CookingMaterial) item).ingredientName.toString())) {
+                return (CookingMaterial) item;
+            }
+        }
+        return null;
     }
 }
