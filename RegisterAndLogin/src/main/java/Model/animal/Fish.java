@@ -9,7 +9,8 @@ public class Fish implements ItemInterface {
     private String rarity;
 
     public Fish(String name, int basePrice, String season, String rarity) {
-        super(name);
+        super();
+        this.name = name;
         this.basePrice = basePrice;
         this.season = season;
         this.rarity = rarity;

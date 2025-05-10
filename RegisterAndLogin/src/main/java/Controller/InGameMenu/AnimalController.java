@@ -147,7 +147,8 @@ public class AnimalController {
         } else if (animal.getDaysPastLastProduction() == 0) {
             return new Result(false, animalName + "you already collect its products");
         }
-        player.backPack.animalProducts.put(animal.getProducts()[0].getProductDetails(), animal.getProductionRate());
+        player.backPack.animalProducts.put(animal.getProducts()[0].getProductDetails(),
+                player.backPack.animalProducts.getOrDefault(animal.getProducts()[0].getProductDetails(), 0) + animal.getProductionRate());
         animal.setDaysPastLastProduction(0);
         return new Result(true, animal.getName() + "has collected its products! it was " +
                 animal.getProductionRate() + " units of " + animal.getProducts()[0].getProductDetails().name);

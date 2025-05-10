@@ -1,8 +1,10 @@
 package Model.Tools;
 
 import Model.*;
+import Model.animal.Fish;
 import Model.enums.CookingIngredient;
 import Model.enums.animal.AnimalProductDetails;
+import Model.enums.animal.FishType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ public class BackPack extends Tool {
     public ArrayList<Food> foods;
     public HashMap<CookingIngredient, Integer> ingredients;
     public HashMap<AnimalProductDetails, Integer> animalProducts;
+    public HashMap<Fish, Integer> fishes;
     private int capacity = 12;
 
     public BackPack(String name) {
