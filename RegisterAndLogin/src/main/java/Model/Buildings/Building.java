@@ -54,4 +54,19 @@ public class Building {
     public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
     }
+    public void setFarm(Farm farm) {
+        this.farm = farm;
+    }
+    public void setFloorTiles(Tile[][] floorTiles) {
+        this.floorTiles = floorTiles;
+    }
+    public Tile[][] getFloorTiles() {
+        return floorTiles;
+    }
+    public Tile getDoorTile() {
+        return doorTile;
+    }
+    public void setDoorTile(Tile doorTile) {
+        this.doorTile = doorTile;
+    }
 }
