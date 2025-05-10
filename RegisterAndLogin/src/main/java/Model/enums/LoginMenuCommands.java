@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum LoginMenuCommands implements AppMenu {
+public enum LoginMenuCommands {
     register("\\s*register\\s+-u\\s+(?<username>\\S+)\\s+-p\\s+(?<password>\\S+)(\\s+(?<passwordConfirm>\\S+))?\\s+" +
             "-n\\s+(?<nickname>.+?)\\s+-e\\s+(?<email>\\S+)\\s+-g\\s+(?<gender>\\S+)\\s*"),
     pickQuestion("\\s*pick\\s+question\\s+-q\\s+(?<questionNumber>\\d)\\s+-a\\s+(?<answer>.+?)\\s+-c\\s+(?<answerConfirm>.+?)"),
@@ -32,8 +32,4 @@ public enum LoginMenuCommands implements AppMenu {
         return null;
     }
 
-    @Override
-    public void check(Scanner scanner) {
-
-    }
 }

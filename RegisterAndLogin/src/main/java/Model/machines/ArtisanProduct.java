@@ -1,16 +1,13 @@
 package Model.machines;
 
-import Model.Item;
+import Model.ItemInterface;
 
-public class ArtisanProduct extends Item {
+public class ArtisanProduct implements ItemInterface {
+    private String name;
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;
-    private Item[] ingredients;
-
-    public ArtisanProduct() {
-        super("");
-    }
+    private ItemInterface[] ingredients;
 
 
     public int getProcessingTime() {
@@ -29,11 +26,19 @@ public class ArtisanProduct extends Item {
         this.energy = energy;
     }
 
-    public Item[] getIngredients() {
+    public ItemInterface[] getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Item[] ingredients) {
+    public void setIngredients(ItemInterface[] ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return sellingPrice;
     }
 }

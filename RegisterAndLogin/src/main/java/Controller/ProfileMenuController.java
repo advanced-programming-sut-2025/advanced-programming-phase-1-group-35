@@ -5,6 +5,7 @@ import Model.Result;
 import Model.User;
 import Model.enums.Regexes;
 
+import java.io.IOException;
 import java.security.PublicKey;
 import java.util.Scanner;
 
@@ -32,11 +33,11 @@ public class ProfileMenuController {
         return new Result(true , "username has been changed");
     }
 
-    public Result changePassword(String oldPassword, String newPassword , Scanner scanner) {
+    public Result changePassword(String oldPassword, String newPassword , Scanner scanner) throws IOException {
         if(oldPassword.equals(newPassword)){
             return new Result(false , "now that wouldn't be a change would it ?");
         }
-        Result managePasswordResult = loginMenuController.managePassword(newPassword , newPassword , scanner);
+        Result managePasswordResult = loginMenuController.managePassword(newPassword , newPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else newPassword = managePasswordResult.toString();
         App.getLoggedInUser().setPassword(newPassword);

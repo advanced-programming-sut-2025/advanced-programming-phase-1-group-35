@@ -4,8 +4,8 @@ import Model.animal.Animal;
 
 import java.util.ArrayList;
 
-public class AnimalHouse extends FarmBuilding {
-    private String type;
+public class AnimalHouse extends Building {
+    private String type ;
     private String level;
     public ArrayList<Animal> thisHouseAnimals = new ArrayList<>();
 

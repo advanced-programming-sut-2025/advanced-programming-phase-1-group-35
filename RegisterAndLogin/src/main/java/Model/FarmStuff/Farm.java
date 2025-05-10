@@ -1,15 +1,14 @@
 package Model.FarmStuff;
 
 import Model.*;
+import Model.Buildings.Building;
+import Model.CropClasses.Crop;
+import Model.CropClasses.Tree;
 import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
-import Model.*;
-import Model.FarmStuff.Foraging;
-import Model.FarmStuff.Greenhouse;
-import Model.FarmStuff.Lake;
-import Model.FarmStuff.Quarry;
-import Model.FarmStuff.Tree;
 import Model.animal.Animal;
+import Model.enums.FarmType;
+import Model.enums.TileType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class Farm {
     private Lake lake;
     private Greenhouse greenhouse;
     private Quarry quarry;
+    private ArrayList<Model.CropClasses.Crop> Crop = new ArrayList<>();
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
@@ -28,6 +28,7 @@ public class Farm {
 
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
+        FarmType farmType = FarmType.values()[type];
         int x = 0 , y = 0;
         switch (number) {
             case 1:
@@ -51,14 +52,18 @@ public class Farm {
         for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
             for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);
+                if(owner != null)tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
+                tiles[i][j].setTileType(TileType.Soil);
             }
         }
         cabin = new Cabin(this , tiles);
         greenhouse = new Greenhouse(this , tiles);
+        lake = new Lake(farmType , tiles , this);
+        quarry = new Quarry(farmType , tiles , this);
 
-        if(owner != null) {
+        if(owner != null) { // placing the player
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
@@ -97,6 +102,47 @@ public class Farm {
     public void setGreenhouse(Greenhouse greenhouse) {
         this.greenhouse = greenhouse;
     }
+
+//    public void AddCrop(Crop crop) {
+//        this.Crop.add(crop);
+//    }
+//
+//    public ArrayList<Crop> getCrops() {
+//        return Crop;
+//    }
+//
+//    public ArrayList<Building> getBuildings() {
+//        return buildings;
+//    }
+//
+//    public void addBuildings(Building building) {
+//        this.buildings.add(building);
+//    }
+//    public void addTrees(Tree tree) {
+//        this.trees.add(tree);
+//    }
+//    public void addRocks(Rock rock) {
+//        this.rocks.add(rock);
+//    }
+//    public void addForages(Foraging forage) {
+//        this.forages.add(forage);
+//    }
+//
+//    public ArrayList<Shop> getShops() {
+//        return shops;
+//    }
+//
+//    public ArrayList<Tree> getTrees() {
+//        return trees;
+//    }
+//
+//    public ArrayList<Rock> getRocks() {
+//        return rocks;
+//    }
+//
+//    public ArrayList<Foraging> getForages() {
+//        return forages;
+//    }
 
     public boolean isAnimalNameExist(String animalName) {
         for (Animal animal : animals) {

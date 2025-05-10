@@ -6,15 +6,16 @@ import Model.Tile;
 import java.util.ArrayList;
 
 public class Greenhouse extends Building {
-    private int rows = 6;
-    private int cols = 7;
-    private boolean isFixed = false;
+    private final int rows = 5;
+    private final int cols = 6;
+    private boolean isFixed = false; // when fixed , floorTiles should be set walkable;
     public static final int price = 1000;
     public static final int woodAmount = 500;
-    Tile[][] tiles = new Tile[rows][cols];
 
     public Greenhouse(Farm farm , Tile[][] tiles) {
+        floorTiles = new Tile[cols][rows];
         super.farm = farm;
+        doorTile = tiles[farm.getBounds().x + 27][farm.getBounds().y + 13];
         placeBuilding('@' , 23 , 6 , 8 , 7 , tiles);
     }
 

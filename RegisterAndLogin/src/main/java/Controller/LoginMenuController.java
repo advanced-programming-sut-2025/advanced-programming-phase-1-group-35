@@ -4,6 +4,7 @@ import Model.App;
 import Model.Result;
 import Model.User;
 import Model.enums.*;
+import View.LoginMenu;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenuController {
+
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);
@@ -29,9 +31,7 @@ public class LoginMenuController {
     }
     public Result registerUser(String username, String password,
                                String confirmPassword, String email,
-                               String nickname, String gender,
-                               Scanner scanner) {
-        System.out.println(email);
+                               String nickname, String gender) throws IOException {
         if(getUser(username) != null) {
             return new Result(false, "Username is already in use");
         }
@@ -41,14 +41,14 @@ public class LoginMenuController {
         if(Regexes.Email.getMatcher(email) == null) {
             return new Result(false, "Email is not valid");
         }
-        Result managePasswordResult = managePassword(password , confirmPassword , scanner);
+        Result managePasswordResult = managePassword(password , confirmPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else password = managePasswordResult.toString();
-        Gender genderEnum = null;
-        switch (gender.toLowerCase()){
-            case "male": genderEnum = Gender.male;
-            case "female": genderEnum = Gender.female;
-        }
+        Gender genderEnum = switch (gender.toLowerCase()) {
+            case "male" -> Gender.male;
+            case "female" -> Gender.female;
+            default -> null;
+        };
         if(genderEnum == null) {
             return new Result(false, "I'm a CE major , I believe in binary");
         }
@@ -59,7 +59,7 @@ public class LoginMenuController {
         String answer = null;
         System.out.println("choose a security question . (1/2/3/4)");
         while (true){
-            String input = scanner.nextLine().trim();
+            String input = LoginMenu.scan();
             Matcher matcher = LoginMenuCommands.pickQuestion.getMatcher(input);
             if(matcher == null) {
                 System.out.println("invalid input");
@@ -104,7 +104,7 @@ public class LoginMenuController {
         return new Result(true, "user successfully logged in");
     }
 
-    public Result forgotPassword(String username , Scanner scanner) {
+    public Result forgotPassword(String username , Scanner scanner) throws IOException {
         User user = getUser(username);
         if(user == null) {
             return new Result(false, "User not found");
@@ -115,9 +115,9 @@ public class LoginMenuController {
         if(!matcher.group("answer").equalsIgnoreCase(user.getSecurityAnswer())) {
             return new Result(false, "Wrong answer");
         }
-        System.out.println("choose a new password . (random for random generated password)");
+        LoginMenu.print("choose a new password . (random for random generated password)");
         String newPassword = scanner.nextLine().trim();
-        Result managePasswordResult = managePassword(newPassword , newPassword , scanner);
+        Result managePasswordResult = managePassword(newPassword , newPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else newPassword = managePasswordResult.toString();
         user.setPassword(newPassword);
@@ -150,9 +150,9 @@ public class LoginMenuController {
             return new Result(false, "Password must contain at least one special character");
         return new Result(true, "password is strong enough");
     }
-    public Result managePassword(String password , String confirmPassword , Scanner scanner) {
+    public Result managePassword(String password , String confirmPassword) throws IOException {
         if(password.equalsIgnoreCase("random")){
-            Result result = generateRandomPassword(scanner);
+            Result result = generateRandomPassword();
             if(result.isSuccess()) {
                 password = result.toString();
                 confirmPassword = result.toString();
@@ -170,24 +170,24 @@ public class LoginMenuController {
         }
         return new Result(true, password);
     }
-    public Result generateRandomPassword(Scanner scanner) {
+    public Result generateRandomPassword() throws IOException {
         List<Character> chars = getCharacters();
         Collections.shuffle(chars);
         StringBuilder shuffledPassword = new StringBuilder();
         for (char c : chars) {
             shuffledPassword.append(c);
         }
-        System.out.println("random generated password: " + shuffledPassword);
-        System.out.println("do you want to keep the password ? (y/n)\n" +
+        LoginMenu.print("random generated password: " + shuffledPassword);
+        LoginMenu.print("do you want to keep the password ? (y/n)\n" +
                            "n will take you back to login menu");
         while(true) {
-            String answer = scanner.nextLine().trim().toLowerCase();
+            String answer = LoginMenu.scan();
             if (answer.equals("y")) {
                 return new Result(true, shuffledPassword.toString());
             } else if (answer.equals("n")) {
                 return new Result(false, "Redirecting to login menu ...");
             }
-            else System.out.println("invalid input");
+            else LoginMenu.print("invalid input");
         }
     }
 

@@ -2,7 +2,7 @@ package View;
 
 import java.util.Scanner;
 
-public class ExitMenu implements AppMenu {
+public class ExitMenu extends AppMenu {
     @Override
     public void check(Scanner scanner) {
 

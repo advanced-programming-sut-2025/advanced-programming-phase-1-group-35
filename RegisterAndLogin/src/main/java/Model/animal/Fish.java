@@ -1,8 +1,8 @@
 package Model.animal;
 
-import Model.Item;
+import Model.ItemInterface;
 
-public class Fish extends Item {
+public class Fish implements ItemInterface {
     private String name;
     private int basePrice;
     private String season;
@@ -15,10 +15,9 @@ public class Fish extends Item {
         this.rarity = rarity;
     }
 
-    public int getSellingPrice() {
+    public int getPrice() {
         return 0;
     }
-
 
     public String getName() {
         return name;

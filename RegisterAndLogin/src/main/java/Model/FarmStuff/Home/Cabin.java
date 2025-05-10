@@ -8,6 +8,8 @@ public class Cabin extends Building {
     public Refrigerator refrigerator;
     public Cabin(Farm farm , Tile[][] tiles) {
         this.farm = farm;
+        floorTiles = new Tile[7][4];
+        doorTile = tiles[farm.getBounds().x + 59][farm.getBounds().y + 11];
         placeBuilding('#' , 55 , 6 , 9 , 6 , tiles);
     }
 }

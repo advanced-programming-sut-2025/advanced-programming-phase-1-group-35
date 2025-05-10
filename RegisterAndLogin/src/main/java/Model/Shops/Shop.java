@@ -1,16 +1,72 @@
 package Model.Shops;
 
-import Model.Item;
+import Model.Buildings.Building;
 import Model.NPCs.NPC;
 
-import java.util.HashMap;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
-public abstract class Shop {
-    protected String name;
-    protected String building;
-    protected NPC owner;
+public class Shop {
+    private String name;
+    private Building building;
+    private NPC owner;
+    private LocalTime OpeningTime;
+    private LocalTime ClosingTime;
+    private ArrayList<ShopItem> products = new ArrayList<>();
 
-    protected HashMap<Item, Integer> permanentStock = new HashMap<>();
+    public Shop(String name, Building building, NPC owner , LocalTime OpeningTime,
+                LocalTime ClosingTime, ArrayList<ShopItem> products) {
+        this.name = name;
+        this.building = building;
+        this.owner = owner;
+        this.OpeningTime = OpeningTime;
+        this.ClosingTime = ClosingTime;
+        this.products = products;
+    }
 
-    protected void showProducts(){}
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    public NPC getOwner() {
+        return owner;
+    }
+
+    public void setOwner(NPC owner) {
+        this.owner = owner;
+    }
+
+    public LocalTime getOpeningTime() {
+        return OpeningTime;
+    }
+
+    public void setOpeningTime(LocalTime openingTime) {
+        OpeningTime = openingTime;
+    }
+
+    public LocalTime getClosingTime() {
+        return ClosingTime;
+    }
+
+    public void setClosingTime(LocalTime closingTime) {
+        ClosingTime = closingTime;
+    }
+
+    public ArrayList<ShopItem> getProducts() {
+        return products;
+    }
 }

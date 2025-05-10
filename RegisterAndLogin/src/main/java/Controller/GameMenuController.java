@@ -1,9 +1,13 @@
 package Controller;
 
+import Controller.InGameMenu.CropController;
+import Controller.InGameMenu.FarmingController;
 import Model.*;
 import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import View.GameMenu;
+import View.LoginMenu;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +16,14 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
+    CropController cropController ;
+    FarmingController farmingController ;
+    Game CurrentGame = null ;
+
+    public void setFarmingController() {
+        cropController = new CropController();
+        farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+    }
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);
@@ -22,7 +34,7 @@ public class GameMenuController {
         App.serializeApp();
         App.setCurrentMenu(Menu.ExitMenu);
     }
-    public Result createNewGame(String username1, String username2, String username3 , Scanner scanner) {
+    public Result createNewGame(String username1, String username2, String username3) throws IOException {
         LoginMenuController loginMenuController = new LoginMenuController();
         ArrayList<String> playerNames = new ArrayList<>();
         ArrayList<User> players = new ArrayList<>();
@@ -41,10 +53,12 @@ public class GameMenuController {
         Game game = new Game(players , App.getLoggedInUser());
         App.games.add(game);
         App.setCurrentGame(game);
+        CurrentGame = game;
+        setFarmingController();
         for (User player : players) {
             player.setCurrentGame(game);
         }
-        chooseMap(scanner);
+        chooseMap();
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
@@ -53,36 +67,36 @@ public class GameMenuController {
         return true;
     }
 
-    public void chooseMap(Scanner scanner) {
+    public void chooseMap() throws IOException {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
         User[] users = new User[4];
         int[] types = new int[4];
         for (int i = 0; i < players.size();) { // choosing maps
-            System.out.println("choosing map for " + players.get(i).getUsername());
-            String input = scanner.nextLine();
+            GameMenu.print("choosing map for " + players.get(i).getUsername());
+            String input = GameMenu.scan();
             Matcher matcher = GameMenuCommands.chooseMap.getMatcher(input);
             if(matcher == null) {
-                System.out.println("invalid input");
+                GameMenu.print("invalid input");
                 continue;
             }
             int number = Integer.parseInt(matcher.group("number"));
             int type = Integer.parseInt(matcher.group("type"));
             if(number < 1 || number > 4) {
-                System.out.println("invalid number");
+                GameMenu.print("invalid number");
                 continue;
             }
             if(type < 0 || type > 3) {
-                System.out.println("invalid type");
+                GameMenu.print("invalid type");
                 continue;
             }
             if(users[number - 1] != null) {
-                System.out.println("this farm is taken");
+                GameMenu.print("this farm is taken");
                 continue;
             }
             users[number - 1] = players.get(i);
             types[number - 1] = type;
-            System.out.println("farm number " + number + " has been chosen by " + players.get(i).getUsername());
+            GameMenu.print("farm number " + number + " has been chosen by " + players.get(i).getUsername());
             i++;
         }
         game.getMap().buildMap(users , types);
@@ -107,7 +121,7 @@ public class GameMenuController {
         return new Result(true, "You have successfully exited the game , you may create or load another game .");
     }
 
-    public Result deleteCurrentGame(Scanner scanner) {
+    public Result deleteCurrentGame() throws IOException {
         Game game = App.getCurrentGame();
         User requester = game.getPlayingUser();
         if(game == null) return new Result(false, "You have no ongoing game");
@@ -118,7 +132,7 @@ public class GameMenuController {
             if(player.equals(requester)) continue;
             System.out.println(player.getUsername() + " must vote about termination : (y/n)");
             while(true) {
-                String input = scanner.nextLine().trim();
+                String input = GameMenu.scan();
                 if (input.equalsIgnoreCase("y")) {
                     terminationVotes.put(player, true);
                     positiveVotes++;
@@ -142,11 +156,14 @@ public class GameMenuController {
         }
     }
 
-    public void goToNextTurn() {
+    public Result goToNextTurn() {
         int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
         i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
         App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
-        System.out.println("going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
+        if(i == 0){
+            App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
+        }
+        return new Result(true , "going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
     }
 
     public Result showTime() {
@@ -181,41 +198,51 @@ public class GameMenuController {
 
     }
 
-    public Result walk(int x, int y) {
+    public Result walk(String xString, String yString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
         User player = App.getCurrentGame().getPlayingUser();
         Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
-        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y);
+        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy());
         if(!path.reachable()) {
             return new Result(false, path.message());
         }
-        // TODO : deducting energy and faint system
-        startTile.setContentSymbol('0');
-        player.setCurrentTile(tiles[x][y]);
-        tiles[x][y].setContentSymbol(player.getSymbol());
+        for (Point point : path.path()) {
+            if(player.getEnergy().getEnergyAmount() <= 0) {
+                player.getEnergy().faint();
+                return new Result(false, "you have no energy left");
+            }
+            if(!player.getEnergy().TurnEnergyLeft()){
+                goToNextTurn();
+                player.getEnergy().endTurn();
+                return new Result(true, "next turn");
+            }
+            player.getCurrentTile().setContentSymbol('0');
+            player.setCurrentTile(tiles[point.x][point.y]);
+            tiles[point.x][point.y].setContentSymbol(player.getSymbol());
+            player.getEnergy().consumeEnergy(point.energy);
+        }
         return new Result(true, path.message());
     }
 
-    private boolean isThereAnyWayToGetToTheDestination() {
-        return false;
-    }
-
-    private void findTheBestWayToGetToTheDestination() {
-
-    }
-
-    public Result printMap(int x , int y , int size) {
+    public Result printMap(String xString , String yString , String sizeString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        int size = Integer.parseInt(sizeString);
         Result validate = validateCoordinates(x , y);
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        StringBuilder map = new StringBuilder();
         for (int i = y; i < Math.min(y + size , 250); i++) {
             for (int j = x; j < Math.min(x + size , 300); j++) {
-                System.out.print(tiles[j][i].getSymbol());
+                map.append(String.format("%2c", tiles[j][i].getSymbol()));
             }
-            System.out.println();
+            map.append("\n");
         }
-        return new Result(true, "here is your map Arbab");
+        return new Result(true, map + "here is your map Arbab");
     }
 
     public Result validateCoordinates(int x, int y) {
@@ -225,18 +252,40 @@ public class GameMenuController {
         return new Result(true, "coordinates good to go");
     }
 
-    public void helpReadingTheMap() {
-        System.out.println(
-                ". : ground\n" +
+    public Result helpReadingTheMap() {
+        String message = ". : ground\n" +
                 "numbers(1-4) : players" +
-                "# : cabin tiles" +
-                "@ : greenhouse tiles" +
-                "0 : not walkable"
-        );
+                "# : cabin floorTiles" +
+                "@ : greenhouse floorTiles" +
+                "0 : not walkable";
+        return new Result(true, message);
+    }
+
+    public Result cheatEnergySet(String energyString){
+        User player = App.getCurrentGame().getPlayingUser();
+        int energy = Integer.parseInt(energyString);
+        if(energy > player.getEnergy().getEnergyCapacity()){
+            player.getEnergy().setEnergyCapacity(energy);
+        }
+        player.getEnergy().setEnergyAmount(energy);
+        return new Result(true, "cheat energy set");
+    }
+
+    public Result cheatEnergyUnlimited(){
+        User player = App.getCurrentGame().getPlayingUser();
+        Energy energy = player.getEnergy();
+        energy.setEnergyCapacity(Double.POSITIVE_INFINITY);
+        energy.setEnergyAmount(Double.POSITIVE_INFINITY);
+        energy.setCurrentTurnCapacity(Double.POSITIVE_INFINITY);
+        return new Result(true, "cheat energy unlimited");
     }
 
     public Result showEnergy() {
-        return null;
+        Energy energy = App.getCurrentGame().getPlayingUser().getEnergy();
+        return new Result(true, "" +
+                "energy left: " + energy.getEnergyAmount() +
+                "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
+                "energy capacity: " + energy.getEnergyCapacity());
     }
 
     public Result showInventory() {

@@ -10,16 +10,16 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginMenu implements AppMenu {
+public class LoginMenu extends AppMenu {
     LoginMenuController controller = new LoginMenuController();
     @Override
     public void check(Scanner scanner) throws IOException {
         Matcher matcher;
-        String input = scanner.nextLine();
+        String input = scan();
         if((matcher = LoginMenuCommands.register.getMatcher(input)) != null) {
             System.out.println(controller.registerUser(matcher.group("username") , matcher.group("password"),
                                                        matcher.group("passwordConfirm") , matcher.group("email"),
-                                                       matcher.group("nickname") , matcher.group("gender") , scanner));
+                                                       matcher.group("nickname") , matcher.group("gender") ));
 
         }
         else if((matcher = LoginMenuCommands.login.getMatcher(input)) != null) {

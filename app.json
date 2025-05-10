@@ -1,15 +1,1 @@
-{
-  "users": [
-    {
-      "username": "mahdi",
-      "password": "r7C:o\\0B",
-      "nickname": "mahdi",
-      "email": "mahdi@gmail.com",
-      "gender": "female",
-      "securityAnswer": "answer"
-    }
-  ],
-  "games": [],
-  "stayLoggedIn": false,
-  "currentMenu": "LoginMenu"
-}
+{}

@@ -2,21 +2,95 @@ package Model;
 
 import Model.enums.Crops.PlantAble;
 import Model.enums.TileContents;
+import Model.enums.TileType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Tile {
     private User owner = null;
+    private int ownerID = 0;
+    private TileType tileType = TileType.OutSideFarm;
     private char symbol = '0';
     private char contentSymbol = '0';
+
+    public Point getCoordination() {
+        return coordination;
+    }
+
     public Point coordination;
-    private ArrayList<TileContents> contents;
+    private ArrayList<ItemInterface> contents;
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
+    private boolean isPlowed = false;
+    public boolean isFertilized = false;
+    public boolean isWatered = false;
+    private int daysSinceWatered = 0;
+
+    public int getDaysSinceWatered() {
+        return daysSinceWatered;
+    }
+
+    public void setDaysSinceWatered(int daysSinceWatered) {
+        this.daysSinceWatered = daysSinceWatered;
+    }
+
+    public boolean isGotHitWithThunder() {
+        return gotHitWithThunder;
+    }
+
+    public ArrayList<ItemInterface> getContents() {
+        return contents;
+    }
+
+    public void setContents(ArrayList<ItemInterface> contents) {
+        this.contents = contents;
+    }
+
+    public void addContents(ItemInterface content) {
+        this.contents.add(content);
+    }
+
+    public boolean isWatered() {
+        return isWatered;
+    }
+
+    public void setWatered(boolean watered) {
+        isWatered = watered;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
+    public boolean isPlowed() {
+        return isPlowed;
+    }
+
+    public void setPlowed(boolean plowed) {
+        isPlowed = plowed;
+    }
+
+    public PlantAble getPlanted() {
+        return planted;
+    }
+
+    public void setPlanted(PlantAble planted) {
+        this.planted = planted;
+    }
 
     public Tile(Point coordination) {
         this.coordination = coordination;
+    }
+
+    public Tile(){
+
     }
 
     public void setGotHitWithThunder(boolean gotHitWithThunder) {
@@ -26,8 +100,8 @@ public class Tile {
         return gotHitWithThunder;
     }
 
-    public void changeTileContents() {
-
+    public void changeTileContents(PlantAble planted) {
+    this.planted = planted;
     }
 
     public User getOwner() {
@@ -63,5 +137,22 @@ public class Tile {
 
     public void setContentSymbol(char contentSymbol) {
         this.contentSymbol = contentSymbol;
+    }
+
+
+    public TileType getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(TileType tileType) {
+        this.tileType = tileType;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 }
