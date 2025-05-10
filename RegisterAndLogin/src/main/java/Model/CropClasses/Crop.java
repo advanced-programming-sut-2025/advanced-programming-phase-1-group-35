@@ -11,6 +11,7 @@ import Model.enums.Seasons;
 import java.util.List;
 
 public class Crop implements PlantAble, ItemInterface {
+    private char symbol = '&';
     private final String name;
     private final SeedEnum source;
     private final List<Integer> stages;
@@ -202,5 +203,13 @@ public class Crop implements PlantAble, ItemInterface {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 }
