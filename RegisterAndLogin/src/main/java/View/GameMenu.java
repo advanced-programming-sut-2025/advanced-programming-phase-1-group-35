@@ -38,6 +38,17 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.printMap.getMatcher(input) )!= null){
             System.out.println(controller.printMap(matcher.group("x") , matcher.group("y") , matcher.group("size")));
         }
-
+        else if((matcher = GameMenuCommands.helpReadingMap.getMatcher(input) )!= null){
+            System.out.println(controller.helpReadingTheMap());
+        }
+        else if((matcher = GameMenuCommands.showEnergy.getMatcher(input) )!= null){
+            System.out.println(controller.showEnergy());
+        }
+        else if((matcher = GameMenuCommands.cheatEnergySet.getMatcher(input) )!= null){
+            System.out.println(controller.cheatEnergySet(matcher.group("value")));
+        }
+        else if((matcher = GameMenuCommands.cheatEnergyUnlimited.getMatcher(input) )!= null){
+            System.out.println(controller.cheatEnergyUnlimited());
+        }
     }
 }

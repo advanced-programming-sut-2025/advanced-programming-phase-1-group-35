@@ -45,7 +45,7 @@ public class Map {
         shops.add(ShopEnum.Saloon.createShop());
         for (int i = 0; i < 250; i++) {
             for (int j = 0; j < 300; j++) {
-                System.out.print(tiles[j][i].getSymbol());
+                System.out.printf("%2c",tiles[j][i].getSymbol());
             }
             System.out.println();
         }
