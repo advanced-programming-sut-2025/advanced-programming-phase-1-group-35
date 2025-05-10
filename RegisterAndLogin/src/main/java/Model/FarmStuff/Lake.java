@@ -22,8 +22,8 @@ public class Lake {
         for (int i = bounds.x ; i < bounds.x + bounds.width ; i++) {
             for (int j = bounds.y ; j < bounds.y + bounds.height ; j++) {
                 tiles[i][j].setSymbol(symbol);
-                tiles[j][i].setWalkable(false);
-                tiles[j][i].setTileType(TileType.Water);
+                tiles[i][j].setWalkable(false);
+                tiles[i][j].setTileType(TileType.Water);
 
             }
         }
