@@ -10,7 +10,8 @@ import Model.Point;
 public class Animal {
     private final String name;
     private final int buyingPrice;
-    private double productionRate;
+    private double productionQuality;
+    private int productionRate;
     private final AnimalProduct[] products;
     private final String confinement;
     private int friendship;
@@ -26,7 +27,7 @@ public class Animal {
     , AnimalProduct[] products) {
         this.name = name;
         this.buyingPrice = buyingPrice;
-        this.productionRate = productionRate;
+        this.productionQuality = productionRate;
         this.confinement = confinement;
         this.products = products;
         this.isFeedToday = false;
@@ -65,12 +66,24 @@ public class Animal {
         return name;
     }
 
+    public void setProductionQuality(double productionQuality) {
+        this.productionQuality = productionQuality;
+    }
+
+    public int getProductionRate() {
+        return productionRate;
+    }
+
+    public void setProductionRate(int productionRate) {
+        this.productionRate = productionRate;
+    }
+
     public int getBuyingPrice() {
         return buyingPrice;
     }
 
-    public double getProductionRate() {
-        return productionRate;
+    public double getProductionQuality() {
+        return productionQuality;
     }
 
     public AnimalProduct[] getProducts() {
@@ -140,6 +153,18 @@ public class Animal {
     public void updateQuality() {
         double quality = friendship / 1000.0;
         quality *= (0.5 + (0.5 * Math.random()));
-        this.productionRate = quality;
+        this.productionQuality = quality;
+    }
+
+    public int getSellingPrice() {
+        double sellingPrice = buyingPrice * ((friendship / 1000.0) + 0.3);
+        if (productionQuality >= 0.5 && productionQuality < 0.7) {
+            sellingPrice *= 1.25;
+        } else if (productionQuality >= 0.7 && productionQuality < 0.9) {
+            sellingPrice *= 1.5;
+        } else if (productionQuality >= 0.9) {
+            sellingPrice *= 2;
+        }
+        return (int) sellingPrice;
     }
 }

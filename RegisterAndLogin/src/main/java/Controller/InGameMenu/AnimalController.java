@@ -36,7 +36,7 @@ public class AnimalController {
     public Result buyAnimal(String animal, String name) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         AnimalType type;
         AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
         try {
@@ -59,10 +59,11 @@ public class AnimalController {
     }
 
     public Result nazTheAnimal(String animalName) {
+        // TODO : things that effect friendship with animals like spending night out
         AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         if (!farm.isAnimalNameExist(animalName)) {
             return new Result(false, "there is no animal with that name!");
         }
@@ -78,7 +79,7 @@ public class AnimalController {
     public Result seeAnimalsCondition() {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         StringBuilder output = new StringBuilder();
         for (Animal animal : farm.animals) {
             output.append(animal.getName()).append("   friendship: ").append(animal.getFriendship());
@@ -92,7 +93,7 @@ public class AnimalController {
     public Result shepherdAnimal(String animalName, int x, int y) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         if (!farm.isAnimalNameExist(animalName)) {
             return new Result(false, "there is no animal with that name!");
         } else if (game.getWeather().getWeatherCondition() == WeatherCondition.snow ||
@@ -109,7 +110,7 @@ public class AnimalController {
     public Result feedByHay(String animalName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         Animal animal;
         // TODO : update hay resource
         try {
@@ -125,13 +126,47 @@ public class AnimalController {
     public Result produces() {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
-        Farm farm = player.farm;
+        Farm farm = player.getFarm();
         StringBuilder output = new StringBuilder();
         for (Animal animal : farm.animals) {
             output.append(animal.getName()).append(Arrays.toString(animal.getProducts()));
             output.append("\n");
         }
         return new Result(true, output.toString());
+    }
+
+    public Result collectProducts(String animalName) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        Farm farm = player.getFarm();
+        Animal animal = farm.findAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "there is no animal with that name!");
+        } else if (!animal.isCanProduceTomorrow()) {
+            return new Result(false, animalName + "can not yield today! try to be nicer with him");
+        } else if (animal.getDaysPastLastProduction() == 0) {
+            return new Result(false, animalName + "you already collect its products");
+        }
+        player.backPack.animalProducts.put(animal.getProducts()[0].getProductDetails(), animal.getProductionRate());
+        animal.setDaysPastLastProduction(0);
+        return new Result(true, animal.getName() + "has collected its products! it was " +
+                animal.getProductionRate() + " units of " + animal.getProducts()[0].getProductDetails().name);
+    }
+
+    public Result sellAnimal(String animalName) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        Farm farm = player.getFarm();
+        Animal animal = farm.findAnimal(animalName);
+        AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
+        if (animal == null) {
+            return new Result(false, "there is no animal with that name!");
+        }
+        int price = animal.getSellingPrice();
+        farm.animals.remove(animal);
+        house.thisHouseAnimals.remove(animal);
+        player.setMoney(player.getMoney() + price);
+        return new Result(true, "you sold " + animalName + "! price: " + price);
     }
 
 }

@@ -32,7 +32,6 @@ public class User {
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
     private int money = 0;
-    public Farm farm; // TODO : find the farm of this player and set it to this object
 
     private Game currentGame = null;
     private int currentGameFarmIndex = -1;
@@ -41,7 +40,6 @@ public class User {
     private Point currentPoint = null;
     private char symbol;
     private Map map;
-    public Inventory inventory;
     private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
     private SkillLevel miningSkill = Skill.mining.getSkillLevel();
     private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
