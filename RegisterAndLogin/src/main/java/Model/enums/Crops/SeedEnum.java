@@ -1,6 +1,8 @@
 package Model.enums.Crops;
 
-public enum SeedEnum{
+import Model.ItemInterface;
+
+public enum SeedEnum implements ItemInterface {
     JAZZ("Jazz Seeds", true, CropEnum.BLUE_JAZZ),
     CARROT("Carrot Seeds", true, CropEnum.CARROT),
     CAULIFLOWER("Cauliflower Seeds", true, CropEnum.CAULIFLOWER),
@@ -25,7 +27,7 @@ public enum SeedEnum{
     STARFRUIT("Starfruit Seeds", true, CropEnum.STARFRUIT),
     SPANGLE("Spangle Seeds", false, CropEnum.SUMMER_SPANGLE),
     SUMMER_SQUASH("Summer Squash Seeds", true, CropEnum.SUMMER_SQUASH),
-    SUNFLOWER("Sunflower Seeds", true, CropEnum.SUNFLOWER),
+    SUNFLOWERSEED("Sunflower Seeds", true, CropEnum.SUNFLOWER),
     TOMATO("Tomato Seeds", true, CropEnum.TOMATO),
     WHEAT("Wheat Seeds", true, CropEnum.WHEAT),
     AMARANTH("Amaranth Seeds", true, CropEnum.AMARANTH),
@@ -69,4 +71,13 @@ public enum SeedEnum{
     }
 
 
+    @Override
+    public int getPrice() {
+        return this.cropEnum.getPrice();
+    }
+
+    @Override
+    public String getName() {
+        return this.seedName;
+    }
 }

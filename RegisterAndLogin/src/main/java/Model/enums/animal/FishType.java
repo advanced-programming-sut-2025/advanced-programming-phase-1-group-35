@@ -1,6 +1,8 @@
 package Model.enums.animal;
 
-public enum FishType {
+import Model.ItemInterface;
+
+public enum FishType implements ItemInterface {
     Salmon,
     Sardine,
     Shad,
@@ -28,4 +30,14 @@ public enum FishType {
 
     public String name , season , type ;
     public int basePrice;
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
 }

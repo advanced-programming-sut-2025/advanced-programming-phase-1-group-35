@@ -35,7 +35,7 @@ public enum ForagingSeeds {
     STARFRUIT(Arrays.asList(Summer), CropEnum.STARFRUIT, SeedEnum.STARFRUIT),
     SPANGLE(Arrays.asList(Summer), SUMMER_SPANGLE, SeedEnum.SPANGLE),
     SUMMER_SQUASH(Arrays.asList(Summer), CropEnum.SUMMER_SQUASH, SeedEnum.SUMMER_SQUASH),
-    SUNFLOWER(Arrays.asList(Summer), CropEnum.SUNFLOWER, SeedEnum.SUNFLOWER),
+    SUNFLOWER(Arrays.asList(Summer), CropEnum.SUNFLOWER, SeedEnum.SUNFLOWERSEED),
     TOMATO(Arrays.asList(Summer), CropEnum.TOMATO, SeedEnum.TOMATO),
     WHEAT(Arrays.asList(Summer), CropEnum.WHEAT, SeedEnum.WHEAT),
     AMARANTH(Arrays.asList(Fall), CropEnum.AMARANTH, SeedEnum.AMARANTH),

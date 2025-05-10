@@ -38,7 +38,7 @@
         STARFRUIT("Starfruit", SeedEnum.STARFRUIT , List.of(2,3,2,3,3), 13, true, -1, 750, true, 125, List.of(Summer), false, false),
         SUMMER_SPANGLE("Summer Spangle", SeedEnum.SPANGLE , List.of(1,2,3,1), 8, true, -1, 90, true, 45, List.of(Summer), false, false),
         SUMMER_SQUASH("Summer Squash", SeedEnum.SUMMER_SQUASH , List.of(1,1,1,2,1), 6, false, 3, 45, true, 63, List.of(Summer), false, false),
-        SUNFLOWER("Sunflower", SeedEnum.SUNFLOWER , List.of(1,2,3,2), 8, true, -1, 80, true, 45, List.of(Summer , Fall), false, false),
+        SUNFLOWER("Sunflower", SeedEnum.SUNFLOWERSEED , List.of(1,2,3,2), 8, true, -1, 80, true, 45, List.of(Summer , Fall), false, false),
         TOMATO("Tomato", SeedEnum.TOMATO , List.of(2,2,2,2,3), 11, false, 4, 60, true, 20, List.of(Summer), false, false),
         WHEAT("Wheat", SeedEnum.WHEAT , List.of(1,1,1,1), 4, true, -1, 25, false, -1, List.of(Summer , Fall), false, false),
         AMARANTH("Amaranth", SeedEnum.AMARANTH , List.of(1,2,2,2), 7, true, -1, 150, true, 50, List.of(Fall), false, false),
