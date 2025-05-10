@@ -1,6 +1,8 @@
 package Model.enums.animal;
 
-public enum AnimalProductDetails {
+import Model.ItemInterface;
+
+public enum AnimalProductDetails implements ItemInterface {
     Egg(50 , "egg"),
     BigEgg(95 , "big egg"),
     DuckEgg(95 , "duck egg"),
@@ -22,5 +24,15 @@ public enum AnimalProductDetails {
     }
     public Model.animal.AnimalProduct getProduct() {
         return new Model.animal.AnimalProduct(this.name , this.price);
+    }
+
+    @Override
+    public int getPrice() {
+        return this.price;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 }

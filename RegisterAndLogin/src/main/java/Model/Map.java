@@ -1,7 +1,6 @@
 package Model;
 
 import Model.Buildings.Building;
-import Model.Buildings.Building;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Farm;
@@ -9,15 +8,13 @@ import Model.Shops.Shop;
 import Model.enums.Shops.ShopEnum;
 import Model.FarmStuff.Foraging;
 import Model.FarmStuff.Rock;
-import Model.Shops.Shop;
-import Model.enums.Crops.PlantAble;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Map {
     private Tile[][] tiles = new Tile[300][250];
     private ArrayList<Farm> farms = new ArrayList<>();
+    private Farm village ;
     public ArrayList<Building> buildings;
     public ArrayList<Shop> shops = new ArrayList<>();
     private ArrayList<Crop> Crop = new ArrayList<>();
@@ -36,6 +33,7 @@ public class Map {
                 owners[i].setCurrentGameFarmIndex(i);
             }
         }
+        village = new Farm(5, null , 5, tiles);
         shops.add(ShopEnum.BlackSmith.createShop());
         shops.add(ShopEnum.CarpenterShop.createShop());
         shops.add(ShopEnum.FishShop.createShop());
@@ -45,7 +43,7 @@ public class Map {
         shops.add(ShopEnum.Saloon.createShop());
         for (int i = 0; i < 250; i++) {
             for (int j = 0; j < 300; j++) {
-                System.out.print(tiles[j][i].getSymbol());
+                System.out.printf("%2c",tiles[j][i].getSymbol());
             }
             System.out.println();
         }
@@ -112,6 +110,14 @@ public class Map {
 
     public ArrayList<Foraging> getForages() {
         return forages;
+    }
+
+    public Farm getVillage() {
+        return village;
+    }
+
+    public void setVillage(Farm village) {
+        this.village = village;
     }
 }
 

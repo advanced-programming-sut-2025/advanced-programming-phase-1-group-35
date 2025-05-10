@@ -4,6 +4,7 @@
     //to do: change stages and seasons into Lists//
 
 
+    import Model.ItemInterface;
     import Model.enums.Seasons;
 
     import java.util.List;
@@ -12,7 +13,7 @@
 
     import static Model.enums.Seasons.*;
 
-    public enum CropEnum{
+    public enum CropEnum implements ItemInterface {
         BLUE_JAZZ("Blue Jazz", SeedEnum.JAZZ, List.of(1, 2, 2, 2), 7, true, -1, 50, true, 45, List.of(Spring), false, false),
         CARROT("Carrot", SeedEnum.CARROT, List.of(1,1,1), 3, true, -1, 35, true, 75, List.of(Spring), false, false),
         CAULIFLOWER("Cauliflower", SeedEnum.CAULIFLOWER , List.of(1,2,4,4,1), 12, true, -1, 175, true, 75, List.of(Spring), true, false),
@@ -109,6 +110,11 @@
             this.currentState = 1;
             this.daysSinceLastGrowth = 0;
             this.isForaging = isForaging;
+        }
+
+        @Override
+        public int getPrice() {
+            return this.baseSellPrice;
         }
 
         public String getName() { return name; }

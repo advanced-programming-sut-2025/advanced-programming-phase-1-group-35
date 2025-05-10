@@ -235,13 +235,14 @@ public class GameMenuController {
         Result validate = validateCoordinates(x , y);
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        StringBuilder map = new StringBuilder();
         for (int i = y; i < Math.min(y + size , 250); i++) {
             for (int j = x; j < Math.min(x + size , 300); j++) {
-                System.out.print(tiles[j][i].getSymbol());
+                map.append(String.format("%2c", tiles[j][i].getSymbol()));
             }
-            System.out.println();
+            map.append("\n");
         }
-        return new Result(true, "here is your map Arbab");
+        return new Result(true, map + "here is your map Arbab");
     }
 
     public Result validateCoordinates(int x, int y) {
