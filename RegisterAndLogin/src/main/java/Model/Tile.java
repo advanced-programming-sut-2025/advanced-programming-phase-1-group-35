@@ -20,7 +20,7 @@ public class Tile {
     }
 
     public Point coordination;
-    private ArrayList<ItemInterface> contents;
+    private ArrayList<ItemInterface> contents = new ArrayList<>();
     private boolean gotHitWithThunder = false;
     private boolean isWalkable = false;
     private PlantAble planted;
