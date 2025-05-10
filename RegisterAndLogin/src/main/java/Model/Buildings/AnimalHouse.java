@@ -4,6 +4,9 @@ import Model.animal.Animal;
 
 import java.util.ArrayList;
 
+import Model.FarmStuff.Farm;
+import Model.Tile;
+
 public class AnimalHouse extends Building {
     private String type ;
     private String level;

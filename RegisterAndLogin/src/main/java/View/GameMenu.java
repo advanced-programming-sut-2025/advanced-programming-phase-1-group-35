@@ -1,6 +1,8 @@
 package View;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.FarmingController;
+import Model.App;
 import Model.enums.GameMenuCommands;
 
 import java.io.IOException;
@@ -16,6 +18,8 @@ public class GameMenu extends AppMenu {
         if((matcher = GameMenuCommands.newGame.getMatcher(input) )!= null){
             System.out.println(controller.createNewGame(matcher.group("user1") , matcher.group("user2") ,
                     matcher.group("user3")));
+            FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
+            cont.addForagingCrop();
         }
         else if((matcher = GameMenuCommands.loadGame.getMatcher(input) )!= null){
             System.out.println(controller.loadGame());

@@ -8,6 +8,7 @@ import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
 import Model.animal.Animal;
 import Model.enums.FarmType;
+import Model.enums.Shops.ShopEnum;
 import Model.enums.TileType;
 
 import java.awt.*;
@@ -28,6 +29,11 @@ public class Farm {
 
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
+        if(number == 5)initVillage(tiles);
+        else initFarm(type, number, tiles);
+    }
+
+    public void initFarm(int type , int number , Tile[][] tiles) {
         FarmType farmType = FarmType.values()[type];
         int x = 0 , y = 0;
         switch (number) {
@@ -72,6 +78,20 @@ public class Farm {
         }
     }
 
+    private void initVillage(Tile[][] tiles) {
+        int x = 100 , y = 90;
+        bounds.setBounds(x , y , 70 , 40);
+        for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
+            for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
+                tiles[i][j].setOwner(owner);
+                if(owner != null)tiles[i][j].setOwnerID(owner.getID());
+                tiles[i][j].setSymbol('.');
+                tiles[i][j].setWalkable(true);
+                tiles[i][j].setTileType(TileType.OutSideFarm);
+            }
+        }
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -101,6 +121,22 @@ public class Farm {
 
     public void setGreenhouse(Greenhouse greenhouse) {
         this.greenhouse = greenhouse;
+    }
+
+    public Quarry getQuarry() {
+        return quarry;
+    }
+
+    public void setQuarry(Quarry quarry) {
+        this.quarry = quarry;
+    }
+
+    public Lake getLake() {
+        return lake;
+    }
+
+    public void setLake(Lake lake) {
+        this.lake = lake;
     }
 
 //    public void AddCrop(Crop crop) {

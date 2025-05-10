@@ -20,16 +20,22 @@ public class Building {
         for (int i = bounds.x ; i < bounds.x + bounds.width ; i++) {
             for (int j = bounds.y ; j < bounds.y + bounds.height ; j++) {
                 tiles[i][j].setSymbol(symbol);
-                tiles[i][j].setWalkable(false);
-                tiles[i][j].setTileType(TileType.BuildingTile);
                 if(i != bounds.x && j != bounds.y && i != bounds.x + bounds.width - 1 &&
                         j != bounds.y + bounds.height - 1) {
                     floorTiles[i - bounds.x - 1][j - bounds.y - 1] = tiles[i][j];
                     tiles[i][j].setWalkable(true);
+                    tiles[i][j].setTileType(TileType.BuildingTile);
+                }
+                else {
+                    tiles[i][j].setTileType(TileType.BuildingWall);
+                    tiles[i][j].setWalkable(false);
                 }
             }
         }
-        if(doorTile != null)doorTile.setWalkable(true);
+        if(doorTile != null){
+            doorTile.setWalkable(true);
+            doorTile.setSymbol('╬');
+        }
     }
 
     public int getBuildingID() {
@@ -53,5 +59,20 @@ public class Building {
     }
     public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
+    }
+    public void setFarm(Farm farm) {
+        this.farm = farm;
+    }
+    public void setFloorTiles(Tile[][] floorTiles) {
+        this.floorTiles = floorTiles;
+    }
+    public Tile[][] getFloorTiles() {
+        return floorTiles;
+    }
+    public Tile getDoorTile() {
+        return doorTile;
+    }
+    public void setDoorTile(Tile doorTile) {
+        this.doorTile = doorTile;
     }
 }

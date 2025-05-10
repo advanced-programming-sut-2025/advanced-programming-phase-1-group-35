@@ -285,13 +285,14 @@ public class FarmingController {
         Random random1 = new Random();
         for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed()){
+                if (tile.getPlanted() == null){
                     if(random1.nextInt(100) < 1){
                         Crop crop;
                         do {
                             crop = new Crop(CropEnum.getRandomForagingCrop());
-                        }while (!crop.getSeason().contains(App.getCurrentGame().getSeason()));
+                        }while (!crop.getSeason().contains(App.getCurrentGame().getGameCalender().getSeason()));
                         tile.setPlanted(crop);
+                        tile.setContentSymbol(crop.getSymbol());
                         App.getCurrentGame().getMap().AddCrop(crop);
                         tile.addContents(crop);
                     }
