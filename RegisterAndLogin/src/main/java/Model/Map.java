@@ -5,11 +5,15 @@ import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Farm;
 import Model.Shops.Shop;
+import Model.enums.Colors;
 import Model.enums.Shops.ShopEnum;
 import Model.FarmStuff.Foraging;
 import Model.FarmStuff.Rock;
+import Model.enums.TileType;
 
 import java.util.ArrayList;
+
+import static Model.enums.Colors.RESET;
 
 public class Map {
     private Tile[][] tiles = new Tile[300][250];
@@ -41,11 +45,85 @@ public class Map {
         shops.add(ShopEnum.JojaMart.createShop());
         shops.add(ShopEnum.Ranch.createShop());
         shops.add(ShopEnum.Saloon.createShop());
+
+        DrawPathWays();
         for (int i = 0; i < 250; i++) {
             for (int j = 0; j < 300; j++) {
-                System.out.printf("%2c",tiles[j][i].getSymbol());
+                if(tiles[j][i].getTileType().equals(TileType.BuildingWall)){
+                    System.out.printf("%s%2c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET);
+                }
+                else if(tiles[j][i].getTileType().equals(TileType.Water)){
+                    System.out.printf("%s%2c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET);
+                }
+                else if(tiles[j][i].getTileType().equals(TileType.Pathway)){
+                    System.out.printf("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET);
+                }
+                else {
+                    System.out.printf("%2c", tiles[j][i].getSymbol());
+                }
             }
             System.out.println();
+        }
+    }
+
+    private void DrawPathWays() {
+        DrawHorizontalPath(
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width]
+                        [farms.get(0).getBounds().y + farms.get(0).getBounds().height/2],
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [farms.get(0).getBounds().y + farms.get(0).getBounds().height/2]
+        );
+        DrawHorizontalPath(
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [farms.get(3).getBounds().y + farms.get(3).getBounds().height/2],
+                tiles[farms.get(3).getBounds().x]
+                        [farms.get(3).getBounds().y + farms.get(3).getBounds().height/2]
+        );
+        DrawHorizontalPath(
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
+                        [village.getBounds().y + village.getBounds().height/2],
+                tiles[village.getBounds().x]
+                        [village.getBounds().y + village.getBounds().height/2]
+        );
+        DrawHorizontalPath(
+                tiles[village.getBounds().x + village.getBounds().width]
+                        [village.getBounds().y + village.getBounds().height/2],
+                tiles[farms.get(2).getBounds().x + farms.get(2).getBounds().width/2]
+                        [village.getBounds().y + village.getBounds().height/2]
+        );
+        DrawVerticalPath(
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [farms.get(0).getBounds().y + farms.get(0).getBounds().height/2 - 2],
+                tiles[village.getBounds().x + village.getBounds().width/2]
+                        [village.getBounds().y]
+        );
+        DrawVerticalPath(
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
+                        [village.getBounds().y + village.getBounds().height/2],
+                tiles[farms.get(0).getBounds().x + farms.get(0).getBounds().width/2]
+                        [farms.get(1).getBounds().x]
+        );
+    }
+    private void DrawHorizontalPath(Tile begin, Tile end) {
+        if(begin.getCoordination().y != end.getCoordination().y) return;
+        if(begin.getCoordination().x >= end.getCoordination().x) return;
+        for(int i = -2+begin.getCoordination().y ; i < 3+begin.getCoordination().y ; i++){
+            for(int j = begin.coordination.x ; j < end.coordination.x ; j++){
+                tiles[j][i].setTileType(TileType.Pathway);
+                tiles[j][i].setSymbol('═');
+                tiles[j][i].setWalkable(true);
+            }
+        }
+    }
+    private void DrawVerticalPath(Tile begin, Tile end) {
+        if(begin.getCoordination().x != end.getCoordination().x) return;
+        if(begin.getCoordination().y >= end.getCoordination().y) return;
+        for(int i = -2+begin.getCoordination().x ; i < 3+begin.getCoordination().x ; i++){
+            for(int j = begin.coordination.y ; j < end.coordination.y ; j++) {
+                tiles[i][j].setTileType(TileType.Pathway);
+                tiles[i][j].setWalkable(true);
+                tiles[i][j].setSymbol('║');
+            }
         }
     }
 
