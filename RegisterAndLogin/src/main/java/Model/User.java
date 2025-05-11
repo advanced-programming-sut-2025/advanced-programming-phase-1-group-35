@@ -44,12 +44,12 @@ public class User {
     private SkillLevel miningSkill = Skill.mining.getSkillLevel();
     private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
     private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
-    public BackPack backPack;
-    private ArrayList<User> lv1Friends;
-    private ArrayList<User> lv2Friends;
-    private ArrayList<User> lv3Friends;
-    private ArrayList<Gift> Gifts;
-    private HashMap<NPC, Integer> npcFriendship;
+    public BackPack backPack = new BackPack();
+    private ArrayList<User> lv1Friends = new ArrayList<User>();
+    private ArrayList<User> lv2Friends = new ArrayList<User>();
+    private ArrayList<User> lv3Friends = new ArrayList<User>();
+    private ArrayList<Gift> Gifts = new ArrayList<>();
+    private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
     protected Tool currentTool;
     private Energy energy = new Energy();
     public Cabin cabin;

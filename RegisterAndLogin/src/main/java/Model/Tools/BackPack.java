@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BackPack {
-    public HashMap<ItemInterface, Integer> items;
+    public HashMap<ItemInterface, Integer> items = new HashMap<>();
     private int capacity = 12;
 
     public BackPack() {

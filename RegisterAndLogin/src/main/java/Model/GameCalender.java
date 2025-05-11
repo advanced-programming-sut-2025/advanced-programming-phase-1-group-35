@@ -3,6 +3,8 @@ package Model;
 import Controller.InGameMenu.FarmingController;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
+import Model.Shops.Shop;
+import Model.Shops.ShopItem;
 import Model.enums.Seasons;
 
 import java.time.LocalDateTime;
@@ -87,6 +89,11 @@ public class GameCalender {
         farmingController.addForagingCrop();
         farmingController.addForagingSeeds();
         farmingController.addForAgingTree();
+        for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
+            for (ShopItem product : shop.getProducts()) {
+                product.setDailyBoughtCount(0);
+            }
+        }
     }
 
 //    int neededEnergyAmount = 10;

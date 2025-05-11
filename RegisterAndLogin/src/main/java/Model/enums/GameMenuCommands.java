@@ -30,8 +30,8 @@ public enum GameMenuCommands {
     showInventory(""),
     inventoryTrash(""),
     buildABuilding("build\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
-    placeAnimal("animal\\s+place\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>")
-
+    placeAnimal("animal\\s+place\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    goToShopMenu("go\\s+to\\s+shop\\s+menu"),
 
 
 

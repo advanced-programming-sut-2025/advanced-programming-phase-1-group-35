@@ -54,5 +54,8 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.cheatEnergyUnlimited.getMatcher(input) )!= null){
             System.out.println(controller.cheatEnergyUnlimited());
         }
+        else if((matcher = GameMenuCommands.goToShopMenu.getMatcher(input) )!= null){
+            System.out.println(controller.goToShopMenu());
+        }
     }
 }
