@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.ItemInterface;
 import Model.enums.Seasons;
 
-public enum BlackSmithProducts implements ShopProduct{
+public enum BlackSmithProducts implements ShopProduct, ItemInterface {
     COPPER_ORE("Mineral","Copper Ore", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
     IRON_ORE("Mineral","Iron Ore", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),
     COAL("Mineral","Coal", "A combustible rock that is useful for crafting and smelting.", 150, Double.POSITIVE_INFINITY),

@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Model.ItemInterface;
 import Model.enums.Seasons;
 
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import static Model.enums.Crops.CropEnum.*;
 import static Model.enums.Seasons.*;
 
-public enum ForagingSeeds {
+public enum ForagingSeeds implements ItemInterface {
     JAZZ(Arrays.asList(Spring), CropEnum.BLUE_JAZZ, SeedEnum.JAZZ),
     CARROT(Arrays.asList(Spring), CropEnum.CARROT, SeedEnum.CARROT),
     CAULIFLOWER(Arrays.asList(Spring), CropEnum.CAULIFLOWER, SeedEnum.CAULIFLOWER),
@@ -52,7 +53,8 @@ public enum ForagingSeeds {
     RARE(Arrays.asList(Fall), CropEnum.SWEET_GEM_BERRY, SeedEnum.SWEET_GEM_BERRY),
     POWDERMELON(Arrays.asList(Winter), CropEnum.POWDERMELON, SeedEnum.POWDERMELON),
     ANCIENT(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.ANCIENT),
-    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),;
+    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),
+    FIBER(Arrays.asList(Spring,Summer,Fall,Winter),null,null);
 
     private final List<Seasons> seasons;
     private final CropEnum cropEnum;
@@ -91,5 +93,15 @@ public enum ForagingSeeds {
 
         Random random = new Random();
         return foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum;
+    }
+
+    @Override
+    public int getPrice() {
+        return this.cropEnum.getPrice();
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

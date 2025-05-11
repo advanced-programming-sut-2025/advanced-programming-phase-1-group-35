@@ -1,6 +1,8 @@
 package Model.enums.Crops;
 
-public enum Minerals {
+import Model.ItemInterface;
+
+public enum Minerals implements ItemInterface {
     QUARTZ("Quartz", "A clear crystal commonly found in caves and mines.", 25),
     EARTH_CRYSTAL("Earth Crystal", "A resinous substance found near the surface.", 50),
     FROZEN_TEAR("Frozen Tear", "A crystal fabled to be the frozen tears of a yeti.", 75),
@@ -27,6 +29,11 @@ public enum Minerals {
         this.name = name;
         this.description = description;
         this.sellPrice = sellPrice;
+    }
+
+    @Override
+    public int getPrice() {
+        return this.sellPrice;
     }
 
     public String getName() {

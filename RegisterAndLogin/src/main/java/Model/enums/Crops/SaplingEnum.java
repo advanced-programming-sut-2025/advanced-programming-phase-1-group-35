@@ -2,8 +2,9 @@ package Model.enums.Crops;
 
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Tree;
+import Model.ItemInterface;
 
-public enum SaplingEnum {
+public enum SaplingEnum implements ItemInterface {
     APRICOT_SAPLING(TreeEnum.APRICOT_TREE),
     CHERRY_SAPLING(TreeEnum.CHERRY_TREE),
     BANANA_SAPLING(TreeEnum.BANANA_TREE),
@@ -27,5 +28,15 @@ public enum SaplingEnum {
 
     public TreeEnum getTree() {
         return tree;
+    }
+
+    @Override
+    public int getPrice() {
+        return this.tree.getFruitSellPrice();
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

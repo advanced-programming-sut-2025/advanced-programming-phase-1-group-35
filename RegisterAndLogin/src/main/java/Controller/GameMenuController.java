@@ -6,12 +6,14 @@ import Model.*;
 import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import Model.enums.TileType;
 import View.GameMenu;
 import View.LoginMenu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -164,6 +166,12 @@ public class GameMenuController {
             App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
         }
         return new Result(true , "going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
+    }
+    public Result UseArtisan(String ArtisanName, List<String> Ingridients) {
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)) {
+
+        }
+        return null;
     }
 
     public Result showTime() {
