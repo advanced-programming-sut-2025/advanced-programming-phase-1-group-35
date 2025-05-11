@@ -170,7 +170,12 @@ public class GameMenuController {
         if(i == 0){
             App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
         }
-        return new Result(true , "going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
+        String notifications = "";
+        if(App.getCurrentGame().getPlayingUser().isHasNewMessages()){
+            notifications += "\nyou have new message(s)";
+        }
+        return new Result(true , "going to next turn . now turn of : " +
+                App.getCurrentGame().getPlayingUser().getUsername() + notifications);
     }
 
     public Result showTime() {
@@ -366,11 +371,51 @@ public class GameMenuController {
     public Result getFromArtisan(String ArtisanName){
         return null;
     }
-    public void talk (){
 
+    public Result talk (String username, String message){
+        User sender = App.getCurrentGame().getPlayingUser();
+        User receiver = getUserBYName(username);
+        if(receiver == null){
+            return new Result(false, "user not found");
+        }
+        if(Math.abs(receiver.getCurrentPoint().x - sender.getCurrentPoint().x) > 2 ||
+           Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2){
+            return new Result(false, "you are not close enough, somehow you don't have a cell phone either");
+        }
+        Message m = new Message(sender.getID(), message, receiver.getID());
+        sender.getMessages().add(m);
+        receiver.getMessages().add(m);
+        increaseMutualXP(sender , receiver, 20);
+        return new Result(true, "your message was sent");
     }
-    public void talkHistory(){
 
+    private void increaseMutualXP(User sender, User receiver, int i) {
+        sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 0) + i);
+        receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 0) + i);
+    }
+
+    public Result talkHistory(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        StringBuilder m = new StringBuilder();
+        m.append("talk history with ").append(username).append(": \n═════════════════════════════════\n");
+        for (Message message : me.getMessages()) {
+            if(message.getSenderID() == friend.getID()){
+                m.append("received: \n").append(message.getMessage()).append("\n═════════════════════════════════\n");
+            }
+            else if(message.getReceiverID() == friend.getID()){
+                m.append("sent: \n").append(message.getMessage()).append("\n═════════════════════════════════\n");
+            }
+        }
+        return new Result(true, m.toString());
+    }
+    public Result friendShipStatus(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        int xp = me.getFriendshipXPs().getOrDefault(friend.getID(), 0);
+        int level = xp/100 -1;
+        return new Result(true, "friendship status for " + username+
+                "\nfriendship level: " + level + "\nfriendship xp: " + xp);
     }
     public Result hug(){
         return null;
@@ -431,7 +476,7 @@ public class GameMenuController {
         return new Result(true, "you have successfully sold " + count + " of " + product.getKey().getName());
     }
 
-    private Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
+    public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
         for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
             if(e.getKey().getName().equals(productName)){
                 return e;
@@ -440,4 +485,12 @@ public class GameMenuController {
         return null;
     }
 
+    public User getUserBYName(String userName) {
+        for (User player : App.getCurrentGame().getPlayers()) {
+            if (player.getUsername().equals(userName)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

@@ -1,8 +1,6 @@
 package Model;
 
 import Model.FarmStuff.Farm;
-import Model.FarmStuff.Farm;
-import Model.FarmStuff.Home.Cabin;
 import Model.FarmStuff.Home.Cabin;
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
@@ -46,9 +44,9 @@ public class User {
     private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
     private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
     public BackPack backPack = new BackPack();
-    private ArrayList<User> lv1Friends = new ArrayList<User>();
-    private ArrayList<User> lv2Friends = new ArrayList<User>();
-    private ArrayList<User> lv3Friends = new ArrayList<User>();
+    private HashMap<Integer , Integer> friendshipXPs = new HashMap<>();
+    private ArrayList<Message> messages = new ArrayList<>();
+    private boolean hasNewMessages = false;
     private ArrayList<Gift> Gifts = new ArrayList<>();
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
     protected Tool currentTool;
@@ -202,29 +200,6 @@ public class User {
 
     public void setMap(Map map) {
         this.map = map;
-    }
-    public ArrayList<User> getLv1Friends() {
-        return lv1Friends;
-    }
-
-    public void setLv1Friends(ArrayList<User> lv1Friends) {
-        this.lv1Friends = lv1Friends;
-    }
-
-    public ArrayList<User> getLv2Friends() {
-        return lv2Friends;
-    }
-
-    public void setLv2Friends(ArrayList<User> lv2Friends) {
-        this.lv2Friends = lv2Friends;
-    }
-
-    public ArrayList<User> getLv3Friends() {
-        return lv3Friends;
-    }
-
-    public void setLv3Friends(ArrayList<User> lv3Friends) {
-        this.lv3Friends = lv3Friends;
     }
 
     public ArrayList<Gift> getGifts() {
@@ -393,5 +368,29 @@ public class User {
 
     public void setIncome(int income) {
         this.income = income;
+    }
+
+    public HashMap<Integer, Integer> getFriendshipXPs() {
+        return friendshipXPs;
+    }
+
+    public void setFriendshipXPs(HashMap<Integer, Integer> friendshipXPs) {
+        this.friendshipXPs = friendshipXPs;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
+
+    public boolean isHasNewMessages() {
+        return hasNewMessages;
+    }
+
+    public void setHasNewMessages(boolean hasNewMessages) {
+        this.hasNewMessages = hasNewMessages;
     }
 }
