@@ -41,11 +41,15 @@ public class ShopMenuController {
     }
     public Result showAvailableProducts() {
         StringBuilder output = new StringBuilder();
+        int price = 0;
         for (ShopItem product : shop.getProducts()) {
-            if((product.getSeason() != null &&
-                    !product.getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) ||
-                    (product.getDailyBoughtCount() >= product.getDailyLimit())) continue;
-            output.append("name: ").append(product.getName()).append("\n").append("price: ").append(product.getPrice()).append("\n")
+            if(!isItemAvailable(product)) continue;
+            price = product.getPrice();
+            if(product.getSeason()!=null &&
+               !product.getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) {
+                price *= 1.5;
+            }
+            output.append("name: ").append(product.getName()).append("\n").append("price: ").append(price).append("\n")
                     .append("description: ").append(product.getDescription()).append("\n").append("daily limit: ")
                     .append(product.getDailyLimit()).append("\n").append("════════════════════════════════\n");
         }
@@ -61,6 +65,9 @@ public class ShopMenuController {
         if(count > item.getDailyLimit() - item.getDailyBoughtCount()){
             return new Result(false, "daily limit exceeded");
         }
+        if(!isItemAvailable(item)) {
+            return new Result(false, "No such item");
+        }
         if(item.getPrice() > user.getMoney()){
             return new Result(false, "You don't have enough money");
         }
@@ -71,8 +78,14 @@ public class ShopMenuController {
         if(product instanceof Result){
             return (Result) product;
         }
+        int price = ((ShopItem)product).getPrice();
+        if(((ShopItem)product).getSeason()!=null &&
+           !((ShopItem)product).getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) {
+            price *= 1.5;
+        }
         user.getBackPack().items.compute((ItemInterface) product , (k, v) -> v == null ? count : v + count );
         item.setDailyBoughtCount(item.getDailyBoughtCount() + count);
+        user.setMoney(user.getMoney() - price);
         return new Result(true, "you successfully purchased " + count + " of " + item.getName());
     }
     public ShopItem findShopItemByName(String name) {
@@ -82,6 +95,12 @@ public class ShopMenuController {
             }
         }
         return null;
+    }
+    public boolean isItemAvailable(ShopItem product) {
+        return
+        (product.getSeason() != null && !product.getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())
+        && !shop.getName().equalsIgnoreCase("GeneralStore")) ||
+        (product.getDailyBoughtCount() >= product.getDailyLimit());
     }
 
     public Result cheatAddMoney(String amountString){

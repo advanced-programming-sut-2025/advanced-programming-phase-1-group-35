@@ -32,6 +32,7 @@ public class User {
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
     private int money = 0;
+    private int income = 0;
 
     private Game currentGame = null;
     private int currentGameFarmIndex = -1;
@@ -384,5 +385,13 @@ public class User {
 
     public void setCurrentGameFarmIndex(int currentGameFarmIndex) {
         this.currentGameFarmIndex = currentGameFarmIndex;
+    }
+
+    public int getIncome() {
+        return income;
+    }
+
+    public void setIncome(int income) {
+        this.income = income;
     }
 }

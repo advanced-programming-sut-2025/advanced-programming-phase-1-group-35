@@ -1,6 +1,7 @@
 package Model.FarmStuff;
 
 import Model.*;
+import Model.Buildings.AnimalHouse;
 import Model.Buildings.Building;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
@@ -21,11 +22,14 @@ public class Farm {
     private Lake lake;
     private Greenhouse greenhouse;
     private Quarry quarry;
+    private ShippingBin shippingBin;
     private ArrayList<Model.CropClasses.Crop> Crop = new ArrayList<>();
-    private ArrayList<Tree> trees;
-    private ArrayList<Rock> rocks;
-    private ArrayList<Foraging> forages;
+    private ArrayList<Tree> trees = new ArrayList<>();
+    private ArrayList<Rock> rocks = new ArrayList<>();
+    private ArrayList<Foraging> forages = new ArrayList<>();
     public ArrayList<Animal> animals = new ArrayList<>();
+    public ArrayList<AnimalHouse> animalHouses = new ArrayList<>();
+    public ArrayList<Building> buildings = new ArrayList<>();
 
     public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
@@ -68,6 +72,7 @@ public class Farm {
         greenhouse = new Greenhouse(this , tiles);
         lake = new Lake(farmType , tiles , this);
         quarry = new Quarry(farmType , tiles , this);
+        shippingBin = new ShippingBin(this , tiles);
 
         if(owner != null) { // placing the player
             Rectangle bounds = cabin.getBounds();
@@ -196,5 +201,45 @@ public class Farm {
             }
         }
         return null;
+    }
+
+    public ArrayList<Model.CropClasses.Crop> getCrop() {
+        return Crop;
+    }
+
+    public void setCrop(ArrayList<Model.CropClasses.Crop> crop) {
+        Crop = crop;
+    }
+
+    public ArrayList<Tree> getTrees() {
+        return trees;
+    }
+
+    public void setTrees(ArrayList<Tree> trees) {
+        this.trees = trees;
+    }
+
+    public ArrayList<Rock> getRocks() {
+        return rocks;
+    }
+
+    public void setRocks(ArrayList<Rock> rocks) {
+        this.rocks = rocks;
+    }
+
+    public ArrayList<Foraging> getForages() {
+        return forages;
+    }
+
+    public void setForages(ArrayList<Foraging> forages) {
+        this.forages = forages;
+    }
+
+    public ShippingBin getShippingBin() {
+        return shippingBin;
+    }
+
+    public void setShippingBin(ShippingBin shippingBin) {
+        this.shippingBin = shippingBin;
     }
 }

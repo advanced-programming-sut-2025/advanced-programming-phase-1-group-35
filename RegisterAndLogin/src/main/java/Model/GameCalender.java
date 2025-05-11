@@ -1,11 +1,13 @@
 package Model;
 
+import Controller.GameMenuController;
 import Controller.InGameMenu.FarmingController;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
 import Model.enums.Seasons;
+import View.GameMenu;
 
 import java.time.LocalDateTime;
 
@@ -92,6 +94,15 @@ public class GameCalender {
         for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
             for (ShopItem product : shop.getProducts()) {
                 product.setDailyBoughtCount(0);
+            }
+        }
+        for (User player : App.getCurrentGame().getPlayers()) {
+            player.setMoney(player.getIncome() + player.getMoney());
+            player.setIncome(0);
+            if(!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())){
+                GameMenuController controller = new GameMenuController();
+                GameMenu.print(controller.walk(String.format("%d",player.getFarm().getCabin().getBounds().x + 3),
+                                                String.format("%d",player.getFarm().getCabin().getBounds().y + 3)).toString());
             }
         }
     }

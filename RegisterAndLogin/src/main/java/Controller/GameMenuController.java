@@ -16,6 +16,7 @@ import View.LoginMenu;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -398,7 +399,44 @@ public class GameMenuController {
     public Result completeQuest(){
         return null;
     }
-    public Result Sell(){
+    public Result Sell(String productName , String countString){
+        boolean isNearBin = false;
+        User player = App.getCurrentGame().getPlayingUser();
+        Point point = player.getCurrentPoint();
+        Tile[][]tiles = App.getCurrentGame().getMap().getTiles();
+        for(int i = point.x -1 ; i <= point.x + 1 ; i++){
+            for(int j = point.y -1 ; j <= point.y + 1 ; j++){
+                if(tiles[i][j].getTileType().equals(TileType.ShippingBin)){
+                    isNearBin = true;
+                    break;
+                }
+            }
+        }
+        if(!isNearBin){
+            return new Result(false, "you are not near a shipping bin");
+        }
+        Map.Entry<ItemInterface, Integer> product = getItemFromBackPack(productName);
+        if(product == null){
+            return new Result(false, "product not found");
+        }
+        int count = countString == null ? product.getValue() : Integer.parseInt(countString);
+        if(count > product.getValue()){
+            return new Result(false, "product exceeds maximum quantity");
+        }
+        player.setIncome(player.getIncome() + count*product.getKey().getPrice());
+        player.getBackPack().items.replace(product.getKey(), product.getValue() - count);
+        if(player.getBackPack().items.get(product.getKey()) == 0){
+            player.getBackPack().items.remove(product.getKey());
+        }
+        return new Result(true, "you have successfully sold " + count + " of " + product.getKey().getName());
+    }
+
+    private Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
+        for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
+            if(e.getKey().getName().equals(productName)){
+                return e;
+            }
+        }
         return null;
     }
 
