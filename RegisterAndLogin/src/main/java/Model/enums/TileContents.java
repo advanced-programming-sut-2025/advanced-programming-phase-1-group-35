@@ -4,5 +4,5 @@ public enum TileContents {
     rock,
     tree,
     foraging,
-    Seed,
+    seed,
 }

@@ -21,7 +21,7 @@ public class ToolMenu extends AppMenu {
             } else if ((matcher = ToolCommands.showAllTools.getMatcher(command)) != null) {
                 System.out.println(controller.showTools());
             } else if ((matcher = ToolCommands.useTool.getMatcher(command)) != null) {
-                controller.useTool(matcher.group(1));
+
             } else {
                 System.out.println("Invalid command");
             }

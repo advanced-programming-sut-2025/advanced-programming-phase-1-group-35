@@ -2,6 +2,7 @@ package Model.Tools;
 
 import Model.*;
 import Model.enums.CookingIngredient;
+import Model.enums.ToolTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,5 +53,21 @@ public class BackPack {
             }
         }
         return null;
+    }
+
+    public boolean isToolInBackPack(ToolTypes toolType) {
+        for (ItemInterface item : items.keySet()) {
+            if (item instanceof Tool toolName) {
+                if (toolName.getToolName().equals(toolType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void upgradeBackPack(int newCapacity) {
+        // TODO : check if in Pierre shop
+        this.capacity = newCapacity;
     }
 }
