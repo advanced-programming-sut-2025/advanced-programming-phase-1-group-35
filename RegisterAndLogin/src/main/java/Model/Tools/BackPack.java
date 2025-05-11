@@ -11,7 +11,7 @@ public class BackPack {
     private int capacity = 12;
 
     public BackPack() {
-        // TODO : initial tools that everyone have  
+        // TODO : initial tools that everyone have
     }
 
     public boolean doesBackPackHasSpace() {
