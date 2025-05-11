@@ -6,13 +6,8 @@ import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
-import Model.*;
-import Model.FarmStuff.Foraging;
-import Model.FarmStuff.Greenhouse;
-import Model.FarmStuff.Lake;
-import Model.FarmStuff.Quarry;
 import Model.Shops.Shop;
-import Model.enums.Crops.PlantAble;
+import Model.animal.Animal;
 import Model.enums.FarmType;
 import Model.enums.Shops.ShopEnum;
 import Model.enums.TileType;
@@ -31,6 +26,7 @@ public class Farm {
     private ArrayList<Tree> trees;
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
+    public ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Shop> shops;
     private ArrayList<Building> buildings;
     public Farm(int number , User owner , int type , Tile[][] tiles) {
@@ -185,6 +181,24 @@ public class Farm {
 //    public ArrayList<Foraging> getForages() {
 //        return forages;
 //    }
+
+    public boolean isAnimalNameExist(String animalName) {
+        for (Animal animal : animals) {
+            if (animal.getName().equals(animalName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Animal findAnimal(String animalName) {
+        for (Animal animal : animals) {
+            if (animal.getName().equals(animalName)) {
+                return animal;
+            }
+        }
+        return null;
+    }
     public void AddCrop(Crop crop) {
         this.Crop.add(crop);
     }

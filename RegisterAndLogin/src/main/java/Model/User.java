@@ -1,10 +1,15 @@
 package Model;
 
 import Model.FarmStuff.Farm;
+import Model.FarmStuff.Farm;
+import Model.FarmStuff.Home.Cabin;
+import Model.FarmStuff.Home.Cabin;
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
+import Model.Tools.BackPack;
 import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
+import Model.enums.CookingRecipes;
 import Model.enums.Gender;
 import Model.TradeAndGift.Gift;
 import Model.enums.SecurityQuestions;
@@ -25,6 +30,8 @@ public class User {
     private String securityAnswer;
     private int highScore = 0;
     private int gamesPlayed = 0;
+    private int energyConsumedInTurn = 0;
+    private int money = 0;
 
     private Game currentGame = null;
     private int currentGameFarmIndex = -1;
@@ -33,11 +40,11 @@ public class User {
     private Point currentPoint = null;
     private char symbol;
     private Map map;
-    public Inventory inventory;
     private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
     private SkillLevel miningSkill = Skill.mining.getSkillLevel();
     private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
     private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
+    public BackPack backPack;
     private ArrayList<User> lv1Friends;
     private ArrayList<User> lv2Friends;
     private ArrayList<User> lv3Friends;
@@ -45,6 +52,8 @@ public class User {
     private HashMap<NPC, Integer> npcFriendship;
     protected Tool currentTool;
     private Energy energy = new Energy();
+    public Cabin cabin;
+    public ArrayList<CookingRecipes> learnedRecipes = new ArrayList<>();
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -56,6 +65,38 @@ public class User {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.ID = IDCounter++;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public BackPack getBackPack() {
+        return backPack;
+    }
+
+    public void setBackPack(BackPack backPack) {
+        this.backPack = backPack;
+    }
+
+    public Cabin getCabin() {
+        return cabin;
+    }
+
+    public void setCabin(Cabin cabin) {
+        this.cabin = cabin;
+    }
+
+    public ArrayList<CookingRecipes> getLearnedRecipes() {
+        return learnedRecipes;
+    }
+
+    public void setLearnedRecipes(ArrayList<CookingRecipes> learnedRecipes) {
+        this.learnedRecipes = learnedRecipes;
     }
 
     public void talk (User user){
@@ -257,14 +298,6 @@ public class User {
 
     public void setEnergy(Energy energy) {
         this.energy = energy;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     public Tool getCurrentTool() {

@@ -34,4 +34,20 @@ public enum AnimalType {
     public Animal createAnimal(String name) {
         return new Animal(name , buyingPrice, productionRate, confinement, products);
     }
+
+    public int getBuyingPrice() {
+        return buyingPrice;
+    }
+
+    public int getProductionRate() {
+        return productionRate;
+    }
+
+    public AnimalProduct[] getProducts() {
+        return products;
+    }
+
+    public String getConfinement() {
+        return confinement;
+    }
 }

@@ -10,21 +10,29 @@ import Model.Point;
 public class Animal {
     private final String name;
     private final int buyingPrice;
-    private final int productionRate;
+    private double productionQuality;
+    private int productionRate;
     private final AnimalProduct[] products;
     private final String confinement;
     private int friendship;
     private Point coordination;
     private int daysPastLastProduction;
     private boolean isInHouse;
+    private boolean isFeedToday;
+    private boolean canProduceTomorrow;
+    private boolean isNazToday; // TODO : reset these 2 after a day passed
 
-    public Animal(String name , int buyingPrice, int productionRate, String confinement
+
+    public Animal(String name , int buyingPrice, double productionRate, String confinement
     , AnimalProduct[] products) {
         this.name = name;
         this.buyingPrice = buyingPrice;
-        this.productionRate = productionRate;
+        this.productionQuality = productionRate;
         this.confinement = confinement;
         this.products = products;
+        this.isFeedToday = false;
+        this.isNazToday = false;
+        this.canProduceTomorrow = false;
     }
 
     public Result buyAnimal(){
@@ -58,16 +66,36 @@ public class Animal {
         return name;
     }
 
-    public int getBuyingPrice() {
-        return buyingPrice;
+    public void setProductionQuality(double productionQuality) {
+        this.productionQuality = productionQuality;
     }
 
     public int getProductionRate() {
         return productionRate;
     }
 
+    public void setProductionRate(int productionRate) {
+        this.productionRate = productionRate;
+    }
+
+    public int getBuyingPrice() {
+        return buyingPrice;
+    }
+
+    public double getProductionQuality() {
+        return productionQuality;
+    }
+
     public AnimalProduct[] getProducts() {
         return products;
+    }
+
+    public boolean isCanProduceTomorrow() {
+        return canProduceTomorrow;
+    }
+
+    public void setCanProduceTomorrow(boolean canProduceTomorrow) {
+        this.canProduceTomorrow = canProduceTomorrow;
     }
 
     public String getConfinement() {
@@ -90,6 +118,22 @@ public class Animal {
         this.daysPastLastProduction = daysPastLastProduction;
     }
 
+    public boolean isFeedToday() {
+        return isFeedToday;
+    }
+
+    public void setFeedToday(boolean feedToday) {
+        isFeedToday = feedToday;
+    }
+
+    public boolean isNazToday() {
+        return isNazToday;
+    }
+
+    public void setNazToday(boolean nazToday) {
+        isNazToday = nazToday;
+    }
+
     public Point getCoordination() {
         return coordination;
     }
@@ -104,5 +148,23 @@ public class Animal {
 
     public void setInHouse(boolean inHouse) {
         isInHouse = inHouse;
+    }
+
+    public void updateQuality() {
+        double quality = friendship / 1000.0;
+        quality *= (0.5 + (0.5 * Math.random()));
+        this.productionQuality = quality;
+    }
+
+    public int getSellingPrice() {
+        double sellingPrice = buyingPrice * ((friendship / 1000.0) + 0.3);
+        if (productionQuality >= 0.5 && productionQuality < 0.7) {
+            sellingPrice *= 1.25;
+        } else if (productionQuality >= 0.7 && productionQuality < 0.9) {
+            sellingPrice *= 1.5;
+        } else if (productionQuality >= 0.9) {
+            sellingPrice *= 2;
+        }
+        return (int) sellingPrice;
     }
 }

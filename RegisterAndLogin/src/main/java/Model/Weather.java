@@ -41,8 +41,13 @@ public class Weather {
         return null;
     }
 
+    public WeatherCondition getWeatherCondition() {
+        return weatherCondition;
+    }
 
-
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        this.weatherCondition = weatherCondition;
+    }
 
     @Override
     public String toString() {
