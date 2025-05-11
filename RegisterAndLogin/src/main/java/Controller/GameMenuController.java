@@ -2,11 +2,13 @@ package Controller;
 
 import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
+import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
 import View.GameMenu;
+import View.InGameMenu.ShopMenu;
 import View.LoginMenu;
 
 import java.io.IOException;
@@ -286,6 +288,15 @@ public class GameMenuController {
                 "energy left: " + energy.getEnergyAmount() +
                 "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
                 "energy capacity: " + energy.getEnergyCapacity());
+    }
+
+    public Result goToShopMenu(){
+        ShopMenuController controller = new ShopMenuController();
+        if(controller.shop == null)
+            return new Result(false, "you are not in a shop");
+        App.setCurrentMenu(Menu.ShopMenu);
+        ((ShopMenu)Menu.ShopMenu.getMenu()).setShop(controller.shop);
+        return new Result(true, "redirecting to shop menu ...");
     }
 
     public Result showInventory() {

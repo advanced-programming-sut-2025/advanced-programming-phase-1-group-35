@@ -21,6 +21,13 @@ public class Seed implements PlantAble, ItemInterface {
         this.tile = tile;
     }
 
+    public Seed(SeedEnum seedEnum) {
+        this.name = seedEnum.getSeedName();
+        this.isMixed = seedEnum.isMixed();
+        this.cropEnum = seedEnum.getCrop();
+        this.tile = null;
+    }
+
     public Seed getSeed(int seedAmount) {
         this.seedAmount = seedAmount;
         return this;

@@ -93,7 +93,10 @@ public enum CookingRecipes {
             CookingIngredient.CARROT, 2,
             CookingIngredient.SUGAR, 1,
             CookingIngredient.MILK, 1
-    ), 125, "Mining (5h)", "Mining Level 1", 200);
+    ), 125, "Mining (5h)", "Mining Level 1", 200),
+    TROUT_SOUP("trout soup", null, 200 , "", "", 250),
+
+    ;
 
     private final String displayName;
     private final Map<CookingIngredient, Integer> ingredients;

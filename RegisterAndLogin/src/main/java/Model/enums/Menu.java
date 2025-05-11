@@ -1,6 +1,7 @@
 package Model.enums;
 
 import View.*;
+import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -10,7 +11,10 @@ public enum Menu {
     LoginMenu(new LoginMenu()),
     GameMenu(new GameMenu()),
     ProfileMenu(new ProfileMenu()),
-    ExitMenu(new ExitMenu());
+    ExitMenu(new ExitMenu()),
+
+    ShopMenu(new ShopMenu()),
+    ;
 
     private final AppMenu menu;
 

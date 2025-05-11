@@ -31,8 +31,8 @@ public enum AnimalType {
         this.products = products;
     }
 
-    public Animal createAnimal(String name) {
-        return new Animal(name , buyingPrice, productionRate, confinement, products);
+    public Animal createAnimal(String name , int x , int y) {
+        return new Animal(name , buyingPrice, productionRate, confinement, products, x, y);
     }
 
     public int getBuyingPrice() {

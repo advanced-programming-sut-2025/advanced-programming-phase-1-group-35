@@ -11,7 +11,7 @@ public enum GeneralStoreProducts implements ShopProduct{
     VINEGAR("Item","Vinegar", "An aged fermented liquid used in many cooking recipes.", 200, Double.POSITIVE_INFINITY),
     DELUXE_RETAINING_SOIL("Item","Deluxe Retaining Soil", "This soil has a 100% chance of staying watered overnight. Mix into tilled soil.", 150, Double.POSITIVE_INFINITY),
     SPEED_GRO("Item","Speed-Gro", "Makes the plants grow 1 day earlier.", 100, Double.POSITIVE_INFINITY),
-    APPLE_SAPLING("Sapling", "Apple Sapling", "Takes 28 days to produce a mature Apple tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.", 4000, Double.POSITIVE_INFINITY),
+    APPLE("Sapling", "Apple Sapling", "Takes 28 days to produce a mature Apple tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.", 4000, Double.POSITIVE_INFINITY),
     APRICOT_SAPLING("Sapling","Apricot Sapling", "Takes 28 days to produce a mature Apricot tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.", 2000, Double.POSITIVE_INFINITY),
     CHERRY_SAPLING("Sapling","Cherry Sapling", "Takes 28 days to produce a mature Cherry tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.", 3400, Double.POSITIVE_INFINITY),
     ORANGE_SAPLING("Sapling","Orange Sapling", "Takes 28 days to produce a mature Orange tree. Bears fruit in the summer. Only grows if the 8 surrounding \"tiles\" are empty.", 4000, Double.POSITIVE_INFINITY),

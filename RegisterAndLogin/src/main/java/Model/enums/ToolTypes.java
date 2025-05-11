@@ -14,7 +14,7 @@ public enum ToolTypes {
 
     final Skill skill;
     ToolMaterial material;
-    int energyConsumed;
+    public int energyConsumed;
     ToolTypes(Skill skill, ToolMaterial material,int energyConsumed) {
         this.skill = skill;
         this.material = material;

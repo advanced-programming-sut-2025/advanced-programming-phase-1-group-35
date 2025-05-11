@@ -3,10 +3,11 @@ package Model.Tools;
 import Model.enums.ToolTypes;
 
 public class FishingPole extends Tool {
+    private String name ;
 
-    public FishingPole(String name) {
-        // TODO when making this object in shop section
-        super(1,1, ToolTypes.FISHING_ROD);
+    public FishingPole(String name , int price) {
+        super(price,1, ToolTypes.FISHING_ROD);
+        this.name = name;
     }
 
     @Override
@@ -16,6 +17,6 @@ public class FishingPole extends Tool {
 
     @Override
     public String getName() {
-        return super.toolName.toString();
+        return name;
     }
 }

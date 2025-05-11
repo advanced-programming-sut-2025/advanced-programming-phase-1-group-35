@@ -24,7 +24,7 @@ public class Animal {
 
 
     public Animal(String name , int buyingPrice, double productionRate, String confinement
-    , AnimalProduct[] products) {
+    , AnimalProduct[] products, int x, int y) {
         this.name = name;
         this.buyingPrice = buyingPrice;
         this.productionQuality = productionRate;
@@ -33,6 +33,7 @@ public class Animal {
         this.isFeedToday = false;
         this.isNazToday = false;
         this.canProduceTomorrow = false;
+        coordination = new Point(x,y);
     }
 
     public Result buyAnimal(){
