@@ -1,11 +1,12 @@
 package Model.enums.animal;
 
 import Model.App;
+import Model.ItemInterface;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public enum FishType {
+public enum FishType implements ItemInterface {
     SALMON("Salmon", 75, "Fall"),
     SARDINE("Sardine", 40, "Fall"),
     SHAD("Shad", 60, "Fall"),
@@ -31,6 +32,11 @@ public enum FishType {
         this.name = name;
         this.basePrice = basePrice;
         this.season = season;
+    }
+
+    @Override
+    public int getPrice() {
+        return this.basePrice;
     }
 
     public String getName() {
