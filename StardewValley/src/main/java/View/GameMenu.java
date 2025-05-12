@@ -53,7 +53,7 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.goToShopMenu());
         }
         else if ((matcher = ToolCommands.toolEquip.getMatcher(input)) != null) {
-            System.out.println(toolsController.toolEquip(matcher.group(1)));
+            System.out.println(toolsController.toolEquip(matcher.group("toolName")));
         } else if ((matcher = ToolCommands.showCurrentTool.getMatcher(input)) != null) {
             System.out.println(toolsController.showCurrentTool());
         } else if ((matcher = ToolCommands.showAllTools.getMatcher(input)) != null) {

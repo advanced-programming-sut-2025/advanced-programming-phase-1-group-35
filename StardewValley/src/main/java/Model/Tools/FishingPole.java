@@ -11,11 +11,6 @@ public class FishingPole extends Tool {
     }
 
     @Override
-    public void reduceEnergy() {
-
-    }
-
-    @Override
     public String getName() {
         return name;
     }

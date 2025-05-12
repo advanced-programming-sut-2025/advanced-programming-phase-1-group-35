@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum ToolCommands {
-    toolEquip("tools equip (?<toolName>\\S.*\\S)"),
+    toolEquip("tools\\s+equip\\s+(?<toolName>.+?)"),
     showCurrentTool("tools show current"),
     showAllTools("tools show available"),
     upgradeTool("tools upgrade (?<toolName>\\S+)"),
