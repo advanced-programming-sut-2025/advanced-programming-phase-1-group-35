@@ -4,7 +4,6 @@ import Model.*;
 import Model.enums.CookingIngredient;
 import Model.enums.ToolTypes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BackPack {
@@ -58,7 +57,7 @@ public class BackPack {
     public boolean isToolInBackPack(ToolTypes toolType) {
         for (ItemInterface item : items.keySet()) {
             if (item instanceof Tool toolName) {
-                if (toolName.getToolName().equals(toolType)) {
+                if (toolName.getToolType().equals(toolType)) {
                     return true;
                 }
             }

@@ -4,24 +4,24 @@ import Model.ItemInterface;
 import Model.enums.ToolTypes;
 
 public abstract class Tool implements ItemInterface {
-    public ToolTypes toolName;
+    public ToolTypes toolType;
     public double price;
     public int defaultEnergyCost;
 
     public Tool(double price, int defaultEnergyCost, ToolTypes toolName) {
         this.price = price;
         this.defaultEnergyCost = defaultEnergyCost;
-        this.toolName = toolName;
+        this.toolType = toolName;
     }
 
     public abstract void reduceEnergy();
 
-    public ToolTypes getToolName() {
-        return toolName;
+    public ToolTypes getToolType() {
+        return toolType;
     }
 
-    public void setToolName(ToolTypes toolName) {
-        this.toolName = toolName;
+    public void setToolType(ToolTypes toolType) {
+        this.toolType = toolType;
     }
 
     public int getDefaultEnergyCost() {

@@ -17,7 +17,7 @@ public class WateringCan extends Tool {
 
     @Override
     public String getName() {
-        return super.toolName.toString();
+        return super.toolType.toString();
     }
 
     public int getCapacity() {

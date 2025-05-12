@@ -20,8 +20,10 @@ public class ToolMenu extends AppMenu {
                 System.out.println(controller.showCurrentTool());
             } else if ((matcher = ToolCommands.showAllTools.getMatcher(command)) != null) {
                 System.out.println(controller.showTools());
+            } else if ((matcher = ToolCommands.upgradeTool.getMatcher(command)) != null) {
+                System.out.println(controller.upgradeTool(matcher.group(1)));
             } else if ((matcher = ToolCommands.useTool.getMatcher(command)) != null) {
-
+                System.out.println(controller.useTool(Integer.parseInt(matcher.group(1))));
             } else {
                 System.out.println("Invalid command");
             }
