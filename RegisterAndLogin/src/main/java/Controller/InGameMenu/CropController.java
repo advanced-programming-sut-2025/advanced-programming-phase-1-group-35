@@ -31,13 +31,16 @@ public class CropController {
 
             StringBuilder sb = new StringBuilder();
             sb.append("Name: ").append(cropEnum.getName()).append("\n");
-            sb.append("Source: ").append(cropEnum.getSource()).append("\n");
+            if(cropEnum.getSource() == null) sb.append("Source: null\n");
+            else sb.append("Source: ").append(cropEnum.getSource().getName()).append("\n");
             sb.append("Stages: ").append(cropEnum.getStages().stream().map(String::valueOf)
                             .collect(Collectors.joining("-")))
                     .append("\n");
             sb.append("Total Harvest Time: ").append(cropEnum.getTotalHarvestTime()).append("\n");
             sb.append("One Time: ").append(cropEnum.isOneTime()).append("\n");
-            sb.append("Regrowth Time: ").append(cropEnum.isOneTime() ? "" : cropEnum.getRegrowthTime()).append("\n");
+            if (!cropEnum.isOneTime()) {
+                sb.append("Regrowth Time: ").append(cropEnum.getRegrowthTime()).append("\n");
+            }
             sb.append("Base Sell Price: ").append(cropEnum.getBaseSellPrice()).append("\n");
             sb.append("Is Edible: ").append(cropEnum.isEdible()).append("\n");
             sb.append("Base Energy: ").append(cropEnum.getEnergy()).append("\n");

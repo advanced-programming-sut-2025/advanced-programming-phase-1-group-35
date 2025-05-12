@@ -55,7 +55,7 @@ public class GameCalender {
 //        }
     season = season.findNextSeason(season);
     for(Crop crop : App.getCurrentGame().getMap().getCrops()) {
-        if(!crop.getSeason().equals(season)) {
+        if(!crop.getSeasons().equals(season)) {
             crop.getCropTile().setPlanted(null);
             crop.getCropTile().getContents().remove(crop);
         }

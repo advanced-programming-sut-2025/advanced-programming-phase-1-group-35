@@ -7,6 +7,8 @@ import Model.Tools.FishingPole;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
 import Model.enums.TileType;
+import Model.enums.machines.ArtisanProductDetails;
+import Model.machines.ArtisanProduct;
 import View.GameMenu;
 import View.LoginMenu;
 
@@ -18,9 +20,18 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
-    CropController cropController ;
-    FarmingController farmingController ;
+    CropController cropController = new CropController() ;
+    FarmingController farmingController;
     Game CurrentGame = null ;
+
+    public String showCropInfo(String cropName) {
+        return cropController.getCropInfo(cropName);
+    }
+
+    public Result plantSeed(String seedName, String direction){
+        return farmingController.plantSeed(seedName, direction);
+    }
+
 
     public void setFarmingController() {
         cropController = new CropController();
@@ -167,9 +178,19 @@ public class GameMenuController {
         }
         return new Result(true , "going to next turn . now turn of : " + App.getCurrentGame().getPlayingUser().getUsername());
     }
-    public Result UseArtisan(String ArtisanName, List<String> Ingridients) {
+    public Result UseArtisan(String ArtisanName, List<String> Ingredients) {
         if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)) {
-
+            return new Result(false, "You are not allowed to use artisan here");
+        }
+        ArtisanProduct artisanProduct = null;
+        for(ArtisanProductDetails artisan : ArtisanProductDetails.values()) {
+            if (artisan.getName().equals(ArtisanName)) {
+                artisanProduct = new ArtisanProduct(artisan);
+                break;
+            }
+        }
+        if(artisanProduct == null) {
+            return new Result(false, "enter a valid artisan name");
         }
         return null;
     }

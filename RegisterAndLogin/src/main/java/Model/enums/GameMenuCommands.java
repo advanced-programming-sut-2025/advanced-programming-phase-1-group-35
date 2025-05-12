@@ -29,6 +29,8 @@ public enum GameMenuCommands {
     cheatEnergyUnlimited("energy\\s+unlimited"),
     showInventory(""),
     inventoryTrash(""),
+    showCropInfo("\\s*show\\s+crop\\s+info\\s+(?<cropName>\\S+)\\s*"),
+    plantSeed("\\s*plant\\s+seed\\s+(?<seed>\\S+)\\s+(?<direction>\\S+)\\s*"),
 
 
 

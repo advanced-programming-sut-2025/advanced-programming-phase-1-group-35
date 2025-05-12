@@ -58,7 +58,7 @@ public enum ArtisanProductDetails implements ItemInterface {
     }
 
     public ArtisanProduct getArtisanProduct() {
-        return new ArtisanProduct();
+        return new ArtisanProduct(this);
     }
 
     @Override

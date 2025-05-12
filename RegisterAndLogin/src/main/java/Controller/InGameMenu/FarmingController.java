@@ -11,6 +11,7 @@ import Model.Tile;
 import Model.Tools.Tool;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
+import Model.enums.ToolTypes;
 
 import java.util.Random;
 
@@ -213,8 +214,8 @@ public class FarmingController {
     }
 
     public Result harvestCrop(Tile tile) {
-        if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().equals("HOE")) {
-            return new Result(false, "you need a hoe to harvest crop");
+        if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().equals(ToolTypes.SCYTHE)){
+            return new Result(false, "you need a SCYTHE to harvest crop");
         }
         if (tile.getPlanted().getClass() == Crop.class) {
             Crop crop = (Crop) tile.getPlanted();
@@ -297,7 +298,7 @@ public class FarmingController {
                         Crop crop;
                         do {
                             crop = new Crop(CropEnum.getRandomForagingCrop());
-                        } while (!crop.getSeason().contains(App.getCurrentGame().getGameCalender().getSeason()));
+                        } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
                         tile.setPlanted(crop);
                         tile.setContentSymbol(crop.getSymbol());
                         App.getCurrentGame().getMap().AddCrop(crop);

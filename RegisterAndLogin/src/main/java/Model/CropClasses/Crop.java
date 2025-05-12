@@ -1,6 +1,5 @@
 package Model.CropClasses;
 
-import Model.Item;
 import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
@@ -114,11 +113,9 @@ public class Crop implements PlantAble, ItemInterface {
         return energy;
     }
 
-    public List<Seasons> getSeason() {
-        return season;
-    }
+    public List<Seasons> getSeasons() {return season;}
 
-    public boolean isCanBecomeGiant() {
+    public boolean canBecomeGiant() {
         return canBecomeGiant;
     }
 
