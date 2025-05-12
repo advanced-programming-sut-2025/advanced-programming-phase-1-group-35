@@ -22,7 +22,7 @@ public class Rock {
         tile.setWalkable(false);
     }
 
-    public Item mine(Tile tile){
+    public static Item mine(Tile tile){
         tile.setWalkable(true);
         tile.setContentSymbol('0');
         tile.setContents(null);

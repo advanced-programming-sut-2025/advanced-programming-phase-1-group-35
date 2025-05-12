@@ -7,10 +7,12 @@ import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.*;
 import Model.FarmStuff.Home.*;
+import Model.Tools.Tool;
 import Model.animal.Animal;
 import Model.enums.FarmType;
 import Model.enums.Shops.ShopEnum;
 import Model.enums.TileType;
+import Model.enums.ToolTypes;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -74,7 +76,8 @@ public class Farm {
         quarry = new Quarry(farmType , tiles , this);
         shippingBin = new ShippingBin(this , tiles);
 
-        if(owner != null) { // placing the player
+        if(owner != null) {// placing the player
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.HOE), 1);
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);

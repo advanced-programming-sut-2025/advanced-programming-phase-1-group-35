@@ -1,7 +1,9 @@
 package Controller.InGameMenu;
 
+import Controller.GameMenuController;
 import Model.*;
 import Model.CropClasses.Tree;
+import Model.FarmStuff.Rock;
 import Model.FarmStuff.Wood;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
@@ -12,7 +14,11 @@ import Model.enums.TileType;
 import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
 
+import java.security.KeyStore;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ToolsController {
     public Result toolEquip(String toolName) {
@@ -149,6 +155,7 @@ public class ToolsController {
         }
         if (destenationTile.getTileType() == TileType.Soil) {
             destenationTile.setPlowed(true);
+            destenationTile.setSymbol('·');
             return new Result(true, "You used hoe and you can plant on that tile");
         } else {
             return new Result(false, "you cant use hoe on this tile");
@@ -162,6 +169,7 @@ public class ToolsController {
         destenationTile.setPlowed(false);
         if (destenationTile.getTileType() == TileType.Rock) {
             destenationTile.setTileType(TileType.Soil);
+            player.backPack.items.compute(Rock.mine(destenationTile), (k,v) -> v==null ? 1 : v+1);
             return new Result(true, "You used pickaxe and destroyed a rock");
         } else {
             return new Result(false, "you cant use pickaxe on this tile");
