@@ -4,9 +4,13 @@ import Model.*;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Wood;
 import Model.Tools.BackPack;
+import Model.Tools.FishingPole;
 import Model.Tools.Tool;
+import Model.Tools.WateringCan;
+import Model.animal.Animal;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
+import Model.enums.animal.AnimalType;
 
 import java.util.ArrayList;
 
@@ -54,8 +58,20 @@ public class ToolsController {
     }
 
     public Result upgradeTool(String toolName) {
-        // TODO : if not in blacksmith
-        return new Result(false, "you are not in the blacksmith");
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        for (ItemInterface item : player.backPack.items.keySet()) {
+            if (item instanceof Tool tool && tool.getToolName().toString().equals(toolName)) {
+                if (tool instanceof FishingPole) {
+                    // TODO : add if not in Willy store
+                    return new Result(true, "you are not in Willy store!");
+                } else {
+                    // TODO : if not in blacksmith
+                    return new Result(false, "you are not in the blacksmith");
+                }
+            }
+        }
+        return new Result(false, toolName + " not found!");
     }
 
     public Result useTrashCan(String itemName) {
@@ -89,14 +105,14 @@ public class ToolsController {
         BackPack backPack = player.backPack;
         if (!backPack.isToolInBackPack(toolType)) {
             return new Result(false, "you don't have a " + toolName + " in your backpack!");
-        } else if (player.getEnergy().getEnergyAmount() < 5) {
-            return new Result(false, "You do not have enough energy!");
         }
         Tile currentTile = player.getCurrentTile();
         Tile destenationTile = player.getMap().getTileWithDirection(direction);
         if (destenationTile == null) {
             return new Result(false, "wrong direction!");
         }
+        // TODO : energy usage of each tool and connect to each method
+
     }
 
     public Result useHoe(Game game, User player, Tile destenationTile) {
@@ -136,6 +152,67 @@ public class ToolsController {
         return new Result(false, "you cant use axe on this tile");
     }
 
+    public Result useShear(Game game, User player, Tile destenationTile) {
+        for (ItemInterface content : destenationTile.getContents()) {
+            if (content instanceof Animal animal) {
+                if (animal.getAnimalType() == AnimalType.Sheep) {
+                    return new AnimalController().collectProducts(animal.getName());
+                }
+            }
+        }
+        return new Result(false, "you is no sheep in this tile");
+    }
+
+    public Result useMilkPail(Game game, User player, Tile destenationTile) {
+        for (ItemInterface content : destenationTile.getContents()) {
+            if (content instanceof Animal animal) {
+                if (animal.getAnimalType() == AnimalType.Cow) {
+                    return new AnimalController().collectProducts(animal.getName());
+                }
+            }
+        }
+        return new Result(false, "you is no cow in this tile");
+    }
+
+    public Result useFishingPole(Game game, User player, Tile destenationTile) {
+        if (destenationTile.getTileType() == TileType.Water) {
+            for (ItemInterface item : player.backPack.items.keySet()) {
+                if (item instanceof FishingPole pole) {
+                    return new AnimalController().fishing(pole.getName());
+                }
+            }
+        }
+        return new Result(false, "you are not near to water!");
+    }
+
+    public Result useWateringCan(Game game, User player, Tile destenationTile) {
+        for (ItemInterface item : player.backPack.items.keySet()) {
+            if (item instanceof WateringCan can) {
+                if (destenationTile.getTileType() == TileType.Water) {
+                    if (can.getCapacity() < 55) {
+                        can.setCapacity(can.getCapacity() + 1);
+                    }
+                    return new Result(true, "You fill the can and its capacity now: " +
+                            can.getCapacity());
+                } else if (destenationTile.getTileType() == TileType.Grass ||
+                        destenationTile.getTileType() == TileType.Soil) {
+                    // TODO : watering this tile
+                    return new Result(true, "you watered this tile");
+                }
+            }
+        }
+        return new Result(false, "you cant use watering on this tile");
+    }
+
+    public Result useScythe(Game game, User player, Tile destenationTile) {
+        if (destenationTile.getTileType() == TileType.Grass ||
+                destenationTile.getTileType() == TileType.Soil) {
+
+            return new FarmingController(player.getMap().getTiles()).harvestCrop(destenationTile);
+        }
+        // TODO : cut the HARZ grasses
+        return new Result(false, "you cant use scythe on this tile");
+    }
 
 
 }
