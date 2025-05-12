@@ -1,6 +1,8 @@
 package Model.enums;
 
 import View.*;
+import View.InGameMenu.AnimalMenu;
+import View.InGameMenu.CookingMenu;
 import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
@@ -12,8 +14,10 @@ public enum Menu {
     GameMenu(new GameMenu()),
     ProfileMenu(new ProfileMenu()),
     ExitMenu(new ExitMenu()),
-
     ShopMenu(new ShopMenu()),
+    AnimalMenu(new AnimalMenu()),
+    CookingMenu(new CookingMenu()),
+
     ;
 
     private final AppMenu menu;

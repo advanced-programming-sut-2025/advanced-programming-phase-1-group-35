@@ -2,8 +2,10 @@ package View.InGameMenu;
 
 import Controller.InGameMenu.AnimalController;
 import Controller.InGameMenu.CookingController;
+import Model.App;
 import Model.enums.Commands.AnimalCommands;
 import Model.enums.Commands.CookingCommands;
+import Model.enums.Menu;
 import View.AppMenu;
 
 import java.util.Scanner;
@@ -40,7 +42,11 @@ public class AnimalMenu extends AppMenu {
                 System.out.println(controller.sellAnimal(matcher.group(1)));
             } else if ((matcher = AnimalCommands.fishing.getMatcher(command)) != null) {
                 System.out.println(controller.fishing(matcher.group(1)));
-            } else {
+            }
+            else if (AnimalCommands.goBack.getMatcher(command) != null) {
+                App.setCurrentMenu(Menu.GameMenu);
+            }
+            else {
                 System.out.println("Invalid command");
             }
         }

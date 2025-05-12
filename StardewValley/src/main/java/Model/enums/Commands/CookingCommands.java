@@ -8,7 +8,9 @@ public enum CookingCommands {
     pickItemFromFridge("cooking refrigerator pick (?<item>\\S+)"),
     showCookingRecipes("cooking show recipes"),
     cook("cooking prepare (?<recipe_name>\\S+)"),
-    eatFood("eat (?<food_name>\\S+)");
+    eatFood("eat (?<food_name>\\S+)"),
+    goBack("go back"),
+    ;
 
     private final String pattern;
 

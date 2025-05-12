@@ -2,8 +2,12 @@ package View;
 
 import Controller.GameMenuController;
 import Controller.InGameMenu.FarmingController;
+import Controller.InGameMenu.ToolsController;
 import Model.App;
+import Model.enums.Commands.AnimalCommands;
+import Model.enums.Commands.ToolCommands;
 import Model.enums.GameMenuCommands;
+import Model.enums.Menu;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -11,6 +15,7 @@ import java.util.regex.Matcher;
 
 public class GameMenu extends AppMenu {
     GameMenuController controller = new GameMenuController();
+    ToolsController toolsController = new ToolsController();
 
     @Override
     public void check(Scanner scanner) throws IOException {
@@ -46,6 +51,26 @@ public class GameMenu extends AppMenu {
         }
         else if((matcher = GameMenuCommands.goToShopMenu.getMatcher(input) )!= null){
             System.out.println(controller.goToShopMenu());
+        }
+        else if ((matcher = ToolCommands.toolEquip.getMatcher(input)) != null) {
+            System.out.println(toolsController.toolEquip(matcher.group(1)));
+        } else if ((matcher = ToolCommands.showCurrentTool.getMatcher(input)) != null) {
+            System.out.println(toolsController.showCurrentTool());
+        } else if ((matcher = ToolCommands.showAllTools.getMatcher(input)) != null) {
+            System.out.println(toolsController.showTools());
+        } else if ((matcher = ToolCommands.upgradeTool.getMatcher(input)) != null) {
+            System.out.println(toolsController.upgradeTool(matcher.group(1)));
+        } else if ((matcher = ToolCommands.useTool.getMatcher(input)) != null) {
+            System.out.println(toolsController.useTool(Integer.parseInt(matcher.group(1))));
+        }
+        else if (GameMenuCommands.goToAnimalMenu.getMatcher(input)!= null) {
+            App.setCurrentMenu(Menu.AnimalMenu);
+        }
+        else if (GameMenuCommands.goToCookingMenu.getMatcher(input)!= null) {
+            App.setCurrentMenu(Menu.CookingMenu);
+        }
+        else {
+            System.out.println("Invalid input");
         }
     }
 }

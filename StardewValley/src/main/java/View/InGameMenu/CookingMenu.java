@@ -1,7 +1,9 @@
 package View.InGameMenu;
 
 import Controller.InGameMenu.CookingController;
+import Model.App;
 import Model.enums.Commands.CookingCommands;
+import Model.enums.Menu;
 import View.AppMenu;
 
 import java.util.Scanner;
@@ -24,7 +26,11 @@ public class CookingMenu extends AppMenu {
                 System.out.println(controller.cook(matcher.group(1)));
             } else if ((matcher = CookingCommands.eatFood.getMatcher(command)) != null) {
                 System.out.println(controller.eatFood(matcher.group(1)));
-            } else {
+            }
+            else if ((CookingCommands.goBack.getMatcher(command)) != null) {
+                App.setCurrentMenu(Menu.GameMenu);
+            }
+            else {
                 System.out.println("Invalid command");
             }
         }
