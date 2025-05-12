@@ -1,6 +1,6 @@
 package Model.enums;
 
-public enum ToolTypes {
+public enum ToolTypes implements ItemConstant{
     HOE(Skill.farming,ToolMaterial.Basic,5),
     PICKAXE(Skill.mining,ToolMaterial.Basic,5),
     AXE(Skill.foraging,ToolMaterial.Basic,5),

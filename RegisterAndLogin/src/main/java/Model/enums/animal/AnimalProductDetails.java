@@ -1,6 +1,9 @@
 package Model.enums.animal;
 
-public enum AnimalProductDetails {
+import Model.animal.Animal;
+import Model.enums.ItemConstant;
+
+public enum AnimalProductDetails implements ItemConstant {
     Egg(50 , "egg"),
     BigEgg(95 , "big egg"),
     DuckEgg(95 , "duck egg"),

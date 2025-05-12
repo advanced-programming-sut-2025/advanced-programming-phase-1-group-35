@@ -1,9 +1,10 @@
 package Model.enums.machines;
 
 import Model.ItemInterface;
+import Model.enums.ItemConstant;
 import Model.machines.ArtisanProduct;
 
-public enum ArtisanProductDetails {
+public enum ArtisanProductDetails implements ItemConstant {
     Honey,
 
     Cheese,

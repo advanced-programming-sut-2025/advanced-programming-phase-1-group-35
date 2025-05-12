@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum GeneralStoreProducts implements ShopProduct{
+public enum GeneralStoreProducts implements ShopProduct, ItemConstant {
     //All year round stock
     BOUQUET("Item","Bouquet", "A gift that shows your romantic interest.", 1000, 2.0, null),
     WEDDING_RING("Item","Wedding Ring", "It's used to ask for another farmer's hand in marriage.", 10000, 2.0, null),

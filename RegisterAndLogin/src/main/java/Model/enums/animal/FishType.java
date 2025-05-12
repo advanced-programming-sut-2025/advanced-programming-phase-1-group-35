@@ -1,11 +1,12 @@
 package Model.enums.animal;
 
 import Model.App;
+import Model.enums.ItemConstant;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public enum FishType {
+public enum FishType implements ItemConstant {
     SALMON("Salmon", 75, "Fall"),
     SARDINE("Sardine", 40, "Fall"),
     SHAD("Shad", 60, "Fall"),

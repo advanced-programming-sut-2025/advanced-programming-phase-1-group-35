@@ -3,7 +3,7 @@ package Model.enums;
 import java.util.Collections;
 import java.util.Map;
 
-public enum CookingRecipes {
+public enum CookingRecipes implements ItemConstant{
     FRIED_EGG("Fried Egg", Map.of(CookingIngredient.EGG, 1), 50, "", "Starter", 35),
     BAKED_FISH("Baked Fish", Map.of(
             CookingIngredient.SARDINE, 1,

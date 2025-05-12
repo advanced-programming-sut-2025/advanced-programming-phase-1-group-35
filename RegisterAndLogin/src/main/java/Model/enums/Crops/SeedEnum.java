@@ -1,6 +1,8 @@
 package Model.enums.Crops;
 
-public enum SeedEnum{
+import Model.enums.ItemConstant;
+
+public enum SeedEnum implements ItemConstant {
     JAZZ("Jazz Seeds", true, CropEnum.BLUE_JAZZ),
     CARROT("Carrot Seeds", true, CropEnum.CARROT),
     CAULIFLOWER("Cauliflower Seeds", true, CropEnum.CAULIFLOWER),

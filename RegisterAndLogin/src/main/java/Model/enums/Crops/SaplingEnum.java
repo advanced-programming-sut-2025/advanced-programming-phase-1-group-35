@@ -2,8 +2,9 @@ package Model.enums.Crops;
 
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Tree;
+import Model.enums.ItemConstant;
 
-public enum SaplingEnum {
+public enum SaplingEnum implements ItemConstant {
     APRICOT_SAPLING(TreeEnum.APRICOT_TREE),
     CHERRY_SAPLING(TreeEnum.CHERRY_TREE),
     BANANA_SAPLING(TreeEnum.BANANA_TREE),

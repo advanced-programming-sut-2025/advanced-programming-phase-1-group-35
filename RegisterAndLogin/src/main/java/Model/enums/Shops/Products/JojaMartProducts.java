@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum JojaMartProducts implements ShopProduct{
+public enum JojaMartProducts implements ShopProduct, ItemConstant {
     //year round stock (season is null)
     JOJA_COLA("Food","Joja Cola", "The flagship product of Joja corporation.", 75, Double.POSITIVE_INFINITY, null),
     ANCIENT("Seed", "Ancient Seed", "Could these still grow?", 500, 1.0, null),

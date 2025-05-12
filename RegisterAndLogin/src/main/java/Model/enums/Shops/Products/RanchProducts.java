@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum RanchProducts implements ShopProduct{
+public enum RanchProducts implements ShopProduct, ItemConstant {
     HAY("Item", "Hay", "Dried grass used as animal food.", 50, Double.POSITIVE_INFINITY),
     MILK_PAIL("Tool", "Milk Pail", "Gather milk from your animals.", 1000, 1.0),
     SHEARS("Tool", "Shears", "Use this to collect wool from sheep", 1000, 1.0),

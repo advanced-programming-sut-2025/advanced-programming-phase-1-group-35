@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import static Model.enums.Crops.CropEnum.*;
 import static Model.enums.Seasons.*;
 
-public enum ForagingSeeds {
+public enum ForagingSeeds implements ItemConstant {
     JAZZ(Arrays.asList(Spring), CropEnum.BLUE_JAZZ, SeedEnum.JAZZ),
     CARROT(Arrays.asList(Spring), CropEnum.CARROT, SeedEnum.CARROT),
     CAULIFLOWER(Arrays.asList(Spring), CropEnum.CAULIFLOWER, SeedEnum.CAULIFLOWER),

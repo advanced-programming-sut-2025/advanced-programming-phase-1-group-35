@@ -2,8 +2,9 @@ package Model.enums.Crops;
 
 import Model.Item;
 import Model.ItemInterface;
+import Model.enums.ItemConstant;
 
-public enum Fruit implements ItemInterface {
+public enum Fruit implements ItemInterface, ItemConstant {
     APRICOT("Apricot", 1, 59, true, 38, 17, "Spring"),
     CHERRY("Cherry", 1, 80, true, 38, 17, "Spring"),
     BANANA("Banana", 1, 150, true, 75, 33, "Summer"),

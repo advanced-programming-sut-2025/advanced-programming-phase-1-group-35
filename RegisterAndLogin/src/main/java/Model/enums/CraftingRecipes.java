@@ -1,6 +1,6 @@
 package Model.enums;
 
-public enum CraftingRecipes {
+public enum CraftingRecipes implements ItemConstant{
     //to be added
     ;
 

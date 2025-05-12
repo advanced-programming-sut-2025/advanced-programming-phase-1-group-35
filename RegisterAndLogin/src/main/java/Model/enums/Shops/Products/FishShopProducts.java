@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum FishShopProducts implements ShopProduct{
+public enum FishShopProducts implements ShopProduct, ItemConstant {
     FISH_SMOKER_RECIPE("CraftingRecipe", "Fish Smoker (Recipe)", "A recipe to make Fish Smoker", 10000, 1.0),
     TROUT_SOUP("Food", "Trout Soup", "Pretty salty.", 250, 1.0),
     BAMBOO_POLE("FishingRod", "Bamboo Pole", "Use in the water to catch fish.", 500, 1.0),

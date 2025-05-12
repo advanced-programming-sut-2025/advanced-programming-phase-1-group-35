@@ -333,6 +333,10 @@ public class GameMenuController {
         return new Result(true, "redirecting to shop menu ...");
     }
 
+    public Result cheatAddItemToBackPack(String itemName, String amountString){
+        
+    }
+
     public Result showInventory() {
         return null;
     }

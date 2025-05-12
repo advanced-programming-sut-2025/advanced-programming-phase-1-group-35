@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum SaloonProducts implements ShopProduct{
+public enum SaloonProducts implements ShopProduct, ItemConstant {
     BEER("Food", "Beer", "Drink in moderation.", 400, Double.POSITIVE_INFINITY),
     SALAD("Food","Salad", "A healthy garden salad.", 220, Double.POSITIVE_INFINITY),
     BREAD("Food","Bread", "A crusty baguette.", 120, Double.POSITIVE_INFINITY),

@@ -12,16 +12,4 @@ public class TradeAndGiftMenu {
     public void tradeHistory(){
 
     }
-    public Result giftNPC(){
-        return null;
-    }
-    public Result gift (){
-        return null;
-    }
-    public Result RateGift(){
-        return null;
-    }
-    public void showGiftList(){
-
-    }
 }

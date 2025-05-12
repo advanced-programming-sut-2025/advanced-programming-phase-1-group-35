@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
-public enum CarpenterShopProducts implements ShopProduct{
+public enum CarpenterShopProducts implements ShopProduct, ItemConstant {
     WOOD("Item", "Wood", "A sturdy, yet flexible plant material with a wide variety of uses.", 10, Double.POSITIVE_INFINITY),
     STONE("Item", "Stone", "A common material with many uses in crafting and building.", 20, Double.POSITIVE_INFINITY),
     BARN("AnimalHouse", "Barn", "Houses 4 barn-dwelling animals.", 6000, 1.0),
