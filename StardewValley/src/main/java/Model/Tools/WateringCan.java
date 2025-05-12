@@ -10,10 +10,6 @@ public class WateringCan extends Tool {
         super(1,1, ToolTypes.WATERING_CAN);
     }
 
-    @Override
-    public void reduceEnergy() {
-
-    }
 
     @Override
     public String getName() {

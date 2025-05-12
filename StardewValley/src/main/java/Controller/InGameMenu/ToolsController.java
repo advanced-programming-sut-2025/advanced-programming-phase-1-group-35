@@ -109,7 +109,7 @@ public class ToolsController {
             return new Result(false, "you don't have a " + tool.getToolType() + " in your backpack!");
         }
         Tile currentTile = player.getCurrentTile();
-        Tile destenationTile = player.getMap().getTileWithDirection(direction);
+        Tile destenationTile = game.getMap().getTileWithDirection(direction);
         if (destenationTile == null) {
             return new Result(false, "wrong direction!");
         }
@@ -269,7 +269,7 @@ public class ToolsController {
         if (destenationTile.getTileType() == TileType.Grass ||
                 destenationTile.getTileType() == TileType.Soil) {
 
-            return new FarmingController(player.getMap().getTiles()).harvestCrop(destenationTile);
+            return new FarmingController(game.getMap().getTiles()).harvestCrop(destenationTile);
         }
         // TODO : cut the HARZ grasses
         return new Result(false, "you cant use scythe on this tile");
