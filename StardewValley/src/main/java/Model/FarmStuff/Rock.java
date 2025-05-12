@@ -26,7 +26,7 @@ public class Rock {
         tile.setWalkable(true);
         tile.setContentSymbol('0');
         tile.setContents(null);
-        return new Item(1 , "stone");
+        return new Item(20 , "stone");
     }
 
     public char getSymbol() {
