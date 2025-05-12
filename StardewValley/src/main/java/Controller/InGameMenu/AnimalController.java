@@ -49,8 +49,8 @@ public class AnimalController {
             return new Result(false, "no animal house!");
         }
         int x = 0,y = 0;
-        house.thisHouseAnimals.add(type.createAnimal(name , x , y));
-        farm.animals.add(type.createAnimal(name , x , y));
+        house.thisHouseAnimals.add(type.createAnimal(name));
+        farm.animals.add(type.createAnimal(name));
         return new Result(true, "animal " + name + " has been bought!");
     }
 

@@ -197,14 +197,6 @@ public class User {
         this.gender = gender;
     }
 
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
     public ArrayList<Gift> getGifts() {
         return Gifts;
     }

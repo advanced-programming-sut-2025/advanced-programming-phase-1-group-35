@@ -7,8 +7,8 @@ public enum CookingCommands {
     placeItemInFridge("cooking refrigerator put (?<item>\\S+)"),
     pickItemFromFridge("cooking refrigerator pick (?<item>\\S+)"),
     showCookingRecipes("cooking show recipes"),
-    cook("cooking prepare (?<recipe_name>\\S+)"),
-    eatFood("eat (?<food_name>\\S+)"),
+    cook("cooking prepare (?<recipeName>\\S+)"),
+    eatFood("eat (?<foodName>\\S+)"),
     goBack("go back"),
     ;
 

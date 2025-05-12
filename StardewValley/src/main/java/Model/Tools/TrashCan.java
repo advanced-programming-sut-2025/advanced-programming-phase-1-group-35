@@ -15,11 +15,6 @@ public class TrashCan extends Tool {
     }
 
     @Override
-    public void reduceEnergy() {
-
-    }
-
-    @Override
     public String getName() {
         return super.toolType.toString();
     }
