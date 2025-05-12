@@ -3,12 +3,15 @@
 
 package Model.animal;
 
+import Model.ItemInterface;
 import Model.Result;
 import Model.Point;
+import Model.enums.animal.AnimalType;
 
 
-public class Animal {
+public class Animal implements ItemInterface {
     private final String name;
+    private final AnimalType animalType;
     private final int buyingPrice;
     private double productionQuality;
     private int productionRate;
@@ -23,9 +26,10 @@ public class Animal {
     private boolean isNazToday; // TODO : reset these 2 after a day passed
 
 
-    public Animal(String name , int buyingPrice, double productionRate, String confinement
-    , AnimalProduct[] products, int x, int y) {
+    public Animal(String name, AnimalType animalType, int buyingPrice, double productionRate, String confinement
+    , AnimalProduct[] products) {
         this.name = name;
+        this.animalType = animalType;
         this.buyingPrice = buyingPrice;
         this.productionQuality = productionRate;
         this.confinement = confinement;
@@ -33,7 +37,6 @@ public class Animal {
         this.isFeedToday = false;
         this.isNazToday = false;
         this.canProduceTomorrow = false;
-        coordination = new Point(x,y);
     }
 
     public Result buyAnimal(){
@@ -75,11 +78,15 @@ public class Animal {
         return productionRate;
     }
 
+    public AnimalType getAnimalType() {
+        return animalType;
+    }
+
     public void setProductionRate(int productionRate) {
         this.productionRate = productionRate;
     }
 
-    public int getBuyingPrice() {
+    public int getPrice() {
         return buyingPrice;
     }
 

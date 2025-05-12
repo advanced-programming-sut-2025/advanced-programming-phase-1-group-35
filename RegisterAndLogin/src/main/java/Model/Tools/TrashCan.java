@@ -21,6 +21,6 @@ public class TrashCan extends Tool {
 
     @Override
     public String getName() {
-        return super.toolName.toString();
+        return super.toolType.toString();
     }
 }

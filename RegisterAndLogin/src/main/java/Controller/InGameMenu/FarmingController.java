@@ -8,7 +8,6 @@ import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
-import Model.Tools.Tool;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
 
@@ -212,7 +211,7 @@ public class FarmingController {
     }
 
     public Result harvestCrop(Tile tile) {
-        if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolName().equals("HOE")) {
+        if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals("HOE")) {
             return new Result(false, "you need a hoe to harvest crop");
         }
         if (tile.getPlanted().getClass() == Crop.class) {

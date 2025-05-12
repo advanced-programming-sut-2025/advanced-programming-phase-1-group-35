@@ -8,12 +8,13 @@ public enum Skill {
     foraging(10),
     fishing(5);
 
-    int gainedXp ;
+    int gainedXp;
+
     Skill(int gainedXp) {
         this.gainedXp = gainedXp;
     }
 
     public SkillLevel getSkillLevel() {
-        return new SkillLevel(1 , this.gainedXp);
+        return new SkillLevel(1, this.gainedXp);
     }
 }

@@ -7,8 +7,8 @@ public enum ToolCommands {
     toolEquip("tools equip (?<toolName>\\S.*\\S)"),
     showCurrentTool("tools show current"),
     showAllTools("tools show available"),
-    useTool("tools use -d (?<direction>\\S+)"),
-
+    upgradeTool("tools upgrade (?<toolName>\\S+)"),
+    useTool("tools use -d (?<direction>\\d)"),
     ;
 
     private final String pattern;
