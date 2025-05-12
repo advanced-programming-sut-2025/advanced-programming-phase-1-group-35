@@ -71,6 +71,9 @@ public class ShopMenuController {
         if(item.getPrice() > user.getMoney()){
             return new Result(false, "You don't have enough money");
         }
+        if(!user.backPack.doesBackPackHasSpace()){
+            return new Result(false, "You don't have enough inventory space");
+        }
         Object product = item.makeInstance() ;
         if(product == null){
             return new Result(false, "purchase failed");

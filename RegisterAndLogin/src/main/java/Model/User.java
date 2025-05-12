@@ -47,6 +47,8 @@ public class User {
     private HashMap<Integer , Integer> friendshipXPs = new HashMap<>();
     private ArrayList<Message> messages = new ArrayList<>();
     private boolean hasNewMessages = false;
+    private boolean hasNewGift = false;
+    private boolean hasNewTradeRequest = false;
     private ArrayList<Gift> Gifts = new ArrayList<>();
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
     protected Tool currentTool;
@@ -392,5 +394,21 @@ public class User {
 
     public void setHasNewMessages(boolean hasNewMessages) {
         this.hasNewMessages = hasNewMessages;
+    }
+
+    public boolean isHasNewGift() {
+        return hasNewGift;
+    }
+
+    public void setHasNewGift(boolean hasNewGift) {
+        this.hasNewGift = hasNewGift;
+    }
+
+    public boolean isHasNewTradeRequest() {
+        return hasNewTradeRequest;
+    }
+
+    public void setHasNewTradeRequest(boolean hasNewTradeRequest) {
+        this.hasNewTradeRequest = hasNewTradeRequest;
     }
 }

@@ -4,7 +4,9 @@ import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
+import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
+import Model.TradeAndGift.Gift;
 import Model.enums.Colors;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
@@ -172,7 +174,10 @@ public class GameMenuController {
         }
         String notifications = "";
         if(App.getCurrentGame().getPlayingUser().isHasNewMessages()){
-            notifications += "\nyou have new message(s)";
+            notifications += "\nyou have new message(s), look your message history for more info";
+        }
+        if(App.getCurrentGame().getPlayingUser().isHasNewGift()){
+            notifications += "\nyou have new gift(s), look your gift history for more info";
         }
         return new Result(true , "going to next turn . now turn of : " +
                 App.getCurrentGame().getPlayingUser().getUsername() + notifications);
@@ -378,8 +383,7 @@ public class GameMenuController {
         if(receiver == null){
             return new Result(false, "user not found");
         }
-        if(Math.abs(receiver.getCurrentPoint().x - sender.getCurrentPoint().x) > 2 ||
-           Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2){
+        if(notCloseEnough(sender, receiver)){
             return new Result(false, "you are not close enough, somehow you don't have a cell phone either");
         }
         Message m = new Message(sender.getID(), message, receiver.getID());
@@ -389,9 +393,14 @@ public class GameMenuController {
         return new Result(true, "your message was sent");
     }
 
+    public boolean notCloseEnough(User sender, User receiver){
+        return Math.abs(receiver.getCurrentPoint().x - sender.getCurrentPoint().x) > 2 ||
+                Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2;
+    }
+
     private void increaseMutualXP(User sender, User receiver, int i) {
-        sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 0) + i);
-        receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 0) + i);
+        sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
+        receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
 
     public Result talkHistory(String username){
@@ -412,11 +421,98 @@ public class GameMenuController {
     public Result friendShipStatus(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
-        int xp = me.getFriendshipXPs().getOrDefault(friend.getID(), 0);
+        int xp = me.getFriendshipXPs().getOrDefault(friend.getID(), 100);
         int level = xp/100 -1;
         return new Result(true, "friendship status for " + username+
                 "\nfriendship level: " + level + "\nfriendship xp: " + xp);
     }
+    public Result GiftPlayer(String username, String ItemName, String amountString){
+        User user = App.getCurrentGame().getPlayingUser();
+        User receiver = getUserBYName(username);
+        int amount = Integer.parseInt(amountString);
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack(ItemName);
+        if(receiver == null){
+            return new Result(false, "user not found");
+        }
+        if(item == null){
+            return new Result(false, "item not found");
+        }
+        if(item.getValue() < amount){
+            return new Result(false, "you don't have enough of this item");
+        }
+        if(!receiver.backPack.doesBackPackHasSpace()){
+            return new Result(false, "this player doesn't have enough space");
+        }
+        if((user.getFriendshipXPs().getOrDefault(receiver.getID(), 100)/100 - 1)/100 < 1){
+            return new Result(false, "you should be at least level one friends");
+        }
+        Gift gift = new Gift(user.getID(), receiver.getID(), item.getKey(), amount);
+        user.getGifts().add(gift);
+        receiver.getGifts().add(gift);
+        addToBackPack(item, receiver.backPack, amount);
+        removeFromBackPack(item, user.backPack, amount);
+        return new Result(true, "gift has been sent");
+    }
+    public Result giftHistory(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        StringBuilder m = new StringBuilder();
+        String rating;
+        m.append("gift history with ").append(username).append(": \n═════════════════════════════════\n");
+        for (Gift gift : me.getGifts()) {
+            if(gift.getRecipientID() == friend.getID()){
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you sent :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+            else if(gift.getSenderID() == friend.getID()){
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+        }
+        return new Result(true, m.toString());
+    }
+    public Result rateGift(String giftIDString, String ratingString){
+        Gift gift = getGiftByID(Integer.parseInt(giftIDString));
+        if(gift == null){
+            return new Result(false, "gift not found");
+        }
+        int rate = Integer.parseInt(ratingString);
+        User sender = getUserByID(gift.getSenderID());
+        User receiver = getUserByID(gift.getRecipientID());
+        if(App.getCurrentGame().getPlayingUser().getID() != receiver.getID()){
+            return new Result(false, "you are not the one who got the gift");
+        }
+        if(rate < 1 || rate > 5){
+            return new Result(false, "rating should be between 1 and 5");
+        }
+        gift.setRate(rate);
+        int xp = (rate - 3) * 10 + 15;
+        increaseMutualXP(sender, receiver, xp);
+        return new Result(true, "rating has been set");
+    }
+
+    private User getUserByID(int senderID) {
+        for (User player : App.getCurrentGame().getPlayers()) {
+            if(player.getID() == senderID){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public void addToBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
+        backPack.items.compute(item.getKey(), (k, v) -> v + amount);
+    }
+    public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
+        backPack.items.compute(item.getKey(), (k, v) -> v - amount);
+        if(item.getValue() < 0){
+            backPack.items.remove(item.getKey());
+        }
+    }
+
     public Result hug(){
         return null;
     }
@@ -489,6 +585,15 @@ public class GameMenuController {
         for (User player : App.getCurrentGame().getPlayers()) {
             if (player.getUsername().equals(userName)) {
                 return player;
+            }
+        }
+        return null;
+    }
+
+    public Gift getGiftByID(int giftID) {
+        for (Gift gift : App.getCurrentGame().getPlayingUser().getGifts()) {
+            if(giftID==gift.getID()){
+                return gift;
             }
         }
         return null;
