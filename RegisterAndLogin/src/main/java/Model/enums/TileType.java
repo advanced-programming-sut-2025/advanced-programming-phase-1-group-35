@@ -9,5 +9,6 @@ public enum TileType {
     BuildingTile,
     BuildingWall,
     Pathway,
+    ShippingBin,
     ;
 }

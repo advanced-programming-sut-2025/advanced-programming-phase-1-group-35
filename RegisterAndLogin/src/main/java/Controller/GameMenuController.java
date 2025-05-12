@@ -2,22 +2,29 @@ package Controller;
 
 import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
+import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.Tools.FishingPole;
+import Model.enums.Colors;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import Model.enums.TileType;
 import Model.enums.TileType;
 import Model.enums.machines.ArtisanProductDetails;
 import Model.machines.ArtisanProduct;
 import View.GameMenu;
+import View.InGameMenu.ShopMenu;
 import View.LoginMenu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+
+import static Model.enums.Colors.RESET;
 
 public class GameMenuController {
     CropController cropController = new CropController() ;
@@ -267,7 +274,18 @@ public class GameMenuController {
         StringBuilder map = new StringBuilder();
         for (int i = y; i < Math.min(y + size , 250); i++) {
             for (int j = x; j < Math.min(x + size , 300); j++) {
-                map.append(String.format("%2c", tiles[j][i].getSymbol()));
+                if(tiles[j][i].getTileType().equals(TileType.BuildingWall)){
+                    map.append(String.format("%s%2c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET));
+                }
+                else if(tiles[j][i].getTileType().equals(TileType.Water)){
+                    map.append(String.format("%s%2c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET));
+                }
+                else if(tiles[j][i].getTileType().equals(TileType.Pathway)){
+                    map.append(String.format("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
+                }
+                else{
+                    map.append(String.format("%s%2c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
+                }
             }
             map.append("\n");
         }
@@ -284,9 +302,19 @@ public class GameMenuController {
     public Result helpReadingTheMap() {
         String message = ". : ground\n" +
                 "numbers(1-4) : players" +
+                "color yellow : walls" +
                 "# : cabin floorTiles" +
                 "@ : greenhouse floorTiles" +
-                "0 : not walkable";
+                "R : rock" +
+                "~ : water" +
+                "0 : not walkable" +
+                "B : black smith" +
+                "C : carpenter's shop" +
+                "S : star drop saloon" +
+                "M : Marnie's ranch" +
+                "G : general store" +
+                "F : fish shop" +
+                "J : Joja market";
         return new Result(true, message);
     }
 
@@ -315,6 +343,15 @@ public class GameMenuController {
                 "energy left: " + energy.getEnergyAmount() +
                 "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
                 "energy capacity: " + energy.getEnergyCapacity());
+    }
+
+    public Result goToShopMenu(){
+        ShopMenuController controller = new ShopMenuController();
+        if(controller.shop == null)
+            return new Result(false, "you are not in a shop");
+        App.setCurrentMenu(Menu.ShopMenu);
+        ((ShopMenu)Menu.ShopMenu.getMenu()).setShop(controller.shop);
+        return new Result(true, "redirecting to shop menu ...");
     }
 
     public Result showInventory() {
@@ -391,7 +428,44 @@ public class GameMenuController {
     public Result completeQuest(){
         return null;
     }
-    public Result Sell(){
+    public Result Sell(String productName , String countString){
+        boolean isNearBin = false;
+        User player = App.getCurrentGame().getPlayingUser();
+        Point point = player.getCurrentPoint();
+        Tile[][]tiles = App.getCurrentGame().getMap().getTiles();
+        for(int i = point.x -1 ; i <= point.x + 1 ; i++){
+            for(int j = point.y -1 ; j <= point.y + 1 ; j++){
+                if(tiles[i][j].getTileType().equals(TileType.ShippingBin)){
+                    isNearBin = true;
+                    break;
+                }
+            }
+        }
+        if(!isNearBin){
+            return new Result(false, "you are not near a shipping bin");
+        }
+        Map.Entry<ItemInterface, Integer> product = getItemFromBackPack(productName);
+        if(product == null){
+            return new Result(false, "product not found");
+        }
+        int count = countString == null ? product.getValue() : Integer.parseInt(countString);
+        if(count > product.getValue()){
+            return new Result(false, "product exceeds maximum quantity");
+        }
+        player.setIncome(player.getIncome() + count*product.getKey().getPrice());
+        player.getBackPack().items.replace(product.getKey(), product.getValue() - count);
+        if(player.getBackPack().items.get(product.getKey()) == 0){
+            player.getBackPack().items.remove(product.getKey());
+        }
+        return new Result(true, "you have successfully sold " + count + " of " + product.getKey().getName());
+    }
+
+    private Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
+        for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
+            if(e.getKey().getName().equals(productName)){
+                return e;
+            }
+        }
         return null;
     }
 

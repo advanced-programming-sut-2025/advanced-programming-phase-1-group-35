@@ -33,7 +33,7 @@ public abstract class Tool implements ItemInterface {
     }
 
     public int getPrice() {
-        return 0;
+        return (int)price;
     }
 
     public void setPrice(double price) {

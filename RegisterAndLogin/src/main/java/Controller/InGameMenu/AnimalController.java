@@ -19,11 +19,6 @@ public class AnimalController {
         if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
             return new Result(false, "there are something else on this tile!");
         }
-        try {
-            Model.enums.Buildings.AnimalHouse.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            return new Result(false, "false type!");
-        }
 
         if (false) {
             // TODO : if dont have enough money or resource
@@ -53,9 +48,9 @@ public class AnimalController {
         } else if (house == null) {
             return new Result(false, "no animal house!");
         }
-
-        house.thisHouseAnimals.add(type.createAnimal(name));
-        farm.animals.add(type.createAnimal(name));
+        int x = 0,y = 0;
+        house.thisHouseAnimals.add(type.createAnimal(name , x , y));
+        farm.animals.add(type.createAnimal(name , x , y));
         return new Result(true, "animal " + name + " has been bought!");
     }
 

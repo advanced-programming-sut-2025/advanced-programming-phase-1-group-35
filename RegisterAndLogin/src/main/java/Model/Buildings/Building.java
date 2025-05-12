@@ -38,6 +38,12 @@ public class Building {
         }
     }
 
+    public boolean isTileInBounds(Tile tile){
+        return
+        tile.coordination.x > bounds.x && tile.coordination.x < bounds.x + bounds.width &&
+        tile.coordination.y > bounds.y && tile.coordination.y < bounds.y + bounds.height;
+    }
+
     public int getBuildingID() {
         return buildingID;
     }

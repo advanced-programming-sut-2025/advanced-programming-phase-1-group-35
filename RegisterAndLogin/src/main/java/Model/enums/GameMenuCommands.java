@@ -33,6 +33,10 @@ public enum GameMenuCommands {
     plantSeed("\\s*plant\\s+seed\\s+(?<seed>\\S+)\\s+(?<direction>\\S+)\\s*"),
 
 
+    buildABuilding("build\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    placeAnimal("animal\\s+place\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    goToShopMenu("go\\s+to\\s+shop\\s+menu"),
+    sellProduct("sell\\s+(?<name>.+?)(\\s+-n\\s+(?<count>\\d+))?"),
 
 
 

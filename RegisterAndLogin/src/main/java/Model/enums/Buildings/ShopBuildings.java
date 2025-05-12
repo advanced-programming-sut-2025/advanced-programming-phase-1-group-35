@@ -11,7 +11,7 @@ public enum ShopBuildings {
     GeneralStore('G', 48, 1, 18, 15, 1),
     FishShop('F', 2, 24, 15, 15, 2),
     JojaMart('J', 19, 24, 15, 15, 2),
-    Ranch('R', 36, 24, 15, 15, 2),
+    Ranch('M', 36, 24, 15, 15, 2),
     Saloon('S', 53, 24,15, 15, 2),
     ;
     private char symbol;
