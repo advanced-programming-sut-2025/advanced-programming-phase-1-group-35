@@ -45,6 +45,7 @@ public class User {
     private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
     public BackPack backPack = new BackPack();
     private HashMap<Integer , Integer> friendshipXPs = new HashMap<>();
+    private ArrayList<Integer> lvl3FriendsID = new ArrayList<>();
     private ArrayList<Message> messages = new ArrayList<>();
     private boolean hasNewMessages = false;
     private boolean hasNewGift = false;
@@ -410,5 +411,21 @@ public class User {
 
     public void setHasNewTradeRequest(boolean hasNewTradeRequest) {
         this.hasNewTradeRequest = hasNewTradeRequest;
+    }
+
+    public ArrayList<Integer> getLvl3FriendsID() {
+        return lvl3FriendsID;
+    }
+
+    public void setLvl3FriendsID(ArrayList<Integer> lvl3FriendsID) {
+        this.lvl3FriendsID = lvl3FriendsID;
+    }
+
+    public int getEnergyConsumedInTurn() {
+        return energyConsumedInTurn;
+    }
+
+    public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
+        this.energyConsumedInTurn = energyConsumedInTurn;
     }
 }

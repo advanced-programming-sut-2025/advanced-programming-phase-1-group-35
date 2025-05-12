@@ -13,13 +13,11 @@ import Model.enums.Menu;
 import Model.enums.TileType;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
-import View.LoginMenu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 import static Model.enums.Colors.RESET;
@@ -443,7 +441,7 @@ public class GameMenuController {
         if(!receiver.backPack.doesBackPackHasSpace()){
             return new Result(false, "this player doesn't have enough space");
         }
-        if((user.getFriendshipXPs().getOrDefault(receiver.getID(), 100)/100 - 1)/100 < 1){
+        if(user.getFriendshipXPs().getOrDefault(receiver.getID(), 100)/100 -1 < 1){
             return new Result(false, "you should be at least level one friends");
         }
         Gift gift = new Gift(user.getID(), receiver.getID(), item.getKey(), amount);
@@ -513,11 +511,45 @@ public class GameMenuController {
         }
     }
 
-    public Result hug(){
-        return null;
+    public Result hug(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        if(friend == null){
+            return new Result(false, "user not found");
+        }
+        if(notCloseEnough(me, friend)){
+            return new Result(false, "you are not close enough");
+        }
+        if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100)/100 - 1 < 2){
+            return new Result(false, "you should be at least level two friends");
+        }
+        increaseMutualXP(friend, me, 60);
+        return new Result(true, "awww that's totally platonic");
     }
-    public Result flower(){
-        return null;
+    public Result flower(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        if(friend == null){
+            return new Result(false, "user not found");
+        }
+        if(notCloseEnough(me, friend)){
+            return new Result(false, "you are not close enough");
+        }
+        if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100)/100 - 1 < 3){
+            return new Result(false, "you should finish level two friendship");
+        }
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquete");
+        if(item == null){
+            return new Result(false, "you are not a magician you can't summon flowers");
+        }
+        if(!friend.backPack.doesBackPackHasSpace()){
+            return new Result(false, "your friend's backpack is full");
+        }
+        me.getLvl3FriendsID().add(friend.getID());
+        friend.getLvl3FriendsID().add(me.getID());
+        addToBackPack(item , friend.backPack,1);
+        removeFromBackPack(item, me.backPack, 1);
+        return new Result(true, "wow you are really making a move don't you ?");
     }
     public Result askMarriage(){
         return null;
@@ -574,7 +606,7 @@ public class GameMenuController {
 
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
         for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
-            if(e.getKey().getName().equals(productName)){
+            if(e.getKey().getName().equalsIgnoreCase(productName)){
                 return e;
             }
         }
