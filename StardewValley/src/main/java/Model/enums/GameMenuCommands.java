@@ -35,10 +35,15 @@ public enum GameMenuCommands {
     sellProduct("sell\\s+(?<name>.+?)(\\s+-n\\s+(?<count>\\d+))?"),
     goToCookingMenu("go\\s+to\\s+cooking\\s+menu"),
     goToAnimalMenu("go\\s+to\\s+animal\\s+menu"),
-
-
-
-
+    talkPlayer("talk\\s+-u\\s+(?<username>\\S+)\\s+-m\\s+(?<message>.+?)"),
+    talkHistory("talk\\s+History\\s+-u\\s+(?<username>\\S+)"),
+    giftPlayer("gift\\s+-u\\s+(?<username>\\S+)\\s+-i\\s+(?<item>.+?)\\s+-a\\s+(?<amount>\\d+)"),
+    friendshipStatus("friendship\\s+status\\s+-u\\s+(?<username>\\S+)"),
+    giftHistory("gift\\s+history\\s+-u\\s+(?<username>\\S+)"),
+    giftList("gift\\s+list"),
+    rateGift("gift\\s+rate\\s+-i\\s+(?<id>\\d+)\\s+-r\\s+(?<rate>\\d+)"),
+    hug("hug\\s+-u\\s+(?<username>\\S+)"),
+    flower("flower\\s+-u\\s+(?<username>\\S+)"),
     ;
 
 

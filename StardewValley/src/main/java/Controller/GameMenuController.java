@@ -428,7 +428,7 @@ public class GameMenuController {
         return new Result(true, "friendship status for " + username+
                 "\nfriendship level: " + level + "\nfriendship xp: " + xp);
     }
-    public Result GiftPlayer(String username, String ItemName, String amountString){
+    public Result giftPlayer(String username, String ItemName, String amountString){
         User user = App.getCurrentGame().getPlayingUser();
         User receiver = getUserBYName(username);
         int amount = Integer.parseInt(amountString);
@@ -455,6 +455,25 @@ public class GameMenuController {
         removeFromBackPack(item, user.backPack, amount);
         return new Result(true, "gift has been sent");
     }
+    public Result giftList(){
+        User user = App.getCurrentGame().getPlayingUser();
+        StringBuilder m = new StringBuilder();
+        String rating;
+        m.append("gift list:\n═════════════════════════════════\n");
+        for (Gift gift : user.getGifts()) {
+            if(gift.getSenderID() == user.getID()){
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you sent :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+            else{
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+        }
+        return new Result(true, m.toString());
+    }
     public Result giftHistory(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
@@ -468,7 +487,6 @@ public class GameMenuController {
                         .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
             }
             else if(gift.getSenderID() == friend.getID()){
-                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
                 rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
                 m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
                         .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
@@ -561,8 +579,9 @@ public class GameMenuController {
     public Result respondToMarriageRequest(){
         return null;
     }
-    public void goToTradeMenu(){
-
+    public Result goToTradeMenu(){
+        App.setCurrentMenu(Menu.TradeMenu);
+        return new Result(true, "redirecting to trade menu ...");
     }
     public Result meetNPC(){
         return null;

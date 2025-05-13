@@ -2,7 +2,7 @@ package Controller.InGameMenu;
 
 import Model.Result;
 
-public class TradeAndGiftMenu {
+public class TradeMenu {
     public void listTradeRequests(){
 
     }
