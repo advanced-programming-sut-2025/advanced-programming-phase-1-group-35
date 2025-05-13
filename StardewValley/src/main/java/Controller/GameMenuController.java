@@ -260,19 +260,23 @@ public class GameMenuController {
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         StringBuilder map = new StringBuilder();
+        for (int i = -1 ; i < 300 ; i++){
+            map.append(String.format("%4d", i));
+        }
         for (int i = y; i < Math.min(y + size , 250); i++) {
+            map.append(String.format("%4d", i));
             for (int j = x; j < Math.min(x + size , 300); j++) {
                 if(tiles[j][i].getTileType().equals(TileType.BuildingWall)){
-                    map.append(String.format("%s%2c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET));
                 }
                 else if(tiles[j][i].getTileType().equals(TileType.Water)){
-                    map.append(String.format("%s%2c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET));
                 }
                 else if(tiles[j][i].getTileType().equals(TileType.Pathway)){
-                    map.append(String.format("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%s%4c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
                 }
                 else{
-                    map.append(String.format("%s%2c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
                 }
             }
             map.append("\n");
