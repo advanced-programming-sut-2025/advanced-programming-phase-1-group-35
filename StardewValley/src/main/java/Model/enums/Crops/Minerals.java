@@ -1,5 +1,7 @@
 package Model.enums.Crops;
 
+import Model.ItemInterface;
+import Model.Mineral;
 import Model.enums.ItemConstant;
 
 public enum Minerals implements ItemConstant {
@@ -41,5 +43,10 @@ public enum Minerals implements ItemConstant {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return new Mineral(this.name, this.description, this.sellPrice);
     }
 }

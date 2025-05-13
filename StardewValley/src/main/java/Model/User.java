@@ -7,6 +7,7 @@ import Model.NPCs.Quest;
 import Model.Tools.BackPack;
 import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
+import Model.TradeAndGift.Trade;
 import Model.enums.CookingRecipes;
 import Model.enums.Gender;
 import Model.TradeAndGift.Gift;
@@ -51,6 +52,7 @@ public class User {
     private boolean hasNewGift = false;
     private boolean hasNewTradeRequest = false;
     private ArrayList<Gift> Gifts = new ArrayList<>();
+    private ArrayList<Trade> trades = new ArrayList<>();
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
     protected Tool currentTool;
     private Energy energy = new Energy();
@@ -67,6 +69,10 @@ public class User {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.ID = IDCounter++;
+    }
+
+    public String toString(){
+        return "username: " + username + "\nfarm number: " + (currentGameFarmIndex+1) + "\n" ;
     }
 
     public int getMoney() {
@@ -130,15 +136,6 @@ public class User {
     }
     public Result trade(User user , String type , ItemInterface itemInterface, int amount , int price , ItemInterface itemInterface2){
         return null;
-    }
-    public void listTradeRequests(){
-
-    }
-    public Result respondToTrade(Model.TradeAndGift.Trade trade){
-        return null;
-    }
-    public void tradeHistory(){
-
     }
     public Result meetNPC(NPC npc){
         return null;
@@ -419,5 +416,13 @@ public class User {
 
     public void setEnergyConsumedInTurn(int energyConsumedInTurn) {
         this.energyConsumedInTurn = energyConsumedInTurn;
+    }
+
+    public ArrayList<Trade> getTrades() {
+        return trades;
+    }
+
+    public void setTrades(ArrayList<Trade> trades) {
+        this.trades = trades;
     }
 }

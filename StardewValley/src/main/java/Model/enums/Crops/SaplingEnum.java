@@ -2,6 +2,7 @@ package Model.enums.Crops;
 
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Tree;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 public enum SaplingEnum implements ItemConstant {
@@ -28,5 +29,10 @@ public enum SaplingEnum implements ItemConstant {
 
     public TreeEnum getTree() {
         return tree;
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return new Sapling(this.tree);
     }
 }

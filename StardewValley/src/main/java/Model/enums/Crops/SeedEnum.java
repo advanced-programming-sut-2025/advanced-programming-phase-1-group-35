@@ -1,5 +1,7 @@
 package Model.enums.Crops;
 
+import Model.CropClasses.Seed;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 public enum SeedEnum implements ItemConstant {
@@ -71,4 +73,8 @@ public enum SeedEnum implements ItemConstant {
     }
 
 
+    @Override
+    public ItemInterface getItem() {
+        return new Seed(this);
+    }
 }

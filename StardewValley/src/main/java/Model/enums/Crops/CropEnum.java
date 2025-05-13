@@ -4,6 +4,8 @@
     //to do: change stages and seasons into Lists//
 
 
+    import Model.CropClasses.Crop;
+    import Model.ItemInterface;
     import Model.enums.ItemConstant;
     import Model.enums.Seasons;
 
@@ -142,5 +144,10 @@
 
             Random random = new Random();
             return foragingCrops.get(random.nextInt(foragingCrops.size()));
+        }
+
+        @Override
+        public ItemInterface getItem() {
+            return new Crop(this);
         }
     }
