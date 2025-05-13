@@ -2,9 +2,11 @@ package View;
 
 import Controller.GameMenuController;
 import Controller.InGameMenu.FarmingController;
+import Controller.InGameMenu.NPCController;
 import Controller.InGameMenu.ToolsController;
 import Model.App;
 import Model.enums.Commands.AnimalCommands;
+import Model.enums.Commands.NPCCommands;
 import Model.enums.Commands.ToolCommands;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
@@ -16,6 +18,7 @@ import java.util.regex.Matcher;
 public class GameMenu extends AppMenu {
     GameMenuController controller = new GameMenuController();
     ToolsController toolsController = new ToolsController();
+    NPCController npcController = new NPCController();
 
     @Override
     public void check(Scanner scanner) throws IOException {
@@ -48,11 +51,9 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.cheatEnergySet(matcher.group("value")));
         } else if ((matcher = GameMenuCommands.cheatEnergyUnlimited.getMatcher(input)) != null) {
             System.out.println(controller.cheatEnergyUnlimited());
-        }
-        else if((matcher = GameMenuCommands.goToShopMenu.getMatcher(input) )!= null){
+        } else if ((matcher = GameMenuCommands.goToShopMenu.getMatcher(input)) != null) {
             System.out.println(controller.goToShopMenu());
-        }
-        else if ((matcher = ToolCommands.toolEquip.getMatcher(input)) != null) {
+        } else if ((matcher = ToolCommands.toolEquip.getMatcher(input)) != null) {
             System.out.println(toolsController.toolEquip(matcher.group("toolName")));
         } else if ((matcher = ToolCommands.showCurrentTool.getMatcher(input)) != null) {
             System.out.println(toolsController.showCurrentTool());
@@ -62,42 +63,40 @@ public class GameMenu extends AppMenu {
             System.out.println(toolsController.upgradeTool(matcher.group(1)));
         } else if ((matcher = ToolCommands.useTool.getMatcher(input)) != null) {
             System.out.println(toolsController.useTool(Integer.parseInt(matcher.group(1))));
-        }
-        else if (GameMenuCommands.goToAnimalMenu.getMatcher(input)!= null) {
+        } else if (GameMenuCommands.goToAnimalMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.AnimalMenu);
-        }
-        else if (GameMenuCommands.goToCookingMenu.getMatcher(input)!= null) {
+        } else if (GameMenuCommands.goToCookingMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.CookingMenu);
-        }
-        else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
             System.out.println(controller.talk(matcher.group("username"), matcher.group("message")));
-        }
-        else if((matcher = GameMenuCommands.talkHistory.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.talkHistory.getMatcher(input)) != null) {
             System.out.println(controller.talkHistory(matcher.group("username")));
-        }
-        else if((matcher = GameMenuCommands.giftPlayer.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.giftPlayer.getMatcher(input)) != null) {
             System.out.println(controller.giftPlayer(matcher.group("username"), matcher.group("item"),
-            matcher.group("amount")));
-        }
-        else if((matcher = GameMenuCommands.friendshipStatus.getMatcher(input)) != null) {
+                    matcher.group("amount")));
+        } else if ((matcher = GameMenuCommands.friendshipStatus.getMatcher(input)) != null) {
             System.out.println(controller.friendShipStatus(matcher.group("username")));
-        }
-        else if((matcher = GameMenuCommands.giftHistory.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.giftHistory.getMatcher(input)) != null) {
             System.out.println(controller.giftHistory(matcher.group("username")));
-        }
-        else if((matcher = GameMenuCommands.giftList.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.giftList.getMatcher(input)) != null) {
             System.out.println(controller.giftList());
-        }
-        else if((matcher = GameMenuCommands.rateGift.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.rateGift.getMatcher(input)) != null) {
             System.out.println(controller.rateGift(matcher.group("id"), matcher.group("rate")));
-        }
-        else if((matcher = GameMenuCommands.hug.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.hug.getMatcher(input)) != null) {
             System.out.println(controller.hug(matcher.group("username")));
-        }
-        else if((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
             System.out.println(controller.flower(matcher.group("username")));
-        }
-        else {
+        } else if ((matcher = NPCCommands.meetNPC.getMatcher(input)) != null) {
+            System.out.println(npcController.meetNPC(matcher.group(1)));
+        } else if ((matcher = NPCCommands.giftNPC.getMatcher(input)) != null) {
+            System.out.println(npcController.sendGift(matcher.group(1), matcher.group(2)));
+        } else if (NPCCommands.showAllFriendships.getMatcher(input) != null) {
+            System.out.println(npcController.seeFriendshipWithNPCs());
+        } else if ((matcher = NPCCommands.showQuestList.getMatcher(input)) != null) {
+            System.out.println(npcController.seeQuestList(matcher.group(1)));
+        } else if ((matcher = NPCCommands.showQuestList.getMatcher(input)) != null) {
+            System.out.println(npcController.finishQuest(matcher.group(1), matcher.group(2)));
+        } else {
             System.out.println("Invalid input");
         }
     }

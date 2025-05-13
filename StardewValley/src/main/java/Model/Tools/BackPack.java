@@ -65,6 +65,17 @@ public class BackPack {
         return false;
     }
 
+    public ItemInterface findItem(String itemName) {
+        for (ItemInterface item : items.keySet()) {
+            if (item instanceof Item) {
+                if (item.getName().equals(itemName)) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
     public void upgradeBackPack(int newCapacity) {
         // TODO : check if in Pierre shop
         this.capacity = newCapacity;
