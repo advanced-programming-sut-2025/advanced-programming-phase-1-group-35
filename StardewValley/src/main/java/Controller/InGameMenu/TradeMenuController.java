@@ -110,16 +110,39 @@ public class TradeMenuController {
         }
         User receiver = gameMenuController.getUserByID(user.getID());
         if(response.equalsIgnoreCase("-accept")){
+            if(trade.getPrice() > 0 ){
+                if(user.getMoney() < trade.getPrice())
+                    return new Result(false, "you do not have enough money");
+                else {
+                    user.setMoney(user.getMoney() - trade.getPrice());
+                    receiver.setMoney(receiver.getMoney() + trade.getPrice());
+                }
+            }
+            else{
+                int amountInBackPack = user.backPack.items.get(trade.getTargetItem());
+                if(amountInBackPack < trade.getTargetAmount()){
+                    return new Result(false, "you do not have enough of the target item");
+                }
+                else {
+                    user.backPack.items.compute(trade.getTargetItem(),
+                            (k,v) -> v - trade.getAmount());
+                    if(user.backPack.items.get(trade.getTargetItem()) == 0){
+                        user.backPack.items.remove(trade.getTargetItem());
+                    }
+                    receiver.backPack.items.compute(trade.getTargetItem(), (k,v) -> v + trade.getTargetAmount());
+                }
+            }
 
-
+            receiver.backPack.items.compute(trade.getItemInterface(), (k,v) -> v == null ?  trade.getAmount() : v + trade.getAmount());
             trade.setAnswered(true);
             trade.setAccepted(true);
+            gameMenuController.increaseMutualXP(user, receiver, 50);
             return new Result(true, "trade accepted");
         }
         else {
             trade.setAnswered(true);
             trade.setAccepted(false);
-            user.backPack.items.compute(trade.getItemInterface(), (k,v) -> trade.getAmount() + v);
+            user.backPack.items.compute(trade.getItemInterface(), (k,v) -> v == null ? trade.getAmount() : trade.getAmount() + v);
             gameMenuController.increaseMutualXP(user,receiver,-30);
             return new Result(true, "trade rejected");
         }
