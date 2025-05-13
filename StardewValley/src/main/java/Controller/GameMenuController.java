@@ -260,9 +260,10 @@ public class GameMenuController {
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         StringBuilder map = new StringBuilder();
-        for (int i = -1 ; i < 300 ; i++){
+        for (int i = -1 + x ; i < -1 + x + size ; i++){
             map.append(String.format("%4d", i));
         }
+        map.append("\n");
         for (int i = y; i < Math.min(y + size , 250); i++) {
             map.append(String.format("%4d", i));
             for (int j = x; j < Math.min(x + size , 300); j++) {
