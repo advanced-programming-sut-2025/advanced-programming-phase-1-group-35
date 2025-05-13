@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
@@ -92,5 +93,11 @@ public enum ForagingSeeds implements ItemConstant {
 
         Random random = new Random();
         return foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum;
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
     }
 }

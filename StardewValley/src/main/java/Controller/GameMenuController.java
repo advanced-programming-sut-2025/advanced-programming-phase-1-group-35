@@ -7,10 +7,12 @@ import Model.*;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
-import Model.enums.Colors;
-import Model.enums.GameMenuCommands;
-import Model.enums.Menu;
-import Model.enums.TileType;
+import Model.enums.*;
+import Model.enums.Crops.*;
+import Model.enums.Shops.Products.*;
+import Model.enums.animal.AnimalProductDetails;
+import Model.enums.animal.FishType;
+import Model.enums.machines.ArtisanProductDetails;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 
@@ -171,14 +173,21 @@ public class GameMenuController {
             App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
         }
         String notifications = "";
-        if(App.getCurrentGame().getPlayingUser().isHasNewMessages()){
+        User user = App.getCurrentGame().getPlayingUser();
+        if(user.isHasNewMessages()){
             notifications += "\nyou have new message(s), look your message history for more info";
         }
-        if(App.getCurrentGame().getPlayingUser().isHasNewGift()){
+        if(user.isHasNewGift()){
             notifications += "\nyou have new gift(s), look your gift history for more info";
         }
+        if(user.isHasNewTradeRequest()){
+            notifications += "\nyou have new trade request(s), look your trade history for more info";
+        }
+        user.setHasNewMessages(false);
+        user.setHasNewGift(false);
+        user.setHasNewTradeRequest(false);
         return new Result(true , "going to next turn . now turn of : " +
-                App.getCurrentGame().getPlayingUser().getUsername() + notifications);
+                user.getUsername() + notifications);
     }
 
     public Result showTime() {
@@ -400,7 +409,7 @@ public class GameMenuController {
                 Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2;
     }
 
-    private void increaseMutualXP(User sender, User receiver, int i) {
+    public void increaseMutualXP(User sender, User receiver, int i) {
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
@@ -514,7 +523,7 @@ public class GameMenuController {
         return new Result(true, "rating has been set");
     }
 
-    private User getUserByID(int senderID) {
+    public User getUserByID(int senderID) {
         for (User player : App.getCurrentGame().getPlayers()) {
             if(player.getID() == senderID){
                 return player;
@@ -649,6 +658,39 @@ public class GameMenuController {
         for (Gift gift : App.getCurrentGame().getPlayingUser().getGifts()) {
             if(giftID==gift.getID()){
                 return gift;
+            }
+        }
+        return null;
+    }
+
+    public ItemConstant getItemConstantByName(String itemName) throws IOException {
+        Class<? extends ItemConstant>[] enumClasses = new Class[]{
+                AnimalProductDetails.class,
+                ArtisanProductDetails.class,
+                BlackSmithProducts.class,
+                CarpenterShopProducts.class,
+                GeneralStoreProducts.class,
+                FishShopProducts.class,
+                RanchProducts.class,
+                SaloonProducts.class,
+                JojaMartProducts.class,
+                CookingRecipes.class,
+                CraftingRecipes.class,
+                CropEnum.class,
+                FishType.class,
+                ForagingSeeds.class,
+                Fruit.class,
+                Minerals.class,
+                MixedSeeds.class,
+                SaplingEnum.class,
+                SeedEnum.class,
+                ToolTypes.class
+        };
+        for (Class<? extends ItemConstant> enumClass : enumClasses) {
+            for (ItemConstant constant : enumClass.getEnumConstants()) {
+                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                    return constant;
+                }
             }
         }
         return null;

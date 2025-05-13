@@ -29,4 +29,10 @@ public enum ArtisanProductDetails implements ItemConstant {
     public ArtisanProduct getArtisanProduct() {
         return new ArtisanProduct();
     }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
+    }
 }

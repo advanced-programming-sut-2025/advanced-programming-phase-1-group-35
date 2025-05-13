@@ -66,5 +66,11 @@ public enum Fruit implements ItemInterface, ItemConstant {
     public String getSeason() {
         return season;
     }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
+    }
 }
 

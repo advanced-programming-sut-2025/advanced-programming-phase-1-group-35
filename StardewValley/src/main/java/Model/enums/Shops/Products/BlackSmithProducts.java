@@ -1,7 +1,11 @@
 package Model.enums.Shops.Products;
 
+import Model.ItemInterface;
+import Model.Shops.ShopItem;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
+
+import java.io.IOException;
 
 public enum BlackSmithProducts implements ShopProduct, ItemConstant {
     COPPER("Mineral","Copper Ore", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
@@ -62,4 +66,11 @@ public enum BlackSmithProducts implements ShopProduct, ItemConstant {
         return description;
     }
 
+    @Override
+    public ItemInterface getItem() throws IOException {
+        double dl = dailyLimit;
+        int p = dailyLimit == Double.POSITIVE_INFINITY ? 1000000 : (int)dl;
+        ShopItem item = new ShopItem(this.name, this.price, p, null, this.type,this.description);
+        return (ItemInterface) item.makeInstance();
+    }
 }

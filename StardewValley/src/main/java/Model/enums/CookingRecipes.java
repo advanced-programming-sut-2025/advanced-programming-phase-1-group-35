@@ -1,5 +1,9 @@
 package Model.enums;
 
+import Model.Food;
+import Model.ItemInterface;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -136,5 +140,11 @@ public enum CookingRecipes implements ItemConstant{
 
     public int getPrice() {
         return price;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        return new Food(this);
+        //TODO
     }
 }

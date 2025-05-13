@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 public enum MixedSeeds implements ItemConstant {
@@ -16,5 +17,11 @@ public enum MixedSeeds implements ItemConstant {
 
     public CropEnum[] getPossibleCrops() {
         return possibleCropEnums;
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
     }
 }
