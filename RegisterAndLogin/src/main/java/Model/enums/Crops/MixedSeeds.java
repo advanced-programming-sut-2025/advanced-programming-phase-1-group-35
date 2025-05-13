@@ -1,6 +1,12 @@
 package Model.enums.Crops;
 
-public enum MixedSeeds {
+import Model.ItemInterface;
+
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+public enum MixedSeeds implements PlantAble, ItemInterface {
     SPRING(new CropEnum[]{CropEnum.CAULIFLOWER, CropEnum.PARSNIP, CropEnum.POTATO, CropEnum.BLUE_JAZZ, CropEnum.TULIP}),
     SUMMER(new CropEnum[]{CropEnum.CORN, CropEnum.HOT_PEPPER, CropEnum.RADISH, CropEnum.WHEAT, CropEnum.POPPY, CropEnum.SUNFLOWER, CropEnum.SUMMER_SPANGLE}),
     FALL(new CropEnum[]{CropEnum.ARTICHOKE, CropEnum.CORN, CropEnum.EGGPLANT, CropEnum.PUMPKIN, CropEnum.SUNFLOWER, CropEnum.FAIRY_ROSE}),
@@ -14,5 +20,15 @@ public enum MixedSeeds {
 
     public CropEnum[] getPossibleCrops() {
         return possibleCropEnums;
+    }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "";
     }
 }

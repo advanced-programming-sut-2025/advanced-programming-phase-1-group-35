@@ -81,7 +81,7 @@
 
         ;
         private final String name;
-        private  SeedEnum source;
+        public  SeedEnum source;
         private final List<Integer> stages;
         private final int totalHarvestTime;
         private final boolean oneTime;
@@ -111,49 +111,49 @@
             this.daysSinceLastGrowth = 0;
             this.isForaging = isForaging;
         }
-//        static {
-//            BLUE_JAZZ.setSource(SeedEnum.JAZZ);
-//            CARROT.setSource(SeedEnum.CARROT);
-//            CAULIFLOWER.setSource(SeedEnum.CAULIFLOWER);
-//            COFFEE_BEAN.setSource(SeedEnum.COFFEE);
-//            GARLIC.setSource(SeedEnum.GARLIC);
-//            GREEN_BEAN.setSource(SeedEnum.BEAN);
-//            KALE.setSource(SeedEnum.KALE);
-//            PARSNIP.setSource(SeedEnum.PARSNIP);
-//            POTATO.setSource(SeedEnum.POTATO);
-//            RHUBARB.setSource(SeedEnum.RHUBARB);
-//            STRAWBERRY.setSource(SeedEnum.STRAWBERRY);
-//            TULIP.setSource(SeedEnum.TULIP);
-//            UNMILLED_RICE.setSource(SeedEnum.RICE);
-//            BLUEBERRY.setSource(SeedEnum.BLUEBERRY);
-//            CORN.setSource(SeedEnum.CORN);
-//            HOPS.setSource(SeedEnum.HOPS);
-//            HOT_PEPPER.setSource(SeedEnum.PEPPER);
-//            MELON.setSource(SeedEnum.MELON);
-//            POPPY.setSource(SeedEnum.POPPY);
-//            RADISH.setSource(SeedEnum.RADISH);
-//            RED_CABBAGE.setSource(SeedEnum.RED_CABBAGE);
-//            STARFRUIT.setSource(SeedEnum.STARFRUIT);
-//            SUMMER_SPANGLE.setSource(SeedEnum.SPANGLE);
-//            SUMMER_SQUASH.setSource(SeedEnum.SUMMER_SQUASH);
-//            SUNFLOWER.setSource(SeedEnum.SUNFLOWERSEED);
-//            TOMATO.setSource(SeedEnum.TOMATO);
-//            WHEAT.setSource(SeedEnum.WHEAT);
-//            AMARANTH.setSource(SeedEnum.AMARANTH);
-//            ARTICHOKE.setSource(SeedEnum.ARTICHOKE);
-//            BEET.setSource(SeedEnum.BEET);
-//            BOK_CHOY.setSource(SeedEnum.BOK_CHO);
-//            BROCCOLI.setSource(SeedEnum.BROCCOLI);
-//            CRANBERRIES.setSource(SeedEnum.CRANBERRY);
-//            EGGPLANT.setSource(SeedEnum.EGGPLANT);
-//            FAIRY_ROSE.setSource(SeedEnum.FAIRY);
-//            GRAPE.setSource(SeedEnum.GRAPE);
-//            PUMPKIN.setSource(SeedEnum.PUMPKIN);
-//            YAM.setSource(SeedEnum.YAM);
-//            SWEET_GEM_BERRY.setSource(SeedEnum.SWEET_GEM_BERRY);
-//            POWDERMELON.setSource(SeedEnum.POWDERMELON);
-//            ANCIENT_FRUIT.setSource(SeedEnum.ANCIENT);
-//        }
+        static {
+            BLUE_JAZZ.setSource(SeedEnum.JAZZ);
+            CARROT.setSource(SeedEnum.CARROT);
+            CAULIFLOWER.setSource(SeedEnum.CAULIFLOWER);
+            COFFEE_BEAN.setSource(SeedEnum.COFFEE);
+            GARLIC.setSource(SeedEnum.GARLIC);
+            GREEN_BEAN.setSource(SeedEnum.BEAN);
+            KALE.setSource(SeedEnum.KALE);
+            PARSNIP.setSource(SeedEnum.PARSNIP);
+            POTATO.setSource(SeedEnum.POTATO);
+            RHUBARB.setSource(SeedEnum.RHUBARB);
+            STRAWBERRY.setSource(SeedEnum.STRAWBERRY);
+            TULIP.setSource(SeedEnum.TULIP);
+            UNMILLED_RICE.setSource(SeedEnum.RICE);
+            BLUEBERRY.setSource(SeedEnum.BLUEBERRY);
+            CORN.setSource(SeedEnum.CORN);
+            HOPS.setSource(SeedEnum.HOPS);
+            HOT_PEPPER.setSource(SeedEnum.PEPPER);
+            MELON.setSource(SeedEnum.MELON);
+            POPPY.setSource(SeedEnum.POPPY);
+            RADISH.setSource(SeedEnum.RADISH);
+            RED_CABBAGE.setSource(SeedEnum.RED_CABBAGE);
+            STARFRUIT.setSource(SeedEnum.STARFRUIT);
+            SUMMER_SPANGLE.setSource(SeedEnum.SPANGLE);
+            SUMMER_SQUASH.setSource(SeedEnum.SUMMER_SQUASH);
+            SUNFLOWER.setSource(SeedEnum.SUNFLOWERSEED);
+            TOMATO.setSource(SeedEnum.TOMATO);
+            WHEAT.setSource(SeedEnum.WHEAT);
+            AMARANTH.setSource(SeedEnum.AMARANTH);
+            ARTICHOKE.setSource(SeedEnum.ARTICHOKE);
+            BEET.setSource(SeedEnum.BEET);
+            BOK_CHOY.setSource(SeedEnum.BOK_CHO);
+            BROCCOLI.setSource(SeedEnum.BROCCOLI);
+            CRANBERRIES.setSource(SeedEnum.CRANBERRY);
+            EGGPLANT.setSource(SeedEnum.EGGPLANT);
+            FAIRY_ROSE.setSource(SeedEnum.FAIRY);
+            GRAPE.setSource(SeedEnum.GRAPE);
+            PUMPKIN.setSource(SeedEnum.PUMPKIN);
+            YAM.setSource(SeedEnum.YAM);
+            SWEET_GEM_BERRY.setSource(SeedEnum.SWEET_GEM_BERRY);
+            POWDERMELON.setSource(SeedEnum.POWDERMELON);
+            ANCIENT_FRUIT.setSource(SeedEnum.ANCIENT);
+        }
         @Override
         public int getPrice() {
             return this.baseSellPrice;
@@ -164,13 +164,14 @@
         public String getName() { return name; }
         //TODO: what does the foraging crops drop as seeds?
         public SeedEnum getSource() {
+            if(this.source != null) return this.source;
             for(SeedEnum seed : SeedEnum.values()) {
                 if(seed.getCrop() == null) continue;
                 else if(seed.getCrop().equals(this)) {
                     return seed;
                 }
             }
-            return null;
+            return this.source;
         }
         public List<Integer> getStages() { return stages; }
         public int getTotalHarvestTime() { return totalHarvestTime; }

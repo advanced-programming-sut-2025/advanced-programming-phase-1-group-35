@@ -1,8 +1,9 @@
 package Model.enums.Shops.Products;
 
+import Model.ItemInterface;
 import Model.enums.Seasons;
 
-public enum GeneralStoreProducts implements ShopProduct{
+public enum GeneralStoreProducts implements ShopProduct, ItemInterface {
     //All year round stock
     BOUQUET("Item","Bouquet", "A gift that shows your romantic interest.", 1000, 2.0, null),
     WEDDING_RING("Item","Wedding Ring", "It's used to ask for another farmer's hand in marriage.", 10000, 2.0, null),
@@ -10,14 +11,15 @@ public enum GeneralStoreProducts implements ShopProduct{
     GRASS_STARTER_RECIPE("CraftingRecipe","Grass Starter (Recipe)", "A recipe to make Grass Starter", 1000, 1.0, null),
     OIL("Item","Oil", "All purpose cooking oil.", 200, Double.POSITIVE_INFINITY, null),
     VINEGAR("Item","Vinegar", "An aged fermented liquid used in many cooking recipes.", 200, Double.POSITIVE_INFINITY, null),
-    DELUXE_RETAINING_SOIL("Item","Deluxe Retaining Soil", "This soil has a 100% chance of staying watered overnight. Mix into tilled soil.", 150, Double.POSITIVE_INFINITY, null),
-    SPEED_GRO("Item","Speed-Gro", "Makes the plants grow 1 day earlier.", 100, Double.POSITIVE_INFINITY, null),
     APPLE("Sapling", "Apple Sapling", "Takes 28 days to produce a mature Apple tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.", 4000, Double.POSITIVE_INFINITY, null),
     APRICOT_SAPLING("Sapling","Apricot Sapling", "Takes 28 days to produce a mature Apricot tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.", 2000, Double.POSITIVE_INFINITY, null),
     CHERRY_SAPLING("Sapling","Cherry Sapling", "Takes 28 days to produce a mature Cherry tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.", 3400, Double.POSITIVE_INFINITY, null),
     ORANGE_SAPLING("Sapling","Orange Sapling", "Takes 28 days to produce a mature Orange tree. Bears fruit in the summer. Only grows if the 8 surrounding \"tiles\" are empty.", 4000, Double.POSITIVE_INFINITY, null),
     PEACH_SAPLING("Sapling","Peach Sapling", "Takes 28 days to produce a mature Peach tree. Bears fruit in the summer. Only grows if the 8 surrounding \"tiles\" are empty.", 6000, Double.POSITIVE_INFINITY, null),
     POMEGRANATE_SAPLING("Sapling","Pomegranate Sapling", "Takes 28 days to produce a mature Pomegranate tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.", 6000, Double.POSITIVE_INFINITY, null),
+    //Soils
+    SPEED_GRO("Item","Speed-Gro", "Makes the plants grow 1 day earlier.", 100, Double.POSITIVE_INFINITY, null),
+    DELUXE_RETAINING_SOIL("Item","Deluxe Retaining Soil", "This soil has a 100% chance of staying watered overnight. Mix into tilled soil.", 150, Double.POSITIVE_INFINITY, null),
     BASIC_RETAINING_SOIL("Item", "Basic Retaining Soil", "This soil has a chance of staying watered overnight. Mix into tilled soil.", 100, Double.POSITIVE_INFINITY, null),
     QUALITY_RETAINING_SOIL("Item", "Quality Retaining Soil", "This soil has a good chance of staying watered overnight. Mix into tilled soil.", 150, Double.POSITIVE_INFINITY, null),
     //BackPacks

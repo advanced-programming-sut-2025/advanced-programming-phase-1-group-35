@@ -1,12 +1,16 @@
 package Model.CropClasses;
 
+import Controller.InGameMenu.FarmingController;
+import Model.App;
 import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
+import Model.enums.Crops.MixedSeeds;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 
 public class Seed implements PlantAble, ItemInterface {
+    private char symbol = '^';
     private final String name;
     private final boolean isMixed;
     private final CropEnum cropEnum;
@@ -15,10 +19,19 @@ public class Seed implements PlantAble, ItemInterface {
     private int price;
 
     public Seed(SeedEnum seedEnum, Tile tile) {
+        if(seedEnum == null ) seedEnum = SeedEnum.SUNFLOWERSEED;
         this.name = seedEnum.getSeedName();
         this.isMixed = seedEnum.isMixed();
         this.cropEnum = seedEnum.getCrop();
         this.tile = tile;
+    }
+    FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+    public Seed(SeedEnum seedEnum, Tile tile, boolean isMixed) {
+        this.name = "mixed seed";
+        this.isMixed = true;
+        this.cropEnum = farmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
+        this.tile = tile;
+        this.symbol = '?';
     }
 
     public Seed(SeedEnum seedEnum) {
@@ -60,5 +73,13 @@ public class Seed implements PlantAble, ItemInterface {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 }

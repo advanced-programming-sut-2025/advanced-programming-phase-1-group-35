@@ -53,7 +53,7 @@ public enum ForagingSeeds implements ItemInterface {
     RARE(Arrays.asList(Fall), CropEnum.SWEET_GEM_BERRY, SeedEnum.SWEET_GEM_BERRY),
     POWDERMELON(Arrays.asList(Winter), CropEnum.POWDERMELON, SeedEnum.POWDERMELON),
     ANCIENT(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.ANCIENT),
-    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),
+//    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),
     FIBER(Arrays.asList(Spring,Summer,Fall,Winter),null,null);
 
     private final List<Seasons> seasons;
@@ -73,10 +73,11 @@ public enum ForagingSeeds implements ItemInterface {
     public static ForagingSeeds findForagingSeeds(SeedEnum seedEnum) {
         for (ForagingSeeds foragingSeeds : ForagingSeeds.values()) {
             if (foragingSeeds.seedEnum.equals(seedEnum)) {
+//                if(foragingSeeds.seedEnum.equals(ForagingSeeds.MIXED)) return ForagingSeeds.COFFEE;
                 return foragingSeeds;
             }
         }
-        return null;
+        return ForagingSeeds.COFFEE;
     }
 
     public CropEnum getCrop() {
@@ -88,10 +89,12 @@ public enum ForagingSeeds implements ItemInterface {
                 .collect(Collectors.toList());
 
         if (foragingSeeds.isEmpty()) {
-            return null; // or throw an exception if you prefer
+            return SeedEnum.SUNFLOWERSEED; // or throw an exception if you prefer
         }
 
         Random random = new Random();
+        if(foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum == null) return SeedEnum.SUNFLOWERSEED;
+        if(foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum == SeedEnum.MIXED) return SeedEnum.SUNFLOWERSEED;
         return foragingSeeds.get(random.nextInt(foragingSeeds.size())).seedEnum;
     }
 

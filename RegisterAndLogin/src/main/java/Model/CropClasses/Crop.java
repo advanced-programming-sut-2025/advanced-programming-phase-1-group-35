@@ -30,7 +30,23 @@ public class Crop implements PlantAble, ItemInterface {
     private int daysSincePlanted = 0;
     private int price ;
     private int daysSinceWatered;
+    private boolean isFertilized;
+    private ItemInterface fertilizer;
 
+    public ItemInterface getFertilizer() {
+        return fertilizer;
+    }
+
+    public void setFertilizer(ItemInterface fertilizer) {
+        this.fertilizer = fertilizer;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
     public void updateDaysSincePlanted() {
         daysSincePlanted++;
     }
@@ -166,8 +182,9 @@ public class Crop implements PlantAble, ItemInterface {
         }
         else{
             daysSinceLastGrowth++;
-            daysSinceWatered++;
         }
+            daysSinceWatered++;
+            daysSincePlanted++;
 
     }
 

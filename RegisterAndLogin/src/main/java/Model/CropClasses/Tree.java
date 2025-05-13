@@ -11,6 +11,7 @@ import Model.enums.Seasons;
 import java.util.List;
 
 public class Tree implements PlantAble,ItemInterface {
+    private char symbol = '7';
     private final String name;
     private final String source;
     private final List<Integer> stages;
@@ -20,7 +21,11 @@ public class Tree implements PlantAble,ItemInterface {
     private final List<Seasons> seasons;
     private Tile tile;
     private int daysSinceLastGrowth;
+    private int daysSincePlanted;
+    private int daysSinceWatered;
+    private boolean fertilized;
     private int currentState;
+    private ItemInterface fertilizer;
     public Tree(TreeEnum Tree){
         this.name = Tree.getName();
         this.source = Tree.getSource();
@@ -30,6 +35,62 @@ public class Tree implements PlantAble,ItemInterface {
         this.seasons = Tree.getSeasons();
         this.daysSinceLastGrowth = 0;
         this.currentState = 1;
+    }
+
+    public int getDaysSinceWatered() {
+        return daysSinceWatered;
+    }
+
+    public void setDaysSinceWatered(int daysSinceWatered) {
+        this.daysSinceWatered = daysSinceWatered;
+    }
+
+    public ItemInterface getFertilizer() {
+        return fertilizer;
+    }
+
+    public void setFertilizer(ItemInterface fertilizer) {
+        this.fertilizer = fertilizer;
+    }
+
+    public int getDaysSinceLastGrowth() {
+        return daysSinceLastGrowth;
+    }
+
+    public void setDaysSinceLastGrowth(int daysSinceLastGrowth) {
+        this.daysSinceLastGrowth = daysSinceLastGrowth;
+    }
+
+    public int getDaysSincePlanted() {
+        return daysSincePlanted;
+    }
+
+    public void setDaysSincePlanted(int daysSincePlanted) {
+        this.daysSincePlanted = daysSincePlanted;
+    }
+
+    public boolean isFertilized() {
+        return fertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        this.fertilized = fertilized;
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 
     public String getName() {
@@ -66,9 +127,13 @@ public class Tree implements PlantAble,ItemInterface {
         if(this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
             this.currentState++;
             this.daysSinceLastGrowth = 0;
-            return;
+
         }
-        this.daysSinceLastGrowth++;
+        else {
+            this.daysSinceLastGrowth++;
+        }
+        this.daysSincePlanted++;
+        this.daysSinceWatered++;
     }
 
 

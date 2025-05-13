@@ -67,7 +67,14 @@ public enum SeedEnum implements ItemInterface {
 
 
     public CropEnum getCrop() {
-        return cropEnum;
+        if(this.cropEnum != null) return cropEnum;
+        for(CropEnum cropEnum1 : CropEnum.values()) {
+            if(cropEnum1.source == null) continue;
+            else if(cropEnum1.source.equals(this)) {
+                return cropEnum1;
+            }
+        }
+        return null;
     }
 
 

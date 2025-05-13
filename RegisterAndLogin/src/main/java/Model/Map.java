@@ -19,12 +19,12 @@ public class Map {
     private Tile[][] tiles = new Tile[300][250];
     private ArrayList<Farm> farms = new ArrayList<>();
     private Farm village ;
-    public ArrayList<Building> buildings;
+    public ArrayList<Building> buildings = new ArrayList<>();
     public ArrayList<Shop> shops = new ArrayList<>();
     private ArrayList<Crop> Crop = new ArrayList<>();
-    private ArrayList<Tree> trees;
-    private ArrayList<Rock> rocks;
-    private ArrayList<Foraging> forages;
+    private ArrayList<Tree> trees = new ArrayList<>();
+    private ArrayList<Rock> rocks = new ArrayList<>();
+    private ArrayList<Foraging> forages = new ArrayList<>();
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {

@@ -10,6 +10,7 @@ import Model.enums.Seasons;
 import View.GameMenu;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class GameCalender {
     private LocalDateTime gameDateTime;
@@ -74,13 +75,57 @@ public class GameCalender {
 
     public void goToNextDay() {
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
-        for(Crop crop: App.getCurrentGame().getMap().getCrops()){
+        Random rand = new Random();
+        for(Crop crop: App.getCurrentGame().getMap().getCrops()) {
             crop.grow();
+            if (crop.isFertilized()) {
+                boolean fertilizer = false;
+                if (crop.getFertilizer().getName().equals("Speed-Gro")) {
+                    if (crop.getDaysSinceLastGrowth() == crop.getStages().get(crop.getCurrentState()) - 1) {
+                        crop.setCurrentState(crop.getCurrentState() + 1);
+                        crop.setDaysSinceLastGrowth(0);
+                    }
+                } else if (crop.getFertilizer().getName().equals("Deluxe Retaining Soil")) {
+                    fertilizer = true;
+                } else if (crop.getFertilizer().getName().equals("Basic Retaining Soil")) {
+                    if (rand.nextInt(100) < 50) fertilizer = true;
+                } else if (crop.getFertilizer().getName().equals("Quality Retaining Soil")) {
+                    if (rand.nextInt(100) < 75) fertilizer = true;
+                }
+
+                if (crop.getDaysSinceWatered() > 1) {
+                    if (!fertilizer) {
+                        crop.getCropTile().setPlanted(null);
+                        crop.getCropTile().getContents().remove(crop);
+                    }
+                }
+            }
         }
         for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
             tree.grow();
-            if(tree.getTile().isFertilized()){
-                tree.grow();
+            if (tree.isFertilized()) {
+                boolean fertilizer = false;
+                if(tree.getFertilizer().getName().equals("Speed-Gro")){
+                    if(tree.getDaysSinceLastGrowth() == tree.getStages().get(tree.getCurrentState()) - 1){
+                        tree.setCurrentState(tree.getCurrentState()+1);
+                        tree.setDaysSinceLastGrowth(0);
+                    }
+                }
+                else if(tree.getFertilizer().getName().equals("Deluxe Retaining Soil")){
+                    fertilizer = true;
+                }
+                else if(tree.getFertilizer().getName().equals("Basic Retaining Soil")){
+                    if(rand.nextInt(100)<50) fertilizer = true;
+                }
+                else if(tree.getFertilizer().getName().equals("Quality Retaining Soil")){
+                    if(rand.nextInt(100)<75) fertilizer = true;
+                }
+                if (tree.getDaysSinceWatered() > 1) {
+                    if (!fertilizer) {
+                        tree.getTile().setPlanted(null);
+                        tree.getTile().getContents().remove(tree);
+                    }
+                }
             }
         }
         if (gameDateTime.getDayOfMonth() == 29) {

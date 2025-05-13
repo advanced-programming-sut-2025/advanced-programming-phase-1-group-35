@@ -19,7 +19,7 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.createNewGame(matcher.group("user1") , matcher.group("user2") ,
                     matcher.group("user3")));
             FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
-            cont.addForagingCrop();
+            cont.generateStartingPlants();
         }
         else if((matcher = GameMenuCommands.loadGame.getMatcher(input) )!= null){
             System.out.println(controller.loadGame());
@@ -62,6 +62,15 @@ public class GameMenu extends AppMenu {
         }
         else if((matcher = GameMenuCommands.plantSeed.getMatcher(input) )!= null){
             System.out.println(controller.plantSeed(matcher.group("seed"), matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.fertilize.getMatcher(input) )!= null){
+            System.out.println(controller.fertilize(matcher.group("fertilizer") , matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.harvest.getMatcher(input) )!= null){
+            System.out.println();
+        }
+        else{
+            System.out.println("Invalid input");
         }
     }
 }

@@ -4,10 +4,13 @@ import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
+import Model.CropClasses.Crop;
+import Model.CropClasses.Tree;
 import Model.Tools.FishingPole;
 import Model.enums.Colors;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.TileType;
 import Model.enums.machines.ArtisanProductDetails;
@@ -39,7 +42,84 @@ public class GameMenuController {
         return farmingController.plantSeed(seedName, direction);
     }
 
+    public Result fertilize(String fertilizerName, String direction){
+        if(!direction.toLowerCase().matches("up|down|left|right")){
+            return new Result(false, "Invalid direction");
+        }
+        List<ItemInterface> fertilizers = new ArrayList<>();
+        fertilizers.add(GeneralStoreProducts.SPEED_GRO);
+        fertilizers.add(GeneralStoreProducts.DELUXE_RETAINING_SOIL);
+        fertilizers.add(GeneralStoreProducts.BASIC_RETAINING_SOIL);
+        fertilizers.add(GeneralStoreProducts.QUALITY_RETAINING_SOIL);
+        Fertilizer fertilizer = null;
+        for(ItemInterface item : fertilizers){
+            if(item.getName().toLowerCase().equals(fertilizerName.toLowerCase())){
+                fertilizer = (Fertilizer) item;
+                break;
+            }
+        }
+        if(fertilizer == null){
+            return new Result(false, "Fertilizer not found");
+        }
+        if(!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(fertilizer)){
+            return new Result(false, "you don't have the fertilizer in your inventory");
+        }
 
+        if(findTile(direction).getPlanted()== null) {
+            if (!findTile(direction).isPlowed()){
+                return new Result(false, "the selected tile is not plowed");
+            }
+        }
+        else{
+            if(findTile(direction).getPlanted().getClass().equals(Crop.class)){
+                Crop crop = (Crop) findTile(direction).getPlanted();
+                if(crop.getDaysSincePlanted() != 0) return new Result(false, "you can't fertilize a plant that's older than 1 day");
+                crop.setFertilized(true);
+                findTile(direction).setFertilized(true);
+                crop.setFertilizer(fertilizer);
+                return new Result(true, "you fertilized " + crop.getName());
+            }
+            if(findTile(direction).getPlanted().getClass().equals(Tree.class)){
+                Tree tree = (Tree) findTile(direction).getPlanted();
+                if(tree.getDaysSincePlanted() != 0) return new Result(false, "you can't fertilize a plant that's older than 1 day");
+                tree.setFertilized(true);
+                findTile(direction).setFertilized(true);
+                tree.setFertilizer(fertilizer);
+                return new Result(true, "you fertilized " + tree.getName());
+            }
+        }
+        findTile(direction).setFertilized(true);
+        return new Result(true, "tile fertilized successfully");
+    }
+    public static Tile findTile(String direction){
+        Tile tile = null;
+        Tile[][] map = App.getCurrentGame().getMap().getTiles();
+        switch (direction) {
+            case "up":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX()]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() + 1];
+                break;
+            case "down":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() - 1];
+                break;
+            case "left":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x - 1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "right":
+                tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x + 1]
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY()];
+                break;
+            case "here":
+                tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+                break;
+            default:
+                String[] parts = direction.split(" ");
+                tile = map[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
+        }
+        return tile;
+    }
     public void setFarmingController() {
         cropController = new CropController();
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
@@ -121,7 +201,10 @@ public class GameMenuController {
         }
         game.getMap().buildMap(users , types);
     }
-
+    public Result harvest(String direction) throws IOException {
+        farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+        return farmingController.harvestCrop(findTile(direction));
+    }
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if(game == null) {
@@ -228,10 +311,6 @@ public class GameMenuController {
 
     public Result showWeatherForecast() {
         return null;
-    }
-
-    public void goToNextDay() {
-
     }
 
     public Result walk(String xString, String yString) {

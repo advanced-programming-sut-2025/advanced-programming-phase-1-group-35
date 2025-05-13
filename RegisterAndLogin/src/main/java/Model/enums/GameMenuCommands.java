@@ -31,7 +31,8 @@ public enum GameMenuCommands {
     inventoryTrash(""),
     showCropInfo("\\s*show\\s+crop\\s+info\\s+(?<cropName>\\S+)\\s*"),
     plantSeed("\\s*plant\\s+seed\\s+(?<seed>\\S+)\\s+(?<direction>\\S+)\\s*"),
-
+    fertilize("\\s*fertilize\\s+-f\\s+(?<fertilizer>\\S+)\\s+-d\\s+(?<direction>\\S+)\\s*"),
+    harvest("\\s*harvest\\s*"),
 
     buildABuilding("build\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
     placeAnimal("animal\\s+place\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),

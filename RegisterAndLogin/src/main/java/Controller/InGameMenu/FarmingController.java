@@ -11,6 +11,7 @@ import Model.Tile;
 import Model.Tools.Tool;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
+import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
 import java.util.Random;
@@ -199,10 +200,6 @@ public class FarmingController {
         return new Result(true, "sapling planted");
     }
 
-    public void fertilize(Fertilizer fertilize, Tile tile) {
-        tile.setFertilized(true);
-    }
-
     public void watering(Tile tile) {
         tile.setWatered(true);
         Crop crop = (Crop) tile.getPlanted();
@@ -281,6 +278,7 @@ public class FarmingController {
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);
                     App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
+                    tile.setContentSymbol(tree.getSymbol());
                     tile.addContents(tree);
                     tree.setTile(tile);
                 }
@@ -293,7 +291,7 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null) {
+                if (tile.getPlanted() == null && tile.isPlowed()) {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
@@ -312,22 +310,90 @@ public class FarmingController {
 
     //TODO: because the chance is so small we should add a way to make sure something spawns
     public void addForagingSeeds() {
+        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
                 if (tile.getPlanted() == null && tile.isPlowed()) {
                     if (random1.nextInt(100) < 1) {
                         Seed seed;
-                        do {
+                        if(random1.nextInt(2) == 1){
                             seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
+                        }
+                        else {
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getSeason()).getSource(), tile,true);
+                        }
+                        do {
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
 //                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
                         tile.addContents(seed);
+                        tile.setContentSymbol(seed.getSymbol());
                     }
                 }
             }
         }
+    }
+
+    public void generateStartingPlants() {
+       System.out.println("Generating starting plants");
+        Random random1 = new Random();
+        for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
+            for (Tile tile : tile1) {
+                if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil){
+                    if(random1.nextInt(100) < 1){
+                        Tree tree = new Tree(TreeEnum.getRandomForagingTree());
+                        tile.setPlanted(tree);
+                        App.getCurrentGame().getMap().addTrees(tree);
+                        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
+                        tile.addContents(tree);
+                        tile.setContentSymbol(tree.getSymbol());
+                        tree.setTile(tile);
+//                        System.out.println("tree planted, location : " + tile.coordination);
+                    }
+                }
+            }
+        }
+        for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
+            for (Tile tile : tile1) {
+                if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil) {
+                    if (random1.nextInt(100) < 1) {
+                        Crop crop;
+                        do {
+                            crop = new Crop(CropEnum.getRandomForagingCrop());
+                        } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
+                        tile.setPlanted(crop);
+                        tile.setContentSymbol(crop.getSymbol());
+                        App.getCurrentGame().getMap().AddCrop(crop);
+                        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
+                        tile.addContents(crop);
+                        tile.setContentSymbol(crop.getSymbol());
+//                        System.out.println("crop planted, location : " + tile.coordination);
+                    }
+                }
+            }
+        }
+            int counter = 0;
+        for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
+            for (Tile tile : tile1) {
+                if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil) {
+                    if (random1.nextInt(100) < 1) {
+                        Seed seed;
+                        int couner = 0;
+                        do {
+                            seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
+                            couner++;
+                        } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
+                                getSeasons().contains(App.getCurrentGame().getSeason()) && couner < 100);
+//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+                        tile.addContents(seed);
+                        tile.setContentSymbol(seed.getSymbol());
+//                        System.out.println("seed planted, location : " + tile.coordination);
+                    }
+                }
+            }
+        }
+        System.out.println("Generating finished");
     }
 
     public Result ShowCrop(int x, int y) {
