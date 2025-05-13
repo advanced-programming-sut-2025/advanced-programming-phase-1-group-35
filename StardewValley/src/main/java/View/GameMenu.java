@@ -25,7 +25,7 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.createNewGame(matcher.group("user1"), matcher.group("user2"),
                     matcher.group("user3")));
             FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
-            cont.addForagingCrop();
+            cont.generateStartingPlants();
         } else if ((matcher = GameMenuCommands.loadGame.getMatcher(input)) != null) {
             System.out.println(controller.loadGame());
         } else if ((matcher = GameMenuCommands.deleteGame.getMatcher(input)) != null) {
@@ -68,6 +68,21 @@ public class GameMenu extends AppMenu {
         }
         else if (GameMenuCommands.goToCookingMenu.getMatcher(input)!= null) {
             App.setCurrentMenu(Menu.CookingMenu);
+        }
+        else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
+            System.out.println(controller.showCropInfo(matcher.group("cropName")));
+        }
+        else if((matcher = GameMenuCommands.plantSeed.getMatcher(input) )!= null){
+            System.out.println(controller.plantSeed(matcher.group("seed"), matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.fertilize.getMatcher(input) )!= null){
+            System.out.println(controller.fertilize(matcher.group("fertilizer") , matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.harvest.getMatcher(input) )!= null){
+            System.out.println(controller.harvest(matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.GoToNextDay.getMatcher(input) )!= null){
+            App.getCurrentGame().getGameCalender().goToNextDay();
         }
         else {
             System.out.println("Invalid input");

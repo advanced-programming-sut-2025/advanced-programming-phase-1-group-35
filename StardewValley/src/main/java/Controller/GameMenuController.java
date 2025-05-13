@@ -374,6 +374,9 @@ public class GameMenuController {
                 else if(tiles[j][i].getTileType().equals(TileType.Pathway)){
                     map.append(String.format("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
                 }
+                else if(tiles[j][i].getSymbol() == 'X'){
+                    map.append(String.format("%s%c%s", Colors.RED ,tiles[j][i].getSymbol(), RESET));
+                }
                 else{
                     map.append(String.format("%s%2c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
                 }

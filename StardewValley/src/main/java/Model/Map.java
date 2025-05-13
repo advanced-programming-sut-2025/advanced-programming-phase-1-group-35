@@ -234,7 +234,7 @@ public class Map {
             case 2 -> tiles[x][y + 1];
             case 3 -> tiles[x + 1][y + 1];
             default -> null;
-        }
+        };
     }
 }
 
