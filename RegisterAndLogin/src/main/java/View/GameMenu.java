@@ -3,6 +3,8 @@ package View;
 import Controller.GameMenuController;
 import Controller.InGameMenu.FarmingController;
 import Model.App;
+import Model.Game;
+import Model.GameCalender;
 import Model.enums.GameMenuCommands;
 
 import java.io.IOException;
@@ -67,7 +69,10 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.fertilize(matcher.group("fertilizer") , matcher.group("direction")));
         }
         else if((matcher = GameMenuCommands.harvest.getMatcher(input) )!= null){
-            System.out.println();
+            System.out.println(controller.harvest(matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.GoToNextDay.getMatcher(input) )!= null){
+            App.getCurrentGame().getGameCalender().goToNextDay();
         }
         else{
             System.out.println("Invalid input");

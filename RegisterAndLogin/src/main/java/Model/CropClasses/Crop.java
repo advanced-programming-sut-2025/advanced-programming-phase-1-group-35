@@ -7,20 +7,21 @@ import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 import Model.enums.Seasons;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Crop implements PlantAble, ItemInterface {
     private char symbol = '&';
     private final String name;
     private final SeedEnum source;
-    private final List<Integer> stages;
+    private List<Integer> stages = new ArrayList<>();
     private final int totalHarvestTime;
     private final boolean oneTime;
     private final int regrowthTime;
     private final int baseSellPrice;
     private final boolean isEdible;
     private final int energy;
-    private final List<Seasons> season;
+    private List<Seasons> season = new ArrayList<>();
     private final boolean canBecomeGiant;
     private boolean isForaging;
     private int currentState;
@@ -62,7 +63,7 @@ public class Crop implements PlantAble, ItemInterface {
         isGiant = giant;
     }
 
-    public Crop(CropEnum cropEnum) {
+    public Crop(CropEnum cropEnum, Tile tile) {
         this.name = cropEnum.getName();
         this.source = cropEnum.getSource();
         this.stages = cropEnum.getStages();
@@ -78,6 +79,7 @@ public class Crop implements PlantAble, ItemInterface {
         this.currentState = 1;
         this.daysSincePlanted = 0;
         this.daysSinceWatered = 0;
+        this.cropTile = tile;
     }
 
     public void EmptyTile() {

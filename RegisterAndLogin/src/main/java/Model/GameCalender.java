@@ -75,6 +75,8 @@ public class GameCalender {
 
     public void goToNextDay() {
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
+//        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+//        farmingController.crowAttack();
         Random rand = new Random();
         for(Crop crop: App.getCurrentGame().getMap().getCrops()) {
             crop.grow();
@@ -136,6 +138,7 @@ public class GameCalender {
         farmingController.addForagingCrop();
         farmingController.addForagingSeeds();
         farmingController.addForAgingTree();
+        farmingController.crowAttack();
         for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
             for (ShopItem product : shop.getProducts()) {
                 product.setDailyBoughtCount(0);

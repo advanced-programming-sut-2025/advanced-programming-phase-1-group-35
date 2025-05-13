@@ -132,7 +132,7 @@ public class FarmingController {
         //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
         App.getCurrentGame().getPlayingUser().backPack.items.remove(seed);
         tile.setPlowed(false);
-        Crop crop = new Crop(seed.getCropEnum());
+        Crop crop = new Crop(seed.getCropEnum(),tile);
         tile.changeTileContents(crop);
         App.getCurrentGame().getMap().AddCrop(crop);
         if (findTilesWithSameSeed(tile) != null) {
@@ -243,12 +243,22 @@ public class FarmingController {
         return new Result(false, "no crop nor tree found there");
     }
 
-    public static void crowAttack() {
-        if (App.getCurrentGame().getMap().getCrops().size() > 16) {
-            App.getCurrentGame().getMap().getCrops().remove(App.getCurrentGame().getMap().getCrops().get(0)); //TODO:make it random
+    public void crowAttack() {
+        if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
+            Random rand = new Random();
+            int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
+//            if (rand.nextInt(100) < 25) {
+            Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
+                System.out.println("Crow attacking " +crop.getName() +
+                        " at x = " + crop.getCropTile().coordination.x +
+                        " and y = " + crop.getCropTile().coordination.y);
+                App.getCurrentGame().getMap().getCrops().remove(crop);
+                App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
+                crop.getCropTile().setPlanted(null);
+                crop.getCropTile().setSymbol('X');
+//            }
         }
     }
-
 
     private static final Random random = new Random();
 
@@ -295,7 +305,7 @@ public class FarmingController {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
-                            crop = new Crop(CropEnum.getRandomForagingCrop());
+                            crop = new Crop(CropEnum.getRandomForagingCrop(),tile);
                         } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
                         tile.setPlanted(crop);
                         tile.setContentSymbol(crop.getSymbol());
@@ -360,7 +370,7 @@ public class FarmingController {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
-                            crop = new Crop(CropEnum.getRandomForagingCrop());
+                            crop = new Crop(CropEnum.getRandomForagingCrop(),tile);
                         } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
                         tile.setPlanted(crop);
                         tile.setContentSymbol(crop.getSymbol());
