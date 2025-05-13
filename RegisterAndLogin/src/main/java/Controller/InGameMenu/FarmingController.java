@@ -247,7 +247,7 @@ public class FarmingController {
         if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
             Random rand = new Random();
             int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
-//            if (rand.nextInt(100) < 25) {
+            if (rand.nextInt(100) < 25) {
             Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
                 System.out.println("Crow attacking " +crop.getName() +
                         " at x = " + crop.getCropTile().coordination.x +
@@ -256,7 +256,7 @@ public class FarmingController {
                 App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
                 crop.getCropTile().setPlanted(null);
                 crop.getCropTile().setSymbol('X');
-//            }
+            }
         }
     }
 
