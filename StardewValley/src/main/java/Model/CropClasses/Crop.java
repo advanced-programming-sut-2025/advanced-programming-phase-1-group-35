@@ -1,5 +1,6 @@
 package Model.CropClasses;
 
+import Model.App;
 import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
@@ -177,19 +178,30 @@ public class Crop implements PlantAble, ItemInterface {
     //my current idea is this
 
 
-    public void grow(){
-        if(this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
-            this.currentState++;
-            this.daysSinceLastGrowth = 0;
-        }
-        else{
-            daysSinceLastGrowth++;
-        }
+    public boolean grow() {
+        if (daysSinceWatered <= 1) {
+            if (this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
+                this.currentState++;
+                this.daysSinceLastGrowth = 0;
+            } else {
+                daysSinceLastGrowth++;
+            }
             daysSinceWatered++;
             daysSincePlanted++;
-
+            this.getCropTile().setWatered(false);
+            return true;
+        }
+        else{
+            cropTile.setPlanted(null);
+            cropTile.getContents().remove(this);
+            cropTile.setContentSymbol('.');
+            cropTile.setSymbol('.');
+            cropTile.changeTileContents(null);
+            App.getCurrentGame().getMap().getCrops().remove(this);
+            App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(this);
+            return false;
+        }
     }
-
     public void addDaysSincePlanted() {
         this.daysSincePlanted++;
     }

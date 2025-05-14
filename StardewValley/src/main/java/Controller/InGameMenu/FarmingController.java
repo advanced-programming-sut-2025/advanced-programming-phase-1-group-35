@@ -254,7 +254,8 @@ public class FarmingController {
                 App.getCurrentGame().getMap().getCrops().remove(crop);
                 App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
                 crop.getCropTile().setPlanted(null);
-                crop.getCropTile().setSymbol('X');
+//                crop.getCropTile().setSymbol('X');
+                crop.getCropTile().setContentSymbol('X');
             }
         }
     }

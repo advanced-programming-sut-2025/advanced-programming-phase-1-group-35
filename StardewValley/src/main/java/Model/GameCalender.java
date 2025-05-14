@@ -10,6 +10,8 @@ import Model.enums.Seasons;
 import View.GameMenu;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameCalender {
@@ -78,8 +80,9 @@ public class GameCalender {
 //        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
 //        farmingController.crowAttack();
         Random rand = new Random();
-        for(Crop crop: App.getCurrentGame().getMap().getCrops()) {
-            crop.grow();
+        ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
+        for(Crop crop: crops) {
+            boolean temp = crop.grow();
             if (crop.isFertilized()) {
                 boolean fertilizer = false;
                 if (crop.getFertilizer().getName().equals("Speed-Gro")) {
@@ -135,9 +138,9 @@ public class GameCalender {
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
-        farmingController.addForagingCrop();
-        farmingController.addForagingSeeds();
-        farmingController.addForAgingTree();
+//        farmingController.addForagingCrop();
+//        farmingController.addForagingSeeds();
+//        farmingController.addForAgingTree();
         farmingController.crowAttack();
         for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
             for (ShopItem product : shop.getProducts()) {
