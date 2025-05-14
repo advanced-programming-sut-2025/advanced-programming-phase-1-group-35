@@ -9,6 +9,7 @@ import Model.Shops.ShopItem;
 import Model.enums.Seasons;
 import View.GameMenu;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class GameCalender {
@@ -72,7 +73,7 @@ public class GameCalender {
     }
     }
 
-    public void goToNextDay() {
+    public void goToNextDay() throws IOException {
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
         for(Crop crop: App.getCurrentGame().getMap().getCrops()){
             crop.grow();
