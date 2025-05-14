@@ -24,6 +24,12 @@ public enum MixedSeeds implements PlantAble, ItemInterface, ItemConstant {
     }
 
     @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
+    }
+
+    @Override
     public int getPrice() {
         return 0;
     }

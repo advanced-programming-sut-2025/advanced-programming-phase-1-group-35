@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.ItemInterface;
 import Model.enums.Seasons;
@@ -107,5 +108,11 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
     @Override
     public String getName() {
         return this.name();
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
     }
 }

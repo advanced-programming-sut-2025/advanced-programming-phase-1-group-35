@@ -17,6 +17,12 @@ import Model.enums.TileType;
 import Model.enums.TileType;
 import Model.enums.machines.ArtisanProductDetails;
 import Model.machines.ArtisanProduct;
+import Model.enums.*;
+import Model.enums.Crops.*;
+import Model.enums.Shops.Products.*;
+import Model.enums.animal.AnimalProductDetails;
+import Model.enums.animal.FishType;
+import Model.enums.machines.ArtisanProductDetails;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 
@@ -267,14 +273,21 @@ public class GameMenuController {
             App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
         }
         String notifications = "";
-        if(App.getCurrentGame().getPlayingUser().isHasNewMessages()){
+        User user = App.getCurrentGame().getPlayingUser();
+        if(user.isHasNewMessages()){
             notifications += "\nyou have new message(s), look your message history for more info";
         }
-        if(App.getCurrentGame().getPlayingUser().isHasNewGift()){
+        if(user.isHasNewGift()){
             notifications += "\nyou have new gift(s), look your gift history for more info";
         }
+        if(user.isHasNewTradeRequest()){
+            notifications += "\nyou have new trade request(s), look your trade history for more info";
+        }
+        user.setHasNewMessages(false);
+        user.setHasNewGift(false);
+        user.setHasNewTradeRequest(false);
         return new Result(true , "going to next turn . now turn of : " +
-                App.getCurrentGame().getPlayingUser().getUsername() + notifications);
+                user.getUsername() + notifications);
     }
     public Result UseArtisan(String ArtisanName, List<String> Ingredients) {
         if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)) {
@@ -363,22 +376,27 @@ public class GameMenuController {
         if(!validate.isSuccess())return validate;
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         StringBuilder map = new StringBuilder();
+        for (int i = -1 + x ; i < -1 + x + size ; i++){
+            map.append(String.format("%4d", i));
+        }
+        map.append("\n");
         for (int i = y; i < Math.min(y + size , 250); i++) {
+            map.append(String.format("%4d", i));
             for (int j = x; j < Math.min(x + size , 300); j++) {
                 if(tiles[j][i].getTileType().equals(TileType.BuildingWall)){
-                    map.append(String.format("%s%2c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.YELLOW ,tiles[j][i].getSymbol(), RESET));
                 }
                 else if(tiles[j][i].getTileType().equals(TileType.Water)){
-                    map.append(String.format("%s%2c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.BLUE ,tiles[j][i].getSymbol(), RESET));
                 }
                 else if(tiles[j][i].getTileType().equals(TileType.Pathway)){
-                    map.append(String.format("%s%s%2c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%s%4c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN ,tiles[j][i].getSymbol(), RESET));
                 }
                 else if(tiles[j][i].getSymbol() == 'X'){
-                    map.append(String.format("%s%c%s", Colors.RED ,tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.RED ,tiles[j][i].getSymbol(), RESET));
                 }
                 else{
-                    map.append(String.format("%s%2c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
+                    map.append(String.format("%s%4c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET));
                 }
             }
             map.append("\n");
@@ -515,7 +533,7 @@ public class GameMenuController {
                 Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2;
     }
 
-    private void increaseMutualXP(User sender, User receiver, int i) {
+    public void increaseMutualXP(User sender, User receiver, int i) {
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
@@ -543,7 +561,7 @@ public class GameMenuController {
         return new Result(true, "friendship status for " + username+
                 "\nfriendship level: " + level + "\nfriendship xp: " + xp);
     }
-    public Result GiftPlayer(String username, String ItemName, String amountString){
+    public Result giftPlayer(String username, String ItemName, String amountString){
         User user = App.getCurrentGame().getPlayingUser();
         User receiver = getUserBYName(username);
         int amount = Integer.parseInt(amountString);
@@ -570,6 +588,25 @@ public class GameMenuController {
         removeFromBackPack(item, user.backPack, amount);
         return new Result(true, "gift has been sent");
     }
+    public Result giftList(){
+        User user = App.getCurrentGame().getPlayingUser();
+        StringBuilder m = new StringBuilder();
+        String rating;
+        m.append("gift list:\n═════════════════════════════════\n");
+        for (Gift gift : user.getGifts()) {
+            if(gift.getSenderID() == user.getID()){
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you sent :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+            else{
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
+        }
+        return new Result(true, m.toString());
+    }
     public Result giftHistory(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
@@ -583,7 +620,6 @@ public class GameMenuController {
                         .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
             }
             else if(gift.getSenderID() == friend.getID()){
-                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
                 rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
                 m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
                         .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
@@ -611,7 +647,7 @@ public class GameMenuController {
         return new Result(true, "rating has been set");
     }
 
-    private User getUserByID(int senderID) {
+    public User getUserByID(int senderID) {
         for (User player : App.getCurrentGame().getPlayers()) {
             if(player.getID() == senderID){
                 return player;
@@ -676,8 +712,9 @@ public class GameMenuController {
     public Result respondToMarriageRequest(){
         return null;
     }
-    public void goToTradeMenu(){
-
+    public Result goToTradeMenu(){
+        App.setCurrentMenu(Menu.TradeMenu);
+        return new Result(true, "redirecting to trade menu ...");
     }
     public Result meetNPC(){
         return null;
@@ -745,6 +782,39 @@ public class GameMenuController {
         for (Gift gift : App.getCurrentGame().getPlayingUser().getGifts()) {
             if(giftID==gift.getID()){
                 return gift;
+            }
+        }
+        return null;
+    }
+
+    public ItemConstant getItemConstantByName(String itemName) throws IOException {
+        Class<? extends ItemConstant>[] enumClasses = new Class[]{
+                AnimalProductDetails.class,
+                ArtisanProductDetails.class,
+                BlackSmithProducts.class,
+                CarpenterShopProducts.class,
+                GeneralStoreProducts.class,
+                FishShopProducts.class,
+                RanchProducts.class,
+                SaloonProducts.class,
+                JojaMartProducts.class,
+                CookingRecipes.class,
+                CraftingRecipes.class,
+                CropEnum.class,
+                FishType.class,
+                ForagingSeeds.class,
+                Fruit.class,
+                Minerals.class,
+                MixedSeeds.class,
+                SaplingEnum.class,
+                SeedEnum.class,
+                ToolTypes.class
+        };
+        for (Class<? extends ItemConstant> enumClass : enumClasses) {
+            for (ItemConstant constant : enumClass.getEnumConstants()) {
+                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                    return constant;
+                }
             }
         }
         return null;

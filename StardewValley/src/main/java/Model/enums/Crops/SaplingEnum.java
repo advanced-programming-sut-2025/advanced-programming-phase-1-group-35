@@ -40,4 +40,9 @@ public enum SaplingEnum implements ItemInterface, ItemConstant {
     public String getName() {
         return this.name();
     }
+
+    @Override
+    public ItemInterface getItem() {
+        return new Sapling(this.tree);
+    }
 }

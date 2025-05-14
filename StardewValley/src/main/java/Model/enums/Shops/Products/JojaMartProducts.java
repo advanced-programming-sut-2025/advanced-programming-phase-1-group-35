@@ -1,7 +1,11 @@
 package Model.enums.Shops.Products;
 
+import Model.ItemInterface;
+import Model.Shops.ShopItem;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
+
+import java.io.IOException;
 
 public enum JojaMartProducts implements ShopProduct, ItemConstant {
     //year round stock (season is null)
@@ -96,5 +100,13 @@ public enum JojaMartProducts implements ShopProduct, ItemConstant {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        double dl = dailyLimit;
+        int p = dailyLimit == Double.POSITIVE_INFINITY ? 1000000 : (int)dl;
+        ShopItem item = new ShopItem(this.name, this.price, p, this.season, this.type,this.description);
+        return (ItemInterface) item.makeInstance();
     }
 }

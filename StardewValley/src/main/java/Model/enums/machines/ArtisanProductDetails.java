@@ -72,4 +72,10 @@ public enum ArtisanProductDetails implements ItemInterface, ItemConstant {
     public String getName() {
         return this.name();
     }
+
+    @Override
+    public ItemInterface getItem() {
+        return null;
+        //TODO
+    }
 }

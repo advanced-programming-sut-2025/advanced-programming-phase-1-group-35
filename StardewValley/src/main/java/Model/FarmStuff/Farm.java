@@ -79,6 +79,16 @@ public class Farm {
 
         if(owner != null) {// placing the player
             owner.backPack.items.put(new Tool(100, 5, ToolTypes.HOE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.AXE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.PICKAXE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.SCYTHE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
+
+
+
+
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);

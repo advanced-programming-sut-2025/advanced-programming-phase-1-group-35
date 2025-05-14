@@ -84,6 +84,34 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.GoToNextDay.getMatcher(input) )!= null){
             App.getCurrentGame().getGameCalender().goToNextDay();
         }
+        else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
+            System.out.println(controller.talk(matcher.group("username"), matcher.group("message")));
+        }
+        else if((matcher = GameMenuCommands.talkHistory.getMatcher(input)) != null) {
+            System.out.println(controller.talkHistory(matcher.group("username")));
+        }
+        else if((matcher = GameMenuCommands.giftPlayer.getMatcher(input)) != null) {
+            System.out.println(controller.giftPlayer(matcher.group("username"), matcher.group("item"),
+            matcher.group("amount")));
+        }
+        else if((matcher = GameMenuCommands.friendshipStatus.getMatcher(input)) != null) {
+            System.out.println(controller.friendShipStatus(matcher.group("username")));
+        }
+        else if((matcher = GameMenuCommands.giftHistory.getMatcher(input)) != null) {
+            System.out.println(controller.giftHistory(matcher.group("username")));
+        }
+        else if((matcher = GameMenuCommands.giftList.getMatcher(input)) != null) {
+            System.out.println(controller.giftList());
+        }
+        else if((matcher = GameMenuCommands.rateGift.getMatcher(input)) != null) {
+            System.out.println(controller.rateGift(matcher.group("id"), matcher.group("rate")));
+        }
+        else if((matcher = GameMenuCommands.hug.getMatcher(input)) != null) {
+            System.out.println(controller.hug(matcher.group("username")));
+        }
+        else if((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
+            System.out.println(controller.flower(matcher.group("username")));
+        }
         else {
             System.out.println("Invalid input");
         }

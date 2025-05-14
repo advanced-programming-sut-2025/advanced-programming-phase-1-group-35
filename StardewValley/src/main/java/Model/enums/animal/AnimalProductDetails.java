@@ -1,6 +1,7 @@
 package Model.enums.animal;
 
 import Model.ItemInterface;
+import Model.ItemInterface;
 
 import Model.animal.Animal;
 import Model.enums.ItemConstant;
@@ -27,6 +28,11 @@ public enum AnimalProductDetails implements ItemConstant,ItemInterface {
     }
     public Model.animal.AnimalProduct getProduct() {
         return new Model.animal.AnimalProduct(this.name , this.price);
+    }
+
+    @Override
+    public ItemInterface getItem() {
+        return getProduct();
     }
 
     @Override

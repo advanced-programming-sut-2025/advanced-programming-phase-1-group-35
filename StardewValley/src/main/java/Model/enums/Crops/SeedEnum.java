@@ -1,6 +1,8 @@
 package Model.enums.Crops;
 
 import Model.ItemInterface;
+import Model.CropClasses.Seed;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 public enum SeedEnum implements ItemInterface, ItemConstant {
@@ -79,6 +81,10 @@ public enum SeedEnum implements ItemInterface, ItemConstant {
     }
 
 
+    @Override
+    public ItemInterface getItem() {
+        return new Seed(this);
+    }
     @Override
     public int getPrice() {
         return this.cropEnum.getPrice();

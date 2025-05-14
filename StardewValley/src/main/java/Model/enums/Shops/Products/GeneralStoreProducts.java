@@ -1,9 +1,11 @@
 package Model.enums.Shops.Products;
 
 import Model.ItemInterface;
+import Model.ItemInterface;
+import Model.Shops.ShopItem;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
-
+import java.io.IOException;
 public enum GeneralStoreProducts implements ShopProduct, ItemConstant ,ItemInterface{
     //All year round stock
     BOUQUET("Item","Bouquet", "A gift that shows your romantic interest.", 1000, 2.0, null),
@@ -111,5 +113,13 @@ public enum GeneralStoreProducts implements ShopProduct, ItemConstant ,ItemInter
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        double dl = dailyLimit;
+        int p = dailyLimit == Double.POSITIVE_INFINITY ? 1000000 : (int)dl;
+        ShopItem item = new ShopItem(this.name, this.price, p, this.season, this.type,this.description);
+        return (ItemInterface) item.makeInstance();
     }
 }

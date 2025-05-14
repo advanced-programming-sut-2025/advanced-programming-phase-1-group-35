@@ -1,5 +1,10 @@
 package Model.enums;
 
+import Model.ItemInterface;
+import Model.Tools.Tool;
+
+import java.io.IOException;
+
 public enum ToolTypes implements ItemConstant{
     HOE(Skill.farming,ToolMaterial.Basic,5),
     PICKAXE(Skill.mining,ToolMaterial.Basic,5),
@@ -19,5 +24,10 @@ public enum ToolTypes implements ItemConstant{
         this.skill = skill;
         this.material = material;
         this.energyConsumed = energyConsumed;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        return new Tool(200, energyConsumed, this);
     }
 }

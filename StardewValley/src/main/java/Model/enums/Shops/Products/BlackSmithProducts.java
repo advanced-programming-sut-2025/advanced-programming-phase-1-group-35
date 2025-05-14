@@ -1,6 +1,8 @@
 package Model.enums.Shops.Products;
 
 import Model.ItemInterface;
+import Model.Shops.ShopItem;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
@@ -63,4 +65,11 @@ public enum BlackSmithProducts implements ShopProduct, ItemInterface, ItemConsta
         return description;
     }
 
+    @Override
+    public ItemInterface getItem() throws IOException {
+        double dl = dailyLimit;
+        int p = dailyLimit == Double.POSITIVE_INFINITY ? 1000000 : (int)dl;
+        ShopItem item = new ShopItem(this.name, this.price, p, null, this.type,this.description);
+        return (ItemInterface) item.makeInstance();
+    }
 }
