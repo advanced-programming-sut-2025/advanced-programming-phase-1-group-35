@@ -6,6 +6,8 @@ import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
+import java.io.IOException;
+
 public enum BlackSmithProducts implements ShopProduct, ItemInterface, ItemConstant {
     COPPER_ORE("Mineral","Copper Ore", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
     IRON_ORE("Mineral","Iron Ore", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),

@@ -6,6 +6,8 @@ import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 
+import java.io.IOException;
+
 public enum CarpenterShopProducts implements ShopProduct, ItemInterface,ItemConstant {
     WOOD("Item", "Wood", "A sturdy, yet flexible plant material with a wide variety of uses.", 10, Double.POSITIVE_INFINITY),
     STONE("Item", "Stone", "A common material with many uses in crafting and building.", 20, Double.POSITIVE_INFINITY),

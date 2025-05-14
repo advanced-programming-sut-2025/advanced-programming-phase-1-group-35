@@ -7,6 +7,7 @@
     import Model.ItemInterface;
     import Model.CropClasses.Crop;
     import Model.ItemInterface;
+    import Model.Tile;
     import Model.enums.ItemConstant;
     import Model.enums.Seasons;
 
@@ -207,6 +208,6 @@
 
         @Override
         public ItemInterface getItem() {
-            return new Crop(this);
+            return new Crop(this,new Tile()); //TODO: is this right?
         }
     }
