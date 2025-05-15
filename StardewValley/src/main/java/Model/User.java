@@ -51,6 +51,8 @@ public class User {
     private boolean hasNewMessages = false;
     private boolean hasNewGift = false;
     private boolean hasNewTradeRequest = false;
+    private User spouse = null;
+    private User askedMarriage = null;
     private ArrayList<Gift> Gifts = new ArrayList<>();
     private ArrayList<Trade> trades = new ArrayList<>();
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
@@ -424,5 +426,21 @@ public class User {
 
     public void setTrades(ArrayList<Trade> trades) {
         this.trades = trades;
+    }
+
+    public User getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(User spouse) {
+        this.spouse = spouse;
+    }
+
+    public User getAskedMarriage() {
+        return askedMarriage;
+    }
+
+    public void setAskedMarriage(User askedMarriage) {
+        this.askedMarriage = askedMarriage;
     }
 }
