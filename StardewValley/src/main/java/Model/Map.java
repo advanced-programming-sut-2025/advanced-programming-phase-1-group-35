@@ -25,9 +25,7 @@ public class Map {
     private ArrayList<Tree> trees = new ArrayList<>();
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
-    private ArrayList<Tree> trees = new ArrayList<>();
-    private ArrayList<Rock> rocks = new ArrayList<>();
-    private ArrayList<Foraging> forages = new ArrayList<>();
+
 
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < tiles.length; i++) {

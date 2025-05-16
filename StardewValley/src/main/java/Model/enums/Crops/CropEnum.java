@@ -87,7 +87,7 @@
         ;
         private final String name;
         public  SeedEnum source;
-        private final List<Integer> stages = new ArrayList<>();
+        private List<Integer> stages = new ArrayList<>();
         private final int totalHarvestTime;
         private final boolean oneTime;
         private final int regrowthTime;
