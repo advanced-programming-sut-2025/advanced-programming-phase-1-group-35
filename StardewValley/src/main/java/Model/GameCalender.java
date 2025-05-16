@@ -145,7 +145,7 @@ public class GameCalender {
         }
     }
 
-    public Result cheatTime(int hour) {
+    public Result cheatTime(int hour) throws IOException {
         for (int i = 0; i < hour; i++) {
             updateTimeAndDateAndSeasonAfterTurns();
         }
