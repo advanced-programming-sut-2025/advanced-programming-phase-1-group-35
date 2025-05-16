@@ -61,7 +61,7 @@ public class GameMenuController {
         }
 
         App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(),1);
-        return new Result(true, "pick up "+ matchingSeed.get().getName());
+        return new Result(true, "picked up "+ matchingSeed.get().getName());
     }
 
     public Result fertilize(String fertilizerName, String direction){
@@ -231,25 +231,16 @@ public class GameMenuController {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         return farmingController.ShowCrop(x, y);
     }
-    public Result setWeather(String weather) throws IOException {
-        for(WeatherCondition weatherCondition : WeatherCondition.values()) {
-            if(weatherCondition.name().equalsIgnoreCase(weather)) {
-                App.getCurrentGame().getWeather().setWeatherCondition(weatherCondition);
-                return new Result(true, "Weather set to " + weather);
-            }
-        }
-        return new Result(false, "enter a valid weather condition");
-    }
-    public void giveSeed(String seedName) throws IOException {
+
+    public Result giveSeed(String seedName) throws IOException {
 
         for (SeedEnum seedEnum : SeedEnum.values()) {
             if (seedEnum.name().equalsIgnoreCase(seedName)) {
                     App.getCurrentGame().getPlayingUser().getBackPack().items.put(seedEnum, 1);
-                    System.out.println("Seed: " + seedEnum.getName() + " was given to player " + App.getCurrentGame().getPlayingUser().getUsername());
-                return;
+                return new Result(true, "Seed: " + seedEnum.getName() + " was given to player " + App.getCurrentGame().getPlayingUser().getUsername());
             }
         }
-            System.out.println("nuh uh");
+            return new Result(false,"nuh uh");
     }
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();

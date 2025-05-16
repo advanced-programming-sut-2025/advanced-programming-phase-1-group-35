@@ -154,7 +154,10 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.ShowCrop(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
         }
         else if((matcher = GameMenuCommands.giveSeed.getMatcher(input) ) != null) {
-            controller.giveSeed(matcher.group("seed"));
+            System.out.println(controller.giveSeed(matcher.group("seed")));
+        }
+        else if((matcher = GameMenuCommands.pickUpSeed.getMatcher(input)) != null) {
+            System.out.println(controller.pickUpSeed(matcher.group("direction")));
         }
         else {
             System.out.println("Invalid input");

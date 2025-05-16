@@ -131,11 +131,14 @@ public class FarmingController {
             return new Result(false, "Floor is not plowed");
         }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
+        if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
+            App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
+        }
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
         tile.changeTileContents(crop);
         App.getCurrentGame().getMap().AddCrop(crop);
-//        tile.setSymbol('&');
+        tile.setSymbol('&');
         tile.setContentSymbol('&');
         if (findTilesWithSameSeed(tile) != null) {
             Crop temp = (Crop) tile.getPlanted();
@@ -149,7 +152,7 @@ public class FarmingController {
                 tile1.setPlowed(false);
                 tile1.changeTileContents(temp);
                 temp.setGiant(true);
-//                tile1.setSymbol('&');
+                tile1.setSymbol('&');
                 tile1.setContentSymbol('&');
             }
             return new Result(true, "seed planted,giant crop incoming");
@@ -224,7 +227,7 @@ public class FarmingController {
         }
 
         if (tile.getPlanted() instanceof Crop crop) {
-            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size())){
+            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
             }
             ArrayList <Crop> crops = new ArrayList<>();
@@ -447,8 +450,8 @@ public class FarmingController {
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null) {
-                    if (random1.nextInt(100) < 1) {
+                if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil) {
+                    if (random1.nextInt(400) < 1) {
                         Seed seed;
                         do {
                         if (random1.nextInt(2) == 1) {

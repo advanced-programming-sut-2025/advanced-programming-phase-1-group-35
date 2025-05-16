@@ -60,6 +60,7 @@ public enum GameMenuCommands {
     showPlayerPosition("show position"),
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
     giveSeed("\\s*give\\s+seed\\s+(?<seed>\\S+)\\s*"),
+    pickUpSeed("\\s*pick\\s+seed\\s+(?<direction>\\S+)\\s*"),
     ;
 
 
