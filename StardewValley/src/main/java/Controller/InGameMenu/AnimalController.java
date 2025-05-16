@@ -1,13 +1,11 @@
 package Controller.InGameMenu;
 
-import Model.App;
+import Model.*;
 import Model.Buildings.AnimalHouse;
 import Model.FarmStuff.Farm;
-import Model.Game;
-import Model.Result;
-import Model.User;
 import Model.animal.Animal;
 import Model.animal.Fish;
+import Model.enums.TileType;
 import Model.enums.WeatherCondition;
 import Model.enums.animal.AnimalType;
 import Model.enums.animal.FishType;
@@ -19,13 +17,25 @@ public class AnimalController {
         if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
             return new Result(false, "there are something else on this tile!");
         }
-
-        if (false) {
-            // TODO : if dont have enough money or resource
-            return new Result(false, "not enough resources!");
+        Model.enums.Buildings.AnimalHouse animalHouseEnum = null;
+        try {
+             animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(name);
         }
+        catch (Exception e) {
+            return new Result(false, "invalid animal house name");
+        }
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        for (int i = x; i < x + animalHouseEnum.width; i++) {
+            for(int j = y; j < y + animalHouseEnum.height; j++) {
+                if(!tiles[i][j].getTileType().equals(TileType.Soil) && !tiles[i][j].getTileType().equals(TileType.Grass)) {
+                    return new Result(false, "there is something else on tile : " + "<" + i +  "," + j + ">");
+                }
+            }
+        }
+        AnimalHouse animalHouse = new AnimalHouse(animalHouseEnum.type, animalHouseEnum.level);
+        App.getCurrentGame().getPlayingUser().getFarm().animalHouses.add(animalHouse);
+        animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles);
 
-        // TODO : build a new bulding and place it in map
         return new Result(true, "your " + name + " has been built!");
     }
 
