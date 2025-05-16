@@ -51,6 +51,8 @@ public class User {
     private boolean hasNewMessages = false;
     private boolean hasNewGift = false;
     private boolean hasNewTradeRequest = false;
+    private User spouse = null;
+    private User askedMarriage = null;
     private ArrayList<Gift> Gifts = new ArrayList<>();
     private ArrayList<Trade> trades = new ArrayList<>();
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
@@ -343,7 +345,10 @@ public class User {
     public Farm getFarm(){
         if(currentGame == null) return null;
         if(App.getCurrentGame() == null) return null;
-        return App.getCurrentGame().getMap().getFarms().get(currentGameFarmIndex);
+        for (Farm farm1 : App.getCurrentGame().getMap().getFarms()) {
+            if(farm1.getOwner().equals(this)) return farm1;
+        }
+        return null;
     }
 
     public int getCurrentGameFarmIndex() {
@@ -424,5 +429,21 @@ public class User {
 
     public void setTrades(ArrayList<Trade> trades) {
         this.trades = trades;
+    }
+
+    public User getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(User spouse) {
+        this.spouse = spouse;
+    }
+
+    public User getAskedMarriage() {
+        return askedMarriage;
+    }
+
+    public void setAskedMarriage(User askedMarriage) {
+        this.askedMarriage = askedMarriage;
     }
 }

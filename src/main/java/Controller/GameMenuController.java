@@ -290,15 +290,39 @@ public class GameMenuController {
         }
     }
 
-    public Result goToNextTurn() {
-        int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
-        i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
-        App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
-        if(i == 0){
-            App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
-        }
+    public Result goToNextTurn(User forceUser) throws IOException {
+        User user ;
         String notifications = "";
-        User user = App.getCurrentGame().getPlayingUser();
+        if(forceUser == null) {
+            int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
+            i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i + 1;
+            App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
+            if (i == 0) {
+                App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
+            }
+             user = App.getCurrentGame().getPlayingUser();
+        }
+        else {
+            user = forceUser;
+        }
+        if(user.getAskedMarriage() != null) {
+            GameMenu.print(user.getAskedMarriage().getUsername() + " has asked you to marry him, you should respond now");
+            while(true) {
+                String input = GameMenu.scan();
+                Matcher matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input);
+                if(matcher == null) {
+                    GameMenu.print("invalid input");
+                    continue;
+                }
+                if(matcher.group("answer").equalsIgnoreCase("accept")){
+                    return acceptMarriageRequest(user);
+                }
+                if(matcher.group("answer").equalsIgnoreCase("reject")){
+                    return rejectMarriageRequest(user);
+                }
+                break;
+            }
+        }
         if(user.isHasNewMessages()){
             notifications += "\nyou have new message(s), look your message history for more info";
         }
@@ -329,6 +353,26 @@ public class GameMenuController {
             return new Result(false, "enter a valid artisan name");
         }
         return null;
+    }
+
+    private Result acceptMarriageRequest(User user) {
+        Map.Entry<ItemInterface, Integer> ring = getItemFromBackPack("WEDDING_RING", user.getAskedMarriage().backPack);
+        if(ring == null) {
+            return new Result(false, "that stupid boy forgot the ring");
+        }
+        user.setSpouse(user.getAskedMarriage());
+        user.getSpouse().setSpouse(user);
+        user.setAskedMarriage(null);
+        removeFromBackPack(ring,user.getSpouse().backPack , 1);
+        addToBackPack(ring,user.backPack , 1);
+        return new Result(true, "You have successfully accepted the marriage");
+    }
+
+    private Result rejectMarriageRequest(User user) {
+        int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
+        increaseMutualXP(user, user.getAskedMarriage(), -xp);
+        user.setAskedMarriage(null);
+        return new Result(true, "damn , so we breaking hearts now ?");
     }
 
     public Result showTime() {
@@ -363,7 +407,7 @@ public class GameMenuController {
 
     }
 
-    public Result walk(String xString, String yString) {
+    public Result walk(String xString, String yString) throws IOException {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
         User player = App.getCurrentGame().getPlayingUser();
@@ -381,7 +425,7 @@ public class GameMenuController {
                 return new Result(false, "you have no energy left");
             }
             if(!player.getEnergy().TurnEnergyLeft()){
-                goToNextTurn();
+                goToNextTurn(null);
                 player.getEnergy().endTurn();
                 return new Result(true, "next turn");
             }
@@ -750,8 +794,30 @@ public class GameMenuController {
         removeFromBackPack(item, me.backPack, 1);
         return new Result(true, "wow you are really making a move don't you ?");
     }
-    public Result askMarriage(){
-        return null;
+    public Result askMarriage(String username){
+        User me = App.getCurrentGame().getPlayingUser();
+        User friend = getUserBYName(username);
+        if(friend == null){
+            return new Result(false, "user not found");
+        }
+        if(notCloseEnough(me, friend)){
+            return new Result(false, "you are not close enough");
+        }
+        Map.Entry<ItemInterface, Integer> ring = getItemFromBackPack("WEDDING_RING");
+        if(ring == null){
+            return new Result(false , "you don't have a wedding ring");
+        }
+        if(!me.getGender().equals(Gender.male)){
+            return new Result(false, "you are not a male");
+        }
+        if(!friend.getGender().equals(Gender.female)){
+            return new Result(false, "that's fucking gay");
+        }
+        if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100) < 400){
+            return new Result(false, "you are not intimate enough");
+        }
+        friend.setAskedMarriage(me);
+        return new Result(true, "we are all rooting for you");
     }
     public Result respondToMarriageRequest(){
         return null;
@@ -806,6 +872,14 @@ public class GameMenuController {
 
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
         for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
+            if(e.getKey().getName().equalsIgnoreCase(productName)){
+                return e;
+            }
+        }
+        return null;
+    }
+    public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName, BackPack backPack) {
+        for (Map.Entry<ItemInterface, Integer> e : backPack.items.entrySet()) {
             if(e.getKey().getName().equalsIgnoreCase(productName)){
                 return e;
             }

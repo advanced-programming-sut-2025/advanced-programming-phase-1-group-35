@@ -1,5 +1,7 @@
 package Model;
 
+import Model.NPCs.NPC;
+import Model.enums.NPCs.NPCs;
 import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
@@ -13,21 +15,23 @@ public class Game {
     private GameCalender gameCalender = new GameCalender();
     private Weather weather = new Weather();
     private Map map = new Map();
-    private Seasons currentSeason;
+    private ArrayList<NPC> npcs = new ArrayList<>();
 
     public Game(ArrayList<User> players, User playingUser) {
         this.players = players;
         this.playingUser = playingUser;
         this.gameID = IDCounter++;
         this.weather.setWeatherCondition(WeatherCondition.sunny);
+        npcs.add(NPCs.Abigail.createNPC());
+        npcs.add(NPCs.Sebastian.createNPC());
+        npcs.add(NPCs.Lia.createNPC());
+        npcs.add(NPCs.Robin.createNPC());
+        npcs.add(NPCs.Harvey.createNPC());
     }
 
 
-    public void setSeason(Seasons season){
-        this.currentSeason = season;
-    }
-    public Seasons getSeason(){
-        return this.currentSeason;
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
     }
 
     public Weather getWeather() {

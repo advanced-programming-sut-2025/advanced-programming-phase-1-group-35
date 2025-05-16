@@ -89,7 +89,7 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
     }
 
     public CropEnum getCrop() {
-        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
+        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason());
         return cropEnum;
     }
 

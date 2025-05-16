@@ -71,7 +71,7 @@ public enum SeedEnum implements ItemInterface, ItemConstant {
     }
 
     public CropEnum getCrop() {
-        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
+        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason());
         if(this.cropEnum != null) return cropEnum;
         for(CropEnum cropEnum1 : CropEnum.values()) {
             if(cropEnum1.source == null) continue;

@@ -384,11 +384,11 @@ public class FarmingController {
                             seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
                         }
                         else {
-                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getSeason()).getSource(), tile,true);
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile,true);
                         }
                         do {
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
-                                getSeasons().contains(App.getCurrentGame().getSeason()));
+                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
                         plantSeed(seed.getName(), (tile.getCoordination().toString()));
                         tile.addContents(seed);
                         tile.setContentSymbol(seed.getSymbol());
@@ -400,7 +400,7 @@ public class FarmingController {
 
     public void generateStartingPlants() {
 //       SeedEnum.MIXED.setCropEnum(FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason()));
-       ForagingSeeds.MIXED.setCropEnum(FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason()));
+       ForagingSeeds.MIXED.setCropEnum(FarmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()));
        System.out.println("Generating starting plants");
         Random random1 = new Random();
         for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
@@ -451,7 +451,7 @@ public class FarmingController {
                             Crop crop = new Crop(seed.getCropEnum(), tile);
                             Seed seed1 = new Seed(crop.getSource());
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
-                                getSeasons().contains(App.getCurrentGame().getSeason()) && couner < 100);
+                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()) && couner < 100);
 //                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
                         tile.addContents(seed);
                         tile.setContentSymbol(seed.getSymbol());

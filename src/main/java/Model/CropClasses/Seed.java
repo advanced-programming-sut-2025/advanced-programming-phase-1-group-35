@@ -29,7 +29,7 @@ public class Seed implements PlantAble, ItemInterface {
     public Seed(SeedEnum seedEnum, Tile tile, boolean isMixed) {
         this.name = "mixed seed";
         this.isMixed = true;
-        this.cropEnum = farmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
+        this.cropEnum = farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason());
         this.tile = tile;
         this.symbol = '?';
     }
@@ -59,7 +59,7 @@ public class Seed implements PlantAble, ItemInterface {
     }
 
     public CropEnum getCropEnum() {
-        if(this.isMixed()) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
+        if(this.isMixed()) return FarmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason());
         return cropEnum;
     }
 

@@ -43,11 +43,14 @@ public class TradeMenuController {
         if(item == null){
             return new Result(false, "Item not found");
         }
-        return switch (type) {
+        Result result = null;
+        result = switch (type) {
             case "money" -> tradeWithMoney(receiver ,item, amount, priceString);
             case "item" -> tradeWithItem(receiver, item, amount, targetItemName, targetAmountString);
             default -> null;
         };
+        gameMenuController.goToNextTurn(receiver);
+        return result;
     }
 
     private Result tradeWithItem(User receiver, Map.Entry<ItemInterface, Integer> item, int amount, String targetItemName, String targetAmountString) throws IOException {
