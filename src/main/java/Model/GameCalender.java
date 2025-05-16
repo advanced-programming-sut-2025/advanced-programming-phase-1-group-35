@@ -164,8 +164,9 @@ public class GameCalender {
                     }
                 }
             }
-            for (Crop crop1 : App.getCurrentGame().getMap().getCrops()) {
-                crop.grow();
+//            Crop crop1 : App.getCurrentGame().getMap().getCrops()
+            for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
+                App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
             for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
                 tree.getTile().setWatered(false);
