@@ -44,17 +44,19 @@ public class AnimalController {
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
         AnimalType type;
-        AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
+        AnimalHouse house = null;
         try {
             type = AnimalType.valueOf(animal);
         } catch (IllegalArgumentException e) {
             return new Result(false, "invalid animal type");
         }
+        for (AnimalHouse animalHouse : player.getFarm().animalHouses) {
+            if (animalHouse.getType().equals(type.getConfinement())) {
+                house = animalHouse;
+            }
+        }
         if (farm.isAnimalNameExist(name)) {
             return new Result(false, "animal name has already been used!");
-        } else if (false) {
-            // TODO
-            return new Result(false, "not enough money!");
         } else if (house == null) {
             return new Result(false, "no animal house!");
         }
@@ -66,7 +68,7 @@ public class AnimalController {
 
     public Result nazTheAnimal(String animalName) {
         // TODO : things that effect friendship with animals like spending night out
-        AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
+        AnimalHouse house = null;
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();

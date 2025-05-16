@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class AnimalHouse extends Building {
-    private String type ;
+    private String type;
     private int level;
 
     public AnimalHouse(String type, int level) {
