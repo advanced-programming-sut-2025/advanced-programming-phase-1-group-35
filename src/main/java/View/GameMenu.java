@@ -46,7 +46,7 @@ public class GameMenu extends AppMenu {
         } else if ((matcher = GameMenuCommands.nextTurn.getMatcher(input)) != null) {
             System.out.println(controller.goToNextTurn(null));
         } else if ((matcher = GameMenuCommands.walk.getMatcher(input)) != null) {
-            System.out.println(controller.walk(matcher.group("x"), matcher.group("y")));
+            System.out.println(controller.walk(App.getCurrentGame().getPlayingUser() , matcher.group("x"), matcher.group("y")));
         } else if ((matcher = GameMenuCommands.printMap.getMatcher(input)) != null) {
             System.out.println(controller.printMap(matcher.group("x"), matcher.group("y"), matcher.group("size")));
         } else if ((matcher = GameMenuCommands.helpReadingMap.getMatcher(input)) != null) {

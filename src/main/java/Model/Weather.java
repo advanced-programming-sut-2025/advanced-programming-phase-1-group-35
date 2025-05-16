@@ -26,7 +26,7 @@ public class Weather {
 
     public static Result hitTileWithThunder(Tile tile){
         tile.setGotHitWithThunder(true);
-        if(tile.getPlanted().getClass() == Tree.class){
+        if(tile.getPlanted() instanceof Tree){
             App.getCurrentGame().getMap().getCrops().remove(tile.getPlanted());
             App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(tile.getPlanted());
             tile.getContents().remove(tile.getPlanted());

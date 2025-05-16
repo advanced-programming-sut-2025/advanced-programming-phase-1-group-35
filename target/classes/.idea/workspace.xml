@@ -4,97 +4,233 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2415df6-85b7-4897-bce5-1b49161666ab" name="Changes" comment="added some details" />
+    <list default="true" id="088a969c-8400-4d24-a532-256ab40ad6bb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/InGameMenu/CookingController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/InGameMenu/CraftingController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/InGameMenu/CropController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/InGameMenu/NPCController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/InGameMenu/ShopMenuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/LoginMenuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/MainMenuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Controller/ProfileMenuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/AppHolder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Buildings/Building.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Buildings/NPCHouse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/CookingMaterial.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/CropClasses/Sapling.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Energy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Farm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Foraging.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Greenhouse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Home/Cabin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Home/Refrigerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Lake.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Quarry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Rock.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/ShippingBin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Sprinkles.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/FarmStuff/Wood.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Fertilizer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Food.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Item.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/ItemInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Mineral.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/PathFinder$Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/PathFinder$Path.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/PathFinder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Shops/Shop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Shops/ShopItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Sprinkle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tools/FishingPole.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tools/SkillLevel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tools/Tool.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tools/TrashCan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/Tools/WateringCan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/TradeAndGift/Gift.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/TradeAndGift/Trade.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/animal/Animal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/animal/AnimalProduct.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/animal/Fish.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Buildings/NPCHouse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Buildings/ShopBuildings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Colors.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Command.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/AnimalCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/CookingCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/CraftingCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/FarmingCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/NPCCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Commands/ToolCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/CookingIngredient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/CookingRecipes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/CraftingItems.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/CraftingRecipes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/Fruit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/Minerals.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/MixedSeeds.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/PlantAble.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/SaplingEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Crops/TreeEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/FarmType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Gender.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/ItemConstant.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/LoginMenuCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/MainMenuCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Menu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/NPCs/NPCs$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/ProfileMenuCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Regexes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Seasons.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/SecurityQuestions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/ShopMenuCommands.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/BlackSmithProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/CarpenterShopProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/FishShopProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/GeneralStoreProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/JojaMartProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/RanchProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/SaloonProducts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/Products/ShopProduct.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Shops/ShopEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/Skill.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/TileContents.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/TileType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/ToolMaterial.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/WeatherCondition.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/animal/AnimalProductDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/animal/AnimalType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$13.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$14.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$15.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$16.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$17.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$18.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$19.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$20.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$21.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$22.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$23.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$24.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanProductDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/enums/machines/ArtisanType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/machines/Artisan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/Model/machines/ArtisanProduct.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/AppMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/AppView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/ExitMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/InGameMenu/AnimalMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/InGameMenu/CookingMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/InGameMenu/FarmingMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/InGameMenu/HomeMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/InGameMenu/ShopMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/LoginMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/MainMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/View/ProfileMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley/target/classes/org/example/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/GameCalender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/GameCalender.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley/pom.xml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Enum" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Hosein0withg&quot;
+    &quot;assignee&quot;: &quot;mhdsdg&quot;
   }
-}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/advanced-programming-sut-2025/advanced-programming-phase-1-group-35.git&quot;,
+    &quot;accountId&quot;: &quot;ed85ab02-bc2f-4e94-aa8e-c91a9aadea05&quot;
+  }
 }</component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
 }</component>
-  <component name="ProjectId" id="2vUBdMC0sh1yH2KPxOSdOTryKDD" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectId" id="2xBNXUlwIqPAgrZzs8Xm031Psu3" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/ap/advanced-programming-phase-1-group-35",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.language",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f2415df6-85b7-4897-bce5-1b49161666ab" name="Changes" comment="" />
-      <created>1744189858677</created>
+      <changelist id="088a969c-8400-4d24-a532-256ab40ad6bb" name="Changes" comment="" />
+      <created>1747407548115</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1744189858677</updated>
-      <workItem from="1744189859812" duration="233000" />
-      <workItem from="1744190110366" duration="2686000" />
-      <workItem from="1744195229246" duration="280000" />
+      <updated>1747407548115</updated>
+      <workItem from="1747407549489" duration="357000" />
+      <workItem from="1747407920154" duration="316000" />
     </task>
-    <task id="LOCAL-00001" summary="added some details">
-      <option name="closed" value="true" />
-      <created>1744192058740</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1744192058740</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="added some details" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some details" />
   </component>
 </project>
