@@ -345,7 +345,10 @@ public class User {
     public Farm getFarm(){
         if(currentGame == null) return null;
         if(App.getCurrentGame() == null) return null;
-        return App.getCurrentGame().getMap().getFarms().get(currentGameFarmIndex);
+        for (Farm farm1 : App.getCurrentGame().getMap().getFarms()) {
+            if(farm1.getOwner().equals(this)) return farm1;
+        }
+        return null;
     }
 
     public int getCurrentGameFarmIndex() {
