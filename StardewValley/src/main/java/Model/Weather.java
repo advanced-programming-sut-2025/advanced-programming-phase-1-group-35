@@ -10,11 +10,11 @@ public class Weather {
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowCondition;
 
-    public Result hitTileWithThunder(Tile tile){
-        if(tile == null){
-            return new Result(false, "coordination unavailable");
-        }
-    }
+//    public Result hitTileWithThunder(Tile tile){
+//        if(tile == null){
+//            return new Result(false, "coordination unavailable");
+//        }
+//    }
 
     public void applySnowWeather() {
 
@@ -24,7 +24,7 @@ public class Weather {
 
     }
 
-    public static void hitTileWithThunder(Tile tile){
+    public static Result hitTileWithThunder(Tile tile){
         tile.setGotHitWithThunder(true);
         if(tile.getPlanted().getClass() == Tree.class){
             App.getCurrentGame().getMap().getCrops().remove(tile.getPlanted());
