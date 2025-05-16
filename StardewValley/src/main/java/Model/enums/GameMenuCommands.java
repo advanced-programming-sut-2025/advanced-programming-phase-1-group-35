@@ -19,8 +19,11 @@ public enum GameMenuCommands {
     getSeason(""),
     getTimeAndDate(""),
     getDayOfTheWeek(""),
-    showWeather(""),
-    weatherForecast(""),
+    cheatThor("cheat\\s+Thor\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    showWeather("weather"),
+    weatherForecast("weather\\s+forecast"),
+    cheatWeatherSet("cheat\\s+weather\\s+set\\s+(?<type>\\d+)"),
+    greenHouseBuild("greenhouse\\s+build"),//TODO
     walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s+(?<y>\\d+)\\s*"),
     printMap("\\s*print\\s+map\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>\\s+-s\\s+(?<size>\\d+)"),
     helpReadingMap("\\s*help\\s+reading\\s+map\\s*"),

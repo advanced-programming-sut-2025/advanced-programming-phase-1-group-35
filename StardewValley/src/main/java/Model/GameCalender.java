@@ -37,10 +37,11 @@ public class GameCalender {
         this.season = season;
     }
 
-    public void updateTimeAndDateAndSeasonAfterTurns() {
+    public void updateTimeAndDateAndSeasonAfterTurns() throws IOException {
         gameDateTime = gameDateTime.plusHours(1);
         if (gameDateTime.getHour() == 22) {
             gameDateTime = gameDateTime.plusHours(11);
+            goToNextDay();
         }
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();
@@ -74,6 +75,9 @@ public class GameCalender {
     }
 
     public void goToNextDay() throws IOException {
+        Game game = App.getCurrentGame();
+        game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
+        game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
         for(Crop crop: App.getCurrentGame().getMap().getCrops()){
             crop.grow();

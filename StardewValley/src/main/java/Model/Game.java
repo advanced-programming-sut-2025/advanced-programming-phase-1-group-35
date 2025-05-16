@@ -14,7 +14,6 @@ public class Game {
     private GameCalender gameCalender = new GameCalender();
     private Weather weather;
     private Map map = new Map();
-    private Seasons currentSeason;
     private ArrayList<NPC> npcs = new ArrayList<>();
 
     public Game(ArrayList<User> players, User playingUser) {
@@ -31,14 +30,6 @@ public class Game {
 
     public ArrayList<NPC> getNpcs() {
         return npcs;
-    }
-
-    public void setSeason(Seasons season) {
-        this.currentSeason = season;
-    }
-
-    public Seasons getSeason() {
-        return this.currentSeason;
     }
 
     public Weather getWeather() {

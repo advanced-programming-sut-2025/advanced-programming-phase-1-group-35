@@ -144,6 +144,14 @@ public class Map {
         }
     }
 
+    public static Tile getTileWithCoordination(String xString, String yString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        if(x < 0 || x >= 300) return null;
+        if(y < 0 || y >= 250) return null;
+        return App.getCurrentGame().getMap().tiles[x][y];
+    }
+
     public void changeTileSymbol(Tile tile, char symbol, char contentSymbol) {
         tile.setSymbol(symbol);
         tile.setContentSymbol(contentSymbol);

@@ -5,6 +5,7 @@ import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.NPCController;
 import Controller.InGameMenu.ToolsController;
 import Model.App;
+import Model.Map;
 import Model.enums.Commands.AnimalCommands;
 import Model.enums.Commands.NPCCommands;
 import Model.enums.Commands.ToolCommands;
@@ -59,7 +60,15 @@ public class GameMenu extends AppMenu {
             System.out.println(toolsController.showCurrentTool());
         } else if ((matcher = ToolCommands.showAllTools.getMatcher(input)) != null) {
             System.out.println(toolsController.showTools());
-        } else if ((matcher = ToolCommands.upgradeTool.getMatcher(input)) != null) {
+        } else if(GameMenuCommands.showWeather.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getWeather().getWeatherCondition());
+        } else if(GameMenuCommands.weatherForecast.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getWeather().getTomorrowCondition());
+        } else if((matcher = GameMenuCommands.cheatWeatherSet.getMatcher(input)) != null) {
+            System.out.println(App.getCurrentGame().getWeather().cheatWeatherSet(matcher.group("type")));
+        }else if((matcher = GameMenuCommands.cheatThor.getMatcher(input)) != null) {
+            System.out.println(App.getCurrentGame().getWeather().hitTileWithThunder(Map.getTileWithCoordination(matcher.group("x"), matcher.group("y"))));
+        }else if ((matcher = ToolCommands.upgradeTool.getMatcher(input)) != null) {
             System.out.println(toolsController.upgradeTool(matcher.group(1)));
         } else if ((matcher = ToolCommands.useTool.getMatcher(input)) != null) {
             System.out.println(toolsController.useTool(Integer.parseInt(matcher.group(1))));
