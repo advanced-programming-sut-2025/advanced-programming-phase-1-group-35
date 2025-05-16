@@ -23,6 +23,9 @@ public class Map {
     public ArrayList<Shop> shops = new ArrayList<>();
     private ArrayList<Crop> Crop = new ArrayList<>();
     private ArrayList<Tree> trees = new ArrayList<>();
+    private ArrayList<Rock> rocks;
+    private ArrayList<Foraging> forages;
+    private ArrayList<Tree> trees = new ArrayList<>();
     private ArrayList<Rock> rocks = new ArrayList<>();
     private ArrayList<Foraging> forages = new ArrayList<>();
 
@@ -142,6 +145,14 @@ public class Map {
                 tiles[i][j].setSymbol('║');
             }
         }
+    }
+
+    public static Tile getTileWithCoordination(String xString, String yString) {
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        if(x < 0 || x >= 300) return null;
+        if(y < 0 || y >= 250) return null;
+        return App.getCurrentGame().getMap().tiles[x][y];
     }
 
     public void changeTileSymbol(Tile tile, char symbol, char contentSymbol) {

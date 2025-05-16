@@ -11,7 +11,10 @@ import Model.enums.TileType;
 import Model.enums.WeatherCondition;
 import View.GameMenu;
 
+import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +32,31 @@ public class GameCalender {
         return gameDateTime;
     }
 
+    public Result getTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedDate = gameDateTime.format(formatter);
+        return new Result(true, "time: " + formattedDate);
+    }
+
+    public Result getDate() {
+        return new Result(true, "day: " + gameDateTime.getDayOfMonth() + " of " + season);
+    }
+
+    public Result getDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
+        String formattedDate = gameDateTime.format(formatter);
+        return new Result(true, formattedDate + " (" + season + ")");
+    }
+
+    public Result getDayOfTheWeek() {
+        DayOfWeek dayOfWeek = gameDateTime.getDayOfWeek();
+        return new Result(true, "day: " + dayOfWeek);
+    }
+
+    public Result showSeason() {
+        return new Result(true, "Season: " + season);
+    }
+
     public void setGameDateTime(LocalDateTime gameDateTime) {
         this.gameDateTime = gameDateTime;
     }
@@ -41,10 +69,11 @@ public class GameCalender {
         this.season = season;
     }
 
-    public void updateTimeAndDateAndSeasonAfterTurns() {
+    public void updateTimeAndDateAndSeasonAfterTurns() throws IOException {
         gameDateTime = gameDateTime.plusHours(1);
         if (gameDateTime.getHour() == 22) {
             gameDateTime = gameDateTime.plusHours(11);
+            goToNextDay();
         }
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();
@@ -53,31 +82,34 @@ public class GameCalender {
     }
 
     private void goToNextSeason() {
-//        if (season == Seasons.Spring) {
-//            season = Seasons.Summer;
-//        } else if (season == Seasons.Summer) {
-//            season = Seasons.Fall;
-//        } else if (season == Seasons.Fall) {
-//            season = Seasons.Winter;
-//        } else if (season == Seasons.Winter) {
-//            season = Seasons.Spring;
-//        }
-    season = season.findNextSeason(season);
-    for(Crop crop : App.getCurrentGame().getMap().getCrops()) {
-        if(!crop.getSeasons().equals(season)) {
-            crop.getCropTile().setPlanted(null);
-            crop.getCropTile().getContents().remove(crop);
+        if (season == Seasons.Spring) {
+            season = Seasons.Summer;
+        } else if (season == Seasons.Summer) {
+            season = Seasons.Fall;
+        } else if (season == Seasons.Fall) {
+            season = Seasons.Winter;
+        } else if (season == Seasons.Winter) {
+            season = Seasons.Spring;
         }
-    for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
-        if(!tree.getSeasons().contains(season)) {
-            tree.getTile().setPlanted(null);
-            tree.getTile().getContents().remove(crop);
+        season = season.findNextSeason(season);
+        for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
+            if (!crop.getSeason().equals(season)) {
+                crop.getCropTile().setPlanted(null);
+                crop.getCropTile().getContents().remove(crop);
+            }
+            for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
+                if (!tree.getSeasons().contains(season)) {
+                    tree.getTile().setPlanted(null);
+                    tree.getTile().getContents().remove(crop);
+                }
+            }
         }
-    }
-    }
     }
 
-    public void goToNextDay() {
+    public void goToNextDay() throws IOException {
+        Game game = App.getCurrentGame();
+        game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
+        game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
 //        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
 //        farmingController.crowAttack();
@@ -133,6 +165,9 @@ public class GameCalender {
                     }
                 }
             }
+        for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
+            // TODO
+            //crop.grow();
         }
         for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
             tree.getTile().setWatered(false);
@@ -194,12 +229,30 @@ public class GameCalender {
         for (User player : App.getCurrentGame().getPlayers()) {
             player.setMoney(player.getIncome() + player.getMoney());
             player.setIncome(0);
-            if(!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())){
+            if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                 GameMenuController controller = new GameMenuController();
-                GameMenu.print(controller.walk(String.format("%d",player.getFarm().getCabin().getBounds().x + 3),
-                                                String.format("%d",player.getFarm().getCabin().getBounds().y + 3)).toString());
+                GameMenu.print(controller.walk(String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                        String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
             }
         }
+    }
+
+    public Result cheatTime(int hour) throws IOException {
+        for (int i = 0; i < hour; i++) {
+            updateTimeAndDateAndSeasonAfterTurns();
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedDate = gameDateTime.format(formatter);
+        return new Result(true, "hour now is " + formattedDate);
+    }
+
+    public Result cheatDate(int day) throws IOException {
+        for (int i = 0; i < day; i++) {
+            goToNextDay();
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
+        String formattedDate = gameDateTime.format(formatter);
+        return new Result(true, "it is " + formattedDate);
     }
 
 //    int neededEnergyAmount = 10;

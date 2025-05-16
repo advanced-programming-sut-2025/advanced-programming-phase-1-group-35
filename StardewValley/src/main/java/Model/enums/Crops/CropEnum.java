@@ -11,6 +11,7 @@
     import Model.enums.ItemConstant;
     import Model.enums.Seasons;
 
+    import java.util.ArrayList;
     import java.util.List;
     import java.util.Random;
     import java.util.stream.Collectors;
@@ -86,7 +87,7 @@
         ;
         private final String name;
         public  SeedEnum source;
-        private final List<Integer> stages;
+        private final List<Integer> stages = new ArrayList<>();
         private final int totalHarvestTime;
         private final boolean oneTime;
         private final int regrowthTime;

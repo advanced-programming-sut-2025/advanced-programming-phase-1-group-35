@@ -388,6 +388,7 @@ public class FarmingController {
                         }
                         do {
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
+                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
                         plantSeed(seed.getName(), (tile.getCoordination().toString()));
                         tile.addContents(seed);
