@@ -117,7 +117,7 @@ public class GameCalender {
         if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
             for(int i = 0; i<20 ; i++) {
                 Tile[][] tile = App.getCurrentGame().getMap().getTiles();
-                Tile temp = tile[rand.nextInt(300)][rand.nextInt(250)];
+                Tile temp = tile[rand.nextInt(299)][rand.nextInt(249)];
                 if (temp.getTileType().equals(TileType.Soil)) {
                     Weather.hitTileWithThunder(temp);
                 }
@@ -164,7 +164,6 @@ public class GameCalender {
                     }
                 }
             }
-//            Crop crop1 : App.getCurrentGame().getMap().getCrops()
             for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
                 App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
@@ -226,7 +225,8 @@ public class GameCalender {
                 player.setIncome(0);
                 if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                     GameMenuController controller = new GameMenuController();
-                    GameMenu.print(controller.walk(String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                    controller.goToNextTurn(player);
+                    GameMenu.print(controller.walk(player,String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
                             String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
                 }
             }

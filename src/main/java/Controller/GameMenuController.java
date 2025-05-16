@@ -309,6 +309,7 @@ public class GameMenuController {
              user = App.getCurrentGame().getPlayingUser();
         }
         else {
+            App.getCurrentGame().setPlayingUser(forceUser);
             user = forceUser;
         }
         if(user.getAskedMarriage() != null) {
@@ -413,10 +414,10 @@ public class GameMenuController {
 
     }
 
-    public Result walk(String xString, String yString) throws IOException {
+    public Result walk(User user , String xString, String yString) throws IOException {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
-        User player = App.getCurrentGame().getPlayingUser();
+        User player = user;
         Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         Tile destTile = tiles[x][y];
