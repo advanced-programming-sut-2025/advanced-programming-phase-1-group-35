@@ -62,14 +62,21 @@ public class ToolsController {
     public Result upgradeTool(String toolName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
+        ShopMenuController controller = new ShopMenuController();
         for (ItemInterface item : player.backPack.items.keySet()) {
             if (item instanceof Tool tool && tool.getToolType().toString().equals(toolName)) {
                 if (tool instanceof FishingPole) {
-                    // TODO : add if not in Willy store
-                    return new Result(true, "you are not in Willy store!");
+                    if (controller.findShopByTile(player.getCurrentTile()) != null &&
+                            controller.findShopByTile(player.getCurrentTile()).getName().
+                                    equalsIgnoreCase("FishShop")) {
+                        return new Result(true, "you are not in Willy store!");
+                    }
                 } else {
-                    // TODO : if not in blacksmith
-                    return new Result(false, "you are not in the blacksmith");
+                    if (controller.findShopByTile(player.getCurrentTile()) != null &&
+                            controller.findShopByTile(player.getCurrentTile()).getName().
+                                    equalsIgnoreCase("Blacksmith")) {
+                        return new Result(false, "you are not in the blacksmith");
+                    }
                 }
             }
         }
@@ -151,7 +158,7 @@ public class ToolsController {
         }
         if (destenationTile.getTileType() == TileType.Soil) {
             destenationTile.setPlowed(true);
-            destenationTile.setSymbol('·');
+            destenationTile.setSymbol('ɍ');
             return new Result(true, "You used hoe and you can plant on that tile");
         } else {
             return new Result(false, "you cant use hoe on this tile");
