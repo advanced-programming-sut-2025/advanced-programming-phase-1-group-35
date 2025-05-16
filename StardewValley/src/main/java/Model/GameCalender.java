@@ -28,29 +28,23 @@ public class GameCalender {
     }
 
     public Result getTime() {
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedDate = now.format(formatter);
+        String formattedDate = gameDateTime.format(formatter);
         return new Result(true, "time: " + formattedDate);
     }
 
     public Result getDate() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
-        String formattedDate = now.format(formatter);
-        return new Result(true, "day: " + formattedDate + " of " + season);
+        return new Result(true, "day: " + gameDateTime.getDayOfMonth() + " of " + season);
     }
 
     public Result getDateTime() {
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
-        String formattedDate = now.format(formatter);
+        String formattedDate = gameDateTime.format(formatter);
         return new Result(true, formattedDate + " (" + season + ")");
     }
 
     public Result getDayOfTheWeek() {
-        LocalDateTime now = LocalDateTime.now();
-        DayOfWeek dayOfWeek = now.getDayOfWeek();
+        DayOfWeek dayOfWeek = gameDateTime.getDayOfWeek();
         return new Result(true, "day: " + dayOfWeek);
     }
 
@@ -149,9 +143,8 @@ public class GameCalender {
         for (int i = 0; i < hour; i++) {
             updateTimeAndDateAndSeasonAfterTurns();
         }
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedDate = now.format(formatter);
+        String formattedDate = gameDateTime.format(formatter);
         return new Result(true, "hour now is " + formattedDate);
     }
 
@@ -159,9 +152,8 @@ public class GameCalender {
         for (int i = 0; i < day; i++) {
             goToNextDay();
         }
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
-        String formattedDate = now.format(formatter);
+        String formattedDate = gameDateTime.format(formatter);
         return new Result(true, "it is " + formattedDate);
     }
 
