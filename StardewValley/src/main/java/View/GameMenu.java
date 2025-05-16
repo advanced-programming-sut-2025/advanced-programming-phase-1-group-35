@@ -109,7 +109,26 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.askMarriage(matcher.group("username")));
         } else if((matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input)) != null ){
             System.out.println(controller.respondToMarriageRequest());
-        }else {
+        }
+        else if (GameMenuCommands.getTime.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().getTime());
+        }
+        else if (GameMenuCommands.getDate.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().getDate());
+        }
+        else if (GameMenuCommands.getTimeAndDate.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().getDateTime());
+        }
+        else if (GameMenuCommands.getDayOfTheWeek.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().getDayOfTheWeek());
+        }
+        else if ((matcher = GameMenuCommands.cheatTime.getMatcher(input)) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().cheatTime(Integer.parseInt(matcher.group(1))));
+        }
+        else if ((matcher = GameMenuCommands.cheatDate.getMatcher(input)) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().cheatDate(Integer.parseInt(matcher.group(1))));
+        }
+        else {
             System.out.println("Invalid input");
         }
     }
