@@ -227,14 +227,15 @@ public class GameMenuController {
         return new Result(false, "enter a valid weather condition");
     }
     public void giveSeed(String seedName) throws IOException {
-        Seed seed = null;
-        for(SeedEnum seedEnum : SeedEnum.values()) {
-            if(seedEnum.name().equalsIgnoreCase(seedName)) {
-                seed = new Seed(seedEnum);
-                break;
+
+        for (SeedEnum seedEnum : SeedEnum.values()) {
+            if (seedEnum.name().equalsIgnoreCase(seedName)) {
+                    App.getCurrentGame().getPlayingUser().getBackPack().items.put(seedEnum, 1);
+                    System.out.println("Seed: " + seedEnum.getName() + " was given to player " + App.getCurrentGame().getPlayingUser().getUsername());
+                return;
             }
         }
-        App.getCurrentGame().getPlayingUser().getBackPack().items.put(seed, 1);
+            System.out.println("nuh uh");
     }
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();

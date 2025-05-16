@@ -32,7 +32,7 @@ public enum GameMenuCommands {
     showEnergy("energy\\s+show"),
     cheatEnergySet("energy\\s+set\\s+-v\\s+(?<value>\\d+)"),
     cheatEnergyUnlimited("energy\\s+unlimited"),
-    showInventory("\\s* show\\s+inventory\\s*"),
+    showInventory("\\s*show\\s+inventory\\s*"),
     inventoryTrash(""),
     ShowPlant("\\s*show\\s+plant\\s*-l\\s*(?<x>\\d+)\\s*(?<y>\\d+)\\s*"),
     showCropInfo("\\s*show\\s+crop\\s+info\\s+(?<cropName>\\S+)\\s*"),

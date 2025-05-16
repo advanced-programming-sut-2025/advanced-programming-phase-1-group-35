@@ -123,7 +123,7 @@ public class FarmingController {
         if (seed == null && !seedName.toLowerCase().equals("mixed seed")) {
             return new Result(false, "please enter a valid seed name");
         }
-        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed)) {
+        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed.getSeedEnum())) {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
@@ -131,11 +131,13 @@ public class FarmingController {
             return new Result(false, "Floor is not plowed");
         }
         //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
-        App.getCurrentGame().getPlayingUser().backPack.items.put(seed,App.getCurrentGame().getPlayingUser().backPack.items.get(seed)-1);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
         tile.changeTileContents(crop);
         App.getCurrentGame().getMap().AddCrop(crop);
+//        tile.setSymbol('&');
+        tile.setContentSymbol('&');
         if (findTilesWithSameSeed(tile) != null) {
             Crop temp = (Crop) tile.getPlanted();
             for (Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -148,6 +150,8 @@ public class FarmingController {
                 tile1.setPlowed(false);
                 tile1.changeTileContents(temp);
                 temp.setGiant(true);
+//                tile1.setSymbol('&');
+                tile1.setContentSymbol('&');
             }
             return new Result(true, "seed planted,giant crop incoming");
         }

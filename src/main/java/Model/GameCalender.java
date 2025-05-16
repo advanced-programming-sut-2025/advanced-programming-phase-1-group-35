@@ -115,13 +115,13 @@ public class GameCalender {
         farmingController.crowAttack();
         Random rand = new Random();
         if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
-            int counter = 0;
-            while (counter < 20) {
+            for(int i = 0; i<20 ; i++) {
                 Tile[][] tile = App.getCurrentGame().getMap().getTiles();
-                Tile temp = tile[rand.nextInt(350)][rand.nextInt(200)];
+                Tile temp = tile[rand.nextInt(300)][rand.nextInt(250)];
                 if (temp.getTileType().equals(TileType.Soil)) {
                     Weather.hitTileWithThunder(temp);
                 }
+                else i--;
             }
         }
         ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
@@ -168,7 +168,8 @@ public class GameCalender {
             for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
                 App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
-            for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
+            for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size() ; i++) {
+                Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
                 tree.getTile().setWatered(false);
                 if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
                     tree.setDaysSinceWatered(0);

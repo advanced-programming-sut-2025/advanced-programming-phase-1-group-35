@@ -5,7 +5,6 @@ import Model.App;
 import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.CropEnum;
-import Model.enums.Crops.MixedSeeds;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 
@@ -14,6 +13,7 @@ public class Seed implements PlantAble, ItemInterface {
     private final String name;
     private final boolean isMixed;
     private final CropEnum cropEnum;
+    private final SeedEnum seedEnum;
     private int seedAmount;
     private Tile tile;
     private int price;
@@ -24,6 +24,7 @@ public class Seed implements PlantAble, ItemInterface {
         this.isMixed = seedEnum.isMixed();
         this.cropEnum = seedEnum.getCrop();
         this.tile = tile;
+        this.seedEnum = seedEnum;
     }
     FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
     public Seed(SeedEnum seedEnum, Tile tile, boolean isMixed) {
@@ -32,6 +33,7 @@ public class Seed implements PlantAble, ItemInterface {
         this.cropEnum = farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason());
         this.tile = tile;
         this.symbol = '?';
+        this.seedEnum = seedEnum;
     }
 
     public Seed(SeedEnum seedEnum) {
@@ -39,11 +41,15 @@ public class Seed implements PlantAble, ItemInterface {
         this.isMixed = seedEnum.isMixed();
         this.cropEnum = seedEnum.getCrop();
         this.tile = null;
+        this.seedEnum = seedEnum;
     }
 
-    public Seed getSeed(int seedAmount) {
+    public Seed getSeedInAmount(int seedAmount) {
         this.seedAmount = seedAmount;
         return this;
+    }
+    public SeedEnum getSeedEnum() {
+        return seedEnum;
     }
 
     public Tile getTile() {

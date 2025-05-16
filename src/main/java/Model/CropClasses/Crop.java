@@ -221,7 +221,7 @@ public class Crop implements PlantAble, ItemInterface {
     public Seed HarvestAndDropSeed() {
         Seed seed = new Seed(this.source, null);
         if (!this.isOneTime()) {
-            return seed.getSeed(1);
+            return seed.getSeedInAmount(1);
         }
         return null;
     }
