@@ -170,7 +170,7 @@ public class GameMenuController {
         String notifications = "";
         if(forceUser == null) {
             int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
-            i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i;
+            i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i + 1;
             App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
             if (i == 0) {
                 App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
