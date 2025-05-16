@@ -7,6 +7,8 @@ import Model.CropClasses.Tree;
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
 import Model.enums.Seasons;
+import Model.enums.TileType;
+import Model.enums.WeatherCondition;
 import View.GameMenu;
 
 import java.time.LocalDateTime;
@@ -80,8 +82,34 @@ public class GameCalender {
 //        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
 //        farmingController.crowAttack();
         Random rand = new Random();
+        if(App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
+            int counter = 0;
+            while(counter < 20) {
+                Tile[][] tile = App.getCurrentGame().getMap().getTiles();
+                Tile temp = tile[rand.nextInt(350)][rand.nextInt(200)];
+                if(temp.getTileType().equals(TileType.Soil)) {
+                Weather.hitTileWithThunder(temp);
+                }
+            }
+        }
         ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
         for(Crop crop: crops) {
+            crop.getCropTile().setWatered(false);
+            if(App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)){
+                crop.setDaysSinceWatered(0);
+                crop.getCropTile().setWatered(true);
+            }
+            else if(App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)){
+                if(rand.nextInt(100)<25){
+                    crop.getCropTile().setPlanted(null);
+                    crop.getCropTile().getContents().remove(crop);
+                    crop.getCropTile().setContentSymbol('.');
+                    crop.getCropTile().setSymbol('.');
+                    crop.getCropTile().changeTileContents(null);
+                    App.getCurrentGame().getMap().getCrops().remove(crop);
+                    App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
+                }
+            }
             boolean temp = crop.grow();
             if (crop.isFertilized()) {
                 boolean fertilizer = false;
@@ -107,6 +135,22 @@ public class GameCalender {
             }
         }
         for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
+            tree.getTile().setWatered(false);
+            if(App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)){
+                tree.setDaysSinceWatered(0);
+                tree.getTile().setWatered(true);
+            }
+            else if(App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)){
+                if(rand.nextInt(100)<25){
+                    tree.getTile().setPlanted(null);
+                    tree.getTile().getContents().remove(tree);
+                    tree.getTile().setContentSymbol('.');
+                    tree.getTile().setSymbol('.');
+                    tree.getTile().changeTileContents(null);
+                    App.getCurrentGame().getMap().getTrees().remove(tree);
+                    App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+                }
+            }
             tree.grow();
             if (tree.isFertilized()) {
                 boolean fertilizer = false;
@@ -138,9 +182,9 @@ public class GameCalender {
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
-//        farmingController.addForagingCrop();
-//        farmingController.addForagingSeeds();
-//        farmingController.addForAgingTree();
+        farmingController.addForagingCrop();
+        farmingController.addForagingSeeds();
+        farmingController.addForAgingTree();
         farmingController.crowAttack();
         for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
             for (ShopItem product : shop.getProducts()) {

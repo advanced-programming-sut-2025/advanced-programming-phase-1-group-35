@@ -1,6 +1,7 @@
 package View;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ToolsController;
 import Model.App;
@@ -111,6 +112,15 @@ public class GameMenu extends AppMenu {
         }
         else if((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
             System.out.println(controller.flower(matcher.group("username")));
+        }
+        else if((matcher = GameMenuCommands.showInventory.getMatcher(input)) != null) {
+            System.out.println(controller.showInventory());
+        }
+        else if((matcher = GameMenuCommands.ShowPlant.getMatcher(input)) != null) {
+            System.out.println(controller.ShowCrop(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+        }
+        else if((matcher = GameMenuCommands.giveSeed.getMatcher(input) ) != null) {
+            controller.giveSeed(matcher.group("seed"));
         }
         else {
             System.out.println("Invalid input");

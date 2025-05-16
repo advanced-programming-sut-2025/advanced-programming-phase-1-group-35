@@ -13,6 +13,8 @@ import Model.enums.Seasons;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FarmingController {
@@ -118,7 +120,7 @@ public class FarmingController {
                 break;
             }
         }
-        if (seed == null) {
+        if (seed == null && !seedName.toLowerCase().equals("mixed seed")) {
             return new Result(false, "please enter a valid seed name");
         }
         if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed)) {
@@ -129,7 +131,7 @@ public class FarmingController {
             return new Result(false, "Floor is not plowed");
         }
         //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
-        App.getCurrentGame().getPlayingUser().backPack.items.remove(seed);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(seed,App.getCurrentGame().getPlayingUser().backPack.items.get(seed)-1);
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
         tile.changeTileContents(crop);
@@ -203,6 +205,7 @@ public class FarmingController {
         tile.setWatered(true);
         Crop crop = (Crop) tile.getPlanted();
         crop.setDaysSinceWatered(0);
+//        App.getCurrentGame().getPlayingUser().backPack.items.get();
     }
 
     public int waterAmount() {
@@ -213,30 +216,80 @@ public class FarmingController {
         if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.SCYTHE)){
             return new Result(false, "you need a SCYTHE to harvest crop");
         }
-        if (tile.getPlanted().getClass() == Crop.class) {
-            Crop crop = (Crop) tile.getPlanted();
-            App.getCurrentGame().getPlayingUser().backPack.items.put(crop,
-                    App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(crop, 0) + 1);
+        if(tile.getPlanted() == null){
+            return new Result(false, "no plants here dude sorry :(");
+        }
+
+        if (tile.getPlanted() instanceof Crop crop) {
+            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size())){
+                return new Result(false, crop.getName() + " is not fully developed yet!");
+            }
+            ArrayList <Crop> crops = new ArrayList<>();
+            crops.add(crop);
             if (crop.isGiant()) {
-                for (int i = 0; i < 3; i++) {
-                    App.getCurrentGame().getPlayingUser().backPack.items.put(crop,
-                            App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(crop, 0) + 1);
-                    App.getCurrentGame().getPlayingUser().backPack.items.put(crop.HarvestAndDropSeed(), 1);
-                    if (crop.isOneTime()) {
-                        crop.getCropTile().setPlanted(null);
-                        App.getCurrentGame().getMap().getCrops().remove(crop);
-                        App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
+                Tile[][] temp = App.getCurrentGame().getMap().getTiles();
+                ArrayList<Tile> tiles = new ArrayList<>();
+                int x = tile.getCoordination().x;
+                int y = tile.getCoordination().y;
+                if((temp[x][y+1].getPlanted() != null && temp[x][y+1].getPlanted().equals(tile.getPlanted()))&&
+                    temp[x+1][y+1].getPlanted() != null && temp[x+1][y+1].getPlanted().equals(tile.getPlanted())&&
+                    temp[x+1][y].getPlanted() != null && temp[x+1][y].getPlanted().equals(tile.getPlanted())
+                ){
+                    crops.add((Crop) temp[x][y+1].getPlanted());
+                    crops.add((Crop) temp[x+1][y+1].getPlanted());
+                    crops.add((Crop) temp[x+1][y].getPlanted());
+                }
+                else if((temp[x][y+1].getPlanted() != null && temp[x][y+1].getPlanted().equals(tile.getPlanted()))&&
+                        temp[x-1][y+1].getPlanted() != null && temp[x-1][y+1].getPlanted().equals(tile.getPlanted())&&
+                        temp[x-1][y].getPlanted() != null && temp[x-1][y].getPlanted().equals(tile.getPlanted())
+                ){
+                    crops.add((Crop) temp[x][y+1].getPlanted());
+                    crops.add((Crop) temp[x-1][y+1].getPlanted());
+                    crops.add((Crop) temp[x-1][y].getPlanted());
+                }
+                else if((temp[x][y-1].getPlanted() != null && temp[x][y-1].getPlanted().equals(tile.getPlanted()))&&
+                        temp[x+1][y-1].getPlanted() != null && temp[x+1][y-1].getPlanted().equals(tile.getPlanted())&&
+                        temp[x+1][y].getPlanted() != null && temp[x+1][y].getPlanted().equals(tile.getPlanted())
+                ){
+                    crops.add((Crop) temp[x][y-1].getPlanted());
+                    crops.add((Crop) temp[x+1][y-1].getPlanted());
+                    crops.add((Crop) temp[x+1][y].getPlanted());
+                }
+                else if((temp[x][y-1].getPlanted() != null && temp[x][y-1].getPlanted().equals(tile.getPlanted()))&&
+                        temp[x-1][y-1].getPlanted() != null && temp[x-1][y-1].getPlanted().equals(tile.getPlanted())&&
+                        temp[x-1][y].getPlanted() != null && temp[x-1][y].getPlanted().equals(tile.getPlanted())
+                ){
+                    crops.add((Crop) temp[x][y-1].getPlanted());
+                    crops.add((Crop) temp[x-1][y-1].getPlanted());
+                    crops.add((Crop) temp[x-1][y].getPlanted());
+                }
+            }
+                for (Crop crop1 : crops) {
+                    App.getCurrentGame().getPlayingUser().backPack.items.put(crop1,
+                            App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(crop1, 0) + 1);
+                    Seed seed = crop1.HarvestAndDropSeed();
+                    if (seed != null) {
+                    App.getCurrentGame().getPlayingUser().backPack.items.put(seed, seed.getSeedAmount());
+                    }
+                    if (crop1.isOneTime()) {
+                        crop1.getCropTile().setPlanted(null);
+                        App.getCurrentGame().getMap().getCrops().remove(crop1);
+                        App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
                         return new Result(true, "crop harvested");
                     } else {
-                        crop.setCurrentState(crop.getCurrentState() - 1);
-                        crop.setDaysSinceLastGrowth(0);
+                        crop1.setCurrentState(crop1.getCurrentState() - 1);
+                        crop1.setDaysSinceLastGrowth(0);
                         return new Result(true, "crop harvested and is now regrowing");
                     }
                 }
-            }
+
         } else if (tile.getPlanted().getClass() == Tree.class) {
             Tree tree = (Tree) tile.getPlanted();
+            if (!(tree.getCurrentState() ==tree.getStages().size()) || tree.getDaysSinceLastGrowth()<7) {
+                return new Result(false, "fruits aren't developed yet");
+            }
             App.getCurrentGame().getPlayingUser().backPack.items.put(tree.getFruit(), 1);
+            tree.setDaysSinceLastGrowth(0);
             return new Result(true, "fruit picked! 8)");
         }
         return new Result(false, "no crop nor tree found there");
@@ -262,20 +315,20 @@ public class FarmingController {
 
     private static final Random random = new Random();
 
-    public CropEnum MixedSeedCrop(Seasons season) {
+    public static CropEnum MixedSeedCrop(Seasons season) {
         if (season == null) {
-            return null;
+            return CropEnum.CARROT;
         }
         try {
             MixedSeeds mixedSeeds = MixedSeeds.valueOf(season.name().toUpperCase()); // <-- toUpperCase here
             CropEnum[] possibleCrops = mixedSeeds.getPossibleCrops();
             if (possibleCrops.length == 0) {
-                return null;
+                return CropEnum.CARROT;
             }
             CropEnum randomCropEnum = possibleCrops[random.nextInt(possibleCrops.length)];
             return randomCropEnum.getCrop();
         } catch (IllegalArgumentException e) {
-            return null;
+            return CropEnum.CARROT;
         }
     }
     public void addForAgingTree(){
@@ -336,7 +389,7 @@ public class FarmingController {
                         do {
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()));
-//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
+                        plantSeed(seed.getName(), (tile.getCoordination().toString()));
                         tile.addContents(seed);
                         tile.setContentSymbol(seed.getSymbol());
                     }
@@ -346,6 +399,8 @@ public class FarmingController {
     }
 
     public void generateStartingPlants() {
+//       SeedEnum.MIXED.setCropEnum(FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason()));
+       ForagingSeeds.MIXED.setCropEnum(FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason()));
        System.out.println("Generating starting plants");
         Random random1 = new Random();
         for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
@@ -393,6 +448,8 @@ public class FarmingController {
                         do {
                             seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
                             couner++;
+                            Crop crop = new Crop(seed.getCropEnum(), tile);
+                            Seed seed1 = new Seed(crop.getSource());
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getSeason()) && couner < 100);
 //                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
@@ -408,35 +465,36 @@ public class FarmingController {
 
     public Result ShowCrop(int x, int y) {
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        Tile tile = tiles[x][y];
         if (tiles[x][y].getPlanted() == null) {
             return new Result(false, "nothing is planted here");
         }
         String type = tiles[x][y].getPlanted().getClass().getName();
         StringBuilder sb = new StringBuilder();
         switch (type) {
-            case "Crop":
+            case "Model.CropClasses.Crop":
                 Crop crop = (Crop) tiles[x][y].getPlanted();
                 sb.append("======================================\n");
                 sb.append("Crop name: " + crop.getName());
-                sb.append("**************************************\n");
+                sb.append("\n**************************************\n");
                 sb.append("days until full growth: " + (crop.getTotalHarvestTime() - crop.getDaysSincePlanted()));
-                sb.append("**************************************\n");
+                sb.append("\n**************************************\n");
                 sb.append("current state: " + crop.getCurrentState());
-                sb.append("**************************************\n");
+                sb.append("\n**************************************\n");
                 sb.append("has crop been watered ? " + tiles[x][y].isWatered());
-                sb.append("**************************************\n");
+                sb.append("\n**************************************\n");
                 sb.append("has crop been fertilized ? " + tiles[x][y].isFertilized());
-                sb.append("======================================\n");
+                sb.append("\n======================================\n");
                 return new Result(true, sb.toString());
-            case "Tree":
+            case "Model.CropClasses.Tree":
                 Tree tree = (Tree) tiles[x][y].getPlanted();
                 sb.append("======================================\n");
                 sb.append("Tree name: " + tree.getName());
-                sb.append("**************************************\n");
+                sb.append("\n**************************************\n");
                 sb.append("fruit name: " + tree.getFruit().getName());
-                sb.append("**************************************\n");
-                sb.append("current state: " + tree.getStages().get(0)); //TODO
-                sb.append("======================================\n");
+                sb.append("\n**************************************\n");
+                sb.append("current state: " + tree.getCurrentState()); //TODO
+                sb.append("\n======================================\n");
                 return new Result(true, sb.toString());
         }
         return new Result(false, "nothing is planted here");

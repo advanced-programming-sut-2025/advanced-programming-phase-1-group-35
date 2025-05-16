@@ -1,5 +1,6 @@
 package Model.CropClasses;
 
+import Model.App;
 import Model.Item;
 import Model.ItemInterface;
 import Model.Tile;
@@ -123,19 +124,30 @@ public class Tree implements PlantAble,ItemInterface {
         this.tile = tile;
     }
 
-    public void grow(){
-        if(this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
-            this.currentState++;
-            this.daysSinceLastGrowth = 0;
-
+    public boolean grow() {
+        if (daysSinceWatered <= 1) {
+            if (this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
+                this.currentState++;
+                this.daysSinceLastGrowth = 0;
+            } else {
+                daysSinceLastGrowth++;
+            }
+            daysSinceWatered++;
+            daysSincePlanted++;
+            this.getTile().setWatered(false);
+            return true;
         }
-        else {
-            this.daysSinceLastGrowth++;
+        else{
+            tile.setPlanted(null);
+            tile.getContents().remove(this);
+            tile.setContentSymbol('.');
+            tile.setSymbol('.');
+            tile.changeTileContents(null);
+            App.getCurrentGame().getMap().getCrops().remove(this);
+            App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(this);
+            return false;
         }
-        this.daysSincePlanted++;
-        this.daysSinceWatered++;
     }
-
 
 
     @Override

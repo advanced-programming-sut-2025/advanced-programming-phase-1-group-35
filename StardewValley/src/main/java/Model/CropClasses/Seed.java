@@ -59,6 +59,7 @@ public class Seed implements PlantAble, ItemInterface {
     }
 
     public CropEnum getCropEnum() {
+        if(this.isMixed()) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
         return cropEnum;
     }
 

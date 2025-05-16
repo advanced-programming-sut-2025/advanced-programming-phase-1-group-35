@@ -1,6 +1,7 @@
 package Model;
 
 import Model.CropClasses.Tree;
+import Model.enums.Crops.Minerals;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
@@ -24,14 +25,20 @@ public class Weather {
 
     }
 
-    public void hitTileWithThunder(Tile tile){
+    public static void hitTileWithThunder(Tile tile){
         tile.setGotHitWithThunder(true);
         if(tile.getPlanted().getClass() == Tree.class){
-            //TODO:replace tree with coal
+            App.getCurrentGame().getMap().getCrops().remove(tile.getPlanted());
+            App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(tile.getPlanted());
+            tile.getContents().remove(tile.getPlanted());
+            tile.setPlanted(null);
+            tile.getContents().add(Minerals.COAL);
+            tile.setContentSymbol('~');
+            tile.setSymbol('~');
         }
     }
     public WeatherCondition randomWeatherCondition(Seasons season) {
-        Game currentGame;//TODO: = new Game();
+        Game currentGame = App.getCurrentGame();
         int randomNumber = (int)((Math.random()*4) + 1);
         for(WeatherCondition condition : WeatherCondition.values()){
             if(condition.getNumber() == randomNumber){

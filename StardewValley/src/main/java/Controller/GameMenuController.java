@@ -5,6 +5,7 @@ import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.CropClasses.Crop;
+import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
@@ -27,6 +28,7 @@ import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
+import java.security.interfaces.RSAKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,11 +105,11 @@ public class GameMenuController {
         switch (direction) {
             case "up":
                 tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX()]
-                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() + 1];
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() - 1];
                 break;
             case "down":
                 tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x]
-                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() - 1];
+                        [App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY() + 1];
                 break;
             case "left":
                 tile = map[App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().x - 1]
@@ -210,6 +212,29 @@ public class GameMenuController {
     public Result harvest(String direction) throws IOException {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         return farmingController.harvestCrop(findTile(direction));
+    }
+    public Result ShowCrop(int x, int y) throws IOException {
+        farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
+        return farmingController.ShowCrop(x, y);
+    }
+    public Result setWeather(String weather) throws IOException {
+        for(WeatherCondition weatherCondition : WeatherCondition.values()) {
+            if(weatherCondition.name().equalsIgnoreCase(weather)) {
+                App.getCurrentGame().getWeather().setWeatherCondition(weatherCondition);
+                return new Result(true, "Weather set to " + weather);
+            }
+        }
+        return new Result(false, "enter a valid weather condition");
+    }
+    public void giveSeed(String seedName) throws IOException {
+        Seed seed = null;
+        for(SeedEnum seedEnum : SeedEnum.values()) {
+            if(seedEnum.name().equalsIgnoreCase(seedName)) {
+                seed = new Seed(seedEnum);
+                break;
+            }
+        }
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(seed, 1);
     }
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
@@ -471,8 +496,27 @@ public class GameMenuController {
     }
 
     public Result showInventory() {
-        return null;
+        StringBuilder output = new StringBuilder();
+        output.append("Inventory: ");
+
+        for (Map.Entry<ItemInterface, Integer> entry : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
+            ItemInterface item = entry.getKey();
+            int quantity = entry.getValue();
+
+            output.append(item.getName());
+            output.append(": ");
+            output.append(quantity);
+            output.append(", ");
+        }
+
+        // Remove the last comma and space if needed
+        if (output.length() > 11) { // "Inventory: " is 11 characters
+            output.setLength(output.length() - 2);
+        }
+
+        return new Result(true, output.toString());
     }
+
 
     public Result deleteAnItemFromInventory() {
         return null;

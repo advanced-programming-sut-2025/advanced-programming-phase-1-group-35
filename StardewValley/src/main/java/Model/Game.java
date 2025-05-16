@@ -1,6 +1,7 @@
 package Model;
 
 import Model.enums.Seasons;
+import Model.enums.WeatherCondition;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public class Game {
     private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
     private GameCalender gameCalender = new GameCalender();
-    private Weather weather;
+    private Weather weather = new Weather();
     private Map map = new Map();
     private Seasons currentSeason;
 
@@ -18,6 +19,7 @@ public class Game {
         this.players = players;
         this.playingUser = playingUser;
         this.gameID = IDCounter++;
+        this.weather.setWeatherCondition(WeatherCondition.sunny);
     }
 
 

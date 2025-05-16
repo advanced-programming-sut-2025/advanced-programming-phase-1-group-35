@@ -1,53 +1,55 @@
 package Model.enums.Crops;
 
+import Controller.InGameMenu.FarmingController;
+import Model.App;
 import Model.ItemInterface;
 import Model.CropClasses.Seed;
 import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 public enum SeedEnum implements ItemInterface, ItemConstant {
-    JAZZ("Jazz Seeds", true, CropEnum.BLUE_JAZZ),
-    CARROT("Carrot Seeds", true, CropEnum.CARROT),
-    CAULIFLOWER("Cauliflower Seeds", true, CropEnum.CAULIFLOWER),
+    JAZZ("Jazz Seeds", false, CropEnum.BLUE_JAZZ),
+    CARROT("Carrot Seeds", false, CropEnum.CARROT),
+    CAULIFLOWER("Cauliflower Seeds", false, CropEnum.CAULIFLOWER),
     COFFEE("Coffee Bean", false, CropEnum.COFFEE_BEAN),
-    GARLIC("Garlic Seeds", true, CropEnum.GARLIC),
+    GARLIC("Garlic Seeds", false, CropEnum.GARLIC),
     BEAN("Bean Starter", false, CropEnum.GREEN_BEAN),
-    KALE("Kale Seeds", true, CropEnum.KALE),
-    PARSNIP("Parsnip Seeds", true, CropEnum.PARSNIP),
-    POTATO("Potato Seeds", true, CropEnum.POTATO),
-    RHUBARB("Rhubarb Seeds", true, CropEnum.RHUBARB),
-    STRAWBERRY("Strawberry Seeds", true, CropEnum.STRAWBERRY),
+    KALE("Kale Seeds", false, CropEnum.KALE),
+    PARSNIP("Parsnip Seeds", false, CropEnum.PARSNIP),
+    POTATO("Potato Seeds", false, CropEnum.POTATO),
+    RHUBARB("Rhubarb Seeds", false, CropEnum.RHUBARB),
+    STRAWBERRY("Strawberry Seeds", false, CropEnum.STRAWBERRY),
     TULIP("Tulip Bulb", false, CropEnum.TULIP),
     RICE("Rice Shoot", false, CropEnum.UNMILLED_RICE),
-    BLUEBERRY("Blueberry Seeds", true, CropEnum.BLUEBERRY),
-    CORN("Corn Seeds", true, CropEnum.CORN),
+    BLUEBERRY("Blueberry Seeds", false, CropEnum.BLUEBERRY),
+    CORN("Corn Seeds", false, CropEnum.CORN),
     HOPS("Hops Starter", false, CropEnum.HOPS),
-    PEPPER("Pepper Seeds", true, CropEnum.HOT_PEPPER),
-    MELON("Melon Seeds", true, CropEnum.MELON),
-    POPPY("Poppy Seeds", true, CropEnum.POPPY),
-    RADISH("Radish Seeds", true, CropEnum.RADISH),
-    RED_CABBAGE("Red Cabbage Seeds", true, CropEnum.RED_CABBAGE),
-    STARFRUIT("Starfruit Seeds", true, CropEnum.STARFRUIT),
+    PEPPER("Pepper Seeds", false, CropEnum.HOT_PEPPER),
+    MELON("Melon Seeds", false, CropEnum.MELON),
+    POPPY("Poppy Seeds", false, CropEnum.POPPY),
+    RADISH("Radish Seeds", false, CropEnum.RADISH),
+    RED_CABBAGE("Red Cabbage Seeds", false, CropEnum.RED_CABBAGE),
+    STARFRUIT("Starfruit Seeds", false, CropEnum.STARFRUIT),
     SPANGLE("Spangle Seeds", false, CropEnum.SUMMER_SPANGLE),
-    SUMMER_SQUASH("Summer Squash Seeds", true, CropEnum.SUMMER_SQUASH),
-    SUNFLOWERSEED("Sunflower Seeds", true, CropEnum.SUNFLOWER),
-    TOMATO("Tomato Seeds", true, CropEnum.TOMATO),
-    WHEAT("Wheat Seeds", true, CropEnum.WHEAT),
-    AMARANTH("Amaranth Seeds", true, CropEnum.AMARANTH),
-    ARTICHOKE("Artichoke Seeds", true, CropEnum.ARTICHOKE),
-    BEET("Beet Seeds", true, CropEnum.BEET),
-    BOK_CHO("Bok Choy Seeds", true, CropEnum.BOK_CHOY),
-    BROCCOLI("Broccoli Seeds", true, CropEnum.BROCCOLI),
-    CRANBERRY("Cranberry Seeds", true, CropEnum.CRANBERRIES),
-    EGGPLANT("Eggplant Seeds", true, CropEnum.EGGPLANT),
+    SUMMER_SQUASH("Summer Squash Seeds", false, CropEnum.SUMMER_SQUASH),
+    SUNFLOWERSEED("Sunflower Seeds", false, CropEnum.SUNFLOWER),
+    TOMATO("Tomato Seeds", false, CropEnum.TOMATO),
+    WHEAT("Wheat Seeds", false, CropEnum.WHEAT),
+    AMARANTH("Amaranth Seeds", false, CropEnum.AMARANTH),
+    ARTICHOKE("Artichoke Seeds", false, CropEnum.ARTICHOKE),
+    BEET("Beet Seeds", false, CropEnum.BEET),
+    BOK_CHO("Bok Choy Seeds", false, CropEnum.BOK_CHOY),
+    BROCCOLI("Broccoli Seeds", false, CropEnum.BROCCOLI),
+    CRANBERRY("Cranberry Seeds", false, CropEnum.CRANBERRIES),
+    EGGPLANT("Eggplant Seeds", false, CropEnum.EGGPLANT),
     FAIRY("Fairy Seeds", false, CropEnum.FAIRY_ROSE),
     GRAPE("Grape Starter", false, CropEnum.GRAPE),
-    PUMPKIN("Pumpkin Seeds", true, CropEnum.PUMPKIN),
-    YAM("Yam Seeds", true, CropEnum.YAM),
+    PUMPKIN("Pumpkin Seeds", false, CropEnum.PUMPKIN),
+    YAM("Yam Seeds", false, CropEnum.YAM),
     SWEET_GEM_BERRY("Rare Seed", false, CropEnum.SWEET_GEM_BERRY),
     POWDERMELON("Powdermelon Seeds", false, CropEnum.POWDERMELON),
     ANCIENT("Ancient Seeds", false, null),
-    MIXED("Mixed Seeds", false, null);
+    MIXED("Mixed Seeds", true, null);
 
     private final String seedName;
     private final boolean isMixed;
@@ -68,8 +70,8 @@ public enum SeedEnum implements ItemInterface, ItemConstant {
         return isMixed;
     }
 
-
     public CropEnum getCrop() {
+        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
         if(this.cropEnum != null) return cropEnum;
         for(CropEnum cropEnum1 : CropEnum.values()) {
             if(cropEnum1.source == null) continue;

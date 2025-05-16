@@ -1,5 +1,7 @@
 package Model.enums.Crops;
 
+import Controller.InGameMenu.FarmingController;
+import Model.App;
 import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.ItemInterface;
@@ -55,17 +57,21 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
     RARE(Arrays.asList(Fall), CropEnum.SWEET_GEM_BERRY, SeedEnum.SWEET_GEM_BERRY),
     POWDERMELON(Arrays.asList(Winter), CropEnum.POWDERMELON, SeedEnum.POWDERMELON),
     ANCIENT(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.ANCIENT),
-//    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),
+    MIXED(Arrays.asList(Spring, Summer, Fall, Winter), null,SeedEnum.MIXED),
     FIBER(Arrays.asList(Spring,Summer,Fall,Winter),null,null);
 
     private final List<Seasons> seasons;
-    private final CropEnum cropEnum;
+    private CropEnum cropEnum;
     private final SeedEnum seedEnum;
 
     ForagingSeeds(List<Seasons> seasons, CropEnum cropEnum, SeedEnum seedEnum) {
         this.seasons = seasons;
         this.cropEnum = cropEnum;
         this.seedEnum = seedEnum;
+    }
+
+    public void setCropEnum(CropEnum cropEnum) {
+        this.cropEnum = cropEnum;
     }
 
     public List<Seasons> getSeasons() {
@@ -83,6 +89,7 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
     }
 
     public CropEnum getCrop() {
+        if(this == MIXED) return FarmingController.MixedSeedCrop(App.getCurrentGame().getSeason());
         return cropEnum;
     }
 
