@@ -96,7 +96,11 @@ public class GameMenu extends AppMenu {
             System.out.println(npcController.seeQuestList(matcher.group(1)));
         } else if ((matcher = NPCCommands.showQuestList.getMatcher(input)) != null) {
             System.out.println(npcController.finishQuest(matcher.group(1), matcher.group(2)));
-        } else {
+        } else if((matcher = GameMenuCommands.askMarriage.getMatcher(input)) != null) {
+            System.out.println(controller.askMarriage(matcher.group("username")));
+        } else if((matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input)) != null ){
+            System.out.println(controller.respondToMarriageRequest());
+        }else {
             System.out.println("Invalid input");
         }
     }

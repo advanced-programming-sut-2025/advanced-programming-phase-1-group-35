@@ -44,7 +44,7 @@ public enum GameMenuCommands {
     rateGift("gift\\s+rate\\s+-i\\s+(?<id>\\d+)\\s+-r\\s+(?<rate>\\d+)"),
     hug("hug\\s+-u\\s+(?<username>\\S+)"),
     flower("flower\\s+-u\\s+(?<username>\\S+)"),
-
+    askMarriage("ask\\s+\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
     respondToMarriageRequest("respond\\s+(?<answer>accept|reject)"),
     ;
 
