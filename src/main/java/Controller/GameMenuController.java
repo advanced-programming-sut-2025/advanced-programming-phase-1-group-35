@@ -29,9 +29,7 @@ import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
 import java.security.interfaces.RSAKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -48,6 +46,22 @@ public class GameMenuController {
 
     public Result plantSeed(String seedName, String direction){
         return farmingController.plantSeed(seedName, direction);
+    }
+    public Result pickUpSeed(String direction){
+        Tile tile = findTile(direction);
+        Optional<SeedEnum> matchingSeed = Arrays.stream(SeedEnum.values())
+                .filter(seed -> tile.getContents().contains(seed))
+                .findFirst();
+
+        boolean hasAnySeed = Arrays.stream(SeedEnum.values())
+                .anyMatch(seed -> tile.getContents().contains(seed));
+
+        if(!hasAnySeed){
+            return new Result(false, "tile doesn't have any seed");
+        }
+
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(),1);
+        return new Result(true, "pick up "+ matchingSeed.get().getName());
     }
 
     public Result fertilize(String fertilizerName, String direction){

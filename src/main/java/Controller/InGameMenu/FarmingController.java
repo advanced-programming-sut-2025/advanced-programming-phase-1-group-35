@@ -130,7 +130,6 @@ public class FarmingController {
         if (!isFloorplowed(tile)) {
             return new Result(false, "Floor is not plowed");
         }
-        //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
@@ -339,7 +338,7 @@ public class FarmingController {
     Random random1 = new Random();
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
-            if (tile.getPlanted() == null && tile.isPlowed()){
+            if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)){
                 if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
@@ -358,7 +357,7 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed()) {
+                if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)) {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
@@ -381,21 +380,23 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed()) {
-                    if (random1.nextInt(100) < 1) {
+                if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)) {
+                    if (random1.nextInt(1000) < 1) {
                         Seed seed;
-                        if(random1.nextInt(2) == 1){
-                            seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
-                        }
-                        else {
-                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile,true);
-                        }
                         do {
+                        if (random1.nextInt(2) == 1) {
+                            seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
+                        } else {
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile, true);
+                        }
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
-                        plantSeed(seed.getName(), (tile.getCoordination().toString()));
-                        tile.addContents(seed);
-                        tile.setContentSymbol(seed.getSymbol());
+                        if (tile.isPlowed()) {
+                            plantSeed(seed.getName(), (tile.getCoordination().toString()));
+                        } else {
+                            tile.addContents(seed.getSeedEnum());
+                            tile.setContentSymbol(seed.getSymbol());
+                        }
                     }
                 }
             }
@@ -443,23 +444,26 @@ public class FarmingController {
             }
         }
             int counter = 0;
+        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil) {
+                if (tile.getPlanted() == null) {
                     if (random1.nextInt(100) < 1) {
                         Seed seed;
-                        int couner = 0;
                         do {
+                        if (random1.nextInt(2) == 1) {
                             seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
-                            couner++;
-                            Crop crop = new Crop(seed.getCropEnum(), tile);
-                            Seed seed1 = new Seed(crop.getSource());
+                        } else {
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile, true);
+                        }
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
-                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()) && couner < 100);
-//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
-                        tile.addContents(seed);
-                        tile.setContentSymbol(seed.getSymbol());
-//                        System.out.println("seed planted, location : " + tile.coordination);
+                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
+                        if (tile.isPlowed()) {
+                            plantSeed(seed.getName(), (tile.getCoordination().toString()));
+                        } else {
+                            tile.addContents(seed.getSeedEnum());
+                            tile.setContentSymbol(seed.getSymbol());
+                        }
                     }
                 }
             }
