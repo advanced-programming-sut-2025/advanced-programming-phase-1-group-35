@@ -12,7 +12,7 @@ public class Game {
     private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
     private GameCalender gameCalender = new GameCalender();
-    private Weather weather;
+    private Weather weather = new Weather();
     private Map map = new Map();
     private ArrayList<NPC> npcs = new ArrayList<>();
 

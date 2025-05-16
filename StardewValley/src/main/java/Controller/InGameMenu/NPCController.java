@@ -26,7 +26,7 @@ public class NPCController {
         npc.friendshipPoint += 20;
         return new Result(true, generateDialogue(npc.friendshipLevel,
                 game.getGameCalender().getGameDateTime().getHour(),
-                game.getSeason(), game.getWeather().getWeatherCondition()));
+                game.getGameCalender().getSeason(), game.getWeather().getWeatherCondition()));
     }
 
     private String generateDialogue(int friendshipLevel, int hour, Seasons season, WeatherCondition weatherCondition) {

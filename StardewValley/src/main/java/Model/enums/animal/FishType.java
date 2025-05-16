@@ -58,7 +58,7 @@ public enum FishType implements ItemConstant {
     public static ArrayList<FishType> getFishListOfThisSeason() {
         ArrayList<FishType> fishList = new ArrayList<FishType>();
         for (FishType fish : FishType.values()) {
-            if (fish.getSeason().equals(App.getCurrentGame().getSeason().toString())) {
+            if (fish.getSeason().equals(App.getCurrentGame().getGameCalender().getSeason().toString())) {
                 fishList.add(fish);
             }
         }
