@@ -25,14 +25,15 @@ public class Weather {
     }
 
     public Result cheatWeatherSet(String weatherString){
+        WeatherCondition weather;
         try {
-            WeatherCondition weather = WeatherCondition.valueOf(weatherString.toUpperCase());
+            weather = WeatherCondition.valueOf(weatherString);
         }
         catch(IllegalArgumentException e){
             return new Result(false, "invalid weather string");
         }
-        setTomorrowCondition(weatherCondition);
-        return new Result(true, "cheater weather set tomorrow's weather : " + weatherCondition);
+        setTomorrowCondition(weather);
+        return new Result(true, "cheater weather set tomorrow's weather : " + tomorrowCondition);
     }
 
     public WeatherCondition randomWeatherCondition(Seasons season) {

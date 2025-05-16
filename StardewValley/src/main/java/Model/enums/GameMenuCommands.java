@@ -21,7 +21,7 @@ public enum GameMenuCommands {
     getDayOfTheWeek("day of the week"),
     cheatTime("cheat advance time (?<hour>\\d+)h"),
     cheatDate("cheat advance date (?<day>\\d+)d"),
-    cheatThor("cheat\\s+Thor\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    cheatThor("cheat \\s+Thor\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
     showWeather("weather"),
     weatherForecast("weather\\s+forecast"),
     cheatWeatherSet("cheat\\s+weather\\s+set\\s+(?<type>\\S+)"),
@@ -51,6 +51,7 @@ public enum GameMenuCommands {
     flower("flower\\s+-u\\s+(?<username>\\S+)"),
     askMarriage("ask\\s+\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
     respondToMarriageRequest("respond\\s+(?<answer>accept|reject)"),
+    showPlayerPosition("show position"),
     ;
 
 

@@ -30,6 +30,9 @@ public class GameMenu extends AppMenu {
                     matcher.group("user3")));
             FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
             cont.addForagingCrop();
+        } else if (GameMenuCommands.showPlayerPosition.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x
+                    + " " + App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y);
         } else if ((matcher = GameMenuCommands.loadGame.getMatcher(input)) != null) {
             System.out.println(controller.loadGame());
         } else if ((matcher = GameMenuCommands.deleteGame.getMatcher(input)) != null) {
@@ -60,15 +63,15 @@ public class GameMenu extends AppMenu {
             System.out.println(toolsController.showCurrentTool());
         } else if ((matcher = ToolCommands.showAllTools.getMatcher(input)) != null) {
             System.out.println(toolsController.showTools());
-        } else if(GameMenuCommands.showWeather.getMatcher(input) != null) {
+        } else if (GameMenuCommands.showWeather.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getWeather().getWeatherCondition());
-        } else if(GameMenuCommands.weatherForecast.getMatcher(input) != null) {
+        } else if (GameMenuCommands.weatherForecast.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getWeather().getTomorrowCondition());
-        } else if((matcher = GameMenuCommands.cheatWeatherSet.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.cheatWeatherSet.getMatcher(input)) != null) {
             System.out.println(App.getCurrentGame().getWeather().cheatWeatherSet(matcher.group("type")));
-        }else if((matcher = GameMenuCommands.cheatThor.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.cheatThor.getMatcher(input)) != null) {
             System.out.println(App.getCurrentGame().getWeather().hitTileWithThunder(Map.getTileWithCoordination(matcher.group("x"), matcher.group("y"))));
-        }else if ((matcher = ToolCommands.upgradeTool.getMatcher(input)) != null) {
+        } else if ((matcher = ToolCommands.upgradeTool.getMatcher(input)) != null) {
             System.out.println(toolsController.upgradeTool(matcher.group(1)));
         } else if ((matcher = ToolCommands.useTool.getMatcher(input)) != null) {
             System.out.println(toolsController.useTool(Integer.parseInt(matcher.group(1))));
@@ -105,28 +108,25 @@ public class GameMenu extends AppMenu {
             System.out.println(npcController.seeQuestList(matcher.group(1)));
         } else if ((matcher = NPCCommands.showQuestList.getMatcher(input)) != null) {
             System.out.println(npcController.finishQuest(matcher.group(1), matcher.group(2)));
-        } else if((matcher = GameMenuCommands.askMarriage.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.askMarriage.getMatcher(input)) != null) {
             System.out.println(controller.askMarriage(matcher.group("username")));
-        } else if((matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input)) != null ){
+        } else if ((matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input)) != null) {
             System.out.println(controller.respondToMarriageRequest());
-        }
-        else if (GameMenuCommands.getTime.getMatcher(input) != null) {
+        } else if (GameMenuCommands.getTime.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().getTime());
-        }
-        else if (GameMenuCommands.getDate.getMatcher(input) != null) {
+        } else if (GameMenuCommands.getDate.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().getDate());
-        }
-        else if (GameMenuCommands.getTimeAndDate.getMatcher(input) != null) {
+        } else if (GameMenuCommands.getTimeAndDate.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().getDateTime());
-        }
-        else if (GameMenuCommands.getDayOfTheWeek.getMatcher(input) != null) {
+        } else if (GameMenuCommands.getDayOfTheWeek.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().getDayOfTheWeek());
-        }
-        else if ((matcher = GameMenuCommands.cheatTime.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.cheatTime.getMatcher(input)) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().cheatTime(Integer.parseInt(matcher.group(1))));
-        }
-        else if ((matcher = GameMenuCommands.cheatDate.getMatcher(input)) != null) {
+        } else if ((matcher = GameMenuCommands.cheatDate.getMatcher(input)) != null) {
             System.out.println(App.getCurrentGame().getGameCalender().cheatDate(Integer.parseInt(matcher.group(1))));
+        }
+        else if (GameMenuCommands.getSeason.getMatcher(input) != null) {
+            System.out.println(App.getCurrentGame().getGameCalender().getSeason());
         }
         else {
             System.out.println("Invalid input");

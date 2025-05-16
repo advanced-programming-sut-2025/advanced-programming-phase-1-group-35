@@ -107,13 +107,15 @@ public class GameCalender {
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
-            crop.grow();
+            // TODO
+            //crop.grow();
         }
         for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
-            tree.grow();
-            if (tree.getTile().isFertilized()) {
-                tree.grow();
-            }
+            // TODO
+//            tree.grow();
+//            if (tree.getTile().isFertilized()) {
+//                tree.grow();
+//            }
         }
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();

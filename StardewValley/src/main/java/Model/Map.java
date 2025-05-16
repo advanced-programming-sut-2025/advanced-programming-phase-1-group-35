@@ -22,7 +22,7 @@ public class Map {
     public ArrayList<Building> buildings;
     public ArrayList<Shop> shops = new ArrayList<>();
     private ArrayList<Crop> Crop = new ArrayList<>();
-    private ArrayList<Tree> trees;
+    private ArrayList<Tree> trees = new ArrayList<>();
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
 
