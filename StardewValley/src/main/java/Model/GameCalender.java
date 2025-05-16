@@ -10,7 +10,9 @@ import Model.enums.Seasons;
 import View.GameMenu;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GameCalender {
     private LocalDateTime gameDateTime;
@@ -23,6 +25,37 @@ public class GameCalender {
 
     public LocalDateTime getGameDateTime() {
         return gameDateTime;
+    }
+
+    public Result getTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedDate = now.format(formatter);
+        return new Result(true, "time: " + formattedDate);
+    }
+
+    public Result getDate() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+        String formattedDate = now.format(formatter);
+        return new Result(true, "day: " + formattedDate + " of " + season);
+    }
+
+    public Result getDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
+        String formattedDate = now.format(formatter);
+        return new Result(true, formattedDate + " (" + season + ")");
+    }
+
+    public Result getDayOfTheWeek() {
+        LocalDateTime now = LocalDateTime.now();
+        DayOfWeek dayOfWeek = now.getDayOfWeek();
+        return new Result(true, "day: " + dayOfWeek);
+    }
+
+    public Result showSeason() {
+        return new Result(true, "Season: " + season);
     }
 
     public void setGameDateTime(LocalDateTime gameDateTime) {
@@ -50,28 +83,28 @@ public class GameCalender {
     }
 
     private void goToNextSeason() {
-//        if (season == Seasons.Spring) {
-//            season = Seasons.Summer;
-//        } else if (season == Seasons.Summer) {
-//            season = Seasons.Fall;
-//        } else if (season == Seasons.Fall) {
-//            season = Seasons.Winter;
-//        } else if (season == Seasons.Winter) {
-//            season = Seasons.Spring;
-//        }
-    season = season.findNextSeason(season);
-    for(Crop crop : App.getCurrentGame().getMap().getCrops()) {
-        if(!crop.getSeason().equals(season)) {
-            crop.getCropTile().setPlanted(null);
-            crop.getCropTile().getContents().remove(crop);
+        if (season == Seasons.Spring) {
+            season = Seasons.Summer;
+        } else if (season == Seasons.Summer) {
+            season = Seasons.Fall;
+        } else if (season == Seasons.Fall) {
+            season = Seasons.Winter;
+        } else if (season == Seasons.Winter) {
+            season = Seasons.Spring;
         }
-    for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
-        if(!tree.getSeasons().contains(season)) {
-            tree.getTile().setPlanted(null);
-            tree.getTile().getContents().remove(crop);
+        season = season.findNextSeason(season);
+        for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
+            if (!crop.getSeason().equals(season)) {
+                crop.getCropTile().setPlanted(null);
+                crop.getCropTile().getContents().remove(crop);
+            }
+            for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
+                if (!tree.getSeasons().contains(season)) {
+                    tree.getTile().setPlanted(null);
+                    tree.getTile().getContents().remove(crop);
+                }
+            }
         }
-    }
-    }
     }
 
     public void goToNextDay() throws IOException {
@@ -79,12 +112,12 @@ public class GameCalender {
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
-        for(Crop crop: App.getCurrentGame().getMap().getCrops()){
+        for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
             crop.grow();
         }
-        for(Tree tree : App.getCurrentGame().getMap().getTrees()) {
+        for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
             tree.grow();
-            if(tree.getTile().isFertilized()){
+            if (tree.getTile().isFertilized()) {
                 tree.grow();
             }
         }
@@ -104,12 +137,32 @@ public class GameCalender {
         for (User player : App.getCurrentGame().getPlayers()) {
             player.setMoney(player.getIncome() + player.getMoney());
             player.setIncome(0);
-            if(!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())){
+            if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                 GameMenuController controller = new GameMenuController();
-                GameMenu.print(controller.walk(String.format("%d",player.getFarm().getCabin().getBounds().x + 3),
-                                                String.format("%d",player.getFarm().getCabin().getBounds().y + 3)).toString());
+                GameMenu.print(controller.walk(String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                        String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
             }
         }
+    }
+
+    public Result cheatTime(int hour) {
+        for (int i = 0; i < hour; i++) {
+            updateTimeAndDateAndSeasonAfterTurns();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedDate = now.format(formatter);
+        return new Result(true, "hour now is " + formattedDate);
+    }
+
+    public Result cheatDate(int day) throws IOException {
+        for (int i = 0; i < day; i++) {
+            goToNextDay();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd  HH:mm");
+        String formattedDate = now.format(formatter);
+        return new Result(true, "it is " + formattedDate);
     }
 
 //    int neededEnergyAmount = 10;
