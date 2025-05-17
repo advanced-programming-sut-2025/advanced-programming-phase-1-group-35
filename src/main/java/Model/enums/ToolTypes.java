@@ -31,4 +31,14 @@ public enum ToolTypes implements ItemConstant {
     public ItemInterface getItem() throws IOException {
         return new Tool(200, energyConsumed, this);
     }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
 }

@@ -21,7 +21,7 @@ public enum GameMenuCommands {
     getDayOfTheWeek("day of the week"),
     cheatTime("cheat advance time (?<hour>\\d+)h"),
     cheatDate("cheat advance date (?<day>\\d+)d"),
-    cheatThor("cheat \\s+Thor\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
+    cheatThor("cheat\\s+Thor\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>\\s*"),
     showWeather("weather"),
     weatherForecast("weather\\s+forecast"),
     cheatWeatherSet("cheat\\s+weather\\s+set\\s+(?<type>\\S+)"),
@@ -61,6 +61,8 @@ public enum GameMenuCommands {
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
     giveSeed("\\s*give\\s+seed\\s+(?<seed>\\S+)\\s*"),
     pickUpSeed("\\s*pick\\s+seed\\s+(?<direction>\\S+)\\s*"),
+    pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)\\s*)"),
+    showRecipes("\\s*show\\s+recipes\\s*"),
     ;
 
 

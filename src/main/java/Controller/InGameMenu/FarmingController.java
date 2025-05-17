@@ -8,8 +8,10 @@ import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
+import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
+import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
@@ -300,13 +302,35 @@ public class FarmingController {
         }
         return new Result(false, "no crop nor tree found there");
     }
-
+    public Tile[] findCloseTiles(Tile tile) {
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        int x = tile.getCoordination().x;
+        int y = tile.getCoordination().y;
+        Tile[] closeTiles = new Tile[8];
+        closeTiles[0] = tiles[x+1][y];
+        closeTiles[1] = tiles[x+1][y+1];
+        closeTiles[2] = tiles[x][y+1];
+        closeTiles[3] = tiles[x-1][y+1];
+        closeTiles[4] = tiles[x-1][y];
+        closeTiles[5] = tiles[x-1][y-1];
+        closeTiles[6] = tiles[x][y-1];
+        closeTiles[7] = tiles[x+1][y-1];
+        return closeTiles;
+    }
     public void crowAttack() {
         if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
             Random rand = new Random();
             int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
             if (rand.nextInt(100) < 25) {
             Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
+            boolean scareCrow = false;
+            for(Tile tile : findCloseTiles(crop.getcropTile())){
+                if(tile.getContents().contains(CraftingItems.Scarecrow)){
+                    scareCrow = true;
+                    break;
+                }
+            }
+            if(!scareCrow){
                 System.out.println("Crow attacking " +crop.getName() +
                         " at x = " + crop.getCropTile().coordination.x +
                         " and y = " + crop.getCropTile().coordination.y);
@@ -315,6 +339,7 @@ public class FarmingController {
                 crop.getCropTile().setPlanted(null);
 //                crop.getCropTile().setSymbol('X');
                 crop.getCropTile().setContentSymbol('X');
+                }
             }
         }
     }
@@ -348,8 +373,10 @@ public class FarmingController {
                     App.getCurrentGame().getMap().addTrees(tree);
                     App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
                     tile.setContentSymbol(tree.getSymbol());
+                    tile.setSymbol(tree.getSymbol());
                     tile.addContents(tree);
                     tree.setTile(tile);
+                    System.out.println("tree spawned at " + tile.getCoordination().x + " " + tile.getCoordination().y);
                 }
             }
         }
@@ -383,7 +410,7 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)) {
+                if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil) && tile.isPlowed()) {
                     if (random1.nextInt(1000) < 1) {
                         Seed seed;
                         do {

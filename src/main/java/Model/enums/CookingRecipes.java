@@ -143,6 +143,11 @@ public enum CookingRecipes implements ItemConstant{
     }
 
     @Override
+    public String getName() {
+        return this.displayName;
+    }
+
+    @Override
     public ItemInterface getItem() throws IOException {
         return new Food(this);
         //TODO

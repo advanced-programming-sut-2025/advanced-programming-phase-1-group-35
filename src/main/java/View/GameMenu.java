@@ -82,6 +82,7 @@ public class GameMenu extends AppMenu {
         } else if (GameMenuCommands.goToCookingMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.CookingMenu);
         } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
+            //TODO
         }
         else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
             System.out.println(controller.showCropInfo(matcher.group("cropName")));
@@ -158,6 +159,12 @@ public class GameMenu extends AppMenu {
         }
         else if((matcher = GameMenuCommands.pickUpSeed.getMatcher(input)) != null) {
             System.out.println(controller.pickUpSeed(matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.pickItem.getMatcher(input)) != null) {
+            System.out.println(controller.pickItem(matcher.group("itemName"), matcher.group("direction")));
+        }
+        else if((matcher = GameMenuCommands.showRecipes.getMatcher(input)) != null) {
+            System.out.println(controller.ShowRecipes());
         }
         else {
             System.out.println("Invalid input");
