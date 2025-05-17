@@ -1047,4 +1047,32 @@ public class GameMenuController {
         }
         return null;
     }
+
+    public boolean isCloseToObject(String objectName) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        FarmingController controller = new FarmingController(game.getMap().getTiles());
+        Tile[] closeTiles = controller.findCloseTiles(player.getCurrentTile());
+        for (Tile tile : closeTiles) {
+            for (ItemInterface content : tile.getContents()) {
+                if (content.getName().equalsIgnoreCase(objectName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isCloseTOSea() {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        FarmingController controller = new FarmingController(game.getMap().getTiles());
+        Tile[] closeTiles = controller.findCloseTiles(player.getCurrentTile());
+        for (Tile tile : closeTiles) {
+            if (tile.getTileType().equals(TileType.Water)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

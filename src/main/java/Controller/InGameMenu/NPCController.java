@@ -19,8 +19,8 @@ public class NPCController {
         }
         if (npc == null) {
             return new Result(false, "NPC not found");
-        } else if (false) {
-            // TODO : check that if you are near to that npc or not
+        } else if (Math.abs(npc.getLocation().x - game.getPlayingUser().getCurrentPoint().x) > 1 ||
+                Math.abs(npc.getLocation().y - game.getPlayingUser().getCurrentPoint().y) > 1) {
             return new Result(false, "You are not close to the npc");
         }
         npc.friendshipPoint += 20;

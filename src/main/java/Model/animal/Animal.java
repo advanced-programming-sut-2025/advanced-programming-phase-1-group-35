@@ -23,11 +23,12 @@ public class Animal implements ItemInterface {
     private boolean isInHouse;
     private boolean isFeedToday;
     private boolean canProduceTomorrow;
-    private boolean isNazToday; // TODO : reset these 2 after a day passed
+    private boolean isNazToday;
+    private boolean isCollectedToday;
 
 
     public Animal(String name, AnimalType animalType, int buyingPrice, double productionRate, String confinement
-    , AnimalProduct[] products) {
+            , AnimalProduct[] products) {
         this.name = name;
         this.animalType = animalType;
         this.buyingPrice = buyingPrice;
@@ -37,33 +38,40 @@ public class Animal implements ItemInterface {
         this.isFeedToday = false;
         this.isNazToday = false;
         this.canProduceTomorrow = false;
+        this.isCollectedToday = false;
     }
 
-    public Result buyAnimal(){
-        return null;
-    }
-    public String petAnimal(){
-        return null;
-    }
-    public String AnimalDetails(){
-        return null;
-    }
-    public Result shepherdAnimal(){
-        return null;
-    }
-    public Result feedHay(){
-        return null;
-    }
-    public String produces(){
-        return null;
-    }
-    public Result collectProducts(){
-        return null;
-    }
-    public Result sellAnimal(){
+    public Result buyAnimal() {
         return null;
     }
 
+    public String petAnimal() {
+        return null;
+    }
+
+    public String AnimalDetails() {
+        return null;
+    }
+
+    public Result shepherdAnimal() {
+        return null;
+    }
+
+    public Result feedHay() {
+        return null;
+    }
+
+    public String produces() {
+        return null;
+    }
+
+    public Result collectProducts() {
+        return null;
+    }
+
+    public Result sellAnimal() {
+        return null;
+    }
 
 
     public String getName() {
@@ -156,6 +164,18 @@ public class Animal implements ItemInterface {
 
     public void setInHouse(boolean inHouse) {
         isInHouse = inHouse;
+    }
+
+    public int getBuyingPrice() {
+        return buyingPrice;
+    }
+
+    public boolean isCollectedToday() {
+        return isCollectedToday;
+    }
+
+    public void setCollectedToday(boolean collectedToday) {
+        isCollectedToday = collectedToday;
     }
 
     public void updateQuality() {

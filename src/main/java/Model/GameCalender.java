@@ -6,6 +6,7 @@ import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
+import Model.animal.Animal;
 import Model.enums.Seasons;
 import Model.enums.TileType;
 import Model.enums.WeatherCondition;
@@ -74,6 +75,25 @@ public class GameCalender {
         if (gameDateTime.getHour() == 22) {
             gameDateTime = gameDateTime.plusHours(11);
             goToNextDay();
+            for (Animal animal : App.getCurrentGame().getPlayingUser().getFarm().animals) {
+                if (animal.isCollectedToday()) {
+                    animal.setFriendship(animal.getFriendship() + 8);
+                }
+                if (animal.isNazToday()) {
+                    animal.setFriendship(animal.getFriendship() + 15);
+                } else {
+                    animal.setFriendship(animal.getFriendship() - 10);
+                }
+                if (animal.isFeedToday()) {
+                    animal.setFriendship(animal.getFriendship() + 8);
+                } else {
+                    animal.setFriendship(animal.getFriendship() - 20);
+                }
+                animal.setFeedToday(false);
+                animal.setCanProduceTomorrow(false);
+                animal.setNazToday(false);
+                animal.setCollectedToday(false);
+            }
         }
         if (gameDateTime.getDayOfMonth() == 29) {
             goToNextSeason();
