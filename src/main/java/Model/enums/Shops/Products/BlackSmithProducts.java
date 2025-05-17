@@ -9,10 +9,10 @@ import Model.enums.Seasons;
 import java.io.IOException;
 
 public enum BlackSmithProducts implements ShopProduct, ItemInterface, ItemConstant {
-    COPPER_ORE("Mineral","Copper Ore", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
-    IRON_ORE("Mineral","Iron Ore", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),
+    COPPER("Mineral","Copper", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
+    IRON("Mineral","Iron", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),
     COAL("Mineral","Coal", "A combustible rock that is useful for crafting and smelting.", 150, Double.POSITIVE_INFINITY),
-    GOLD_ORE("Mineral","Gold Ore", "A precious ore that can be smelted into bars.", 400, Double.POSITIVE_INFINITY),
+    GOLD("Mineral","Gold", "A precious ore that can be smelted into bars.", 400, Double.POSITIVE_INFINITY),
     COPPER_TOOL("ToolUpgrade", "Copper Tool", "Upgrade Tools", 2000, 1.0),
     STEEL_TOOL("ToolUpgrade","Steel Tool", "Upgrade Tools", 5000, 1.0),
     GOLD_TOOL("ToolUpgrade","Gold Tool", "Upgrade Tools", 10000, 1.0),

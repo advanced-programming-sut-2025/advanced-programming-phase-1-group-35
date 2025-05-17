@@ -712,13 +712,14 @@ public class GameMenuController {
         Message m = new Message(sender.getID(), message, receiver.getID());
         sender.getMessages().add(m);
         receiver.getMessages().add(m);
+        receiver.setHasNewMessages(true);
         increaseMutualXP(sender , receiver, 20);
         return new Result(true, "your message was sent");
     }
 
     public boolean notCloseEnough(User sender, User receiver){
-        return Math.abs(receiver.getCurrentPoint().x - sender.getCurrentPoint().x) > 2 ||
-                Math.abs(receiver.getCurrentPoint().y - sender.getCurrentPoint().y) > 2;
+        return !(Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
+                Math.abs(receiver.getCurrentTile().coordination.y - sender.getCurrentTile().coordination.y) > 2);
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
@@ -801,17 +802,18 @@ public class GameMenuController {
         String rating;
         m.append("gift history with ").append(username).append(": \n═════════════════════════════════\n");
         for (Gift gift : me.getGifts()) {
-            if(gift.getRecipientID() == friend.getID()){
-                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
-                m.append("you sent :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
-                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
-            }
-            else if(gift.getSenderID() == friend.getID()){
+            if(gift.getRecipientID() == me.getID()){
                 rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
                 m.append("you received :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
                         .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
             }
+            else if(gift.getSenderID() == me.getID()){
+                rating = gift.getRate() == -1 ? "not rated yet" : String.format("%d",gift.getRate());
+                m.append("you sent :").append(gift.getAmount()).append(" of ").append(gift.getItemInterface().getName())
+                        .append("\nrating: ").append(rating).append("\nID: ").append(gift.getID()).append("\n═════════════════════════════════\n");
+            }
         }
+        friend.setHasNewGift(true);
         return new Result(true, m.toString());
     }
 
@@ -844,7 +846,7 @@ public class GameMenuController {
         return null;
     }
     public void addToBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
-        backPack.items.compute(item.getKey(), (k, v) -> v + amount);
+        backPack.items.compute(item.getKey(), (k, v) -> v == null ? amount : v + amount);
     }
 
     public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){

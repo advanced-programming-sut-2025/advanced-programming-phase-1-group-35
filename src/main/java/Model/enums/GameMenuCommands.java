@@ -47,7 +47,7 @@ public enum GameMenuCommands {
     goToCookingMenu("go\\s+to\\s+cooking\\s+menu"),
     goToAnimalMenu("go\\s+to\\s+animal\\s+menu"),
     talkPlayer("talk\\s+-u\\s+(?<username>\\S+)\\s+-m\\s+(?<message>.+?)"),
-    talkHistory("talk\\s+History\\s+-u\\s+(?<username>\\S+)"),
+    talkHistory("talk\\s+history\\s+-u\\s+(?<username>\\S+)"),
     giftPlayer("gift\\s+-u\\s+(?<username>\\S+)\\s+-i\\s+(?<item>.+?)\\s+-a\\s+(?<amount>\\d+)"),
     friendshipStatus("friendship\\s+status\\s+-u\\s+(?<username>\\S+)"),
     giftHistory("gift\\s+history\\s+-u\\s+(?<username>\\S+)"),

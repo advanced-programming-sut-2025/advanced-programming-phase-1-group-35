@@ -81,9 +81,9 @@ public class ShopMenuController {
         if(product instanceof Result){
             return (Result) product;
         }
-        int price = ((ShopItem)product).getPrice();
-        if(((ShopItem)product).getSeason()!=null &&
-           !((ShopItem)product).getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) {
+        int price = ((ItemInterface)product).getPrice();
+        if((item).getSeason()!=null &&
+           !(item).getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) {
             price *= 1.5;
         }
         user.getBackPack().items.compute((ItemInterface) product , (k, v) -> v == null ? count : v + count );
@@ -101,9 +101,7 @@ public class ShopMenuController {
     }
     public boolean isItemAvailable(ShopItem product) {
         return
-        (product.getSeason() != null && !product.getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())
-        && !shop.getName().equalsIgnoreCase("GeneralStore")) ||
-        (product.getDailyBoughtCount() >= product.getDailyLimit());
+        (product.getDailyBoughtCount() <= product.getDailyLimit());
     }
 
     public Result cheatAddMoney(String amountString){

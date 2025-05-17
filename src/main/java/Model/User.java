@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class User {
     private int ID ;
-    private int IDCounter = 1;
+    private static int IDCounter = 1;
     private String username;
     private String password;
     private String nickname;
