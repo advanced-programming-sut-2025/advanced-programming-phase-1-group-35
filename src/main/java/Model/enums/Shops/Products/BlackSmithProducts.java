@@ -1,0 +1,76 @@
+package Model.enums.Shops.Products;
+
+import Model.ItemInterface;
+import Model.Shops.ShopItem;
+import Model.enums.ItemConstant;
+import Model.enums.Seasons;
+
+import java.io.IOException;
+
+public enum BlackSmithProducts implements ShopProduct, ItemInterface, ItemConstant {
+    COPPER("Mineral","Copper", "A common ore that can be smelted into bars.", 75, Double.POSITIVE_INFINITY),
+    IRON("Mineral","Iron", "A fairly common ore that can be smelted into bars.", 150, Double.POSITIVE_INFINITY),
+    COAL("Mineral","Coal", "A combustible rock that is useful for crafting and smelting.", 150, Double.POSITIVE_INFINITY),
+    GOLD("Mineral","Gold", "A precious ore that can be smelted into bars.", 400, Double.POSITIVE_INFINITY),
+    COPPER_TOOL("ToolUpgrade", "Copper Tool", "Upgrade Tools", 2000, 1.0),
+    STEEL_TOOL("ToolUpgrade","Steel Tool", "Upgrade Tools", 5000, 1.0),
+    GOLD_TOOL("ToolUpgrade","Gold Tool", "Upgrade Tools", 10000, 1.0),
+    IRIDIUM_TOOL("ToolUpgrade","Iridium Tool", "Upgrade Tools", 25000, 1.0),
+    COPPER_TRASH_CAN("ToolUpgrade","Copper Trash Can", "Upgrade Tools", 1000, 1.0),
+    STEEL_TRASH_CAN("ToolUpgrade","Steel Trash Can", "Upgrade Tools", 2500, 1.0),
+    GOLD_TRASH_CAN("ToolUpgrade","Gold Trash Can", "Upgrade Tools", 5000, 1.0),
+    IRIDIUM_TRASH_CAN("ToolUpgrade","Iridium Trash Can", "Upgrade Tools", 12500, 1.0);
+
+    private String type;
+    private String name , description;
+    private int price;
+    private Double dailyLimit;
+    BlackSmithProducts(String type , String name, String description, int price, Double dailyLimit) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.dailyLimit = dailyLimit;
+        this.type = type;
+    }
+
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int getDailyLimit() {
+        double dl = 0;
+        if(dailyLimit == Double.POSITIVE_INFINITY) return 1000000;
+        dl = dailyLimit;
+        return (int) dl;
+    }
+
+    @Override
+    public Seasons getSeason() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        double dl = dailyLimit;
+        int p = dailyLimit == Double.POSITIVE_INFINITY ? 1000000 : (int)dl;
+        ShopItem item = new ShopItem(this.name, this.price, p, null, this.type,this.description);
+        return (ItemInterface) item.makeInstance();
+    }
+}
