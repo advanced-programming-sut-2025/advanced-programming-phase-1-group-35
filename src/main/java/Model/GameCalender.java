@@ -214,6 +214,7 @@ public class GameCalender {
             farmingController.addForagingCrop();
             farmingController.addForagingSeeds();
             farmingController.addForAgingTree();
+            farmingController.addForagingMinerals();
             farmingController.crowAttack();
             for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
                 for (ShopItem product : shop.getProducts()) {

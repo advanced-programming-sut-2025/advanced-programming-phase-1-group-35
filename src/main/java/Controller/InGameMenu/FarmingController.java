@@ -443,14 +443,9 @@ public class FarmingController {
                 if (tile.getTileType().equals(TileType.Rock)) {
                     if (random1.nextInt(100) < 1) {
                         Mineral mineral;
-                        do {
-                            mineral = new Mineral(Minerals.getRandomForagingMineral(),tile);
-                        } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
-                        tile.setPlanted(crop);
-                        tile.setContentSymbol(crop.getSymbol());
-                        App.getCurrentGame().getMap().AddCrop(crop);
-                        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
-                        tile.addContents(crop);
+                        mineral = new Mineral(Minerals.getRandomForagingMineral(),tile);
+                        tile.setContentSymbol(mineral.getSymbol());
+                        tile.addContents(mineral);
                     }
                 }
             }
