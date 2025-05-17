@@ -1006,6 +1006,36 @@ public class GameMenuController {
         return null;
     }
 
+    public Result CraftArtisan(String productName){
+        ArtisanProductDetails artisan = null;
+        for(ArtisanProductDetails productDetails : ArtisanProductDetails.values()){
+            if(productDetails.getName().equalsIgnoreCase(productName)){
+                artisan = productDetails;
+                break;
+            }
+        }
+        if(artisan == null){
+            return new Result(false, "artisan not found");
+        }
+        for(ItemInterface[] item1 : artisan.getIngredients().keySet()){
+            for(ItemInterface item : item1){
+                if(!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(item) ||
+                App.getCurrentGame().getPlayingUser().getBackPack().items.get(item) < artisan.getIngredients().get(item1)){
+                    return new Result(false, "you don't have enough ingredients");
+                }
+            }
+        }
+//        if(App.getCurrentGame().getPlayingUser().getCraftingRecipes().contains(artisan)){}
+        for(ItemInterface[] item1 : artisan.getIngredients().keySet()){
+            for(ItemInterface item : item1) {
+                App.getCurrentGame().getPlayingUser().getBackPack().items.put(item, App.getCurrentGame().getPlayingUser()
+                        .backPack.items.get(item)-artisan.getIngredients().get(item1));
+            }
+        }
+        App.getCurrentGame().getPlayingUser().backPack.items.put(artisan,1);
+        return new Result(true, "you have successfully crafted " + artisan.getName());
+            }
+
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName, BackPack backPack) {
         for (Map.Entry<ItemInterface, Integer> e : backPack.items.entrySet()) {
             if(e.getKey().getName().equalsIgnoreCase(productName)){

@@ -63,6 +63,10 @@ public enum ArtisanProductDetails implements ItemInterface, ItemConstant {
         return new ArtisanProduct(this);
     }
 
+    public HashMap<ItemInterface[], Integer> getIngredients() {
+        return ingredients;
+    }
+
     @Override
     public int getPrice() {
         return this.sellPrice;
