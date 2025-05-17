@@ -29,9 +29,7 @@ import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
 import java.security.interfaces.RSAKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -48,6 +46,24 @@ public class GameMenuController {
 
     public Result plantSeed(String seedName, String direction){
         return farmingController.plantSeed(seedName, direction);
+    }
+    public Result pickUpSeed(String direction){
+        Tile tile = findTile(direction);
+        Optional<SeedEnum> matchingSeed = Arrays.stream(SeedEnum.values())
+                .filter(seed -> tile.getContents().contains(seed))
+                .findFirst();
+
+        boolean hasAnySeed = Arrays.stream(SeedEnum.values())
+                .anyMatch(seed -> tile.getContents().contains(seed));
+
+        if(!hasAnySeed){
+            return new Result(false, "tile doesn't have any seed");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(),1);
+        return new Result(true, "picked up "+ matchingSeed.get().getName());
     }
 
     public Result fertilize(String fertilizerName, String direction){
@@ -217,25 +233,51 @@ public class GameMenuController {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         return farmingController.ShowCrop(x, y);
     }
-    public Result setWeather(String weather) throws IOException {
-        for(WeatherCondition weatherCondition : WeatherCondition.values()) {
-            if(weatherCondition.name().equalsIgnoreCase(weather)) {
-                App.getCurrentGame().getWeather().setWeatherCondition(weatherCondition);
-                return new Result(true, "Weather set to " + weather);
+
+    public Result giveSeed(String seedName) throws IOException {
+
+        for (SeedEnum seedEnum : SeedEnum.values()) {
+            if (seedEnum.name().equalsIgnoreCase(seedName)) {
+                    App.getCurrentGame().getPlayingUser().getBackPack().items.put(seedEnum, 1);
+                return new Result(true, "Seed: " + seedEnum.getName() + " was given to player " + App.getCurrentGame().getPlayingUser().getUsername());
             }
         }
-        return new Result(false, "enter a valid weather condition");
+            return new Result(false,"nuh uh");
     }
-    public void giveSeed(String seedName) throws IOException {
-        Seed seed = null;
-        for(SeedEnum seedEnum : SeedEnum.values()) {
-            if(seedEnum.name().equalsIgnoreCase(seedName)) {
-                seed = new Seed(seedEnum);
-                break;
-            }
+
+    public Result pickItem(String itemName, String direction) throws IOException {
+        ItemConstant item = getItemConstantByName(itemName);
+        Tile tile = findTile(direction);
+        if(item == null) {
+            return new Result(false, "Item " + itemName + " does not exist");
         }
-        App.getCurrentGame().getPlayingUser().getBackPack().items.put(seed, 1);
+        if(!tile.getContents().contains(item)) {
+            return new Result(false, "tile is empty");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(item,1);
+        tile.getContents().remove(item);
+        return new Result(true, "Item " + itemName + " has been picked up");
     }
+
+    public Result useScareCrow(String direction){
+        Tile tile = findTile(direction);
+        if(tile.getPlanted() != null || tile.getContents() != null){
+            return new Result(false, "can't place it here");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(CraftingItems.Scarecrow)){
+            return new Result(false, "you don't have any scarecrows");
+        }
+        tile.getContents().add(CraftingItems.Scarecrow);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(CraftingItems.Scarecrow, App.getCurrentGame().getPlayingUser().backPack.items.get(CraftingItems.Scarecrow)-1);
+        if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(CraftingItems.Scarecrow) == 0){
+            App.getCurrentGame().getPlayingUser().getBackPack().items.remove(CraftingItems.Scarecrow);
+        }
+        return new Result(true, "scare crow planted");
+    }
+
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if(game == null) {
@@ -290,6 +332,62 @@ public class GameMenuController {
         }
     }
 
+    public Result ShowRecipes(){
+        if(App.getCurrentGame().getPlayingUser().getCraftingRecipes() == null){
+            return new Result(false, "You have no crafting recipes");
+        }
+        StringBuilder st = new StringBuilder();
+        for(CraftingRecipes craftingRecipes : App.getCurrentGame().getPlayingUser().getCraftingRecipes()){
+            st.append(craftingRecipes.toString());
+        }
+        return new Result(true, st.toString());
+    }
+    public Result CraftItem(String itemName){
+        CraftingRecipes craftingRecipes = null;
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)){//TODO:house tile?
+            return new Result(false,"you can only build in your house");
+        }
+        System.out.println("crafting recipes: ");
+        for(CraftingRecipes craftingRecipe : App.getCurrentGame().getPlayingUser().getCraftingRecipes()){
+            System.out.println(craftingRecipe.toString());
+        }
+        for(CraftingRecipes craftingRecipes1:CraftingRecipes.values()){
+            if(craftingRecipes1.name().equals(itemName)){
+                craftingRecipes = craftingRecipes1;
+                break;
+            }
+        }
+        if(craftingRecipes == null) {
+            return new Result(false, "no item found by given name");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getCraftingRecipes().contains(craftingRecipes)) {
+            return new Result(false, "you haven't discovered the given crafting recipe");
+        }
+        //TODO:need help implementing this part
+        CraftingItems item = (CraftingItems)craftingRecipes.getItem();
+        HashMap ingredients = item.getIngredients();
+        for(Object item1 : ingredients.keySet()){
+            if(!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(item1) ||
+            App.getCurrentGame().getPlayingUser().backPack.items.get(item1) < (int)ingredients.get(item1)) {
+                return new Result(false, "you don't have the required ingredients");
+            }
+        }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+        App.getCurrentGame().getPlayingUser().getEnergy().consumeEnergy(10);
+        for(Object item1 : ingredients.keySet()){
+            CraftingItems item2 = (CraftingItems)item1;
+            App.getCurrentGame().getPlayingUser().backPack.items.put(item2,App.getCurrentGame().getPlayingUser().backPack.items.get(item2)-item2.getIngredients().get(item2));
+        }
+            App.getCurrentGame().getPlayingUser().backPack.items.put(craftingRecipes.getItem(),1);
+        return new Result(true, itemName + " has been crafted");
+    }
+
+    public Result CraftUsingMachine(){return null;}
+
+
+
     public Result goToNextTurn(User forceUser) throws IOException {
         User user ;
         String notifications = "";
@@ -339,6 +437,7 @@ public class GameMenuController {
         return new Result(true , "going to next turn . now turn of : " +
                 user.getUsername() + notifications);
     }
+
     public Result UseArtisan(String ArtisanName, List<String> Ingredients) {
         if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)) {
             return new Result(false, "You are not allowed to use artisan here");
@@ -566,7 +665,6 @@ public class GameMenuController {
     public Result deleteAnItemFromInventory() {
         return null;
     }
-
     public Result buyAnimal(String animalType ,String animalName) {
         return null;
     }
@@ -597,6 +695,7 @@ public class GameMenuController {
     public Result useArtisan(String ArtisanName , String productName){
         return null;
     }
+
     public Result getFromArtisan(String ArtisanName){
         return null;
     }
@@ -627,7 +726,6 @@ public class GameMenuController {
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
-
     public Result talkHistory(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
@@ -718,6 +816,7 @@ public class GameMenuController {
         friend.setHasNewGift(true);
         return new Result(true, m.toString());
     }
+
     public Result rateGift(String giftIDString, String ratingString){
         Gift gift = getGiftByID(Integer.parseInt(giftIDString));
         if(gift == null){
@@ -746,17 +845,16 @@ public class GameMenuController {
         }
         return null;
     }
-
     public void addToBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
         backPack.items.compute(item.getKey(), (k, v) -> v == null ? amount : v + amount);
     }
+
     public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
         backPack.items.compute(item.getKey(), (k, v) -> v - amount);
         if(item.getValue() < 0){
             backPack.items.remove(item.getKey());
         }
     }
-
     public Result hug(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
@@ -841,6 +939,7 @@ public class GameMenuController {
     public Result completeQuest(){
         return null;
     }
+
     public Result Sell(String productName , String countString){
         boolean isNearBin = false;
         User player = App.getCurrentGame().getPlayingUser();
@@ -872,7 +971,6 @@ public class GameMenuController {
         }
         return new Result(true, "you have successfully sold " + count + " of " + product.getKey().getName());
     }
-
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName) {
         for (Map.Entry<ItemInterface, Integer> e : App.getCurrentGame().getPlayingUser().getBackPack().items.entrySet()) {
             if(e.getKey().getName().equalsIgnoreCase(productName)){
@@ -881,6 +979,7 @@ public class GameMenuController {
         }
         return null;
     }
+
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName, BackPack backPack) {
         for (Map.Entry<ItemInterface, Integer> e : backPack.items.entrySet()) {
             if(e.getKey().getName().equalsIgnoreCase(productName)){
@@ -907,7 +1006,6 @@ public class GameMenuController {
         }
         return null;
     }
-
     public ItemConstant getItemConstantByName(String itemName) throws IOException {
         Class<? extends ItemConstant>[] enumClasses = new Class[]{
                 AnimalProductDetails.class,

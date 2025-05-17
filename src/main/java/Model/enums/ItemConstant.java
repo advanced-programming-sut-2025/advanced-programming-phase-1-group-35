@@ -4,6 +4,6 @@ import Model.ItemInterface;
 
 import java.io.IOException;
 
-public interface ItemConstant {
+public interface ItemConstant extends ItemInterface {
     public ItemInterface getItem() throws IOException;
 }

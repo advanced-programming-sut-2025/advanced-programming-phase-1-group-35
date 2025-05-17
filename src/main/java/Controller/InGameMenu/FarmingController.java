@@ -8,8 +8,10 @@ import Model.CropClasses.Tree;
 import Model.Fertilizer;
 import Model.Result;
 import Model.Tile;
+import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
+import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
@@ -123,19 +125,23 @@ public class FarmingController {
         if (seed == null && !seedName.toLowerCase().equals("mixed seed")) {
             return new Result(false, "please enter a valid seed name");
         }
-        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed)) {
+        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed.getSeedEnum())) {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
         if (!isFloorplowed(tile)) {
             return new Result(false, "Floor is not plowed");
         }
-        //TODO:we just need to reduce the amount by one not get rid of it completely in the inventory
-        App.getCurrentGame().getPlayingUser().backPack.items.put(seed,App.getCurrentGame().getPlayingUser().backPack.items.get(seed)-1);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
+        if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
+            App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
+        }
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
         tile.changeTileContents(crop);
         App.getCurrentGame().getMap().AddCrop(crop);
+        tile.setSymbol('&');
+        tile.setContentSymbol('&');
         if (findTilesWithSameSeed(tile) != null) {
             Crop temp = (Crop) tile.getPlanted();
             for (Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -148,6 +154,8 @@ public class FarmingController {
                 tile1.setPlowed(false);
                 tile1.changeTileContents(temp);
                 temp.setGiant(true);
+                tile1.setSymbol('&');
+                tile1.setContentSymbol('&');
             }
             return new Result(true, "seed planted,giant crop incoming");
         }
@@ -220,8 +228,12 @@ public class FarmingController {
             return new Result(false, "no plants here dude sorry :(");
         }
 
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+
         if (tile.getPlanted() instanceof Crop crop) {
-            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size())){
+            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
             }
             ArrayList <Crop> crops = new ArrayList<>();
@@ -294,13 +306,35 @@ public class FarmingController {
         }
         return new Result(false, "no crop nor tree found there");
     }
-
+    public Tile[] findCloseTiles(Tile tile) {
+        Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
+        int x = tile.getCoordination().x;
+        int y = tile.getCoordination().y;
+        Tile[] closeTiles = new Tile[8];
+        closeTiles[0] = tiles[x+1][y];
+        closeTiles[1] = tiles[x+1][y+1];
+        closeTiles[2] = tiles[x][y+1];
+        closeTiles[3] = tiles[x-1][y+1];
+        closeTiles[4] = tiles[x-1][y];
+        closeTiles[5] = tiles[x-1][y-1];
+        closeTiles[6] = tiles[x][y-1];
+        closeTiles[7] = tiles[x+1][y-1];
+        return closeTiles;
+    }
     public void crowAttack() {
         if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
             Random rand = new Random();
             int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
             if (rand.nextInt(100) < 25) {
             Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
+            boolean scareCrow = false;
+            for(Tile tile : findCloseTiles(crop.getcropTile())){
+                if(tile.getContents().contains(CraftingItems.Scarecrow)){
+                    scareCrow = true;
+                    break;
+                }
+            }
+            if(!scareCrow){
                 System.out.println("Crow attacking " +crop.getName() +
                         " at x = " + crop.getCropTile().coordination.x +
                         " and y = " + crop.getCropTile().coordination.y);
@@ -309,6 +343,7 @@ public class FarmingController {
                 crop.getCropTile().setPlanted(null);
 //                crop.getCropTile().setSymbol('X');
                 crop.getCropTile().setContentSymbol('X');
+                }
             }
         }
     }
@@ -335,15 +370,17 @@ public class FarmingController {
     Random random1 = new Random();
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
-            if (tile.getPlanted() == null && tile.isPlowed()){
+            if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)){
                 if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);
                     App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
                     tile.setContentSymbol(tree.getSymbol());
+                    tile.setSymbol(tree.getSymbol());
                     tile.addContents(tree);
                     tree.setTile(tile);
+                    System.out.println("tree spawned at " + tile.getCoordination().x + " " + tile.getCoordination().y);
                 }
             }
         }
@@ -354,7 +391,7 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed()) {
+                if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)) {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
@@ -377,21 +414,23 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed()) {
-                    if (random1.nextInt(100) < 1) {
+                if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil) && tile.isPlowed()) {
+                    if (random1.nextInt(1000) < 1) {
                         Seed seed;
-                        if(random1.nextInt(2) == 1){
-                            seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
-                        }
-                        else {
-                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile,true);
-                        }
                         do {
+                        if (random1.nextInt(2) == 1) {
+                            seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
+                        } else {
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile, true);
+                        }
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
                                 getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
-                        plantSeed(seed.getName(), (tile.getCoordination().toString()));
-                        tile.addContents(seed);
-                        tile.setContentSymbol(seed.getSymbol());
+                        if (tile.isPlowed()) {
+                            plantSeed(seed.getName(), (tile.getCoordination().toString()));
+                        } else {
+                            tile.addContents(seed.getSeedEnum());
+                            tile.setContentSymbol(seed.getSymbol());
+                        }
                     }
                 }
             }
@@ -439,23 +478,26 @@ public class FarmingController {
             }
         }
             int counter = 0;
+        FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
                 if (tile.getPlanted() == null && tile.getTileType() == TileType.Soil) {
-                    if (random1.nextInt(100) < 1) {
+                    if (random1.nextInt(400) < 1) {
                         Seed seed;
-                        int couner = 0;
                         do {
+                        if (random1.nextInt(2) == 1) {
                             seed = new Seed(ForagingSeeds.getRandomForagingSeed(), tile);
-                            couner++;
-                            Crop crop = new Crop(seed.getCropEnum(), tile);
-                            Seed seed1 = new Seed(crop.getSource());
+                        } else {
+                            seed = new Seed(farmingController.MixedSeedCrop(App.getCurrentGame().getGameCalender().getSeason()).getSource(), tile, true);
+                        }
                         } while (!ForagingSeeds.findForagingSeeds(seed.getCropEnum().getSource()).
-                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()) && couner < 100);
-//                        plantSeed(seed.getSeedName(), (tile.getCoordination().toString()));
-                        tile.addContents(seed);
-                        tile.setContentSymbol(seed.getSymbol());
-//                        System.out.println("seed planted, location : " + tile.coordination);
+                                getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
+                        if (tile.isPlowed()) {
+                            plantSeed(seed.getName(), (tile.getCoordination().toString()));
+                        } else {
+                            tile.addContents(seed.getSeedEnum());
+                            tile.setContentSymbol(seed.getSymbol());
+                        }
                     }
                 }
             }

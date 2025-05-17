@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Crop implements PlantAble, ItemInterface {
     private char symbol = '&';
+    private final CropEnum cropEnum;
     private final String name;
     private final SeedEnum source;
     private List<Integer> stages = new ArrayList<>();
@@ -80,6 +81,7 @@ public class Crop implements PlantAble, ItemInterface {
         this.currentState = 1;
         this.daysSincePlanted = 0;
         this.daysSinceWatered = 0;
+        this.cropEnum = cropEnum;
         this.cropTile = tile;
     }
 
@@ -118,6 +120,10 @@ public class Crop implements PlantAble, ItemInterface {
 
     public int getRegrowthTime() {
         return regrowthTime;
+    }
+
+    public CropEnum getCropEnum() {
+        return cropEnum;
     }
 
     public int getBaseSellPrice() {
@@ -221,7 +227,7 @@ public class Crop implements PlantAble, ItemInterface {
     public Seed HarvestAndDropSeed() {
         Seed seed = new Seed(this.source, null);
         if (!this.isOneTime()) {
-            return seed.getSeed(1);
+            return seed.getSeedInAmount(1);
         }
         return null;
     }

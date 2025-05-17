@@ -8,11 +8,8 @@ import Model.Tools.BackPack;
 import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
 import Model.TradeAndGift.Trade;
-import Model.enums.CookingRecipes;
-import Model.enums.Gender;
+import Model.enums.*;
 import Model.TradeAndGift.Gift;
-import Model.enums.SecurityQuestions;
-import Model.enums.Skill;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +29,7 @@ public class User {
     private int energyConsumedInTurn = 0;
     private int money = 0;
     private int income = 0;
+    private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 
     private Game currentGame = null;
     private int currentGameFarmIndex = -1;
@@ -71,6 +69,14 @@ public class User {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.ID = IDCounter++;
+    }
+
+    public ArrayList<CraftingRecipes> getCraftingRecipes() {
+        return craftingRecipes;
+    }
+
+    public void AddCraftingRecipes(CraftingRecipes Recipes) {
+        craftingRecipes.add(Recipes);
     }
 
     public String toString(){
