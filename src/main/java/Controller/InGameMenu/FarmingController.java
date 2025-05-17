@@ -287,6 +287,7 @@ public class FarmingController {
                         crop1.getCropTile().setPlanted(null);
                         App.getCurrentGame().getMap().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
+                        App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
                         return new Result(true, "crop harvested");
                     } else {
                         crop1.setCurrentState(crop1.getCurrentState() - 1);
