@@ -129,6 +129,11 @@ public class FarmingController {
         if (!isFloorplowed(tile)) {
             return new Result(false, "Floor is not plowed");
         }
+        if(!seed.getSeedEnum().getCrop().getSeason().contains(App.getCurrentGame().getGameCalender().getSeason())) {
+            if (!tile.getTileType().equals(TileType.BuildingTile)) {
+                return new Result(false, "this ain't the right season for this seed mate and you're not in greenHouse either");
+            }
+        }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
             App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
@@ -333,7 +338,7 @@ public class FarmingController {
                     break;
                 }
             }
-            if(!scareCrow){
+            if(!scareCrow && !crop.getcropTile().getTileType().equals(TileType.BuildingTile)){
                 System.out.println("Crow attacking " +crop.getName() +
                         " at x = " + crop.getCropTile().coordination.x +
                         " and y = " + crop.getCropTile().coordination.y);
