@@ -673,9 +673,9 @@ public class GameMenuController {
         App.getCurrentGame().getMap().getTrees().remove(tree);
         App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
         tile.setSymbol('.');
+        tile.setContentSymbol('.');
         tile.setPlanted(null);
         tile.getContents().remove(tree);
-        tile.setContentSymbol('.');
         return new Result(true,"tree chopped down");
     }
 
