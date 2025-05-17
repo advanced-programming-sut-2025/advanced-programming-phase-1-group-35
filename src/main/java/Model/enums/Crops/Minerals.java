@@ -5,6 +5,10 @@ import Model.Mineral;
 import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 public enum Minerals implements ItemInterface, ItemConstant {
     QUARTZ("Quartz", "A clear crystal commonly found in caves and mines.", 25),
     EARTH_CRYSTAL("Earth Crystal", "A resinous substance found near the surface.", 50),
@@ -49,6 +53,17 @@ public enum Minerals implements ItemInterface, ItemConstant {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    public static Minerals getRandomForagingMineral() {
+        List<Minerals> foragingMinerals = List.of(Minerals.values()).stream().collect(Collectors.toList());
+
+        if (foragingMinerals.isEmpty()) {
+            return Minerals.COAL; // or throw an exception if you prefer
+        }
+
+        Random random = new Random();
+        return foragingMinerals.get(random.nextInt(foragingMinerals.size()));
     }
 
     @Override

@@ -635,9 +635,35 @@ public class GameMenuController {
         return new Result(true, "redirecting to shop menu ...");
     }
 
-    public Result cheatAddItemToBackPack(String itemName, String amountString){
-        return null;
+    public Result cheatAddItemToBackPack(String itemName, String amountString) throws IOException {
+        ItemInterface item = getItemConstantByName(itemName).getItem();
+        if(item == null) return new Result(false, "no item found via name " + itemName);
+        int amount = Integer.parseInt(amountString);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(item,amount);
+        return new Result(true, amount + " of " +itemName + " was given to player");
     }
+
+    public Result chopTree(String direction){
+        Tile tile = findTile(direction);
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.AXE)){
+            return new Result(false, "you need to equip an axe first");
+        }
+        if(!(tile.getPlanted() instanceof Tree)){
+            return new Result(false, "no tree found");
+        }
+        Tree tree = (Tree) tile.getPlanted();
+        App.getCurrentGame().getPlayingUser().backPack.items.put(CarpenterShopProducts.WOOD,1);
+        App.getCurrentGame().getPlayingUser().getForagingSkill().gainXp();
+        App.getCurrentGame().getMap().getTrees().remove(tree);
+        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+        tile.setSymbol('.');
+        tile.setPlanted(null);
+        tile.getContents().remove(tree);
+        tile.setContentSymbol('.');
+        return new Result(true,"tree chopped down");
+    }
+
+
 
     public Result showInventory() {
         StringBuilder output = new StringBuilder();

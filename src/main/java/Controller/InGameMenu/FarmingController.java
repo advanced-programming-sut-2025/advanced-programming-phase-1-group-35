@@ -1,13 +1,10 @@
 package Controller.InGameMenu;
 
-import Model.App;
+import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
-import Model.Fertilizer;
-import Model.Result;
-import Model.Tile;
 import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
@@ -433,6 +430,27 @@ public class FarmingController {
                             tile.addContents(seed.getSeedEnum());
                             tile.setContentSymbol(seed.getSymbol());
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public void addForagingMinerals() {
+        Random random1 = new Random();
+        for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
+            for (Tile tile : tile1) {
+                if (tile.getTileType().equals(TileType.Rock)) {
+                    if (random1.nextInt(100) < 1) {
+                        Mineral mineral;
+                        do {
+                            mineral = new Mineral(Minerals.getRandomForagingMineral(),tile);
+                        } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
+                        tile.setPlanted(crop);
+                        tile.setContentSymbol(crop.getSymbol());
+                        App.getCurrentGame().getMap().AddCrop(crop);
+                        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
+                        tile.addContents(crop);
                     }
                 }
             }
