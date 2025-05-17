@@ -233,7 +233,7 @@ public class FarmingController {
         }
 
         if (tile.getPlanted() instanceof Crop crop) {
-            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
+            if(crop.getCurrentState() < crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
             }
             ArrayList <Crop> crops = new ArrayList<>();

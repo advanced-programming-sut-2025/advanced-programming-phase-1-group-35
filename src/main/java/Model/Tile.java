@@ -26,7 +26,7 @@ public class Tile {
     private PlantAble planted;
     private boolean isPlowed = false;
     public boolean isFertilized = false;
-    public boolean isWatered = false;
+    public boolean isWatered;
     private int daysSinceWatered = 0;
 
     public int getDaysSinceWatered() {

@@ -511,7 +511,7 @@ public class GameMenuController {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
         User player = user;
-        Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+        Tile startTile = player.getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
