@@ -35,7 +35,7 @@
         BLUEBERRY("Blueberry", SeedEnum.BLUEBERRY , List.of(1,3,3,4,2), 13, false, 4, 50, true, 25, List.of(Summer), false, false),
         CORN("Corn", SeedEnum.CORN , List.of(2,3,3,3,3), 14, false, 4, 50, true, 25, List.of(Summer , Fall), false, false),
         HOPS("Hops", SeedEnum.HOPS, List.of(1,1,2,3,4), 11, false, 1, 25, true, 45, List.of(Summer), false, false),
-        HOT_PEPPER("Hot Pepper", SeedEnum.PEPPER, List.of(1,1,1,1,1), 5, false, 3, 40, true, 13, List.of(Summer), false, false),
+        HOT_PEPPER("Hot Pepper", SeedEnum.PEPPER, List.of(1,1,1,1,1), 5, false, 3, 40, true, 13, List.of(Spring), false, false),
         MELON("Melon", SeedEnum.MELON , List.of(1,2,3,3,3), 12, true, -1, 250, true, 113, List.of(Summer), true, false),
         POPPY("Poppy", SeedEnum.POPPY , List.of(1,2,2,2), 7, true, -1, 140, true, 45, List.of(Summer), false, false),
         RADISH("Radish", SeedEnum.RADISH , List.of(2,1,2,1), 6, true, -1, 90, true, 45, List.of(Summer), false, false),

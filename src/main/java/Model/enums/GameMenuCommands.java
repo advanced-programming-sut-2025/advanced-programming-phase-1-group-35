@@ -65,7 +65,9 @@ public enum GameMenuCommands {
     showRecipes("\\s*show\\s+recipes\\s*"),
     CraftItem("\\s*crafting\\s+item\\s+(?<itemName>\\S+)\\s*"),
     CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
-    ChopTree("\\s*chop\\s+(?<direction>\\S+)")
+    ChopTree("\\s*chop\\s+(?<direction>\\S+)"),
+    cheatPlaceCraft("cheat place (?<name>\\S+) (?<direction>\\S+)"),
+
     ;
 
 

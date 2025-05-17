@@ -787,6 +787,28 @@ public class GameMenuController {
         }
         return new Result(true, m.toString());
     }
+
+    public Result cheatPlaceArtisan(String CraftingItem,String direction){
+        CraftingItems craftingItem = null;
+        for(CraftingItems cr: CraftingItems.values()){
+            if(cr.getName().equals(CraftingItem)){
+                craftingItem = cr;
+                break;
+            }
+        }
+        if(craftingItem == null){
+            return new Result(false, "crafting item not found");
+        }
+        Tile tile = findTile(direction);
+        if(!tile.getTileType().equals(TileType.BuildingTile)){
+            return new Result(false, "crafting item is not on building tile");
+        }
+        tile.getContents().add(craftingItem);
+        tile.setContentSymbol('#');
+        return new Result(true, "crafting item was cheated");
+    }
+
+
     public Result friendShipStatus(String username){
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);

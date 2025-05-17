@@ -290,10 +290,13 @@ public class FarmingController {
                         App.getCurrentGame().getMap().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
+                        tile.setContentSymbol('.');
+                        tile.setSymbol('.');
                         return new Result(true, "crop harvested");
                     } else {
                         crop1.setCurrentState(crop1.getCurrentState() - 1);
                         crop1.setDaysSinceLastGrowth(0);
+                        crop1.setDaysSincePlanted(0);
                         return new Result(true, "crop harvested and is now regrowing");
                     }
                 }
@@ -539,7 +542,7 @@ public class FarmingController {
                 sb.append("======================================\n");
                 sb.append("Crop name: " + crop.getName());
                 sb.append("\n**************************************\n");
-                sb.append("days until full growth: " + (crop.getTotalHarvestTime() - crop.getDaysSincePlanted()));
+                sb.append("days until full growth: " + Math.max(crop.getTotalHarvestTime() - crop.getDaysSincePlanted(), 0));
                 sb.append("\n**************************************\n");
                 sb.append("current state: " + crop.getCurrentState());
                 sb.append("\n**************************************\n");
