@@ -1107,9 +1107,11 @@ public class GameMenuController {
         };
         for (Class<? extends ItemConstant> enumClass : enumClasses) {
             for (ItemConstant constant : enumClass.getEnumConstants()) {
-                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
-                    return constant;
-                }
+                try {
+                    if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                        return constant;
+                    }
+                }catch (NullPointerException e) {}
             }
         }
         return null;
