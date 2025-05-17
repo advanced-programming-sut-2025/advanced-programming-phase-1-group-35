@@ -59,7 +59,9 @@ public class GameMenuController {
         if(!hasAnySeed){
             return new Result(false, "tile doesn't have any seed");
         }
-
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
         App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(),1);
         return new Result(true, "picked up "+ matchingSeed.get().getName());
     }
@@ -252,6 +254,9 @@ public class GameMenuController {
         if(!tile.getContents().contains(item)) {
             return new Result(false, "tile is empty");
         }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
         App.getCurrentGame().getPlayingUser().getBackPack().items.put(item,1);
         tile.getContents().remove(item);
         return new Result(true, "Item " + itemName + " has been picked up");
@@ -359,10 +364,27 @@ public class GameMenuController {
             return new Result(false, "you haven't discovered the given crafting recipe");
         }
         //TODO:need help implementing this part
-        App.getCurrentGame().getPlayingUser().backPack.items.put(craftingRecipes.getItem(),1);
+        CraftingItems item = (CraftingItems)craftingRecipes.getItem();
+        HashMap ingredients = item.getIngredients();
+        for(Object item1 : ingredients.keySet()){
+            if(!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(item1) ||
+            App.getCurrentGame().getPlayingUser().backPack.items.get(item1) < (int)ingredients.get(item1)) {
+                return new Result(false, "you don't have the required ingredients");
+            }
+        }
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+        App.getCurrentGame().getPlayingUser().getEnergy().consumeEnergy(10);
+        for(Object item1 : ingredients.keySet()){
+            CraftingItems item2 = (CraftingItems)item1;
+            App.getCurrentGame().getPlayingUser().backPack.items.put(item2,App.getCurrentGame().getPlayingUser().backPack.items.get(item2)-item2.getIngredients().get(item2));
+        }
+            App.getCurrentGame().getPlayingUser().backPack.items.put(craftingRecipes.getItem(),1);
         return new Result(true, itemName + " has been crafted");
     }
 
+    public Result CraftUsingMachine(){return null;}
 
 
 

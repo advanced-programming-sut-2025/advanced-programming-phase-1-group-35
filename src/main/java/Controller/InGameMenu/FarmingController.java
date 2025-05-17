@@ -228,6 +228,10 @@ public class FarmingController {
             return new Result(false, "no plants here dude sorry :(");
         }
 
+        if(!App.getCurrentGame().getPlayingUser().getBackPack().doesBackPackHasSpace()){
+            return new Result(false, "your backpack is full");
+        }
+
         if (tile.getPlanted() instanceof Crop crop) {
             if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
