@@ -1,28 +1,23 @@
 package Model.Shops;
 
 import Controller.InGameMenu.AnimalController;
+import Model.*;
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
-import Model.Food;
-import Model.Item;
-import Model.Mineral;
-import Model.Result;
 import Model.Tools.FishingPole;
 import Model.Tools.Tool;
 import Model.animal.Animal;
-import Model.enums.CookingRecipes;
+import Model.enums.*;
 import Model.enums.Crops.SaplingEnum;
 import Model.enums.Crops.SeedEnum;
-import Model.enums.GameMenuCommands;
-import Model.enums.Seasons;
-import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
 import View.GameMenu;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
-public class ShopItem {
+public class ShopItem implements ItemConstant {
     private final String name;
     private int price;
     private String description;
@@ -30,15 +25,23 @@ public class ShopItem {
     private int dailyBoughtCount;
     private Seasons season = null;
     private String type ;
+    private CraftingRecipes craftingRecipe;
 
     public ShopItem(String name, int price, int dailyLimit
-    , Seasons season, String type, String description) {
+            , Seasons season, String type, String description) {
         this.name = name;
         this.price = price;
         this.dailyLimit = dailyLimit;
         this.season = season;
         this.type = type;
         this.description = description;
+        if(Objects.equals(name, "GRASS_STARTER_RECIPE")) {this.craftingRecipe = CraftingRecipes.GrassStarter;}
+        else if(Objects.equals(name, "DEHYDRATOR_RECIPE")) {this.craftingRecipe = this.craftingRecipe = CraftingRecipes.Dehydrator;}
+
+    }
+
+    public CraftingRecipes getCraftingRecipe() {
+        return craftingRecipe;
     }
 
     public Object makeInstance() throws IOException {
@@ -182,5 +185,10 @@ public class ShopItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public ItemInterface getItem() throws IOException {
+        return null;
     }
 }

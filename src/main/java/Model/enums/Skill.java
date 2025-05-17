@@ -15,6 +15,6 @@ public enum Skill {
     }
 
     public SkillLevel getSkillLevel() {
-        return new SkillLevel(1, this.gainedXp);
+        return new SkillLevel(1, this.gainedXp,this);
     }
 }
