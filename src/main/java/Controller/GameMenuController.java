@@ -539,7 +539,6 @@ public class GameMenuController {
         }
         return new Result(true, path.message());
     }
-
     public Result printMap(String xString , String yString , String sizeString) {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
@@ -575,14 +574,12 @@ public class GameMenuController {
         }
         return new Result(true, map + "here is your map Arbab");
     }
-
     public Result validateCoordinates(int x, int y) {
         if(x < 0 || y < 0 || x > 299 || y > 249) {
             return new Result(false, "invalid coordinates");
         }
         return new Result(true, "coordinates good to go");
     }
-
     public Result helpReadingTheMap() {
         String message = ". : ground\n" +
                 "numbers(1-4) : players" +
@@ -601,7 +598,6 @@ public class GameMenuController {
                 "J : Joja market";
         return new Result(true, message);
     }
-
     public Result cheatEnergySet(String energyString){
         User player = App.getCurrentGame().getPlayingUser();
         int energy = Integer.parseInt(energyString);
@@ -611,7 +607,6 @@ public class GameMenuController {
         player.getEnergy().setEnergyAmount(energy);
         return new Result(true, "cheat energy set");
     }
-
     public Result cheatEnergyUnlimited(){
         User player = App.getCurrentGame().getPlayingUser();
         Energy energy = player.getEnergy();
@@ -620,7 +615,6 @@ public class GameMenuController {
         energy.setCurrentTurnCapacity(Double.POSITIVE_INFINITY);
         return new Result(true, "cheat energy unlimited");
     }
-
     public Result showEnergy() {
         Energy energy = App.getCurrentGame().getPlayingUser().getEnergy();
         return new Result(true, "" +
@@ -628,7 +622,6 @@ public class GameMenuController {
                 "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
                 "energy capacity: " + energy.getEnergyCapacity());
     }
-
     public Result goToShopMenu(){
         ShopMenuController controller = new ShopMenuController();
         if(controller.shop == null)
@@ -637,7 +630,6 @@ public class GameMenuController {
         ((ShopMenu)Menu.ShopMenu.getMenu()).setShop(controller.shop);
         return new Result(true, "redirecting to shop menu ...");
     }
-
     public Result cheatAddItemToBackPack(String itemName, String amountString) throws IOException {
         try {
             ItemInterface item = getItemConstantByName(itemName).getItem();
@@ -668,9 +660,6 @@ public class GameMenuController {
         tile.getContents().remove(tree);
         return new Result(true,"tree chopped down");
     }
-
-
-
     public Result showInventory() {
         StringBuilder output = new StringBuilder();
         output.append("Inventory: ");
@@ -692,8 +681,6 @@ public class GameMenuController {
 
         return new Result(true, output.toString());
     }
-
-
     public Result deleteAnItemFromInventory() {
         return null;
     }
@@ -727,7 +714,6 @@ public class GameMenuController {
     public Result useArtisan(String ArtisanName , String productName){
         return null;
     }
-
     public Result getFromArtisan(String ArtisanName){
         return null;
     }
