@@ -209,6 +209,6 @@
 
         @Override
         public ItemInterface getItem() {
-            return new Crop(this, null);
+            return new Crop(this,new Tile()); //TODO: is this right?
         }
     }

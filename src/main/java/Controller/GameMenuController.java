@@ -7,7 +7,6 @@ import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
-import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
@@ -469,24 +468,9 @@ public class GameMenuController {
         return new Result(true, "You have successfully accepted the marriage");
     }
 
-    public Result buildGreenHouse () {
-        User user = App.getCurrentGame().getPlayingUser();
-        Greenhouse greenhouse = user.getFarm().getGreenhouse();
-        if(user.getMoney() < 10000){
-            return new Result(false, "you do not have enough money");
-        }
-        if(greenhouse.isFixed()){
-            return new Result(false, "already fixed");
-        }
-        user.setMoney(user.getMoney() - 10000);
-        greenhouse.setFixed(true);
-        return new Result(true, "You have successfully built the greenhouse");
-    }
-
     private Result rejectMarriageRequest(User user) {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
         increaseMutualXP(user, user.getAskedMarriage(), -xp);
-        user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity()/2);
         user.setAskedMarriage(null);
         return new Result(true, "damn , so we breaking hearts now ?");
     }
@@ -703,6 +687,45 @@ public class GameMenuController {
         return new Result(true, output.toString());
     }
 
+
+    public Result deleteAnItemFromInventory() {
+        return null;
+    }
+    public Result buyAnimal(String animalType ,String animalName) {
+        return null;
+    }
+    public String petAnimal(String animalName){
+        return null;
+    }
+    public String AnimalsDetails(){
+        return null;
+    }
+    public Result shepherdAnimal(String animalName){
+        return null;
+    }
+    public Result feedHay(String animalName){
+        return null;
+    }
+    public String produces(){
+        return null;
+    }
+    public Result collectProducts(String animalName){
+        return null;
+    }
+    public Result sellAnimal(String animalName){
+        return null;
+    }
+    public Result fishing(FishingPole fishingPole){
+        return null;
+    }
+    public Result useArtisan(String ArtisanName , String productName){
+        return null;
+    }
+
+    public Result getFromArtisan(String ArtisanName){
+        return null;
+    }
+
     public Result talk (String username, String message){
         User sender = App.getCurrentGame().getPlayingUser();
         User receiver = getUserBYName(username);
@@ -710,8 +733,6 @@ public class GameMenuController {
             return new Result(false, "user not found");
         }
         if(notCloseEnough(sender, receiver)){
-            System.out.println("sender pos : " + sender.getCurrentTile().coordination.x + " " + sender.getCurrentTile().coordination.y);
-            System.out.println("receiver pos : " + receiver.getCurrentTile().coordination.x + " " + receiver.getCurrentTile().coordination.y);
             return new Result(false, "you are not close enough, somehow you don't have a cell phone either");
         }
         Message m = new Message(sender.getID(), message, receiver.getID());
@@ -723,15 +744,11 @@ public class GameMenuController {
     }
 
     public boolean notCloseEnough(User sender, User receiver){
-        return (Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
+        return !(Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
                 Math.abs(receiver.getCurrentTile().coordination.y - sender.getCurrentTile().coordination.y) > 2);
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
-        if(sender.getSpouse().equals(receiver)){
-            sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
-            receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
-        }
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
@@ -891,7 +908,7 @@ public class GameMenuController {
         if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100)/100 - 1 < 3){
             return new Result(false, "you should finish level two friendship");
         }
-        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("BOUQUET");
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquete");
         if(item == null){
             return new Result(false, "you are not a magician you can't summon flowers");
         }
@@ -1020,11 +1037,13 @@ public class GameMenuController {
                 AnimalProductDetails.class,
                 ArtisanProductDetails.class,
                 BlackSmithProducts.class,
+                CarpenterShopProducts.class,
                 GeneralStoreProducts.class,
-//                FishShopProducts.class,
-//                SaloonProducts.class,
-//                JojaMartProducts.class,
-//                CookingRecipes.class,
+                FishShopProducts.class,
+                RanchProducts.class,
+                SaloonProducts.class,
+                JojaMartProducts.class,
+                CookingRecipes.class,
                 CraftingRecipes.class,
                 CropEnum.class,
                 FishType.class,
@@ -1038,41 +1057,11 @@ public class GameMenuController {
         };
         for (Class<? extends ItemConstant> enumClass : enumClasses) {
             for (ItemConstant constant : enumClass.getEnumConstants()) {
-                try {
-                    if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
-                        return constant;
-                    }
-                }catch (NullPointerException e){}
-            }
-        }
-        return null;
-    }
-
-    public boolean isCloseToObject(String objectName) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
-        FarmingController controller = new FarmingController(game.getMap().getTiles());
-        Tile[] closeTiles = controller.findCloseTiles(player.getCurrentTile());
-        for (Tile tile : closeTiles) {
-            for (ItemInterface content : tile.getContents()) {
-                if (content.getName().equalsIgnoreCase(objectName)) {
-                    return true;
+                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                    return constant;
                 }
             }
         }
-        return false;
-    }
-
-    public boolean isCloseTOSea() {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
-        FarmingController controller = new FarmingController(game.getMap().getTiles());
-        Tile[] closeTiles = controller.findCloseTiles(player.getCurrentTile());
-        for (Tile tile : closeTiles) {
-            if (tile.getTileType().equals(TileType.Water)) {
-                return true;
-            }
-        }
-        return false;
+        return null;
     }
 }

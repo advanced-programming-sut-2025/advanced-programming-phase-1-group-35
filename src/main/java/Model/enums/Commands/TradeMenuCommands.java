@@ -8,7 +8,7 @@ public enum TradeMenuCommands {
             "(?<amount>\\d+)(\\s+-p\\s+(?<price>\\d+))?(\\s+-ti\\s+(?<tItem>.+?)\\s+-ta\\s+(?<tAmount>\\d+))?"),
     listTradeRequests("trade\\s+list\\s+all"),
     listUnAnsweredTradeRequests("trade\\s+list"),
-    tradeHistory("trade\\s+history\\s+-u\\s+(?<username>\\S+)"),
+    tradeHistory("trade\\s+history\\s+-u\\s+(?<username>\\S+))"),
     respondToTrade("trade\\s+response\\s+(?<answer>-accept|-reject)\\s+-i\\s+(?<id>\\d+)"),
     goBack("go\\s+back"),
     ;

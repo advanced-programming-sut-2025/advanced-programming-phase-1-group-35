@@ -4,9 +4,7 @@ import Model.*;
 
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
-import Model.enums.CraftingRecipes;
 import Model.enums.Menu;
-import Model.enums.Shops.Products.GeneralStoreProducts;
 
 import java.io.IOException;
 
@@ -87,9 +85,6 @@ public class ShopMenuController {
         if((item).getSeason()!=null &&
            !(item).getSeason().equals(App.getCurrentGame().getGameCalender().getSeason())) {
             price *= 1.5;
-        }
-        if(item.equals(GeneralStoreProducts.GRASS_STARTER_RECIPE) || item.equals(GeneralStoreProducts.DEHYDRATOR_RECIPE)){
-            App.getCurrentGame().getPlayingUser().getCraftingRecipes().add(item.getCraftingRecipe());
         }
         user.getBackPack().items.compute((ItemInterface) product , (k, v) -> v == null ? count : v + count );
         item.setDailyBoughtCount(item.getDailyBoughtCount() + count);

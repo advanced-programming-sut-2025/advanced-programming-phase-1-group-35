@@ -2,7 +2,6 @@ package Controller;
 
 import Model.App;
 import Model.Result;
-import Model.SHA256;
 import Model.User;
 import Model.enums.Regexes;
 
@@ -38,13 +37,10 @@ public class ProfileMenuController {
         if(oldPassword.equals(newPassword)){
             return new Result(false , "now that wouldn't be a change would it ?");
         }
-        if(SHA256.hashString(oldPassword).equals(App.getLoggedInUser().getPassword())){
-            return new Result(false , "password incorrect");
-        }
         Result managePasswordResult = loginMenuController.managePassword(newPassword , newPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else newPassword = managePasswordResult.toString();
-        App.getLoggedInUser().setPassword(SHA256.hashString(newPassword));
+        App.getLoggedInUser().setPassword(newPassword);
         return new Result(true , "password has been changed");
     }
 

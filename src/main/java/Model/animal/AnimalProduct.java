@@ -9,10 +9,7 @@ public class AnimalProduct implements ItemInterface {
     private String name;
     public AnimalProduct(String name , int price) {
         this.name = name;
-        try {
-            this.productDetails = AnimalProductDetails.valueOf(name);
-        } catch (IllegalArgumentException e) {
-        }
+        this.productDetails = AnimalProductDetails.valueOf(name);
         this.price = price;
     }
 
