@@ -64,6 +64,7 @@ public enum GameMenuCommands {
     pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)\\s*)"),
     showRecipes("\\s*show\\s+recipes\\s*"),
     CraftItem("\\s*crafting\\s+item\\s+((?<itemName>\\S+)\\s*"),
+    CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
     ;
 
 
