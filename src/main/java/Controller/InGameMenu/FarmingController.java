@@ -303,6 +303,7 @@ public class FarmingController {
             }
             App.getCurrentGame().getPlayingUser().backPack.items.put(tree.getFruit(), 1);
             tree.setDaysSinceLastGrowth(0);
+            App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
             return new Result(true, "fruit picked! 8)");
         }
         return new Result(false, "no crop nor tree found there");
