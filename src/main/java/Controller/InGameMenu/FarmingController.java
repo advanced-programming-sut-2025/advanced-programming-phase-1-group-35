@@ -1,13 +1,10 @@
 package Controller.InGameMenu;
 
-import Model.App;
+import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
-import Model.Fertilizer;
-import Model.Result;
-import Model.Tile;
 import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
@@ -233,7 +230,7 @@ public class FarmingController {
         }
 
         if (tile.getPlanted() instanceof Crop crop) {
-            if(crop.getCurrentState() != crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
+            if(crop.getCurrentState() < crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
             }
             ArrayList <Crop> crops = new ArrayList<>();
@@ -287,6 +284,7 @@ public class FarmingController {
                         crop1.getCropTile().setPlanted(null);
                         App.getCurrentGame().getMap().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
+                        App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
                         return new Result(true, "crop harvested");
                     } else {
                         crop1.setCurrentState(crop1.getCurrentState() - 1);
@@ -302,6 +300,7 @@ public class FarmingController {
             }
             App.getCurrentGame().getPlayingUser().backPack.items.put(tree.getFruit(), 1);
             tree.setDaysSinceLastGrowth(0);
+            App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
             return new Result(true, "fruit picked! 8)");
         }
         return new Result(false, "no crop nor tree found there");
@@ -431,6 +430,22 @@ public class FarmingController {
                             tile.addContents(seed.getSeedEnum());
                             tile.setContentSymbol(seed.getSymbol());
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public void addForagingMinerals() {
+        Random random1 = new Random();
+        for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
+            for (Tile tile : tile1) {
+                if (tile.getTileType().equals(TileType.Rock)) {
+                    if (random1.nextInt(100) < 1) {
+                        Mineral mineral;
+                        mineral = new Mineral(Minerals.getRandomForagingMineral(),tile);
+                        tile.setContentSymbol(mineral.getSymbol());
+                        tile.addContents(mineral);
                     }
                 }
             }

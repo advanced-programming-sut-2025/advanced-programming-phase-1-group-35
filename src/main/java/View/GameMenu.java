@@ -93,6 +93,9 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.harvest.getMatcher(input) )!= null){
             System.out.println(controller.harvest(matcher.group("direction")));
         }
+        else if((matcher =GameMenuCommands.ChopTree.getMatcher(input) )!= null){
+            System.out.println(controller.chopTree(matcher.group("direction")));
+        }
         else if((matcher = GameMenuCommands.GoToNextDay.getMatcher(input) )!= null){
             App.getCurrentGame().getGameCalender().goToNextDay();
         }

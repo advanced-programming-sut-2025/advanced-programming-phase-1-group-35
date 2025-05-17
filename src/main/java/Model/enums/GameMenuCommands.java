@@ -61,10 +61,11 @@ public enum GameMenuCommands {
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
     giveSeed("\\s*give\\s+seed\\s+(?<seed>\\S+)\\s*"),
     pickUpSeed("\\s*pick\\s+seed\\s+(?<direction>\\S+)\\s*"),
-    pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)"),
+    pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)\\s*"),
     showRecipes("\\s*show\\s+recipes\\s*"),
     CraftItem("\\s*crafting\\s+item\\s+(?<itemName>\\S+)\\s*"),
     CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
+    ChopTree("\\s*chop\\s+(?<direction>\\S+)"),
     sellItem("sell\\s+(?<name>.+?)\\s+(?<amount>\\d+)\\s*"),
     ;
 
