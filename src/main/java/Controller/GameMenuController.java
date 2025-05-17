@@ -486,6 +486,7 @@ public class GameMenuController {
     private Result rejectMarriageRequest(User user) {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
         increaseMutualXP(user, user.getAskedMarriage(), -xp);
+        user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity()/2);
         user.setAskedMarriage(null);
         return new Result(true, "damn , so we breaking hearts now ?");
     }
@@ -701,6 +702,10 @@ public class GameMenuController {
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
+        if(sender.getSpouse().equals(receiver)){
+            sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
+            receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
+        }
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
