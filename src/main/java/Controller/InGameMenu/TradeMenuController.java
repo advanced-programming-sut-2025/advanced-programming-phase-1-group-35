@@ -76,7 +76,13 @@ public class TradeMenuController {
         if(item.getValue() < amount){
             return new Result(false, "you do not have enough of this item");
         }
-        int price = Integer.parseInt(priceString);
+        int price;
+        try {
+            price = Integer.parseInt(priceString);
+        }
+        catch (NumberFormatException e){
+            price = 0;
+        }
         Trade trade = new Trade(user.getID(), receiver.getID(), item.getKey(),item.getValue(),
                 price, null, 0);
         user.getTrades().add(trade);

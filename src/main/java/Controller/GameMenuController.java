@@ -7,6 +7,7 @@ import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
+import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
@@ -468,9 +469,24 @@ public class GameMenuController {
         return new Result(true, "You have successfully accepted the marriage");
     }
 
+    public Result buildGreenHouse () {
+        User user = App.getCurrentGame().getPlayingUser();
+        Greenhouse greenhouse = user.getFarm().getGreenhouse();
+        if(user.getMoney() < 10000){
+            return new Result(false, "you do not have enough money");
+        }
+        if(greenhouse.isFixed()){
+            return new Result(false, "already fixed");
+        }
+        user.setMoney(user.getMoney() - 10000);
+        greenhouse.setFixed(true);
+        return new Result(true, "You have successfully built the greenhouse");
+    }
+
     private Result rejectMarriageRequest(User user) {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
         increaseMutualXP(user, user.getAskedMarriage(), -xp);
+        user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity()/2);
         user.setAskedMarriage(null);
         return new Result(true, "damn , so we breaking hearts now ?");
     }
@@ -657,9 +673,9 @@ public class GameMenuController {
         App.getCurrentGame().getMap().getTrees().remove(tree);
         App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
         tile.setSymbol('.');
+        tile.setContentSymbol('.');
         tile.setPlanted(null);
         tile.getContents().remove(tree);
-        tile.setContentSymbol('.');
         return new Result(true,"tree chopped down");
     }
 
@@ -744,11 +760,15 @@ public class GameMenuController {
     }
 
     public boolean notCloseEnough(User sender, User receiver){
-        return !(Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
+        return (Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
                 Math.abs(receiver.getCurrentTile().coordination.y - sender.getCurrentTile().coordination.y) > 2);
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
+        if(sender.getSpouse() != null && sender.getSpouse().equals(receiver)){
+            sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
+            receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
+        }
         sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
         receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
     }
@@ -877,7 +897,7 @@ public class GameMenuController {
 
     public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
         backPack.items.compute(item.getKey(), (k, v) -> v - amount);
-        if(item.getValue() < 0){
+        if(item.getValue() <= 0){
             backPack.items.remove(item.getKey());
         }
     }

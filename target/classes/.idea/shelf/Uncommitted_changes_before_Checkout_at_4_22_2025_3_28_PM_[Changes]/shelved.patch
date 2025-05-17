@@ -1,0 +1,16 @@
+Index: RegisterAndLogin/src/main/java/Model/FarmStuff/Sprinkles.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model.FarmStuff;\r\n\r\npublic class Sprinkles {\r\n}\r\n
+===================================================================
+diff --git a/RegisterAndLogin/src/main/java/Model/FarmStuff/Sprinkles.java b/RegisterAndLogin/src/main/java/Model/FarmStuff/Sprinkles.java
+--- a/RegisterAndLogin/src/main/java/Model/FarmStuff/Sprinkles.java	(revision 97449ee4c54fe8a3225794d88356e36594b62534)
++++ b/RegisterAndLogin/src/main/java/Model/FarmStuff/Sprinkles.java	(date 1745321789822)
+@@ -1,4 +1,5 @@
+ package Model.FarmStuff;
+-
+-public class Sprinkles {
++/*this item is used in greenhouse for watering*/
++public class Sprinkles
++{
+ }
