@@ -55,15 +55,15 @@ public enum GameMenuCommands {
     rateGift("gift\\s+rate\\s+-i\\s+(?<id>\\d+)\\s+-r\\s+(?<rate>\\d+)"),
     hug("hug\\s+-u\\s+(?<username>\\S+)"),
     flower("flower\\s+-u\\s+(?<username>\\S+)"),
-    askMarriage("ask\\s+\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
+    askMarriage("ask\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
     respondToMarriageRequest("respond\\s+(?<answer>accept|reject)"),
     showPlayerPosition("show position"),
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
     giveSeed("\\s*give\\s+seed\\s+(?<seed>\\S+)\\s*"),
     pickUpSeed("\\s*pick\\s+seed\\s+(?<direction>\\S+)\\s*"),
-    pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)\\s*)"),
+    pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)"),
     showRecipes("\\s*show\\s+recipes\\s*"),
-    CraftItem("\\s*crafting\\s+item\\s+((?<itemName>\\S+)\\s*"),
+    CraftItem("\\s*crafting\\s+item\\s+(?<itemName>\\S+)\\s*"),
     CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
     ;
 

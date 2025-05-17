@@ -511,7 +511,7 @@ public class GameMenuController {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
         User player = user;
-        Tile startTile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+        Tile startTile = player.getCurrentTile();
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
@@ -661,45 +661,6 @@ public class GameMenuController {
         return new Result(true, output.toString());
     }
 
-
-    public Result deleteAnItemFromInventory() {
-        return null;
-    }
-    public Result buyAnimal(String animalType ,String animalName) {
-        return null;
-    }
-    public String petAnimal(String animalName){
-        return null;
-    }
-    public String AnimalsDetails(){
-        return null;
-    }
-    public Result shepherdAnimal(String animalName){
-        return null;
-    }
-    public Result feedHay(String animalName){
-        return null;
-    }
-    public String produces(){
-        return null;
-    }
-    public Result collectProducts(String animalName){
-        return null;
-    }
-    public Result sellAnimal(String animalName){
-        return null;
-    }
-    public Result fishing(FishingPole fishingPole){
-        return null;
-    }
-    public Result useArtisan(String ArtisanName , String productName){
-        return null;
-    }
-
-    public Result getFromArtisan(String ArtisanName){
-        return null;
-    }
-
     public Result talk (String username, String message){
         User sender = App.getCurrentGame().getPlayingUser();
         User receiver = getUserBYName(username);
@@ -707,6 +668,8 @@ public class GameMenuController {
             return new Result(false, "user not found");
         }
         if(notCloseEnough(sender, receiver)){
+            System.out.println("sender pos : " + sender.getCurrentTile().coordination.x + " " + sender.getCurrentTile().coordination.y);
+            System.out.println("receiver pos : " + receiver.getCurrentTile().coordination.x + " " + receiver.getCurrentTile().coordination.y);
             return new Result(false, "you are not close enough, somehow you don't have a cell phone either");
         }
         Message m = new Message(sender.getID(), message, receiver.getID());
@@ -718,7 +681,7 @@ public class GameMenuController {
     }
 
     public boolean notCloseEnough(User sender, User receiver){
-        return !(Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
+        return (Math.abs(receiver.getCurrentTile().coordination.x - sender.getCurrentTile().coordination.x) > 2 ||
                 Math.abs(receiver.getCurrentTile().coordination.y - sender.getCurrentTile().coordination.y) > 2);
     }
 
@@ -882,7 +845,7 @@ public class GameMenuController {
         if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100)/100 - 1 < 3){
             return new Result(false, "you should finish level two friendship");
         }
-        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquete");
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("BOUQUET");
         if(item == null){
             return new Result(false, "you are not a magician you can't summon flowers");
         }

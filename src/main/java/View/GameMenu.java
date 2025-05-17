@@ -81,10 +81,7 @@ public class GameMenu extends AppMenu {
             App.setCurrentMenu(Menu.AnimalMenu);
         } else if (GameMenuCommands.goToCookingMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.CookingMenu);
-        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
-            //TODO
-        }
-        else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
+        }else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
             System.out.println(controller.showCropInfo(matcher.group("cropName")));
         }
         else if((matcher = GameMenuCommands.plantSeed.getMatcher(input) )!= null){
