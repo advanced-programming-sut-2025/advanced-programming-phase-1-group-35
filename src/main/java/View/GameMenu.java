@@ -166,6 +166,9 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.showRecipes.getMatcher(input)) != null) {
             System.out.println(controller.ShowRecipes());
         }
+        else if((matcher = GameMenuCommands.CraftItem.getMatcher(input)) != null) {
+            System.out.println(controller.CraftItem(matcher.group("itemName")));
+        }
         else {
             System.out.println("Invalid input");
         }

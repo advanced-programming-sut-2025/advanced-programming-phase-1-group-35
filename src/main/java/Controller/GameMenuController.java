@@ -337,6 +337,34 @@ public class GameMenuController {
         }
         return new Result(true, st.toString());
     }
+    public Result CraftItem(String itemName){
+        CraftingRecipes craftingRecipes = null;
+        if(!App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType().equals(TileType.BuildingTile)){//TODO:house tile?
+            return new Result(false,"you can only build in your house");
+        }
+        System.out.println("crafting recipes: ");
+        for(CraftingRecipes craftingRecipe : App.getCurrentGame().getPlayingUser().getCraftingRecipes()){
+            System.out.println(craftingRecipe.toString());
+        }
+        for(CraftingRecipes craftingRecipes1:CraftingRecipes.values()){
+            if(craftingRecipes1.name().equals(itemName)){
+                craftingRecipes = craftingRecipes1;
+                break;
+            }
+        }
+        if(craftingRecipes == null) {
+            return new Result(false, "no item found by given name");
+        }
+        if(!App.getCurrentGame().getPlayingUser().getCraftingRecipes().contains(craftingRecipes)) {
+            return new Result(false, "you haven't discovered the given crafting recipe");
+        }
+        //TODO:need help implementing this part
+        App.getCurrentGame().getPlayingUser().backPack.items.put(craftingRecipes.getItem(),1);
+        return new Result(true, itemName + " has been crafted");
+    }
+
+
+
 
     public Result goToNextTurn(User forceUser) throws IOException {
         User user ;

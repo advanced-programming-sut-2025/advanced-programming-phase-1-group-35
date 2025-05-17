@@ -63,6 +63,7 @@ public enum GameMenuCommands {
     pickUpSeed("\\s*pick\\s+seed\\s+(?<direction>\\S+)\\s*"),
     pickItem("\\s*pick\\s+(?<itemName>\\S+)\\s+(?<direction>\\S+)\\s*)"),
     showRecipes("\\s*show\\s+recipes\\s*"),
+    CraftItem("\\s*crafting\\s+item\\s+((?<itemName>\\S+)\\s*"),
     ;
 
 
