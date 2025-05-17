@@ -27,7 +27,7 @@ public class User {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
-    private int money = 0;
+    private int money = 10000;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 

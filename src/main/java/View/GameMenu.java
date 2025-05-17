@@ -166,6 +166,12 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.CraftItem.getMatcher(input)) != null) {
             System.out.println(controller.CraftItem(matcher.group("itemName")));
         }
+        else if((matcher = GameMenuCommands.greenHouseBuild.getMatcher(input)) != null) {
+            System.out.println(controller.buildGreenHouse());
+        }
+        else if((matcher = GameMenuCommands.sellProduct.getMatcher(input)) != null) {
+            System.out.println(controller.Sell(matcher.group("name"), matcher.group("amount")));
+        }
         else {
             System.out.println("Invalid input");
         }

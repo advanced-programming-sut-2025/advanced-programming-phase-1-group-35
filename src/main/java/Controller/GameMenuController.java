@@ -7,6 +7,7 @@ import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
+import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
@@ -466,6 +467,20 @@ public class GameMenuController {
         removeFromBackPack(ring,user.getSpouse().backPack , 1);
         addToBackPack(ring,user.backPack , 1);
         return new Result(true, "You have successfully accepted the marriage");
+    }
+
+    public Result buildGreenHouse () {
+        User user = App.getCurrentGame().getPlayingUser();
+        Greenhouse greenhouse = user.getFarm().getGreenhouse();
+        if(user.getMoney() < 10000){
+            return new Result(false, "you do not have enough money");
+        }
+        if(greenhouse.isFixed()){
+            return new Result(false, "already fixed");
+        }
+        user.setMoney(user.getMoney() - 10000);
+        greenhouse.setFixed(true);
+        return new Result(true, "You have successfully built the greenhouse");
     }
 
     private Result rejectMarriageRequest(User user) {
