@@ -172,6 +172,9 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.CraftItem.getMatcher(input)) != null) {
             System.out.println(controller.CraftItem(matcher.group("itemName")));
         }
+        else if((matcher = GameMenuCommands.CheatGetItem.getMatcher(input)) != null) {
+            System.out.println(controller.cheatAddItemToBackPack(matcher.group("itemName"), matcher.group("amount")));
+        }
         else {
             System.out.println("Invalid input");
         }
