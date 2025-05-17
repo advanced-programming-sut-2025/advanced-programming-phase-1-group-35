@@ -119,7 +119,6 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
 
     @Override
     public ItemInterface getItem() {
-        return null;
-        //TODO
+        return this;
     }
 }

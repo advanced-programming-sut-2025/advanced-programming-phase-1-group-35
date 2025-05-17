@@ -1037,13 +1037,11 @@ public class GameMenuController {
                 AnimalProductDetails.class,
                 ArtisanProductDetails.class,
                 BlackSmithProducts.class,
-                CarpenterShopProducts.class,
                 GeneralStoreProducts.class,
-                FishShopProducts.class,
-                RanchProducts.class,
-                SaloonProducts.class,
-                JojaMartProducts.class,
-                CookingRecipes.class,
+//                FishShopProducts.class,
+//                SaloonProducts.class,
+//                JojaMartProducts.class,
+//                CookingRecipes.class,
                 CraftingRecipes.class,
                 CropEnum.class,
                 FishType.class,
@@ -1057,9 +1055,11 @@ public class GameMenuController {
         };
         for (Class<? extends ItemConstant> enumClass : enumClasses) {
             for (ItemConstant constant : enumClass.getEnumConstants()) {
-                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
-                    return constant;
-                }
+                try {
+                    if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                        return constant;
+                    }
+                }catch (NullPointerException e){}
             }
         }
         return null;

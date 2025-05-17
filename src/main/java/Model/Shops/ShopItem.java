@@ -49,7 +49,7 @@ public class ShopItem implements ItemConstant {
             return new Mineral(name , description , price);
         }
         else if(type.equals("ToolUpgrade")){
-            //TODO : add tool upgrade
+            return new Item(this.price,this.name);
         }
         else if(type.equals("Item")){
             return new Item(price , name);
@@ -81,6 +81,7 @@ public class ShopItem implements ItemConstant {
                     cookingRecipe = value;
                 }
             }
+            if(cookingRecipe == null){ return new Food(CookingRecipes.BREAD);}
             return new Food(cookingRecipe);
         }
         else if(type.equals("FishingRod")){
@@ -189,6 +190,6 @@ public class ShopItem implements ItemConstant {
 
     @Override
     public ItemInterface getItem() throws IOException {
-        return null;
+        return this;
     }
 }
