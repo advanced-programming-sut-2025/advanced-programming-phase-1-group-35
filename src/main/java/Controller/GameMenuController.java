@@ -728,7 +728,7 @@ public class GameMenuController {
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
-        if(sender.getSpouse().equals(receiver)){
+        if(sender.getSpouse() != null && sender.getSpouse().equals(receiver)){
             sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
             receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
         }
@@ -860,7 +860,7 @@ public class GameMenuController {
 
     public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount){
         backPack.items.compute(item.getKey(), (k, v) -> v - amount);
-        if(item.getValue() < 0){
+        if(item.getValue() <= 0){
             backPack.items.remove(item.getKey());
         }
     }
