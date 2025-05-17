@@ -27,7 +27,7 @@ public enum AnimalProductDetails implements ItemConstant,ItemInterface {
         this.name = name;
     }
     public Model.animal.AnimalProduct getProduct() {
-        return new Model.animal.AnimalProduct(this.name , this.price);
+        return new Model.animal.AnimalProduct(this.toString() , this.price);
     }
 
     @Override

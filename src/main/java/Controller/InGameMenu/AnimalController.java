@@ -23,7 +23,7 @@ public class AnimalController {
              animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(name);
         }
         catch (Exception e) {
-            return new Result(false, "invalid animal house name");
+
         }
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         for (int i = x; i < x + animalHouseEnum.width; i++) {
@@ -35,6 +35,8 @@ public class AnimalController {
         }
         AnimalHouse animalHouse = new AnimalHouse(animalHouseEnum.type, animalHouseEnum.level);
         App.getCurrentGame().getPlayingUser().getFarm().animalHouses.add(animalHouse);
+        animalHouse.setFarm(App.getCurrentGame().getPlayingUser().getFarm());
+        animalHouse.setFloorTiles(new Tile[animalHouseEnum.width][animalHouseEnum.height]);
         animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles);
 
         return new Result(true, "your " + name + " has been built!");
@@ -72,11 +74,8 @@ public class AnimalController {
             return new Result(false, "there is no animal with that name!");
         }
         Animal animal = farm.findAnimal(animalName);
-        if (new GameMenuController().isCloseToObject(animalName)) {
-            return new Result(false, "you are close to " + animalName + "!");
-        }
         animal.setFriendship(animal.getFriendship() + 15);
-        return new Result(true, "you naz " + animalName + "successfully!");
+        return new Result(true, "you naz " + animalName + " successfully!");
     }
 
     public Result seeAnimalsCondition() {
@@ -107,7 +106,7 @@ public class AnimalController {
         Animal animal = farm.findAnimal(animalName);
         animal.setFeedToday(true);
         animal.setCanProduceTomorrow(true);
-        return new Result(true, animal.getName() + "has ate grass!");
+        return new Result(true, animal.getName() + " has ate grass!");
     }
 
     public Result feedByHay(String animalName) {
@@ -115,7 +114,6 @@ public class AnimalController {
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
         Animal animal;
-        // TODO : update hay resource
         try {
             animal = farm.findAnimal(animalName);
         } catch (NullPointerException e) {
@@ -123,7 +121,7 @@ public class AnimalController {
         }
         animal.setFeedToday(true);
         animal.setCanProduceTomorrow(true);
-        return new Result(true, animalName + "has ate hay!");
+        return new Result(true, animalName + " has ate hay!");
     }
 
     public Result produces() {
@@ -181,8 +179,6 @@ public class AnimalController {
     public Result fishing(String poleName) {
         if (!new GameMenuController().isCloseTOSea()) {
             return new Result(false, "you are not near to a sea!");
-        } else if (App.getCurrentGame().getPlayingUser().getBackPack().findItem(poleName) == null) {
-            return new Result(false, "fish pole not found!");
         }
         FishType randomFish = FishType.getRandomFish();
         int fishCount = 0;
