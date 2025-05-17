@@ -2,14 +2,22 @@ package Model.Shops;
 
 import Controller.InGameMenu.AnimalController;
 import Model.*;
+import Controller.InGameMenu.CookingController;
 import Model.CropClasses.Sapling;
 import Model.CropClasses.Seed;
+import Model.Food;
+import Model.Item;
+import Model.Mineral;
+import Model.Result;
 import Model.Tools.FishingPole;
 import Model.Tools.Tool;
 import Model.animal.Animal;
 import Model.enums.*;
 import Model.enums.Crops.SaplingEnum;
 import Model.enums.Crops.SeedEnum;
+import Model.enums.GameMenuCommands;
+import Model.enums.Seasons;
+import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
 import View.GameMenu;
 
@@ -26,6 +34,7 @@ public class ShopItem implements ItemConstant {
     private Seasons season = null;
     private String type ;
     private CraftingRecipes craftingRecipe;
+    private String type;
 
     public ShopItem(String name, int price, int dailyLimit
             , Seasons season, String type, String description) {
@@ -56,90 +65,82 @@ public class ShopItem implements ItemConstant {
         }
         else if(type.equals("AnimalHouse")){
             AnimalController animalController = new AnimalController();
-            while(true){
+            while (true) {
                 GameMenu.print("where do you plan on putting this building buddy ?");
                 String input = GameMenu.scan();
-                Matcher matcher ;
-                if(input.equals("cancel")){
+                Matcher matcher;
+                if (input.equals("cancel")) {
                     break;
                 }
-                if((matcher = GameMenuCommands.buildABuilding.getMatcher(input)) == null) continue;
+                if ((matcher = GameMenuCommands.buildABuilding.getMatcher(input)) == null) continue;
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
-                Result result = animalController.buildAnimalHouse(name ,x ,y);
+                Result result = animalController.buildAnimalHouse(name, x, y);
                 GameMenu.print(result.toString());
-                if(result.isSuccess()) return result;
+                if (result.isSuccess()) return result;
             }
-        }
-        else if(type.equals("CraftingRecipe")){
+        } else if (type.equals("CraftingRecipe")) {
             //TODO : Update when crafting recipes added
-        }
-        else if(type.equals("Food")){
+        } else if (type.equals("Food")) {
             CookingRecipes cookingRecipe = null;
             for (CookingRecipes value : CookingRecipes.values()) {
-                if(value.toString().equals(name)){
+                if (value.toString().equals(name)) {
                     cookingRecipe = value;
                 }
             }
             if(cookingRecipe == null){ return new Food(CookingRecipes.BREAD);}
             return new Food(cookingRecipe);
-        }
-        else if(type.equals("FishingRod")){
-            return new FishingPole(name , price);
-        }
-        else if(type.equals("Sapling")){
+        } else if (type.equals("FishingRod")) {
+            return new FishingPole(name, price);
+        } else if (type.equals("Sapling")) {
             SaplingEnum sapling = null;
             for (SaplingEnum value : SaplingEnum.values()) {
-                if(value.toString().equals(name)){
+                if (value.toString().equals(name)) {
                     sapling = value;
                 }
             }
             assert sapling != null;
             return new Sapling(sapling.getTree());
-        }
-        else if(type.equals("Seed")){
+        } else if (type.equals("Seed")) {
             SeedEnum seed = null;
             for (SeedEnum value : SeedEnum.values()) {
-                if(value.toString().equals(name)){
+                if (value.toString().equals(name)) {
                     seed = value;
                 }
             }
             assert seed != null;
             return new Seed(seed);
-        }
-        else if(type.equals("Tool")){
+        } else if (type.equals("Tool")) {
             ToolTypes tool = null;
             for (ToolTypes value : ToolTypes.values()) {
-                if(value.toString().equals(name)){
+                if (value.toString().equals(name)) {
                     tool = value;
                 }
             }
             assert tool != null;
             //TODO : update when tools completed
-        }
-        else if(type.equals("Animal")){
+        } else if (type.equals("Animal")) {
             String animalName = "";
             GameMenu.print("Please enter the name of the animal: ");
             animalName = GameMenu.scan();
-            if(name.equals("cancel")) return null;
+            if (name.equals("cancel")) return null;
             AnimalController animalController = new AnimalController();
-            while(true){
+            while (true) {
                 String input = GameMenu.scan();
-                Matcher matcher ;
-                if(input.equals("cancel")) return null;
-                if((matcher = GameMenuCommands.placeAnimal.getMatcher(input)) == null) continue;
+                Matcher matcher;
+                if (input.equals("cancel")) return null;
+                if ((matcher = GameMenuCommands.placeAnimal.getMatcher(input)) == null) continue;
                 Result result = animalController.buyAnimal(name, animalName);
-                if(result.isSuccess()) return result;
+                if (result.isSuccess()) return result;
             }
-        }
-        else if(type.equals("CookingRecipe")){
+        } else if (type.equals("CookingRecipe")) {
             CookingRecipes cookingRecipe = null;
             try {
-                 cookingRecipe = CookingRecipes.valueOf(name);
-            }
-            catch (IllegalArgumentException e) {
+                cookingRecipe = CookingRecipes.valueOf(name);
+            } catch (IllegalArgumentException e) {
                 GameMenu.print("illegal Argument");
             }
+            new CookingController().addCookingRecipe(cookingRecipe);
             assert cookingRecipe != null;
             return cookingRecipe;
         }

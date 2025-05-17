@@ -171,6 +171,7 @@ public class ToolsController {
         }
         destenationTile.setPlowed(false);
         if (destenationTile.getTileType() == TileType.Rock) {
+            destenationTile.setSymbol('0');
             destenationTile.setTileType(TileType.Soil);
             player.backPack.items.compute(Rock.mine(destenationTile), (k,v) -> v==null ? 1 : v+1);
             return new Result(true, "You used pickaxe and destroyed a rock");

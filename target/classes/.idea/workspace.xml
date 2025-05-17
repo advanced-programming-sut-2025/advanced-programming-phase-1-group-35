@@ -546,6 +546,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="saplings added" />
+    <MESSAGE value="fixed crop and tree plantation" />
+    <MESSAGE value="pulleed main" />
     <MESSAGE value="added artisan enum" />
     <MESSAGE value="added craftable Items" />
     <MESSAGE value="normal commit" />
@@ -557,6 +560,7 @@
     <MESSAGE value="don't know what happened" />
     <MESSAGE value="pulled" />
     <MESSAGE value="nigger" />
+    <MESSAGE value="commit" />
     <MESSAGE value="commit2" />
     <MESSAGE value="planting seeds works" />
     <MESSAGE value="fixed a few things that i don't remember" />

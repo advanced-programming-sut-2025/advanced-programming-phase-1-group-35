@@ -81,10 +81,7 @@ public class GameMenu extends AppMenu {
             App.setCurrentMenu(Menu.AnimalMenu);
         } else if (GameMenuCommands.goToCookingMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.CookingMenu);
-        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
-            //TODO
-        }
-        else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
+        }else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
             System.out.println(controller.showCropInfo(matcher.group("cropName")));
         }
         else if((matcher = GameMenuCommands.plantSeed.getMatcher(input) )!= null){
@@ -174,6 +171,15 @@ public class GameMenu extends AppMenu {
         }
         else if((matcher = GameMenuCommands.CheatGetItem.getMatcher(input)) != null) {
             System.out.println(controller.cheatAddItemToBackPack(matcher.group("itemName"), matcher.group("amount")));
+        }
+        else if((matcher = GameMenuCommands.greenHouseBuild.getMatcher(input)) != null) {
+            System.out.println(controller.buildGreenHouse());
+        }
+        else if((matcher = GameMenuCommands.sellProduct.getMatcher(input)) != null) {
+            System.out.println(controller.Sell(matcher.group("name"), matcher.group("amount")));
+        }
+        else if((matcher = GameMenuCommands.goToTradeMenu.getMatcher(input)) != null) {
+            System.out.println(controller.goToTradeMenu());
         }
         else {
             System.out.println("Invalid input");

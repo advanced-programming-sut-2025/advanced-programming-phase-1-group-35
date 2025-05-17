@@ -1,5 +1,6 @@
 package Controller.InGameMenu;
 
+import Controller.GameMenuController;
 import Model.*;
 import Model.Buildings.AnimalHouse;
 import Model.FarmStuff.Farm;
@@ -50,11 +51,7 @@ public class AnimalController {
         } catch (IllegalArgumentException e) {
             return new Result(false, "invalid animal type");
         }
-        for (AnimalHouse animalHouse : player.getFarm().animalHouses) {
-            if (animalHouse.getType().equals(type.getConfinement())) {
-                house = animalHouse;
-            }
-        }
+        house = type.getAnimalHouse(player, type);
         if (farm.isAnimalNameExist(name)) {
             return new Result(false, "animal name has already been used!");
         } else if (house == null) {
@@ -67,7 +64,6 @@ public class AnimalController {
     }
 
     public Result nazTheAnimal(String animalName) {
-        // TODO : things that effect friendship with animals like spending night out
         AnimalHouse house = null;
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
@@ -76,8 +72,7 @@ public class AnimalController {
             return new Result(false, "there is no animal with that name!");
         }
         Animal animal = farm.findAnimal(animalName);
-        if (false) {
-            // TODO : if not around that animal
+        if (new GameMenuController().isCloseToObject(animalName)) {
             return new Result(false, "you are close to " + animalName + "!");
         }
         animal.setFriendship(animal.getFriendship() + 15);
@@ -158,6 +153,7 @@ public class AnimalController {
         player.backPack.items.put(animal.getProducts()[0],
                 player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + animal.getProductionRate());
         animal.setDaysPastLastProduction(0);
+        animal.setCollectedToday(true);
         return new Result(true, animal.getName() + "has collected its products! it was " +
                 animal.getProductionRate() + " units of " + animal.getProducts()[0].getProductDetails().name);
     }
@@ -167,9 +163,13 @@ public class AnimalController {
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
         Animal animal = farm.findAnimal(animalName);
-        AnimalHouse house = null; // TODO : find the animal house in the map and set it to this object
+        AnimalHouse house = null;
         if (animal == null) {
             return new Result(false, "there is no animal with that name!");
+        }
+        house = animal.getAnimalType().getAnimalHouse(player, animal.getAnimalType());
+        if (house == null) {
+            return new Result(false, "animal house not found!");
         }
         int price = animal.getSellingPrice();
         farm.animals.remove(animal);
@@ -179,11 +179,9 @@ public class AnimalController {
     }
 
     public Result fishing(String poleName) {
-        if (false) {
-            // TODO
+        if (!new GameMenuController().isCloseTOSea()) {
             return new Result(false, "you are not near to a sea!");
-        } else if (false) {
-            // TODO : search the backpack for this pole
+        } else if (App.getCurrentGame().getPlayingUser().getBackPack().findItem(poleName) == null) {
             return new Result(false, "fish pole not found!");
         }
         FishType randomFish = FishType.getRandomFish();
@@ -194,11 +192,11 @@ public class AnimalController {
             case "storm" -> 0.5;
             default -> 1;
         };
-        double fishingSkill = 1; //TODO
+        double fishingSkill = App.getCurrentGame().getPlayingUser().getFishingSkill().getCurrentLevel();
         fishCount = (int) Math.ceil((Math.random()) * m * (fishingSkill + 2));
         fishCount = Math.max(fishCount, 6);
 
-        double poleCoefficient = 1; // TODO
+        double poleCoefficient = 1;
         double fishQuality = (Math.random() * (fishingSkill + 2) * poleCoefficient) / (7 - m);
         double price = 0.0;
         if (fishQuality >= 0.5 && fishQuality < 0.7) {

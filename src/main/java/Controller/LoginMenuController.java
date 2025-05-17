@@ -2,6 +2,7 @@ package Controller;
 
 import Model.App;
 import Model.Result;
+import Model.SHA256;
 import Model.User;
 import Model.enums.*;
 import View.LoginMenu;
@@ -85,7 +86,7 @@ public class LoginMenuController {
             };
             break;
         }
-        App.users.add(new User(username , password , nickname , email , genderEnum , question , answer));
+        App.users.add(new User(username , SHA256.hashString(password) , nickname , email , genderEnum , question , answer));
         return new Result(true , "user successfully registered , now you can log in");
     }
 
@@ -94,7 +95,7 @@ public class LoginMenuController {
         if(user == null) {
             return new Result(false, "User not found");
         }
-        if(!user.getPassword().equals(password)) {
+        if(!user.getPassword().equals(SHA256.hashString(password))) {
             return new Result(false, "Wrong password");
         }
         App.setLoggedInUser(user);

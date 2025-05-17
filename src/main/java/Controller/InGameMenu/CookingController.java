@@ -1,15 +1,26 @@
 package Controller.InGameMenu;
 
 import Model.*;
+import Model.FarmStuff.Home.Cabin;
 import Model.enums.CookingIngredient;
 import Model.enums.CookingRecipes;
 
 import java.util.Map;
 
 public class CookingController {
-    // TODO : check if player is inside the cabin and show proper error if not
+    private Result isInCabin() {
+        User player = App.getCurrentGame().getPlayingUser();
+        Cabin cabin = player.getFarm().getCabin();
+        if (!cabin.isTileInBounds(player.getCurrentTile())) {
+            return new Result(false, "You are not in a Cabin");
+        }
+        return null;
+    }
 
     public Result placeItemInFridge(String itemName) {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         CookingMaterial ingredient = null;
@@ -30,6 +41,9 @@ public class CookingController {
     }
 
     public Result pickItemFromFridge(String itemName) {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         CookingMaterial ingredient = null;
@@ -50,6 +64,9 @@ public class CookingController {
     }
 
     public Result showCookingRecipes() {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         StringBuilder output = new StringBuilder();
@@ -66,6 +83,9 @@ public class CookingController {
     }
 
     public Result cook(String recipeName) {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         CookingRecipes recipe = null;
@@ -121,13 +141,7 @@ public class CookingController {
         }
         player.backPack.items.remove(food);
         player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() + food.recipe.getEnergy());
-        // TODO : buff
         return new Result(true, "you ate a " + food.recipe.getDisplayName());
-    }
-
-    // TODO
-    private boolean doesInventoryHaveSpace() {
-        return true;
     }
 
 }

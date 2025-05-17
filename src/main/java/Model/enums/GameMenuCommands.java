@@ -43,6 +43,7 @@ public enum GameMenuCommands {
     buildABuilding("build\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
     placeAnimal("animal\\s+place\\s+-l\\s+<\\s*(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>"),
     goToShopMenu("go\\s+to\\s+shop\\s+menu"),
+    goToTradeMenu("go\\s+to\\s+trade\\s+menu"),
     sellProduct("sell\\s+(?<name>.+?)(\\s+-n\\s+(?<count>\\d+))?"),
     goToCookingMenu("go\\s+to\\s+cooking\\s+menu"),
     goToAnimalMenu("go\\s+to\\s+animal\\s+menu"),
@@ -55,7 +56,7 @@ public enum GameMenuCommands {
     rateGift("gift\\s+rate\\s+-i\\s+(?<id>\\d+)\\s+-r\\s+(?<rate>\\d+)"),
     hug("hug\\s+-u\\s+(?<username>\\S+)"),
     flower("flower\\s+-u\\s+(?<username>\\S+)"),
-    askMarriage("ask\\s+\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
+    askMarriage("ask\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
     respondToMarriageRequest("respond\\s+(?<answer>accept|reject)"),
     showPlayerPosition("show position"),
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
@@ -65,7 +66,8 @@ public enum GameMenuCommands {
     showRecipes("\\s*show\\s+recipes\\s*"),
     CraftItem("\\s*crafting\\s+item\\s+(?<itemName>\\S+)\\s*"),
     CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
-    ChopTree("\\s*chop\\s+(?<direction>\\S+)")
+    ChopTree("\\s*chop\\s+(?<direction>\\S+)"),
+    sellItem("sell\\s+(?<name>.+?)\\s+(?<amount>\\d+)\\s*"),
     ;
 
 
