@@ -18,17 +18,17 @@ import static java.util.Map.entry;
 
 public enum CraftingItems implements ItemInterface {
     CherryBomb((new HashMap<>(Map.ofEntries(
-            entry(BlackSmithProducts.COPPER_ORE, 4),
+            entry(BlackSmithProducts.COPPER, 4),
             entry(ArtisanProductDetails.Coal, 1)
     ))), 50, Skill.mining, 1),
 
     Bomb((new HashMap<>(Map.ofEntries(
-            entry(BlackSmithProducts.IRON_ORE, 4),
+            entry(BlackSmithProducts.IRON, 4),
             entry(ArtisanProductDetails.Coal, 1)
     ))), 50, Skill.mining, 2),
 
     MegaBomb((new HashMap<>(Map.ofEntries(
-            entry(BlackSmithProducts.GOLD_ORE, 4),
+            entry(BlackSmithProducts.GOLD, 4),
             entry(ArtisanProductDetails.Coal, 1)
     ))), 50, Skill.mining, 3),
 
@@ -53,7 +53,7 @@ public enum CraftingItems implements ItemInterface {
     ))), -1, Skill.farming, 1),
 
     Furnace((new HashMap<>(Map.ofEntries(
-            entry(BlackSmithProducts.COPPER_ORE, 20),
+            entry(BlackSmithProducts.COPPER, 20),
             entry(CarpenterShopProducts.STONE, 25)
     ))), -1, null, 0),
 
