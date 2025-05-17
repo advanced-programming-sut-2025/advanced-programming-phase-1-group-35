@@ -254,11 +254,5 @@ public class GameCalender {
         return new Result(true, "it is " + formattedDate);
     }
 
-//    int neededEnergyAmount = 10;
-//        if(currentPlayer.energy.getEnergyAmount()<neededEnergyAmount){
-//        TODO:currentPlayer.faint();
-//    }
-//    TODO(mhdsdg):currentPlayer.farm.shop.emptyShippingBin();
-
 
 }

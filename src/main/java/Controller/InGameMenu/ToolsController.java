@@ -1,6 +1,8 @@
 package Controller.InGameMenu;
 
+import Controller.GameMenuController;
 import Model.*;
+import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Rock;
 import Model.FarmStuff.Wood;
@@ -123,7 +125,7 @@ public class ToolsController {
                 return usePickaxe(game, player, destenationTile);
             }
             case AXE -> {
-                return useAxe(game, player, destenationTile);
+                return useAxe(game, player, destenationTile, direction);
             }
             case SHEARS -> {
                 return useShears(game, player, destenationTile);
@@ -171,15 +173,16 @@ public class ToolsController {
         }
         destenationTile.setPlowed(false);
         if (destenationTile.getTileType() == TileType.Rock) {
+            destenationTile.setSymbol('.');
             destenationTile.setTileType(TileType.Soil);
-            player.backPack.items.compute(Rock.mine(destenationTile), (k,v) -> v==null ? 1 : v+1);
+            player.backPack.items.compute(Rock.mine(destenationTile), (k, v) -> v == null ? 1 : v + 1);
             return new Result(true, "You used pickaxe and destroyed a rock");
         } else {
             return new Result(false, "you cant use pickaxe on this tile");
         }
     }
 
-    private Result useAxe(Game game, User player, Tile destenationTile) {
+    private Result useAxe(Game game, User player, Tile destenationTile, int direction) {
         if (!energyCheck(player, 5)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -193,6 +196,20 @@ public class ToolsController {
                     return new Result(true, "You used axe and destroyed a wood stick");
                 } else {
                     player.backPack.items.put(new Wood(), 1);
+                    switch (direction) {
+                        case 8:
+                            new GameMenuController().chopTree("up");
+                            break;
+                        case 6:
+                            new GameMenuController().chopTree("right");
+                            break;
+                        case 2:
+                            new GameMenuController().chopTree("down");
+                            break;
+                        case 4:
+                            new GameMenuController().chopTree("left");
+                            break;
+                    }
                     return new Result(true, "You used axe and destroyed a tree");
                 }
             }
@@ -256,7 +273,12 @@ public class ToolsController {
                             can.getCapacity());
                 } else if (destenationTile.getTileType() == TileType.Grass ||
                         destenationTile.getTileType() == TileType.Soil) {
-                    // TODO : watering this tile
+                    destenationTile.setWatered(true);
+                    if (destenationTile.getPlanted() instanceof Crop crop) {
+                        crop.setDaysSinceWatered(0);
+                    } else if (destenationTile.getPlanted() instanceof Tree tree) {
+                        tree.setDaysSinceWatered(0);
+                    }
                     return new Result(true, "you watered this tile");
                 }
             }
@@ -273,7 +295,6 @@ public class ToolsController {
 
             return new FarmingController(game.getMap().getTiles()).harvestCrop(destenationTile);
         }
-        // TODO : cut the HARZ grasses
         return new Result(false, "you cant use scythe on this tile");
     }
 

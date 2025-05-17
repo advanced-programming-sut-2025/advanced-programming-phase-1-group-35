@@ -377,8 +377,8 @@ public class FarmingController {
     Random random1 = new Random();
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
-            if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)){
-                if(random1.nextInt(100) < 1){
+            if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)){
+                if(random1.nextInt(500) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);

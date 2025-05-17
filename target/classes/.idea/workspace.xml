@@ -4,67 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9820c325-9e81-4cf2-b88b-adce6bc10284" name="Changes" comment="pulling main">
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/animal/AnimalProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/animal/AnimalProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/GameMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM_[Changes]/shelved.patch" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM_[Changes]/shelved.patch" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/FarmingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/FarmingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/TradeMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/TradeMenuController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/GameCalender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/GameCalender.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/Mineral.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Mineral.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/animal/AnimalProduct.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/animal/AnimalProduct.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Minerals.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Minerals.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/GameMenuCommands.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/GameMenuCommands.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/View/GameMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/GameMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/TimeDateWeatherTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/test/TimeDateWeatherTest.class" afterDir="false" />
+    <list default="true" id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/FarmingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/FarmingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Shops/ShopItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Shops/ShopItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Commands/AnimalCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Commands/AnimalCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Shops/ShopItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Shops/ShopItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-        <option value="Enum" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Mahdi-karbasian&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/advanced-programming-sut-2025/advanced-programming-phase-1-group-35.git&quot;,
-    &quot;accountId&quot;: &quot;1b2c4629-7c9e-4520-9090-c32297472d8e&quot;
-  }
-}</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
-}</component>
-  <component name="ProjectId" id="2vTwyWqqePhrhPWGsanPt9eEO5K" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2xDQCeB4v69Wdw3vz5FQS0VkclI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -74,39 +40,24 @@
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "krbs",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/LENOVO/Desktop/Stardew Valley/pom.xml",
+    "last_opened_file_path": "D:/ap_project/advanced-programming-phase-1-group-35",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/LENOVO/Desktop/Stardew Valley/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.reader.mode",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\LENOVO\Desktop\Stardew Valley\src\models" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
-      <module name="Stardew Valley" />
+      <module name="advanced-programming-phase-1-group-35" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Stardew Valley" />
-      <option name="filePath" />
-      <method v="2" />
     </configuration>
   </component>
   <component name="SharedIndexes">
@@ -120,481 +71,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9820c325-9e81-4cf2-b88b-adce6bc10284" name="Changes" comment="" />
-      <created>1744182633838</created>
+      <changelist id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="" />
+      <created>1747470038277</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1744182633838</updated>
-      <workItem from="1744182634897" duration="1166000" />
-      <workItem from="1744183829432" duration="333000" />
-      <workItem from="1744184403716" duration="2244000" />
-      <workItem from="1744188998603" duration="338000" />
-      <workItem from="1744189852869" duration="3014000" />
-      <workItem from="1744210784043" duration="1831000" />
-      <workItem from="1744276364211" duration="12000" />
-      <workItem from="1744532021038" duration="5310000" />
-      <workItem from="1744540880900" duration="7000" />
-      <workItem from="1744564802159" duration="2734000" />
-      <workItem from="1744966580452" duration="1383000" />
-      <workItem from="1745068586024" duration="3299000" />
-      <workItem from="1745088842298" duration="5913000" />
-      <workItem from="1745233818049" duration="8321000" />
-      <workItem from="1745317167650" duration="16206000" />
-      <workItem from="1745393903400" duration="48595000" />
-      <workItem from="1745758555186" duration="22395000" />
-      <workItem from="1745861677676" duration="13000" />
-      <workItem from="1746179388558" duration="5617000" />
-      <workItem from="1746271178511" duration="6173000" />
-      <workItem from="1746369965727" duration="921000" />
-      <workItem from="1746390738098" duration="12339000" />
-      <workItem from="1746531540084" duration="1762000" />
-      <workItem from="1746784686268" duration="76641000" />
-      <workItem from="1747145731096" duration="398000" />
-      <workItem from="1747403396593" duration="372000" />
-      <workItem from="1747403829973" duration="25000" />
-      <workItem from="1747403913342" duration="99000" />
-      <workItem from="1747404033345" duration="49703000" />
+      <updated>1747470038277</updated>
+      <workItem from="1747470039374" duration="14537000" />
     </task>
-    <task id="LOCAL-00032" summary="saplings added">
-      <option name="closed" value="true" />
-      <created>1746806991133</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1746806991133</updated>
-    </task>
-    <task id="LOCAL-00033" summary="fixed crop and tree plantation">
-      <option name="closed" value="true" />
-      <created>1746830578497</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1746830578497</updated>
-    </task>
-    <task id="LOCAL-00034" summary="pulleed main">
-      <option name="closed" value="true" />
-      <created>1746873970726</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1746873970726</updated>
-    </task>
-    <task id="LOCAL-00035" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1746875886232</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1746875886232</updated>
-    </task>
-    <task id="LOCAL-00036" summary="added artisan enum">
-      <option name="closed" value="true" />
-      <created>1746886733784</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1746886733784</updated>
-    </task>
-    <task id="LOCAL-00037" summary="added craftable Items">
-      <option name="closed" value="true" />
-      <created>1746951401848</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1746951401848</updated>
-    </task>
-    <task id="LOCAL-00038" summary="normal commit">
-      <option name="closed" value="true" />
-      <created>1746952414002</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1746952414002</updated>
-    </task>
-    <task id="LOCAL-00039" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1746952916493</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1746952916493</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Crafting items">
-      <option name="closed" value="true" />
-      <created>1746994505912</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1746994505912</updated>
-    </task>
-    <task id="LOCAL-00041" summary="fixing bugs">
-      <option name="closed" value="true" />
-      <created>1747050779028</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1747050779028</updated>
-    </task>
-    <task id="LOCAL-00042" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747051261561</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1747051261561</updated>
-    </task>
-    <task id="LOCAL-00043" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747051349020</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1747051349020</updated>
-    </task>
-    <task id="LOCAL-00044" summary="fixed these:fertilizers,crop info,growing,and some other things that i don't remember">
-      <option name="closed" value="true" />
-      <created>1747127103248</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1747127103248</updated>
-    </task>
-    <task id="LOCAL-00045" summary="crow attack added">
-      <option name="closed" value="true" />
-      <created>1747143028132</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1747143028132</updated>
-    </task>
-    <task id="LOCAL-00046" summary="crow attack added(2)">
-      <option name="closed" value="true" />
-      <created>1747143053044</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1747143053044</updated>
-    </task>
-    <task id="LOCAL-00047" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747144497193</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1747144497193</updated>
-    </task>
-    <task id="LOCAL-00048" summary="don't know what happened">
-      <option name="closed" value="true" />
-      <created>1747405249201</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1747405249201</updated>
-    </task>
-    <task id="LOCAL-00049" summary="pulled">
-      <option name="closed" value="true" />
-      <created>1747405415896</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1747405415896</updated>
-    </task>
-    <task id="LOCAL-00050" summary="nigger">
-      <option name="closed" value="true" />
-      <created>1747406178981</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1747406178982</updated>
-    </task>
-    <task id="LOCAL-00051" summary="commit">
-      <option name="closed" value="true" />
-      <created>1747406587985</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1747406587985</updated>
-    </task>
-    <task id="LOCAL-00052" summary="commit2">
-      <option name="closed" value="true" />
-      <created>1747406599118</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1747406599118</updated>
-    </task>
-    <task id="LOCAL-00053" summary="planting seeds works">
-      <option name="closed" value="true" />
-      <created>1747413116921</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1747413116921</updated>
-    </task>
-    <task id="LOCAL-00054" summary="planting seeds works">
-      <option name="closed" value="true" />
-      <created>1747417475183</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1747417475183</updated>
-    </task>
-    <task id="LOCAL-00055" summary="fixed a few things that i don't remember">
-      <option name="closed" value="true" />
-      <created>1747427770913</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1747427770913</updated>
-    </task>
-    <task id="LOCAL-00056" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747428004548</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1747428004548</updated>
-    </task>
-    <task id="LOCAL-00057" summary="what just happened">
-      <option name="closed" value="true" />
-      <created>1747429241035</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1747429241035</updated>
-    </task>
-    <task id="LOCAL-00058" summary="recipes">
-      <option name="closed" value="true" />
-      <created>1747443547402</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1747443547402</updated>
-    </task>
-    <task id="LOCAL-00059" summary="crafting added">
-      <option name="closed" value="true" />
-      <created>1747447625362</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1747447625362</updated>
-    </task>
-    <task id="LOCAL-00060" summary="farming">
-      <option name="closed" value="true" />
-      <created>1747468123540</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1747468123540</updated>
-    </task>
-    <task id="LOCAL-00061" summary="farming">
-      <option name="closed" value="true" />
-      <created>1747468428968</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1747468428968</updated>
-    </task>
-    <task id="LOCAL-00062" summary="farming xp">
-      <option name="closed" value="true" />
-      <created>1747468808344</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1747468808344</updated>
-    </task>
-    <task id="LOCAL-00063" summary="pulling main">
-      <option name="closed" value="true" />
-      <created>1747468892081</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1747468892081</updated>
-    </task>
-    <task id="LOCAL-00064" summary="pulling main">
-      <option name="closed" value="true" />
-      <created>1747469188903</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1747469188903</updated>
-    </task>
-    <task id="LOCAL-00065" summary="pulling main">
-      <option name="closed" value="true" />
-      <created>1747469197969</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1747469197969</updated>
-    </task>
-    <task id="LOCAL-00066" summary="nuh">
-      <option name="closed" value="true" />
-      <created>1747469958698</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1747469958698</updated>
-    </task>
-    <task id="LOCAL-00067" summary="commit">
-      <option name="closed" value="true" />
-      <created>1747473107958</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1747473107958</updated>
-    </task>
-    <task id="LOCAL-00068" summary="added foraging minerals">
-      <option name="closed" value="true" />
-      <created>1747477507507</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1747477507507</updated>
-    </task>
-    <task id="LOCAL-00069" summary="added foraging minerals">
-      <option name="closed" value="true" />
-      <created>1747477914219</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1747477914219</updated>
-    </task>
-    <task id="LOCAL-00070" summary="unlockable recipes">
-      <option name="closed" value="true" />
-      <created>1747479491416</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1747479491416</updated>
-    </task>
-    <task id="LOCAL-00071" summary="fixed things(don't know how)">
-      <option name="closed" value="true" />
-      <created>1747484179170</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1747484179170</updated>
-    </task>
-    <task id="LOCAL-00072" summary="fixed things(don't know how)">
-      <option name="closed" value="true" />
-      <created>1747484184408</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1747484184408</updated>
-    </task>
-    <task id="LOCAL-00073" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747484721912</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1747484721912</updated>
-    </task>
-    <task id="LOCAL-00074" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747484742211</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1747484742211</updated>
-    </task>
-    <task id="LOCAL-00075" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747485067289</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1747485067289</updated>
-    </task>
-    <task id="LOCAL-00076" summary="pulled main">
-      <option name="closed" value="true" />
-      <created>1747485176280</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1747485176281</updated>
-    </task>
-    <task id="LOCAL-00077" summary="deleted target">
-      <option name="closed" value="true" />
-      <created>1747485602992</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1747485602992</updated>
-    </task>
-    <task id="LOCAL-00078" summary="added green house">
-      <option name="closed" value="true" />
-      <created>1747486541031</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1747486541031</updated>
-    </task>
-    <task id="LOCAL-00079" summary="crafting artisans">
-      <option name="closed" value="true" />
-      <created>1747488395228</created>
-      <option name="number" value="00079" />
-      <option name="presentableId" value="LOCAL-00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1747488395228</updated>
-    </task>
-    <task id="LOCAL-00080" summary="pulling main">
-      <option name="closed" value="true" />
-      <created>1747488478854</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1747488478854</updated>
-    </task>
-    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixing bugs" />
-    <MESSAGE value="fixed these:fertilizers,crop info,growing,and some other things that i don't remember" />
-    <MESSAGE value="crow attack added" />
-    <MESSAGE value="crow attack added(2)" />
-    <MESSAGE value="don't know what happened" />
-    <MESSAGE value="pulled" />
-    <MESSAGE value="nigger" />
-    <MESSAGE value="commit2" />
-    <MESSAGE value="planting seeds works" />
-    <MESSAGE value="fixed a few things that i don't remember" />
-    <MESSAGE value="what just happened" />
-    <MESSAGE value="recipes" />
-    <MESSAGE value="crafting added" />
-    <MESSAGE value="farming" />
-    <MESSAGE value="farming xp" />
-    <MESSAGE value="nuh" />
-    <MESSAGE value="commit" />
-    <MESSAGE value="added foraging minerals" />
-    <MESSAGE value="unlockable recipes" />
-    <MESSAGE value="fixed things(don't know how)" />
-    <MESSAGE value="pulled main" />
-    <MESSAGE value="deleted target" />
-    <MESSAGE value="added green house" />
-    <MESSAGE value="crafting artisans" />
-    <MESSAGE value="pulling main" />
-    <option name="LAST_COMMIT_MESSAGE" value="pulling main" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Stardew_Valley$Main.ic" NAME="Main Coverage Results" MODIFIED="1746997549046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>org.example.*</FILTER>
-    </SUITE>
   </component>
 </project>
