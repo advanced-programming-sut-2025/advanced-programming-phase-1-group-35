@@ -25,7 +25,7 @@ public class Trade extends Gift{
     public String toString() {
         GameMenuController controller = new GameMenuController();
         String m = "sender : " + controller.getUserByID(senderID) + "\nrecipient : " + controller.getUserByID(recipientID) +
-        "\nitem: " + itemInterface + "\namount: " + amount + "is answered: " + isAnswered;
+        "\nitem: " + itemInterface.getName() + "\namount: " + amount + "\nis answered: " + isAnswered + "\nID: " + id;
         if(isAnswered){
             m += accepted ? "   accepted" : "   rejected";
         }

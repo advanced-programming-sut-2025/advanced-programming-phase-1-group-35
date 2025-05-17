@@ -175,6 +175,9 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.sellProduct.getMatcher(input)) != null) {
             System.out.println(controller.Sell(matcher.group("name"), matcher.group("amount")));
         }
+        else if((matcher = GameMenuCommands.goToTradeMenu.getMatcher(input)) != null) {
+            System.out.println(controller.goToTradeMenu());
+        }
         else {
             System.out.println("Invalid input");
         }

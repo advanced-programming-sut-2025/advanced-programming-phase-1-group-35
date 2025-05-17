@@ -45,11 +45,10 @@ public class TradeMenuController {
         }
         Result result = null;
         result = switch (type) {
-            case "money" -> tradeWithMoney(receiver ,item, amount, priceString);
+            case "cash" -> tradeWithMoney(receiver ,item, amount, priceString);
             case "item" -> tradeWithItem(receiver, item, amount, targetItemName, targetAmountString);
             default -> null;
         };
-        gameMenuController.goToNextTurn(receiver);
         return result;
     }
 
