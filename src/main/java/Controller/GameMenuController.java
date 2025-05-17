@@ -44,7 +44,6 @@ public class GameMenuController {
     public String showCropInfo(String cropName) {
         return cropController.getCropInfo(cropName);
     }
-
     public Result plantSeed(String seedName, String direction){
         return farmingController.plantSeed(seedName, direction);
     }
@@ -66,7 +65,6 @@ public class GameMenuController {
         App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(),1);
         return new Result(true, "picked up "+ matchingSeed.get().getName());
     }
-
     public Result fertilize(String fertilizerName, String direction){
         if(!direction.toLowerCase().matches("up|down|left|right")){
             return new Result(false, "Invalid direction");
@@ -186,12 +184,10 @@ public class GameMenuController {
         chooseMap();
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
-
     private boolean isUserInOtherGame(User user) {
         if(user.getCurrentGame() == null) return false;
         return true;
     }
-
     public void chooseMap() throws IOException {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
@@ -234,7 +230,6 @@ public class GameMenuController {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         return farmingController.ShowCrop(x, y);
     }
-
     public Result giveSeed(String seedName) throws IOException {
 
         for (SeedEnum seedEnum : SeedEnum.values()) {
@@ -245,7 +240,6 @@ public class GameMenuController {
         }
             return new Result(false,"nuh uh");
     }
-
     public Result pickItem(String itemName, String direction) throws IOException {
         ItemConstant item = getItemConstantByName(itemName);
         Tile tile = findTile(direction);
@@ -262,7 +256,6 @@ public class GameMenuController {
         tile.getContents().remove(item);
         return new Result(true, "Item " + itemName + " has been picked up");
     }
-
     public Result useScareCrow(String direction){
         Tile tile = findTile(direction);
         if(tile.getPlanted() != null || tile.getContents() != null){
@@ -278,7 +271,6 @@ public class GameMenuController {
         }
         return new Result(true, "scare crow planted");
     }
-
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if(game == null) {
@@ -287,7 +279,6 @@ public class GameMenuController {
         App.setCurrentGame(game);
         return new Result(true, "You have successfully loaded game");
     }
-
     public Result exitGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if(game == null) return new Result(false, "You have no ongoing game");
@@ -297,7 +288,6 @@ public class GameMenuController {
         App.setCurrentGame(null);
         return new Result(true, "You have successfully exited the game , you may create or load another game .");
     }
-
     public Result deleteCurrentGame() throws IOException {
         Game game = App.getCurrentGame();
         User requester = game.getPlayingUser();
@@ -332,7 +322,6 @@ public class GameMenuController {
             return new Result(false, "insufficient amount of votes , game continues");
         }
     }
-
     public Result ShowRecipes(){
         if(App.getCurrentGame().getPlayingUser().getCraftingRecipes() == null){
             return new Result(false, "You have no crafting recipes");
@@ -386,8 +375,6 @@ public class GameMenuController {
     }
 
     public Result CraftUsingMachine(){return null;}
-
-
 
     public Result goToNextTurn(User forceUser) throws IOException {
         User user ;
@@ -652,13 +639,16 @@ public class GameMenuController {
     }
 
     public Result cheatAddItemToBackPack(String itemName, String amountString) throws IOException {
-        ItemInterface item = getItemConstantByName(itemName).getItem();
-        if(item == null) return new Result(false, "no item found via name " + itemName);
-        int amount = Integer.parseInt(amountString);
-        App.getCurrentGame().getPlayingUser().backPack.items.put(item,amount);
-        return new Result(true, amount + " of " +itemName + " was given to player");
+        try {
+            ItemInterface item = getItemConstantByName(itemName).getItem();
+            if (item == null) return new Result(false, "no item found via name " + itemName);
+            int amount = Integer.parseInt(amountString);
+            App.getCurrentGame().getPlayingUser().backPack.items.put(item, amount);
+            return new Result(true, amount + " of " + itemName + " was given to player");
+        }catch (NullPointerException e){
+            return new Result(false, "no item found via name " + itemName);
+        }
     }
-
     public Result chopTree(String direction){
         Tile tile = findTile(direction);
         if(!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.AXE)){
