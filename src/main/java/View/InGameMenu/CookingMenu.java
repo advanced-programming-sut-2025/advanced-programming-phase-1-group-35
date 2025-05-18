@@ -15,11 +15,7 @@ public class CookingMenu extends AppMenu {
     public void check(Scanner scanner) {
         String command = scanner.nextLine().trim();
         Matcher matcher;
-        if ((matcher = CookingCommands.placeItemInFridge.getMatcher(command)) != null) {
-            System.out.println(controller.placeItemInFridge(matcher.group(1)));
-        } else if ((matcher = CookingCommands.pickItemFromFridge.getMatcher(command)) != null) {
-            System.out.println(controller.pickItemFromFridge(matcher.group(1)));
-        } else if ((matcher = CookingCommands.showCookingRecipes.getMatcher(command)) != null) {
+        if ((matcher = CookingCommands.showCookingRecipes.getMatcher(command)) != null) {
             System.out.println(controller.showCookingRecipes());
         } else if ((matcher = CookingCommands.cook.getMatcher(command)) != null) {
             System.out.println(controller.cook(matcher.group(1)));

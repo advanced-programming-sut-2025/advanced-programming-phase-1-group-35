@@ -57,7 +57,7 @@ public class User {
     protected Tool currentTool;
     private Energy energy = new Energy();
     public Cabin cabin;
-    public ArrayList<CookingRecipes> learnedRecipes = new ArrayList<>();
+    public ArrayList<CookingRecipes> learnedRecipes;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -69,6 +69,7 @@ public class User {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.ID = IDCounter++;
+        this.learnedRecipes = new ArrayList<>();
     }
 
     public ArrayList<CraftingRecipes> getCraftingRecipes() {

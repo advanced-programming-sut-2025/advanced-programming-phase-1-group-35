@@ -20,6 +20,7 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
         this.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
         this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
     }
 
@@ -44,7 +45,7 @@ public class BackPack {
         User player = game.getPlayingUser();
         for (ItemInterface item : items.keySet()) {
             if (item instanceof Food food) {
-                if (food.recipe.getDisplayName().equals(foodName)) {
+                if (food.recipe.toString().equalsIgnoreCase(foodName)) {
                     return food;
                 }
             }
@@ -85,7 +86,8 @@ public class BackPack {
 
     public Result upgradeBackPack() {
         ShopMenuController controller = new ShopMenuController();
-        if (!controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()).
+        if (controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()) != null &&
+                !controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()).
                 getName().equalsIgnoreCase("GeneralStore")) {
             return new Result(false, "You are not in Pierre shop");
         }

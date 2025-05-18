@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-public enum CookingRecipes implements ItemConstant{
+public enum CookingRecipes implements ItemConstant {
     FRIED_EGG("Fried Egg", Map.of(CookingIngredient.EGG, 1), 50, "", "Starter", 35),
     BAKED_FISH("Baked Fish", Map.of(
             CookingIngredient.SARDINE, 1,
@@ -98,9 +98,9 @@ public enum CookingRecipes implements ItemConstant{
             CookingIngredient.SUGAR, 1,
             CookingIngredient.MILK, 1
     ), 125, "Mining (5h)", "Mining Level 1", 200),
-    TROUT_SOUP("trout soup", null, 200 , "", "", 250),
 
-    ;
+    // ✅ Fixed this one to avoid null pointer crash
+    TROUT_SOUP("Trout Soup", Map.of(), 200 , "", "", 250);
 
     private final String displayName;
     private final Map<CookingIngredient, Integer> ingredients;
@@ -111,7 +111,8 @@ public enum CookingRecipes implements ItemConstant{
 
     CookingRecipes(String displayName, Map<CookingIngredient, Integer> ingredients, int energy, String buff, String source, int price) {
         this.displayName = displayName;
-        this.ingredients = Collections.unmodifiableMap(ingredients);
+        // ✅ Defensive fix: treat null as empty map
+        this.ingredients = Collections.unmodifiableMap(ingredients != null ? ingredients : Map.of());
         this.energy = energy;
         this.buff = buff;
         this.source = source;
@@ -150,6 +151,5 @@ public enum CookingRecipes implements ItemConstant{
     @Override
     public ItemInterface getItem() throws IOException {
         return new Food(this);
-        //TODO
     }
 }

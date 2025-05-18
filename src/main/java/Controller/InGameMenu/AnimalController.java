@@ -8,11 +8,10 @@ import Model.animal.Animal;
 import Model.animal.AnimalProduct;
 import Model.animal.Fish;
 import Model.enums.TileType;
+import Model.enums.ToolTypes;
 import Model.enums.WeatherCondition;
 import Model.enums.animal.AnimalType;
 import Model.enums.animal.FishType;
-
-import java.util.Arrays;
 
 public class AnimalController {
     public Result buildAnimalHouse(String name, int x, int y) {
@@ -188,8 +187,10 @@ public class AnimalController {
     }
 
     public Result fishing(String poleName) {
-        if (!new GameMenuController().isCloseTOSea()) {
+        if (!new GameMenuController().isCloseToSea()) {
             return new Result(false, "you are not near to a sea!");
+        } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {
+            return new Result(false, "you are not equipped by a fishing pole!");
         }
         FishType randomFish = FishType.getRandomFish();
         int fishCount = 0;
@@ -217,7 +218,7 @@ public class AnimalController {
         Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
         App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
                 App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
-        return new Result(true, fishCount + " of " + fish.getName() + "has been caught!");
+        return new Result(true, fishCount + " of " + fish.getName() + " has been caught!");
     }
 
     public Result cheatFriendshipAnimal(String animalName, int amount) {
