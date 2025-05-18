@@ -5,31 +5,23 @@ import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.CropClasses.Crop;
-import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
 import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
-import Model.enums.Colors;
-import Model.enums.GameMenuCommands;
-import Model.enums.Menu;
-import Model.enums.Shops.Products.GeneralStoreProducts;
-import Model.enums.TileType;
-import Model.enums.TileType;
-import Model.enums.machines.ArtisanProductDetails;
-import Model.machines.ArtisanProduct;
 import Model.enums.*;
 import Model.enums.Crops.*;
 import Model.enums.Shops.Products.*;
+import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.animal.AnimalProductDetails;
 import Model.enums.animal.FishType;
 import Model.enums.machines.ArtisanProductDetails;
+import Model.machines.ArtisanProduct;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
-import java.security.interfaces.RSAKey;
 import java.util.*;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -45,6 +37,9 @@ public class GameMenuController {
         return cropController.getCropInfo(cropName);
     }
 
+    public Result showCurrentMenu(){
+        return new Result(true, "Game Menu");
+    }
     public Result plantSeed(String seedName, String direction){
         return farmingController.plantSeed(seedName, direction);
     }
@@ -150,14 +145,7 @@ public class GameMenuController {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
     }
     public void exitMenu() throws IOException {
-        if(!App.isStayLoggedIn()) {
-            App.setLoggedInUser(null);
-            App.setCurrentMenu(Menu.LoginMenu);
-        }
-        else App.setCurrentMenu(Menu.MainMenu);
-        App.setCurrentGame(null);
-        App.serializeApp();
-        App.setCurrentMenu(Menu.ExitMenu);
+        App.setCurrentMenu(Menu.MainMenu);
     }
     public Result createNewGame(String username1, String username2, String username3) throws IOException {
         LoginMenuController loginMenuController = new LoginMenuController();
@@ -487,7 +475,10 @@ public class GameMenuController {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
         increaseMutualXP(user, user.getAskedMarriage(), -xp);
         user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity()/2);
+        user.getAskedMarriage().getEnergy().setEnergyCapacity(100);
+        user.getAskedMarriage().getEnergy().setEnergyAmount(100);
         user.setAskedMarriage(null);
+
         return new Result(true, "damn , so we breaking hearts now ?");
     }
 
@@ -531,7 +522,7 @@ public class GameMenuController {
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
-        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy());
+        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy(), player);
         if(!path.reachable()) {
             return new Result(false, path.message());
         }
@@ -604,6 +595,8 @@ public class GameMenuController {
                 "@ : greenhouse floorTiles" +
                 "R : rock" +
                 "~ : water" +
+                "7 : tree" +
+                "& : crop" +
                 "0 : not walkable" +
                 "B : black smith" +
                 "C : carpenter's shop" +
@@ -950,7 +943,7 @@ public class GameMenuController {
         if(me.getFriendshipXPs().getOrDefault(friend.getID(), 100)/100 - 1 < 3){
             return new Result(false, "you should finish level two friendship");
         }
-        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquete");
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquet");
         if(item == null){
             return new Result(false, "you are not a magician you can't summon flowers");
         }
@@ -1011,10 +1004,10 @@ public class GameMenuController {
     public Result Sell(String productName , String countString){
         boolean isNearBin = false;
         User player = App.getCurrentGame().getPlayingUser();
-        Point point = player.getCurrentPoint();
+        Tile tile = player.getCurrentTile();
         Tile[][]tiles = App.getCurrentGame().getMap().getTiles();
-        for(int i = point.x -1 ; i <= point.x + 1 ; i++){
-            for(int j = point.y -1 ; j <= point.y + 1 ; j++){
+        for(int i = tile.coordination.x -1 ; i <= tile.coordination.x + 1 ; i++){
+            for(int j = tile.coordination.y -1 ; j <= tile.coordination.y + 1 ; j++){
                 if(tiles[i][j].getTileType().equals(TileType.ShippingBin)){
                     isNearBin = true;
                     break;

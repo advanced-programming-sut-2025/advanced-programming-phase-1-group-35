@@ -1,10 +1,10 @@
 package Model.enums.Shops.Products;
 
 import Model.ItemInterface;
-import Model.ItemInterface;
 import Model.Shops.ShopItem;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
+
 import java.io.IOException;
 public enum GeneralStoreProducts implements ShopProduct, ItemConstant ,ItemInterface{
     //All year round stock

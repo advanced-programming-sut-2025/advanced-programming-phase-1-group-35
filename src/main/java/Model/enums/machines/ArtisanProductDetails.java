@@ -5,18 +5,13 @@ import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.Fruit;
 import Model.enums.ItemConstant;
 import Model.enums.animal.FishType;
-import Model.enums.ItemConstant;
 import Model.machines.ArtisanProduct;
 
-import java.sql.Time;
 import java.util.HashMap;
-import java.util.Map;
 
-import static Model.enums.Crops.SeedEnum.SUNFLOWERSEED;
-import static Model.enums.animal.AnimalProductDetails.GoatMilk;
-import static Model.enums.animal.AnimalProductDetails.Milk;
-import static Model.enums.animal.AnimalProductDetails.*;
 import static Model.enums.Crops.CropEnum.*;
+import static Model.enums.Crops.SeedEnum.SUNFLOWERSEED;
+import static Model.enums.animal.AnimalProductDetails.*;
 public enum ArtisanProductDetails implements ItemInterface, ItemConstant {
     Honey("It's a sweet syrup produced by bees.", 75, 4*24, null, 350),
     Cheese("It's your basic cheese.", 100, 3, new HashMap<>() {{put(new ItemInterface[]{Milk}, 1);}}, 230),  // use logic for Large Milk price

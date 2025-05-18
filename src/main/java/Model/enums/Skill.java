@@ -1,6 +1,8 @@
 package Model.enums;
 
-import Model.Tools.SkillLevel;;
+import Model.Tools.SkillLevel;
+
+;
 
 public enum Skill {
     farming(5),

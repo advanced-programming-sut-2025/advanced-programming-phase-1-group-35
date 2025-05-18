@@ -1,17 +1,16 @@
 package Model.FarmStuff;
 
-import Model.*;
 import Model.Buildings.AnimalHouse;
 import Model.Buildings.Building;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
-import Model.FarmStuff.*;
-import Model.FarmStuff.Home.*;
-import Model.Tools.Tool;
+import Model.FarmStuff.Home.Cabin;
 import Model.Shops.Shop;
+import Model.Tile;
+import Model.Tools.Tool;
+import Model.User;
 import Model.animal.Animal;
 import Model.enums.FarmType;
-import Model.enums.Shops.ShopEnum;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 

@@ -3,10 +3,6 @@ package Model.enums.Crops;
 import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
 public enum MixedSeeds implements PlantAble, ItemInterface, ItemConstant {
     SPRING(new CropEnum[]{CropEnum.CAULIFLOWER, CropEnum.PARSNIP, CropEnum.POTATO, CropEnum.BLUE_JAZZ, CropEnum.TULIP}),
     SUMMER(new CropEnum[]{CropEnum.CORN, CropEnum.HOT_PEPPER, CropEnum.RADISH, CropEnum.WHEAT, CropEnum.POPPY, CropEnum.SUNFLOWER, CropEnum.SUMMER_SPANGLE}),

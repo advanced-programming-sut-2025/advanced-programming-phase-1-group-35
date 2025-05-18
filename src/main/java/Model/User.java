@@ -7,9 +7,9 @@ import Model.NPCs.Quest;
 import Model.Tools.BackPack;
 import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
+import Model.TradeAndGift.Gift;
 import Model.TradeAndGift.Trade;
 import Model.enums.*;
-import Model.TradeAndGift.Gift;
 
 import java.util.ArrayList;
 import java.util.HashMap;

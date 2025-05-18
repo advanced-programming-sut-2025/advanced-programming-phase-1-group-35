@@ -4,7 +4,6 @@
     //to do: change stages and seasons into Lists//
 
 
-    import Model.ItemInterface;
     import Model.CropClasses.Crop;
     import Model.ItemInterface;
     import Model.Tile;

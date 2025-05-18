@@ -13,7 +13,7 @@ public class PathFinder {
         this.height = tiles[0].length;
     }
 
-    public Path walk(int startX, int startY, int destX, int destY, Energy energy) {
+    public Path walk(int startX, int startY, int destX, int destY, Energy energy, User user) {
         // Early exit checks
         if (startX == destX && startY == destY) {
             return new Path(false, Collections.emptyList(), 0,
@@ -25,7 +25,7 @@ public class PathFinder {
         }
         if (!tiles[destX][destY].isWalkable() ||
                 !((tiles[destX][destY].getOwner() == null) ||
-                        tiles[destX][destY].getOwner().equals(tiles[startX][startY].getOwner()))) {
+                        tiles[destX][destY].getOwner().equals(user))) {
             return new Path(false, Collections.emptyList(), 0,
                     "destination unreachable");
         }

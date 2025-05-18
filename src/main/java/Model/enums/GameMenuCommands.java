@@ -1,8 +1,5 @@
 package Model.enums;
 
-import View.AppMenu;
-
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +8,7 @@ public enum GameMenuCommands {
     chooseMap("\\s*game\\s+map\\s+(?<number>\\d+)(\\s+(?<type>\\d+))?\\s*"),
     loadGame("\\s*load\\s+game\\s*"),
     exitGame("\\s*exit\\s+game\\s*"),
+    showCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
     menuExit("menu\\s+exit"),
     deleteGame("\\s*force\\s+terminate\\s+game\\s*"),
     nextTurn("\\s*next\\s+turn\\s*"),
@@ -45,6 +43,7 @@ public enum GameMenuCommands {
     goToShopMenu("go\\s+to\\s+shop\\s+menu"),
     sellProduct("sell\\s+(?<name>.+?)(\\s+-n\\s+(?<count>\\d+))?"),
     goToCookingMenu("go\\s+to\\s+cooking\\s+menu"),
+    goToTradeMenu("go\\s+to\\s+trade\\s+menu"),
     goToAnimalMenu("go\\s+to\\s+animal\\s+menu"),
     talkPlayer("talk\\s+-u\\s+(?<username>\\S+)\\s+-m\\s+(?<message>.+?)"),
     talkHistory("talk\\s+history\\s+-u\\s+(?<username>\\S+)"),
@@ -55,7 +54,7 @@ public enum GameMenuCommands {
     rateGift("gift\\s+rate\\s+-i\\s+(?<id>\\d+)\\s+-r\\s+(?<rate>\\d+)"),
     hug("hug\\s+-u\\s+(?<username>\\S+)"),
     flower("flower\\s+-u\\s+(?<username>\\S+)"),
-    askMarriage("ask\\s+\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
+    askMarriage("ask\\s+marriage\\s+-u\\s+(?<username>\\S+)"),
     respondToMarriageRequest("respond\\s+(?<answer>accept|reject)"),
     showPlayerPosition("show position"),
     SetWeather("\\s*set\\s+weather\\s+-u\\s+(?<weather>\\S+)\\s*"),
@@ -67,7 +66,7 @@ public enum GameMenuCommands {
     CheatGetItem("\\s*cheat\\s+get\\s+(?<itemName>\\S+)\\s+(?<amount>\\d+)\\s*"),
     ChopTree("\\s*chop\\s+(?<direction>\\S+)"),
     cheatPlaceCraft("cheat place (?<name>\\S+) (?<direction>\\S+)"),
-
+    showMoney("show money"),
     ;
 
 
@@ -78,7 +77,7 @@ public enum GameMenuCommands {
     }
 
     public Matcher getMatcher(String input) {
-        java.util.regex.Matcher matcher = Pattern.compile(this.regex).matcher(input);
+        Matcher matcher = Pattern.compile(this.regex).matcher(input);
 
         if (matcher.matches()) {
             return matcher;

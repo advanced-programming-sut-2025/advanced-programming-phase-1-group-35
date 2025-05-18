@@ -6,13 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="my-project" />
+        <module name="StardewValley" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="RegisterAndLogin" target="17" />
       <module name="Stardew_Valley" target="17" />
-      <module name="StardewValley" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

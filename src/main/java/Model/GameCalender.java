@@ -16,7 +16,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GameCalender {
@@ -75,13 +74,13 @@ public class GameCalender {
             gameDateTime = gameDateTime.plusHours(11);
             goToNextDay();
         }
-        if (gameDateTime.getDayOfMonth() == 29) {
-            goToNextSeason();
-            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
-        }
+//        if (gameDateTime.getDayOfMonth() == 29) {
+//            goToNextSeason();
+//            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
+//        }
     }
 
-    private void goToNextSeason() {
+    public void goToNextSeason() {
         if (season == Seasons.Spring) {
             season = Seasons.Summer;
         } else if (season == Seasons.Summer) {
@@ -91,9 +90,8 @@ public class GameCalender {
         } else if (season == Seasons.Winter) {
             season = Seasons.Spring;
         }
-        season = season.findNextSeason(season);
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
-            if (!crop.getSeasons().equals(season)) {
+            if (!crop.getSeasons().contains(season)) {
                 crop.getCropTile().setPlanted(null);
                 crop.getCropTile().getContents().remove(crop);
             }
@@ -111,9 +109,17 @@ public class GameCalender {
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
+
+
+        if (gameDateTime.getDayOfMonth() > 28) {
+            gameDateTime = gameDateTime.withDayOfMonth(1);
+            goToNextSeason();
+        }
+
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         farmingController.crowAttack();
         Random rand = new Random();
+
         if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
             for(int i = 0; i<20 ; i++) {
                 Tile[][] tile = App.getCurrentGame().getMap().getTiles();
@@ -124,6 +130,7 @@ public class GameCalender {
                 else i--;
             }
         }
+
         ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
         for (Crop crop : crops) {
             crop.getCropTile().setWatered(false);
@@ -164,74 +171,76 @@ public class GameCalender {
                     }
                 }
             }
-            for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
-                App.getCurrentGame().getMap().getCrops().get(i).grow();
-            }
-            for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size() ; i++) {
-                Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
-                tree.getTile().setWatered(false);
-                if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
-                    if(!tree.getTile().getTileType().equals(TileType.BuildingTile)) {
+        }
+
+        for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
+            App.getCurrentGame().getMap().getCrops().get(i).grow();
+        }
+
+        for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size() ; i++) {
+            Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
+            tree.getTile().setWatered(false);
+            if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
+                if(!tree.getTile().getTileType().equals(TileType.BuildingTile)) {
                     tree.setDaysSinceWatered(0);
-                    tree.getTile().setWatered(true);}
+                    tree.getTile().setWatered(true);
                 }
-                else if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
-                    if (rand.nextInt(100) < 25) {
+            }
+            else if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
+                if (rand.nextInt(100) < 25) {
+                    tree.getTile().setPlanted(null);
+                    tree.getTile().getContents().remove(tree);
+                    tree.getTile().setContentSymbol('.');
+                    tree.getTile().setSymbol('.');
+                    tree.getTile().changeTileContents(null);
+                    App.getCurrentGame().getMap().getTrees().remove(tree);
+                    App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+                }
+            }
+            tree.grow();
+            if (tree.isFertilized()) {
+                boolean fertilizer = false;
+                if (tree.getFertilizer().getName().equals("Speed-Gro")) {
+                    if (tree.getDaysSinceLastGrowth() == tree.getStages().get(tree.getCurrentState()) - 1) {
+                        tree.setCurrentState(tree.getCurrentState() + 1);
+                        tree.setDaysSinceLastGrowth(0);
+                    }
+                } else if (tree.getFertilizer().getName().equals("Deluxe Retaining Soil")) {
+                    fertilizer = true;
+                } else if (tree.getFertilizer().getName().equals("Basic Retaining Soil")) {
+                    if (rand.nextInt(100) < 50) fertilizer = true;
+                } else if (tree.getFertilizer().getName().equals("Quality Retaining Soil")) {
+                    if (rand.nextInt(100) < 75) fertilizer = true;
+                }
+                if (tree.getDaysSinceWatered() > 1) {
+                    if (!fertilizer) {
                         tree.getTile().setPlanted(null);
                         tree.getTile().getContents().remove(tree);
-                        tree.getTile().setContentSymbol('.');
-                        tree.getTile().setSymbol('.');
-                        tree.getTile().changeTileContents(null);
-                        App.getCurrentGame().getMap().getTrees().remove(tree);
-                        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
-                    }
-                }
-                tree.grow();
-                if (tree.isFertilized()) {
-                    boolean fertilizer = false;
-                    if (tree.getFertilizer().getName().equals("Speed-Gro")) {
-                        if (tree.getDaysSinceLastGrowth() == tree.getStages().get(tree.getCurrentState()) - 1) {
-                            tree.setCurrentState(tree.getCurrentState() + 1);
-                            tree.setDaysSinceLastGrowth(0);
-                        }
-                    } else if (tree.getFertilizer().getName().equals("Deluxe Retaining Soil")) {
-                        fertilizer = true;
-                    } else if (tree.getFertilizer().getName().equals("Basic Retaining Soil")) {
-                        if (rand.nextInt(100) < 50) fertilizer = true;
-                    } else if (tree.getFertilizer().getName().equals("Quality Retaining Soil")) {
-                        if (rand.nextInt(100) < 75) fertilizer = true;
-                    }
-                    if (tree.getDaysSinceWatered() > 1) {
-                        if (!fertilizer) {
-                            tree.getTile().setPlanted(null);
-                            tree.getTile().getContents().remove(tree);
-                        }
                     }
                 }
             }
-            if (gameDateTime.getDayOfMonth() == 29) {
-                goToNextSeason();
-                gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
+        }
+
+        farmingController.addForagingCrop();
+        farmingController.addForagingSeeds();
+        farmingController.addForAgingTree();
+        farmingController.addForagingMinerals();
+        farmingController.crowAttack();
+
+        for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
+            for (ShopItem product : shop.getProducts()) {
+                product.setDailyBoughtCount(0);
             }
-            farmingController.addForagingCrop();
-            farmingController.addForagingSeeds();
-            farmingController.addForAgingTree();
-            farmingController.addForagingMinerals();
-            farmingController.crowAttack();
-            for (Shop shop : App.getCurrentGame().getMap().getShops()) {//restock the shops
-                for (ShopItem product : shop.getProducts()) {
-                    product.setDailyBoughtCount(0);
-                }
-            }
-            for (User player : App.getCurrentGame().getPlayers()) {
-                player.setMoney(player.getIncome() + player.getMoney());
-                player.setIncome(0);
-                if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
-                    GameMenuController controller = new GameMenuController();
-                    controller.goToNextTurn(player);
-                    GameMenu.print(controller.walk(player,String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
-                            String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
-                }
+        }
+
+        for (User player : App.getCurrentGame().getPlayers()) {
+            player.setMoney(player.getIncome() + player.getMoney());
+            player.setIncome(0);
+            if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
+                GameMenuController controller = new GameMenuController();
+                controller.goToNextTurn(player);
+                GameMenu.print(controller.walk(player,String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                        String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
             }
         }
     }
@@ -253,6 +262,12 @@ public class GameCalender {
         String formattedDate = gameDateTime.format(formatter);
         return new Result(true, "it is " + formattedDate);
     }
+
+//    int neededEnergyAmount = 10;
+//        if(currentPlayer.energy.getEnergyAmount()<neededEnergyAmount){
+//        TODO:currentPlayer.faint();
+//    }
+//    TODO(mhdsdg):currentPlayer.farm.shop.emptyShippingBin();
 
 
 }

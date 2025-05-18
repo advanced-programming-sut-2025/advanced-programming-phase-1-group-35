@@ -1,13 +1,11 @@
 package View;
 
 import Controller.GameMenuController;
-import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.NPCController;
 import Controller.InGameMenu.ToolsController;
 import Model.App;
 import Model.Map;
-import Model.enums.Commands.AnimalCommands;
 import Model.enums.Commands.NPCCommands;
 import Model.enums.Commands.ToolCommands;
 import Model.enums.GameMenuCommands;
@@ -32,7 +30,16 @@ public class GameMenu extends AppMenu {
             FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
             cont.generateStartingPlants();
             cont.addForagingCrop();
-        } else if (GameMenuCommands.showPlayerPosition.getMatcher(input) != null) {
+        }else if((matcher = GameMenuCommands.showCurrentMenu.getMatcher(input)) != null) {
+            System.out.println(controller.showCurrentMenu());
+        }
+        else if((matcher = GameMenuCommands.sellProduct.getMatcher(input)) != null) {
+            System.out.println(controller.Sell(matcher.group("name"), matcher.group("count")));
+        }
+        else if((matcher = GameMenuCommands.showMoney.getMatcher(input)) != null) {
+            System.out.println(App.getCurrentGame().getPlayingUser().getMoney());
+        }
+        else if (GameMenuCommands.showPlayerPosition.getMatcher(input) != null) {
             System.out.println(App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x
                     + " " + App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y);
         } else if ((matcher = GameMenuCommands.loadGame.getMatcher(input)) != null) {
@@ -81,10 +88,7 @@ public class GameMenu extends AppMenu {
             App.setCurrentMenu(Menu.AnimalMenu);
         } else if (GameMenuCommands.goToCookingMenu.getMatcher(input) != null) {
             App.setCurrentMenu(Menu.CookingMenu);
-        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
-            //TODO
-        }
-        else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
+        } else if((matcher = GameMenuCommands.showCropInfo.getMatcher(input) )!= null){
             System.out.println(controller.showCropInfo(matcher.group("cropName")));
         }
         else if((matcher = GameMenuCommands.plantSeed.getMatcher(input) )!= null){
@@ -178,7 +182,9 @@ public class GameMenu extends AppMenu {
         else if((matcher = GameMenuCommands.cheatPlaceCraft.getMatcher(input)) != null) {
             System.out.println(controller.cheatPlaceArtisan(matcher.group("itemName"), matcher.group("direction")));
         }
-
+        else if((matcher = GameMenuCommands.goToTradeMenu.getMatcher(input)) != null) {
+            App.setCurrentMenu(Menu.TradeMenu);
+        }
         else {
             System.out.println("Invalid input");
         }

@@ -2,7 +2,6 @@ package Model;
 
 import Model.NPCs.NPC;
 import Model.enums.NPCs.NPCs;
-import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
 import java.util.ArrayList;

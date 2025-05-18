@@ -8,12 +8,10 @@ import Model.CropClasses.Tree;
 import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
-import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class FarmingController {
@@ -377,8 +375,8 @@ public class FarmingController {
     Random random1 = new Random();
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
-            if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)){
-                if(random1.nextInt(500) < 1){
+            if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)){
+                if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);

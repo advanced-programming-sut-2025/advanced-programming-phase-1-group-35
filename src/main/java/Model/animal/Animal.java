@@ -4,8 +4,8 @@
 package Model.animal;
 
 import Model.ItemInterface;
-import Model.Result;
 import Model.Point;
+import Model.Result;
 import Model.enums.animal.AnimalType;
 
 
