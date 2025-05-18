@@ -9,6 +9,7 @@ public enum ToolCommands {
     showAllTools("tools show available"),
     upgradeTool("tools upgrade (?<toolName>\\S+)"),
     useTool("tools use -d (?<direction>\\d)"),
+    useTrashCan("inventory trash -i (?<name>\\S+) -n (?<number>\\d+)")
     ;
 
     private final String pattern;

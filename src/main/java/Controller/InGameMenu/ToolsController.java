@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class ToolsController {
     public Result toolEquip(String toolName) {
-        System.out.println("Tool equipped");
         User playingUser = App.getCurrentGame().getPlayingUser();
         BackPack backPack = playingUser.backPack;
         ToolTypes toolType;
@@ -65,17 +64,20 @@ public class ToolsController {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         ShopMenuController controller = new ShopMenuController();
+        if (toolName.equalsIgnoreCase("backpack")) {
+            return player.backPack.upgradeBackPack();
+        }
         for (ItemInterface item : player.backPack.items.keySet()) {
             if (item instanceof Tool tool && tool.getToolType().toString().equals(toolName)) {
                 if (tool instanceof FishingPole) {
                     if (controller.findShopByTile(player.getCurrentTile()) != null &&
                             controller.findShopByTile(player.getCurrentTile()).getName().
                                     equalsIgnoreCase("FishShop")) {
-                        return new Result(true, "you are not in Willy store!");
+                        return new Result(false, "you are not in Willy store!");
                     }
                 } else {
-                    if (controller.findShopByTile(player.getCurrentTile()) != null &&
-                            controller.findShopByTile(player.getCurrentTile()).getName().
+                    if (controller.findShopByTile(player.getCurrentTile()) == null ||
+                            !controller.findShopByTile(player.getCurrentTile()).getName().
                                     equalsIgnoreCase("Blacksmith")) {
                         return new Result(false, "you are not in the blacksmith");
                     }
@@ -87,7 +89,7 @@ public class ToolsController {
 
     public Result useTrashCan(String itemName) {
         for (ItemInterface item : App.getCurrentGame().getPlayingUser().backPack.items.keySet()) {
-            if (item.getName().equals(itemName)) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
                 App.getCurrentGame().getPlayingUser().backPack.items.remove(item);
                 return new Result(true, "You have used the trash can and removed: " + itemName);
             }

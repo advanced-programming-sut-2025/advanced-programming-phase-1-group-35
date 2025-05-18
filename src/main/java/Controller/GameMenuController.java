@@ -14,6 +14,7 @@ import Model.TradeAndGift.Gift;
 import Model.enums.Colors;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
+import Model.enums.NPCs.NPCs;
 import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.TileType;
@@ -531,7 +532,7 @@ public class GameMenuController {
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         Tile destTile = tiles[x][y];
         PathFinder p = new PathFinder(tiles);
-        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy());
+        PathFinder.Path path = p.walk(startTile.coordination.x , startTile.coordination.y , x, y, player.getEnergy(), player);
         if(!path.reachable()) {
             return new Result(false, path.message());
         }

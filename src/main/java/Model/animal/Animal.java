@@ -25,6 +25,7 @@ public class Animal implements ItemInterface {
     private boolean canProduceTomorrow;
     private boolean isNazToday;
     private boolean isCollectedToday;
+    public Point location;
 
 
     public Animal(String name, AnimalType animalType, int buyingPrice, double productionRate, String confinement

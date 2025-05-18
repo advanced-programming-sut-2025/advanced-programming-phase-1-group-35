@@ -23,10 +23,12 @@ import java.util.Random;
 public class GameCalender {
     private LocalDateTime gameDateTime;
     private Seasons season;
+    private int dayPassedFromSeason;
 
     public GameCalender() {
         this.gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         this.season = Seasons.Spring;
+        this.dayPassedFromSeason = 0;
     }
 
     public LocalDateTime getGameDateTime() {
@@ -95,10 +97,6 @@ public class GameCalender {
                 animal.setCollectedToday(false);
             }
         }
-        if (gameDateTime.getDayOfMonth() == 29) {
-            goToNextSeason();
-            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
-        }
     }
 
     private void goToNextSeason() {
@@ -111,7 +109,7 @@ public class GameCalender {
         } else if (season == Seasons.Winter) {
             season = Seasons.Spring;
         }
-        season = season.findNextSeason(season);
+        // season = season.findNextSeason(season);
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
             if (!crop.getSeasons().equals(season)) {
                 crop.getCropTile().setPlanted(null);
@@ -131,17 +129,17 @@ public class GameCalender {
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
+        this.dayPassedFromSeason++;
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         farmingController.crowAttack();
         Random rand = new Random();
         if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
-            for(int i = 0; i<20 ; i++) {
+            for (int i = 0; i < 20; i++) {
                 Tile[][] tile = App.getCurrentGame().getMap().getTiles();
                 Tile temp = tile[rand.nextInt(299)][rand.nextInt(249)];
                 if (temp.getTileType().equals(TileType.Soil)) {
                     Weather.hitTileWithThunder(temp);
-                }
-                else i--;
+                } else i--;
             }
         }
         ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
@@ -184,10 +182,10 @@ public class GameCalender {
                     }
                 }
             }
-            for (int i=0 ; i<App.getCurrentGame().getMap().getCrops().size() ; i++) {
+            for (int i = 0; i < App.getCurrentGame().getMap().getCrops().size(); i++) {
                 App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
-            for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size() ; i++) {
+            for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size(); i++) {
                 Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
                 tree.getTile().setWatered(false);
                 if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
@@ -227,10 +225,6 @@ public class GameCalender {
                     }
                 }
             }
-            if (gameDateTime.getDayOfMonth() == 29) {
-                goToNextSeason();
-                gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
-            }
             farmingController.addForagingCrop();
             farmingController.addForagingSeeds();
             farmingController.addForAgingTree();
@@ -247,10 +241,15 @@ public class GameCalender {
                 if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                     GameMenuController controller = new GameMenuController();
                     controller.goToNextTurn(player);
-                    GameMenu.print(controller.walk(player,String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                    GameMenu.print(controller.walk(player, String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
                             String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
                 }
             }
+        }
+        if (this.dayPassedFromSeason == 29) {
+            goToNextSeason();
+            this.dayPassedFromSeason = 0;
+            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
     }
 

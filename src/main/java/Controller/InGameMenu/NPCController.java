@@ -5,12 +5,20 @@ import Model.NPCs.NPC;
 import Model.NPCs.Quest;
 import Model.Tools.BackPack;
 import Model.Tools.Tool;
+import Model.enums.NPCs.NPCs;
 import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
 public class NPCController {
     public Result meetNPC(String npcName) {
         Game game = App.getCurrentGame();
+        if (game.getNpcs().isEmpty()) {
+            game.getNpcs().add(NPCs.Abigail.createNPC());
+            game.getNpcs().add(NPCs.Sebastian.createNPC());
+            game.getNpcs().add(NPCs.Lia.createNPC());
+            game.getNpcs().add(NPCs.Robin.createNPC());
+            game.getNpcs().add(NPCs.Harvey.createNPC());
+        }
         NPC npc = null;
         for (NPC eachNPC : game.getNpcs()) {
             if (eachNPC.name.equals(npcName)) {
@@ -19,8 +27,8 @@ public class NPCController {
         }
         if (npc == null) {
             return new Result(false, "NPC not found");
-        } else if (Math.abs(npc.getLocation().x - game.getPlayingUser().getCurrentPoint().x) > 1 ||
-                Math.abs(npc.getLocation().y - game.getPlayingUser().getCurrentPoint().y) > 1) {
+        } else if (Math.abs(npc.getLocation().x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
+                Math.abs(npc.getLocation().y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
             return new Result(false, "You are not close to the npc");
         }
         npc.friendshipPoint += 20;
@@ -59,12 +67,14 @@ public class NPCController {
         return "It's a very lovely day in " + season.toString() + "!";
     }
 
-    private String getWeatherDialogue(WeatherCondition weather) {
-        String weatherCondition = null;
-        if (weather != WeatherCondition.sunny) {
-            weatherCondition = weather.toString() + "y";
+    private String getWeatherDialogue(WeatherCondition weatherCondition) {
+        String weather = null;
+        if (weatherCondition != WeatherCondition.sunny) {
+            weather = weatherCondition.toString() + "y";
+        } else {
+            weather = weatherCondition.toString();
         }
-        return "Did you notice that it's " + weatherCondition + " today?";
+        return "Did you notice that it's " + weather + " today?";
     }
 
     public Result sendGift(String npcName, String itemName) {
@@ -82,8 +92,8 @@ public class NPCController {
             return new Result(false, "You don't have a " + itemName + " in your backpack!");
         } else if (backPack.findItem(itemName) instanceof Tool) {
             return new Result(false, "You can't gift a tool!");
-        } else if (false) {
-            // TODO : if not near to npc
+        } else if (Math.abs(npc.getLocation().x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
+                Math.abs(npc.getLocation().y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
             return new Result(false, "You are not close to the npc");
         }
         ItemInterface item = backPack.findItem(itemName);
@@ -136,10 +146,14 @@ public class NPCController {
         } catch (NumberFormatException e) {
             return new Result(false, "Invalid quest index");
         }
+        if (Integer.parseInt(questIndex) != 1 && Integer.parseInt(questIndex) != 2 &&
+                Integer.parseInt(questIndex) != 3) {
+            return new Result(false, "Invalid quest index");
+        }
         if (npc == null) {
             return new Result(false, "NPC not found");
-        } else if (false) {
-            // TODO : if not close to npc
+        } else if (Math.abs(npc.getLocation().x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
+                Math.abs(npc.getLocation().y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
             return new Result(false, "You are not close to the npc");
         }
         return new Result(false, "you can't do this mission right now!");

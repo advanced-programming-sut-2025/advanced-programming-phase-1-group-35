@@ -24,6 +24,9 @@ public class NPC {
         this.friendshipPoint = 0;
         this.friendshipLevel = 1;
         this.location = getRandomLocation();
+        if (name.equals("Lia")) {
+            this.location = new Point(114, 109);
+        }
         this.symbol = symbol;
         App.getCurrentGame().getMap().changeTileSymbol(App.getCurrentGame().getMap().getTiles()[location.x][location.y], symbol, symbol);
     }

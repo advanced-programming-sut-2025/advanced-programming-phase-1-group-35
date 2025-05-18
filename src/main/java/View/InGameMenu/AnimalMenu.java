@@ -43,6 +43,9 @@ public class AnimalMenu extends AppMenu {
             System.out.println(controller.fishing(matcher.group(1)));
         } else if (AnimalCommands.goBack.getMatcher(command) != null) {
             App.setCurrentMenu(Menu.GameMenu);
+        } else if ((matcher = AnimalCommands.cheatFriendshipAnimal.getMatcher(command)) != null) {
+            System.out.println(controller.cheatFriendshipAnimal(matcher.group(1),
+                    Integer.parseInt(matcher.group(2))));
         } else {
             System.out.println("Invalid command");
         }

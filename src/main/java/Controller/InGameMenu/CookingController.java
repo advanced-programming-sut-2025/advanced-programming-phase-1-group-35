@@ -32,7 +32,7 @@ public class CookingController {
         if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
             return new Result(false, "You don't have a item in your inventory");
         }
-        player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
+        player.getFarm().getCabin().refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
         player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
         if (player.backPack.items.get(ingredient) == 0) {
             player.backPack.items.remove(ingredient);
@@ -69,6 +69,9 @@ public class CookingController {
         }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
+        if (player.learnedRecipes.isEmpty()) {
+            addCookingRecipe(CookingRecipes.FRIED_EGG);
+        }
         StringBuilder output = new StringBuilder();
         for (CookingRecipes recipe : player.learnedRecipes) {
             output.append(recipe.getDisplayName()).append("\n");

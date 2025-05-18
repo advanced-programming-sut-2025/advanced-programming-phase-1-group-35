@@ -67,12 +67,6 @@ public class Map {
                     System.out.printf("%s%4c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET);
                 }
             }
-            Game game = App.getCurrentGame();
-            game.getNpcs().add(NPCs.Abigail.createNPC());
-            game.getNpcs().add(NPCs.Sebastian.createNPC());
-            game.getNpcs().add(NPCs.Lia.createNPC());
-            game.getNpcs().add(NPCs.Robin.createNPC());
-            game.getNpcs().add(NPCs.Harvey.createNPC());
             System.out.println();
         }
     }
@@ -161,6 +155,7 @@ public class Map {
     }
 
     public void changeTileSymbol(Tile tile, char symbol, char contentSymbol) {
+        // symbol is under of content symbol
         tile.setSymbol(symbol);
         tile.setContentSymbol(contentSymbol);
     }
