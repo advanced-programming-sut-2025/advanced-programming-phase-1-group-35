@@ -1,8 +1,8 @@
 package Controller;
 
 import Model.App;
-import Model.Result;
 import Model.enums.Menu;
+import Model.Result;
 
 import java.io.IOException;
 
@@ -16,10 +16,6 @@ public class MainMenuController {
         App.setStayLoggedIn(false);
         App.setLoggedInUser(null);
         return new Result(true , "redirecting to login menu");
-    }
-
-    public Result showMenus(){
-        return new Result(true , "login menu\nprofile menu\ngame menu");
     }
 
     public Result goToMenu(String menuString) {

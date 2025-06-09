@@ -1,8 +1,10 @@
 package View.InGameMenu;
 
 import Controller.InGameMenu.AnimalController;
+import Controller.InGameMenu.CookingController;
 import Model.App;
 import Model.enums.Commands.AnimalCommands;
+import Model.enums.Commands.CookingCommands;
 import Model.enums.Menu;
 import View.AppMenu;
 

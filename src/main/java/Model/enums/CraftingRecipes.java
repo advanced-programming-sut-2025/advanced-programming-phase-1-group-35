@@ -2,6 +2,8 @@ package Model.enums;
 
 import Model.ItemInterface;
 
+import java.io.IOException;
+
 public enum CraftingRecipes implements ItemConstant {
     CherryBomb("4 copper ore + 1 coal",CraftingItems.CherryBomb),
     Bomb("4 iron ore + 1 coal",CraftingItems.Bomb),

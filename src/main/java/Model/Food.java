@@ -1,6 +1,9 @@
 package Model;
 
+import Model.enums.CookingIngredient;
 import Model.enums.CookingRecipes;
+
+import java.util.HashMap;
 
 public class Food implements ItemInterface {
     public CookingRecipes recipe;

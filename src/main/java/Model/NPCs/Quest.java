@@ -1,5 +1,7 @@
 package Model.NPCs;
 
+import Model.ItemInterface;
+
 public class Quest {
     private final String request;
     private final String reward;

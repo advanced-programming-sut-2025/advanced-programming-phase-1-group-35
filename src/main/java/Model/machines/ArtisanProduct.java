@@ -15,7 +15,7 @@ public class ArtisanProduct implements ItemInterface {
         this.energy = details.energy;
         this.sellingPrice = details.sellPrice;
     }
-//trying to push
+
     public int getProcessingTime() {
         return processingTime;
     }

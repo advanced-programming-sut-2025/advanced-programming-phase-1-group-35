@@ -97,10 +97,6 @@ public class GameCalender {
                 animal.setCollectedToday(false);
             }
         }
-        if (gameDateTime.getDayOfMonth() == 29) {
-            goToNextSeason();
-            gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
-        }
     }
 
     private void goToNextSeason() {
@@ -149,7 +145,7 @@ public class GameCalender {
         ArrayList<Crop> crops = new ArrayList<>(App.getCurrentGame().getMap().getCrops());
         for (Crop crop : crops) {
             crop.getCropTile().setWatered(false);
-            if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain) && !crop.getcropTile().getTileType().equals(TileType.BuildingTile)) {
+            if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
                 crop.setDaysSinceWatered(0);
                 crop.getCropTile().setWatered(true);
             } else if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
@@ -193,11 +189,9 @@ public class GameCalender {
                 Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
                 tree.getTile().setWatered(false);
                 if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.rain)) {
-                    if(!tree.getTile().getTileType().equals(TileType.BuildingTile)) {
                     tree.setDaysSinceWatered(0);
-                    tree.getTile().setWatered(true);}
-                }
-                else if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
+                    tree.getTile().setWatered(true);
+                } else if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
                     if (rand.nextInt(100) < 25) {
                         tree.getTile().setPlanted(null);
                         tree.getTile().getContents().remove(tree);
@@ -231,10 +225,6 @@ public class GameCalender {
                     }
                 }
             }
-//            if (gameDateTime.getDayOfMonth() == 29) {
-//                goToNextSeason();
-//                gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
-//            }
             farmingController.addForagingCrop();
             farmingController.addForagingSeeds();
             farmingController.addForAgingTree();

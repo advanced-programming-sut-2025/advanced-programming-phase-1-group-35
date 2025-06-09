@@ -4,37 +4,223 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="">
+    <list default="true" id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="final version phase 1">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StardewValley.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CraftingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CraftingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CropController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CropController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/FarmingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/FarmingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ShopMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ShopMenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/TradeMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/TradeMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/LoginMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/LoginMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/MainMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/ProfileMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/ProfileMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/AppHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/AppHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/CropClasses/Sapling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/CropClasses/Sapling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/CropClasses/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/CropClasses/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Farm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Greenhouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Greenhouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Home/Refrigerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Home/Refrigerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Quarry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Quarry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Rock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/FarmStuff/Rock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Fertilizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Fertilizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Food.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/GameCalender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/GameCalender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/NPCs/NPC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/NPCs/NPC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/NPCs/Quest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/NPCs/Quest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/PathFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Shops/ShopItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Shops/ShopItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model/Tools/BackPack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Tools/BackPack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/TradeAndGift/Gift.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/TradeAndGift/Gift.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/TradeAndGift/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/TradeAndGift/Trade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/CookingRecipes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/CookingRecipes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/InGameMenu/CookingMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/InGameMenu/CookingMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CookingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CookingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/Tools/BackPack.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Tools/BackPack.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/CookingRecipes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/CookingRecipes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/View/InGameMenu/CookingMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/InGameMenu/CookingMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/UserTypeAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Weather.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Weather.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/animal/AnimalProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/animal/AnimalProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Buildings/AnimalHouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Buildings/AnimalHouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Commands/CraftingCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Commands/CraftingCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/CraftingItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/CraftingItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/CraftingRecipes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/CraftingRecipes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/CropEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/CropEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/ForagingSeeds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/ForagingSeeds.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/Fruit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/Fruit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/Minerals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/Minerals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/MixedSeeds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/MixedSeeds.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/SaplingEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/SaplingEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/SeedEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/SeedEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/TreeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Crops/TreeEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/GameMenuCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/GameMenuCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/LoginMenuCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/LoginMenuCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/MainMenuCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/MainMenuCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/NPCs/NPCDialogues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/NPCs/NPCDialogues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/NPCs/NPCs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/NPCs/NPCs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/ProfileMenuCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/ProfileMenuCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Regexes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Regexes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Seasons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Seasons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/ShopMenuCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/ShopMenuCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/BlackSmithProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/BlackSmithProducts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/CarpenterShopProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/CarpenterShopProducts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/GeneralStoreProducts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/GeneralStoreProducts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/ShopProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Shops/Products/ShopProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/Skill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/animal/AnimalProductDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/animal/AnimalProductDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/animal/AnimalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/animal/AnimalType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/animal/FishType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/animal/FishType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/machines/ArtisanProductDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/machines/ArtisanProductDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/machines/ArtisanProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/machines/ArtisanProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/InGameMenu/AnimalMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/InGameMenu/AnimalMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/LoginMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/ProfileMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/ProfileMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CropController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CropController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ShopMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ShopMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/TradeMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/TradeMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/LoginMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/LoginMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/MainMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/MainMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/ProfileMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/ProfileMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/AppHolder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/AppHolder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/CropClasses/Sapling.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/CropClasses/Sapling.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/CropClasses/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/CropClasses/Tree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Farm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Farm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Greenhouse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Greenhouse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Home/Refrigerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Home/Refrigerator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Quarry.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Quarry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Rock.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/FarmStuff/Rock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Fertilizer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Fertilizer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Food.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Food.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/NPCs/Quest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/NPCs/Quest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/PathFinder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/PathFinder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Shops/ShopItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Shops/ShopItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/TradeAndGift/Gift.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/TradeAndGift/Gift.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/TradeAndGift/Trade.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/TradeAndGift/Trade.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/UserTypeAdapter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Weather.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Weather.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/animal/AnimalProduct.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/animal/AnimalProduct.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/CraftingItems.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/CraftingItems.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/CraftingRecipes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/CraftingRecipes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/CropEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/CropEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/ForagingSeeds.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/ForagingSeeds.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Fruit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Fruit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Minerals.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/Minerals.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/MixedSeeds.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/MixedSeeds.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/SaplingEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/SaplingEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/SeedEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/SeedEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Crops/TreeEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Crops/TreeEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/GameMenuCommands.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/GameMenuCommands.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/LoginMenuCommands.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/LoginMenuCommands.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/MainMenuCommands.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/MainMenuCommands.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/NPCs/NPCs.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/NPCs/NPCs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/ProfileMenuCommands.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/ProfileMenuCommands.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Seasons.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Seasons.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Shops/Products/BlackSmithProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Shops/Products/BlackSmithProducts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Shops/Products/CarpenterShopProducts.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Shops/Products/CarpenterShopProducts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/Skill.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/Skill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/animal/AnimalType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/animal/AnimalType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/animal/FishType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/animal/FishType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$14.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$15.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$17.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$18.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$18.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$19.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$19.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$20.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$20.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$21.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$21.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$22.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$22.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$23.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$23.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$24.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$24.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/machines/ArtisanProductDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StardewValley.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/View/LoginMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/LoginMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/View/MainMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/MainMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/View/ProfileMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/ProfileMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/stardew valley.iml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/stardew valley.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/my-project.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/src/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/stardew valley.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM_[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/src/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/stardew valley.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/GameCalendarTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/WeatherTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +230,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="Hosein_phase_1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -69,23 +255,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;a709e4c3&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/ap_project/advanced-programming-phase-1-group-35&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/ap_project/advanced-programming-phase-1-group-35",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="advanced-programming-phase-1-group-35" />
@@ -112,8 +298,28 @@
       <updated>1747470038277</updated>
       <workItem from="1747470039374" duration="21058000" />
       <workItem from="1747556179339" duration="27891000" />
-      <workItem from="1747592956976" duration="609000" />
+      <workItem from="1747592956976" duration="3581000" />
+      <workItem from="1747646864066" duration="26000" />
+      <workItem from="1747683182796" duration="240000" />
+      <workItem from="1749452357814" duration="3488000" />
     </task>
+    <task id="LOCAL-00001" summary="merge with sadegh">
+      <option name="closed" value="true" />
+      <created>1749453679717</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749453679717</updated>
+    </task>
+    <task id="LOCAL-00002" summary="final version phase 1">
+      <option name="closed" value="true" />
+      <created>1749454874116</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749454874116</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,5 +335,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="merge with sadegh" />
+    <MESSAGE value="final version phase 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="final version phase 1" />
   </component>
 </project>

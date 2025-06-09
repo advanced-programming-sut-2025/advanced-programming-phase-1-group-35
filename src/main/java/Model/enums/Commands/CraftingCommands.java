@@ -15,7 +15,7 @@ public enum CraftingCommands {
     }
 
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
+        java.util.regex.Matcher matcher = Pattern.compile(this.pattern).matcher(input);
 
         if (matcher.matches()) {
             return matcher;

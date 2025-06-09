@@ -4,8 +4,6 @@ import Model.Buildings.Building;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Farm;
-import Model.FarmStuff.Foraging;
-import Model.FarmStuff.Rock;
 import Model.Shops.Shop;
 import Model.enums.Colors;
 import Model.enums.NPCs.NPCs;

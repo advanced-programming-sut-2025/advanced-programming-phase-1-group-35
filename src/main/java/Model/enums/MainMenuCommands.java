@@ -1,5 +1,8 @@
 package Model.enums;
 
+import View.AppMenu;
+
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +11,6 @@ public enum MainMenuCommands {
     menuExit("\\s*menu\\s+exit\\s*"),
     showCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
     logout("\\s*logout\\s*"),
-    showMenus("\\s*show\\s+menus\\s*"),
     ;
 
 
@@ -19,7 +21,7 @@ public enum MainMenuCommands {
     }
 
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(input);
+        java.util.regex.Matcher matcher = Pattern.compile(this.regex).matcher(input);
 
         if (matcher.matches()) {
             return matcher;

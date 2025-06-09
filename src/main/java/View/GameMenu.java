@@ -162,15 +162,7 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.goToTradeMenu());
         } else if ((matcher = ToolCommands.useTrashCan.getMatcher(input)) != null) {
             System.out.println(toolsController.useTrashCan(matcher.group(1)));
-        }
-        else if((matcher = GameMenuCommands.CheatGetItem.getMatcher(input)) != null) {
-            System.out.println(controller.cheatAddItemToBackPack(matcher.group("itemName"), matcher.group("amount")));
-        }
-        else if((matcher = GameMenuCommands.cheatPlaceCraft.getMatcher(input)) != null) {
-            System.out.println(controller.cheatPlaceArtisan(matcher.group("itemName"), matcher.group("direction")));
-        }
-
-        else {
+        } else {
             System.out.println("Invalid input");
         }
     }

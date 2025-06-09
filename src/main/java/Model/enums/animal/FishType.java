@@ -3,6 +3,7 @@ package Model.enums.animal;
 import Model.App;
 import Model.ItemInterface;
 import Model.animal.Fish;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 
 import java.util.ArrayList;

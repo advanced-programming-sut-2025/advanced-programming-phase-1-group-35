@@ -62,6 +62,7 @@ public class AnimalController {
         int x = 0,y = 0;
         house.thisHouseAnimals.add(type.createAnimal(name));
         farm.animals.add(type.createAnimal(name));
+        //shepherdAnimal(name, 0, 0);
         return new Result(true, "animal " + name + " has been bought!");
     }
 

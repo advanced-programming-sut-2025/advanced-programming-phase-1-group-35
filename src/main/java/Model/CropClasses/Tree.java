@@ -1,6 +1,7 @@
 package Model.CropClasses;
 
 import Model.App;
+import Model.Item;
 import Model.ItemInterface;
 import Model.Tile;
 import Model.enums.Crops.Fruit;

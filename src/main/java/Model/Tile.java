@@ -1,9 +1,12 @@
 package Model;
 
 import Model.enums.Crops.PlantAble;
+import Model.enums.TileContents;
 import Model.enums.TileType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Tile {
     private User owner = null;

@@ -2,6 +2,7 @@ package Model.enums.Shops.Products;
 
 import Model.ItemInterface;
 import Model.Shops.ShopItem;
+import Model.ItemInterface;
 import Model.enums.ItemConstant;
 import Model.enums.Seasons;
 

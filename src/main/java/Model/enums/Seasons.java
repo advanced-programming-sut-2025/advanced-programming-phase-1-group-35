@@ -1,5 +1,9 @@
 package Model.enums;
 
+import Model.Weather;
+
+import java.util.List;
+
 public enum Seasons {
     Spring(new WeatherCondition[]{
             WeatherCondition.sunny,

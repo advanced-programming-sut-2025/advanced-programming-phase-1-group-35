@@ -17,7 +17,7 @@ public enum Regexes {
         this.regex = regex;
     }
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(input);
+        java.util.regex.Matcher matcher = Pattern.compile(this.regex).matcher(input);
 
         if (matcher.matches()) {
             return matcher;

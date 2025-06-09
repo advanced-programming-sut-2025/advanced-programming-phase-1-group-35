@@ -12,7 +12,7 @@ public class Main {
     public Random rand = new Random();
 
     public static void main(String[] args) throws IOException {
-        App.deserializeApp();
+//        App.deserializeApp();
         new AppView().run();
     }
 }

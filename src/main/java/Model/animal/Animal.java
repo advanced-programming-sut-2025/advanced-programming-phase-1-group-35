@@ -42,38 +42,6 @@ public class Animal implements ItemInterface {
         this.isCollectedToday = false;
     }
 
-    public Result buyAnimal() {
-        return null;
-    }
-
-    public String petAnimal() {
-        return null;
-    }
-
-    public String AnimalDetails() {
-        return null;
-    }
-
-    public Result shepherdAnimal() {
-        return null;
-    }
-
-    public Result feedHay() {
-        return null;
-    }
-
-    public String produces() {
-        return null;
-    }
-
-    public Result collectProducts() {
-        return null;
-    }
-
-    public Result sellAnimal() {
-        return null;
-    }
-
 
     public String getName() {
         return name;

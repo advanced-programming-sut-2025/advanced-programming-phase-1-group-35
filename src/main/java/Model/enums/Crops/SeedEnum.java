@@ -2,6 +2,7 @@ package Model.enums.Crops;
 
 import Controller.InGameMenu.FarmingController;
 import Model.App;
+import Model.ItemInterface;
 import Model.CropClasses.Seed;
 import Model.ItemInterface;
 import Model.enums.ItemConstant;

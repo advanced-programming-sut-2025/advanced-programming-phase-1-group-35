@@ -1,11 +1,14 @@
 package View;
 
 import Controller.LoginMenuController;
+import Controller.MainMenuController;
 import Model.enums.LoginMenuCommands;
+import Model.enums.MainMenuCommands;
 
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginMenu extends AppMenu {
     LoginMenuController controller = new LoginMenuController();
@@ -25,9 +28,6 @@ public class LoginMenu extends AppMenu {
         }
         else if(LoginMenuCommands.menuExit.getMatcher(input) != null) {
             controller.exitMenu();
-        }
-        else if((matcher = LoginMenuCommands.forgotPassword.getMatcher(input)) != null) {
-            System.out.println(controller.forgotPassword(matcher.group("username")));
         }
         else if(LoginMenuCommands.showCurrentMenu.getMatcher(input) != null) {
             System.out.println(controller.showCurrentMenu());

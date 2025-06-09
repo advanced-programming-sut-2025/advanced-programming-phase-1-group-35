@@ -2,6 +2,7 @@ package Model;
 
 import Model.NPCs.NPC;
 import Model.enums.NPCs.NPCs;
+import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
 import java.util.ArrayList;
@@ -21,11 +22,6 @@ public class Game {
         this.playingUser = playingUser;
         this.gameID = IDCounter++;
         this.weather.setWeatherCondition(WeatherCondition.sunny);
-        npcs.add(NPCs.Abigail.createNPC());
-        npcs.add(NPCs.Sebastian.createNPC());
-        npcs.add(NPCs.Lia.createNPC());
-        npcs.add(NPCs.Robin.createNPC());
-        npcs.add(NPCs.Harvey.createNPC());
     }
 
 

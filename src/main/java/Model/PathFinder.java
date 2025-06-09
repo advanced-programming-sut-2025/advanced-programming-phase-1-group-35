@@ -23,9 +23,9 @@ public class PathFinder {
             return new Path(false, Collections.emptyList(), 0,
                     "invalid destination");
         }
-        if (!tiles[destX][destY].isWalkable() ||
-                !((tiles[destX][destY].getOwner() == null) ||
-                        tiles[destX][destY].getOwner().equals(player))) {
+        if (!tiles[destX][destY].isWalkable() &&
+        !(tiles[destX][destY].getOwner() == null) &&
+        tiles[destX][destY].getOwner().equals(player)) {
             return new Path(false, Collections.emptyList(), 0,
                     "destination unreachable");
         }

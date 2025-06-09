@@ -49,7 +49,6 @@ public class TradeMenuController {
             case "item" -> tradeWithItem(receiver, item, amount, targetItemName, targetAmountString);
             default -> null;
         };
-        gameMenuController.goToNextTurn(receiver);
         return result;
     }
 
@@ -76,13 +75,7 @@ public class TradeMenuController {
         if(item.getValue() < amount){
             return new Result(false, "you do not have enough of this item");
         }
-        int price;
-        try {
-            price = Integer.parseInt(priceString);
-        }
-        catch (NumberFormatException e){
-            price = 0;
-        }
+        int price = Integer.parseInt(priceString);
         Trade trade = new Trade(user.getID(), receiver.getID(), item.getKey(),item.getValue(),
                 price, null, 0);
         user.getTrades().add(trade);
@@ -113,7 +106,7 @@ public class TradeMenuController {
     }
     public Result respondToTrade(String response, String tradeIDString){
         int tradeID = Integer.parseInt(tradeIDString);
-        Trade trade = getTradeByID(tradeID);
+        Trade trade = user.getTrades().get(tradeID);
         if(trade == null){
             return new Result(false, "Trade not found");
         }

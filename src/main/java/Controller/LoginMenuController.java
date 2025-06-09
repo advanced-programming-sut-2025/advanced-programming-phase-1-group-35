@@ -2,15 +2,18 @@ package Controller;
 
 import Model.App;
 import Model.Result;
+import Model.SHA256;
 import Model.User;
 import Model.enums.*;
 import View.LoginMenu;
+//import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,16 +77,16 @@ public class LoginMenuController {
                 System.out.println("answers do not match");
                 continue;
             }
-            question = switch (qNumber) {
-                case 1 -> SecurityQuestions.Question1;
-                case 2 -> SecurityQuestions.Question2;
-                case 3 -> SecurityQuestions.Question3;
-                case 4 -> SecurityQuestions.Question4;
+            question = switch (input) {
+                case "1" -> SecurityQuestions.Question1;
+                case "2" -> SecurityQuestions.Question2;
+                case "3" -> SecurityQuestions.Question3;
+                case "4" -> SecurityQuestions.Question4;
                 default -> null;
             };
             break;
         }
-        App.users.add(new User(username , password , nickname , email , genderEnum , question , answer));
+        App.users.add(new User(username , SHA256.hashString(password) , nickname , email , genderEnum , question , answer));
         return new Result(true , "user successfully registered , now you can log in");
     }
 
@@ -92,7 +95,7 @@ public class LoginMenuController {
         if(user == null) {
             return new Result(false, "User not found");
         }
-        if(!user.getPassword().equals(password)) {
+        if(!user.getPassword().equals(SHA256.hashString(password))) {
             return new Result(false, "Wrong password");
         }
         App.setLoggedInUser(user);
@@ -102,20 +105,19 @@ public class LoginMenuController {
         return new Result(true, "user successfully logged in");
     }
 
-    public Result forgotPassword(String username) throws IOException {
+    public Result forgotPassword(String username , Scanner scanner) throws IOException {
         User user = getUser(username);
         if(user == null) {
             return new Result(false, "User not found");
         }
-        LoginMenu.print(user.getSecurityQuestion().question);
-        String input = LoginMenu.scan();
+        String input = scanner.nextLine().trim();
         Matcher matcher = LoginMenuCommands.answerQuestion.getMatcher(input);
         if(matcher == null) return new Result(false, "Invalid answer question");
         if(!matcher.group("answer").equalsIgnoreCase(user.getSecurityAnswer())) {
             return new Result(false, "Wrong answer");
         }
         LoginMenu.print("choose a new password . (random for random generated password)");
-        String newPassword = LoginMenu.scan();
+        String newPassword = scanner.nextLine().trim();
         Result managePasswordResult = managePassword(newPassword , newPassword);
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else newPassword = managePasswordResult.toString();

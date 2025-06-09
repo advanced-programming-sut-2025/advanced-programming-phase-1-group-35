@@ -5,6 +5,7 @@ import Model.Tile;
 import Model.enums.TileType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Rock {
     private char symbol = 'R';

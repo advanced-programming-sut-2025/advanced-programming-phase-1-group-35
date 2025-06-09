@@ -2,6 +2,7 @@ package Model.TradeAndGift;
 
 import Controller.GameMenuController;
 import Model.ItemInterface;
+import Model.User;
 
 public class Trade extends Gift{
     private int price;
@@ -24,12 +25,12 @@ public class Trade extends Gift{
     public String toString() {
         GameMenuController controller = new GameMenuController();
         String m = "sender : " + controller.getUserByID(senderID) + "\nrecipient : " + controller.getUserByID(recipientID) +
-        "\nitem: " + itemInterface.getName() + "\namount: " + amount + "\nis answered: " + isAnswered + "\nid: " + id;
+        "\nitem: " + itemInterface.getName() + "\namount: " + amount + "\nis answered: " + isAnswered + "\nID: " + id;
         if(isAnswered){
             m += accepted ? "   accepted" : "   rejected";
         }
         if(price == 0){
-            m += "\ntarget item: " + targetItem.getName() + "\ntarget amount: " + targetAmount;
+            m += "\ntarget item: " + targetItem + "\ntarget amount: " + targetAmount;
         }
         else{
             m += "\nprice: " + price ;

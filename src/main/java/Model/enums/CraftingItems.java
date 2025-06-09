@@ -1,14 +1,17 @@
 package Model.enums;
 
 import Model.ItemInterface;
+import Model.Tools.SkillLevel;
 import Model.enums.Crops.ForagingSeeds;
 import Model.enums.Crops.Minerals;
 import Model.enums.Crops.SaplingEnum;
+import Model.enums.Crops.SeedEnum;
 import Model.enums.Shops.Products.BlackSmithProducts;
 import Model.enums.Shops.Products.CarpenterShopProducts;
 import Model.enums.machines.ArtisanProductDetails;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Map.entry;

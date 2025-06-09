@@ -1,6 +1,7 @@
 package Model.CropClasses;
 
 import Model.ItemInterface;
+import Model.enums.Crops.Fruit;
 import Model.enums.Crops.TreeEnum;
 
 public class Sapling implements ItemInterface {

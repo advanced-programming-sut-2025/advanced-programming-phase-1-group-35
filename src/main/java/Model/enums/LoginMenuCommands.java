@@ -1,5 +1,8 @@
 package Model.enums;
 
+import View.AppMenu;
+
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +24,7 @@ public enum LoginMenuCommands {
         this.regex = regex;
     }
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.regex).matcher(input);
+        java.util.regex.Matcher matcher = Pattern.compile(this.regex).matcher(input);
 
         if (matcher.matches()) {
             return matcher;

@@ -2,6 +2,7 @@ package Model.FarmStuff;
 
 import Model.Tile;
 import Model.enums.FarmType;
+import Model.enums.TileType;
 
 import java.awt.*;
 

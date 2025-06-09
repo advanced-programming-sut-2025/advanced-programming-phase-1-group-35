@@ -8,15 +8,6 @@ import Model.enums.CookingRecipes;
 import java.util.Map;
 
 public class CookingController {
-    private Result isInCabin() {
-        User player = App.getCurrentGame().getPlayingUser();
-        Cabin cabin = player.getFarm().getCabin();
-        if (!cabin.isTileInBounds(player.getCurrentTile())) {
-            return new Result(false, "You are not in a Cabin");
-        }
-        return null;
-    }
-
 //    public Result placeItemInFridge(String itemName) {
 //        Game game = App.getCurrentGame();
 //        User player = game.getPlayingUser();
@@ -64,9 +55,6 @@ public class CookingController {
 //    }
 
     public Result showCookingRecipes() {
-        if (isInCabin() != null) {
-            return isInCabin();
-        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         if (player.learnedRecipes.isEmpty()) {
@@ -88,14 +76,11 @@ public class CookingController {
     }
 
     public Result cook(String recipeName) {
-        if (isInCabin() != null) {
-            return isInCabin();
-        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         CookingRecipes recipe = null;
         try {
-            recipe = CookingRecipes.valueOf(recipeName);
+            recipe = CookingRecipes.valueOf(recipeName.toUpperCase());
         } catch (IllegalArgumentException e) {
             return new Result(false, "Invalid recipe name");
         }
@@ -109,20 +94,19 @@ public class CookingController {
             CookingIngredient ingredient = entry.getKey();
             CookingMaterial material = player.backPack.getCookingMaterial(entry.getKey());
             int requiredAmount = entry.getValue();
-            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(material, 0);
             int availableAmountInBackPack = player.backPack.items.getOrDefault(material, 0);
 
             if (availableAmountInBackPack >= requiredAmount) {
                 player.backPack.items.put(material, player.backPack.items.get(material) - requiredAmount);
             } else {
-                player.cabin.refrigerator.ingredients.put(material, player.cabin.refrigerator.ingredients.get(material) - requiredAmount);
+                return new Result(false, "You don't have enough ingredients to cook this recipe");
             }
         }
         if (!player.backPack.doesBackPackHasSpace()) {
             return new Result(false, "You don't have enough space in your backpack");
         }
         player.backPack.items.put(new Food(recipe), 1);
-        return new Result(true, "you cooked " + recipeName + " successfully! It looks delicious!");
+        return new Result(true, "you cooked " + recipeName + " successfully! It looks delicious! your energy is: " + player.getEnergy().getEnergyAmount());
     }
 
     private boolean doesPlayerHaveIngredientsForThisFood(CookingRecipes recipe, User player) {
@@ -130,10 +114,9 @@ public class CookingController {
             CookingIngredient ingredient = entry.getKey();
             CookingMaterial material = player.backPack.getCookingMaterial(ingredient);
             int requiredAmount = entry.getValue();
-            int availableAmountInFridge = player.cabin.refrigerator.ingredients.getOrDefault(material, 0);
             int availableAmountInBackPack = player.backPack.items.getOrDefault(material, 0);
 
-            if (availableAmountInBackPack < requiredAmount && availableAmountInFridge < requiredAmount) {
+            if (availableAmountInBackPack < requiredAmount) {
                 return false;
             }
         }

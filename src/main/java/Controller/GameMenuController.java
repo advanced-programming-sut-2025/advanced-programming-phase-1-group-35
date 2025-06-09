@@ -5,17 +5,14 @@ import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.CropClasses.Crop;
-import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
-import Model.Tools.FishingPole;
 import Model.TradeAndGift.Gift;
 import Model.enums.Colors;
 import Model.enums.GameMenuCommands;
 import Model.enums.Menu;
 import Model.enums.Shops.Products.GeneralStoreProducts;
-import Model.enums.TileType;
 import Model.enums.TileType;
 import Model.enums.machines.ArtisanProductDetails;
 import Model.machines.ArtisanProduct;
@@ -24,12 +21,10 @@ import Model.enums.Crops.*;
 import Model.enums.Shops.Products.*;
 import Model.enums.animal.AnimalProductDetails;
 import Model.enums.animal.FishType;
-import Model.enums.machines.ArtisanProductDetails;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
-import java.security.interfaces.RSAKey;
 import java.util.*;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -44,7 +39,8 @@ public class GameMenuController {
     public String showCropInfo(String cropName) {
         return cropController.getCropInfo(cropName);
     }
-    public Result plantSeed(String seedName, String direction){
+
+    public Result plantSeed(String seedName, String direction) {
         return farmingController.plantSeed(seedName, direction);
     }
 
@@ -66,8 +62,9 @@ public class GameMenuController {
         App.getCurrentGame().getPlayingUser().getBackPack().items.put(matchingSeed.get(), 1);
         return new Result(true, "picked up " + matchingSeed.get().getName());
     }
-    public Result fertilize(String fertilizerName, String direction){
-        if(!direction.toLowerCase().matches("up|down|left|right")){
+
+    public Result fertilize(String fertilizerName, String direction) {
+        if (!direction.toLowerCase().matches("up|down|left|right")) {
             return new Result(false, "Invalid direction");
         }
         List<ItemInterface> fertilizers = new ArrayList<>();
@@ -189,10 +186,12 @@ public class GameMenuController {
         chooseMap();
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
+
     private boolean isUserInOtherGame(User user) {
         if (user.getCurrentGame() == null) return false;
         return true;
     }
+
     public void chooseMap() throws IOException {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
@@ -237,6 +236,7 @@ public class GameMenuController {
         farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
         return farmingController.ShowCrop(x, y);
     }
+
     public Result giveSeed(String seedName) throws IOException {
 
         for (SeedEnum seedEnum : SeedEnum.values()) {
@@ -247,6 +247,7 @@ public class GameMenuController {
         }
         return new Result(false, "nuh uh");
     }
+
     public Result pickItem(String itemName, String direction) throws IOException {
         ItemConstant item = getItemConstantByName(itemName);
         Tile tile = findTile(direction);
@@ -263,7 +264,8 @@ public class GameMenuController {
         tile.getContents().remove(item);
         return new Result(true, "Item " + itemName + " has been picked up");
     }
-    public Result useScareCrow(String direction){
+
+    public Result useScareCrow(String direction) {
         Tile tile = findTile(direction);
         if (tile.getPlanted() != null || tile.getContents() != null) {
             return new Result(false, "can't place it here");
@@ -278,6 +280,7 @@ public class GameMenuController {
         }
         return new Result(true, "scare crow planted");
     }
+
     public Result loadGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if (game == null) {
@@ -286,6 +289,7 @@ public class GameMenuController {
         App.setCurrentGame(game);
         return new Result(true, "You have successfully loaded game");
     }
+
     public Result exitGame() {
         Game game = App.getLoggedInUser().getCurrentGame();
         if (game == null) return new Result(false, "You have no ongoing game");
@@ -295,6 +299,7 @@ public class GameMenuController {
         App.setCurrentGame(null);
         return new Result(true, "You have successfully exited the game , you may create or load another game .");
     }
+
     public Result deleteCurrentGame() throws IOException {
         Game game = App.getCurrentGame();
         User requester = game.getPlayingUser();
@@ -328,8 +333,9 @@ public class GameMenuController {
             return new Result(false, "insufficient amount of votes , game continues");
         }
     }
-    public Result ShowRecipes(){
-        if(App.getCurrentGame().getPlayingUser().getCraftingRecipes() == null){
+
+    public Result ShowRecipes() {
+        if (App.getCurrentGame().getPlayingUser().getCraftingRecipes() == null) {
             return new Result(false, "You have no crafting recipes");
         }
         StringBuilder st = new StringBuilder();
@@ -381,7 +387,10 @@ public class GameMenuController {
         return new Result(true, itemName + " has been crafted");
     }
 
-    public Result CraftUsingMachine(){return null;}
+    public Result CraftUsingMachine() {
+        return null;
+    }
+
 
     public Result goToNextTurn(User forceUser) throws IOException {
         User user;
@@ -613,7 +622,8 @@ public class GameMenuController {
         player.getEnergy().setEnergyAmount(energy);
         return new Result(true, "cheat energy set");
     }
-    public Result cheatEnergyUnlimited(){
+
+    public Result cheatEnergyUnlimited() {
         User player = App.getCurrentGame().getPlayingUser();
         Energy energy = player.getEnergy();
         energy.setEnergyCapacity(Double.POSITIVE_INFINITY);
@@ -621,6 +631,7 @@ public class GameMenuController {
         energy.setCurrentTurnCapacity(Double.POSITIVE_INFINITY);
         return new Result(true, "cheat energy unlimited");
     }
+
     public Result showEnergy() {
         Energy energy = App.getCurrentGame().getPlayingUser().getEnergy();
         return new Result(true, "" +
@@ -628,7 +639,8 @@ public class GameMenuController {
                 "energy left in this turn: " + (energy.getCurrentTurnCapacity() - energy.getCurrentTurnConsumedEnergy()) +
                 "energy capacity: " + energy.getEnergyCapacity());
     }
-    public Result goToShopMenu(){
+
+    public Result goToShopMenu() {
         ShopMenuController controller = new ShopMenuController();
         if (controller.shop == null)
             return new Result(false, "you are not in a shop");
@@ -638,17 +650,14 @@ public class GameMenuController {
     }
 
     public Result cheatAddItemToBackPack(String itemName, String amountString) throws IOException {
-        try {
-            ItemInterface item = getItemConstantByName(itemName).getItem();
-            if (item == null) return new Result(false, "no item found via name " + itemName);
-            int amount = Integer.parseInt(amountString);
-            App.getCurrentGame().getPlayingUser().backPack.items.put(item, amount);
-            return new Result(true, amount + " of " + itemName + " was given to player");
-        }catch (NullPointerException e){
-            return new Result(false, "no item found via name " + itemName);
-        }
+        ItemInterface item = getItemConstantByName(itemName).getItem();
+        if (item == null) return new Result(false, "no item found via name " + itemName);
+        int amount = Integer.parseInt(amountString);
+        App.getCurrentGame().getPlayingUser().backPack.items.put(item, amount);
+        return new Result(true, amount + " of " + itemName + " was given to player");
     }
-    public Result chopTree(String direction){
+
+    public Result chopTree(String direction) {
         Tile tile = findTile(direction);
         if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.AXE)) {
             return new Result(false, "you need to equip an axe first");
@@ -662,11 +671,13 @@ public class GameMenuController {
         App.getCurrentGame().getMap().getTrees().remove(tree);
         App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
         tile.setSymbol('.');
-        tile.setContentSymbol('.');
         tile.setPlanted(null);
         tile.getContents().remove(tree);
-        return new Result(true,"tree chopped down");
+        tile.setContentSymbol('.');
+        return new Result(true, "tree chopped down");
     }
+
+
     public Result showInventory() {
         StringBuilder output = new StringBuilder();
         output.append("Inventory: ");
@@ -687,42 +698,6 @@ public class GameMenuController {
         }
 
         return new Result(true, output.toString());
-    }
-    public Result deleteAnItemFromInventory() {
-        return null;
-    }
-    public Result buyAnimal(String animalType ,String animalName) {
-        return null;
-    }
-    public String petAnimal(String animalName){
-        return null;
-    }
-    public String AnimalsDetails(){
-        return null;
-    }
-    public Result shepherdAnimal(String animalName){
-        return null;
-    }
-    public Result feedHay(String animalName){
-        return null;
-    }
-    public String produces(){
-        return null;
-    }
-    public Result collectProducts(String animalName){
-        return null;
-    }
-    public Result sellAnimal(String animalName){
-        return null;
-    }
-    public Result fishing(FishingPole fishingPole){
-        return null;
-    }
-    public Result useArtisan(String ArtisanName , String productName){
-        return null;
-    }
-    public Result getFromArtisan(String ArtisanName){
-        return null;
     }
 
     public Result talk(String username, String message) {
@@ -750,7 +725,7 @@ public class GameMenuController {
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
-        if(sender.getSpouse() != null && sender.getSpouse().equals(receiver)){
+        if (sender.getSpouse().equals(receiver)) {
             sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
             receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
         }
@@ -773,28 +748,7 @@ public class GameMenuController {
         return new Result(true, m.toString());
     }
 
-    public Result cheatPlaceArtisan(String CraftingItem,String direction){
-        CraftingItems craftingItem = null;
-        for(CraftingItems cr: CraftingItems.values()){
-            if(cr.getName().equals(CraftingItem)){
-                craftingItem = cr;
-                break;
-            }
-        }
-        if(craftingItem == null){
-            return new Result(false, "crafting item not found");
-        }
-        Tile tile = findTile(direction);
-        if(!tile.getTileType().equals(TileType.BuildingTile)){
-            return new Result(false, "crafting item is not on building tile");
-        }
-        tile.getContents().add(craftingItem);
-        tile.setContentSymbol('#');
-        return new Result(true, "crafting item was cheated");
-    }
-
-
-    public Result friendShipStatus(String username){
+    public Result friendShipStatus(String username) {
         User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
         int xp = me.getFriendshipXPs().getOrDefault(friend.getID(), 100);
@@ -906,7 +860,7 @@ public class GameMenuController {
 
     public void removeFromBackPack(Map.Entry<ItemInterface, Integer> item, BackPack backPack, int amount) {
         backPack.items.compute(item.getKey(), (k, v) -> v - amount);
-        if(item.getValue() <= 0){
+        if (item.getValue() < 0) {
             backPack.items.remove(item.getKey());
         }
     }
@@ -939,8 +893,8 @@ public class GameMenuController {
         if (me.getFriendshipXPs().getOrDefault(friend.getID(), 100) / 100 - 1 < 3) {
             return new Result(false, "you should finish level two friendship");
         }
-        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("Bouquete");
-        if(item == null){
+        Map.Entry<ItemInterface, Integer> item = getItemFromBackPack("BOUQUET");
+        if (item == null) {
             return new Result(false, "you are not a magician you can't summon flowers");
         }
         if (!friend.backPack.doesBackPackHasSpace()) {
@@ -1045,36 +999,6 @@ public class GameMenuController {
         return null;
     }
 
-    public Result CraftArtisan(String productName){
-        ArtisanProductDetails artisan = null;
-        for(ArtisanProductDetails productDetails : ArtisanProductDetails.values()){
-            if(productDetails.getName().equalsIgnoreCase(productName)){
-                artisan = productDetails;
-                break;
-            }
-        }
-        if(artisan == null){
-            return new Result(false, "artisan not found");
-        }
-        for(ItemInterface[] item1 : artisan.getIngredients().keySet()){
-            for(ItemInterface item : item1){
-                if(!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(item) ||
-                App.getCurrentGame().getPlayingUser().getBackPack().items.get(item) < artisan.getIngredients().get(item1)){
-                    return new Result(false, "you don't have enough ingredients");
-                }
-            }
-        }
-//        if(App.getCurrentGame().getPlayingUser().getCraftingRecipes().contains(artisan)){}
-        for(ItemInterface[] item1 : artisan.getIngredients().keySet()){
-            for(ItemInterface item : item1) {
-                App.getCurrentGame().getPlayingUser().getBackPack().items.put(item, App.getCurrentGame().getPlayingUser()
-                        .backPack.items.get(item)-artisan.getIngredients().get(item1));
-            }
-        }
-        App.getCurrentGame().getPlayingUser().backPack.items.put(artisan,1);
-        return new Result(true, "you have successfully crafted " + artisan.getName());
-            }
-
     public Map.Entry<ItemInterface, Integer> getItemFromBackPack(String productName, BackPack backPack) {
         for (Map.Entry<ItemInterface, Integer> e : backPack.items.entrySet()) {
             if (e.getKey().getName().equalsIgnoreCase(productName)) {
@@ -1107,13 +1031,13 @@ public class GameMenuController {
                 AnimalProductDetails.class,
                 ArtisanProductDetails.class,
                 BlackSmithProducts.class,
-//                CarpenterShopProducts.class,
+                CarpenterShopProducts.class,
                 GeneralStoreProducts.class,
-//                FishShopProducts.class,
-//                RanchProducts.class,
-//                SaloonProducts.class,
-//                JojaMartProducts.class,
-//                CookingRecipes.class,
+                FishShopProducts.class,
+                RanchProducts.class,
+                SaloonProducts.class,
+                JojaMartProducts.class,
+                CookingRecipes.class,
                 CraftingRecipes.class,
                 CropEnum.class,
                 FishType.class,
@@ -1127,11 +1051,9 @@ public class GameMenuController {
         };
         for (Class<? extends ItemConstant> enumClass : enumClasses) {
             for (ItemConstant constant : enumClass.getEnumConstants()) {
-                try {
-                    if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
-                        return constant;
-                    }
-                }catch (NullPointerException e) {}
+                if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
+                    return constant;
+                }
             }
         }
         return null;
