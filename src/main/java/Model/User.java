@@ -7,9 +7,9 @@ import Model.NPCs.Quest;
 import Model.Tools.BackPack;
 import Model.Tools.SkillLevel;
 import Model.Tools.Tool;
+import Model.TradeAndGift.Gift;
 import Model.TradeAndGift.Trade;
 import Model.enums.*;
-import Model.TradeAndGift.Gift;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class User {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
-    private int money = 10000;
+    private int money = 0;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 

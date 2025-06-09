@@ -1,9 +1,6 @@
 package Model.enums.animal;
 
 import Model.ItemInterface;
-import Model.ItemInterface;
-
-import Model.animal.Animal;
 import Model.enums.ItemConstant;
 
 public enum AnimalProductDetails implements ItemConstant,ItemInterface {

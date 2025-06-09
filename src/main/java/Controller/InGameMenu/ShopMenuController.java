@@ -1,7 +1,6 @@
 package Controller.InGameMenu;
 
 import Model.*;
-
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
 import Model.enums.Menu;
@@ -88,7 +87,7 @@ public class ShopMenuController {
         }
         user.getBackPack().items.compute((ItemInterface) product , (k, v) -> v == null ? count : v + count );
         item.setDailyBoughtCount(item.getDailyBoughtCount() + count);
-        user.setMoney(user.getMoney() - price);
+        user.setMoney(user.getMoney() - price*count);
         return new Result(true, "you successfully purchased " + count + " of " + item.getName());
     }
     public ShopItem findShopItemByName(String name) {

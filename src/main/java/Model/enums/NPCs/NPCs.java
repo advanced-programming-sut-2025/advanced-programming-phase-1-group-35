@@ -23,9 +23,9 @@ public enum NPCs {
 
     public NPC createNPC() {
         if (hasQuests()) {
-            return new NPC(this.name(), getJob(), quests(), favorites(), getSymbol());
+            return new NPC(this.name(), getJob(), quests(), favorites());
         } else {
-            return new NPC(this.name(), getJob(), new ArrayList<>(), new ArrayList<>(), getSymbol());
+            return new NPC(this.name(), getJob(), new ArrayList<>(), new ArrayList<>());
         }
     }
 
@@ -112,16 +112,4 @@ public enum NPCs {
         }
         return quests;
     }
-
-    private char getSymbol() {
-        return switch (this) {
-            case Sebastian -> 'S';
-            case Abigail -> 'A';
-            case Harvey -> 'H';
-            case Lia -> 'L';
-            case Robin -> 'R';
-            default -> 'V';
-        };
-    }
-
 }

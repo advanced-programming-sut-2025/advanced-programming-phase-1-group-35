@@ -1,7 +1,6 @@
 package Model.TradeAndGift;
 
 import Model.ItemInterface;
-import Model.TradeAndGift.Trade;
 
 public class Gift {
     protected int senderID;

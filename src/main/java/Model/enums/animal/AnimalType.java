@@ -1,8 +1,5 @@
 package Model.enums.animal;
 
-import Model.Buildings.AnimalHouse;
-import Model.Result;
-import Model.User;
 import Model.animal.Animal;
 import Model.animal.AnimalProduct;
 
@@ -53,15 +50,5 @@ public enum AnimalType {
 
     public String getConfinement() {
         return confinement;
-    }
-
-    public AnimalHouse getAnimalHouse(User player, AnimalType animalType) {
-        AnimalHouse house = null;
-        for (AnimalHouse animalHouse : player.getFarm().animalHouses) {
-            if (animalHouse.getType().equals(animalType.getConfinement())) {
-                house = animalHouse;
-            }
-        }
-        return house;
     }
 }

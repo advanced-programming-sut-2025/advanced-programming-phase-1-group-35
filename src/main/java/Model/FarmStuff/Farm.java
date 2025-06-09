@@ -1,17 +1,16 @@
 package Model.FarmStuff;
 
-import Model.*;
 import Model.Buildings.AnimalHouse;
 import Model.Buildings.Building;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
-import Model.FarmStuff.*;
-import Model.FarmStuff.Home.*;
-import Model.Tools.Tool;
+import Model.FarmStuff.Home.Cabin;
 import Model.Shops.Shop;
+import Model.Tile;
+import Model.Tools.Tool;
+import Model.User;
 import Model.animal.Animal;
 import Model.enums.FarmType;
-import Model.enums.Shops.ShopEnum;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
@@ -34,16 +33,15 @@ public class Farm {
     public ArrayList<AnimalHouse> animalHouses = new ArrayList<>();
     public ArrayList<Building> buildings = new ArrayList<>();
     private ArrayList<Shop> shops = new ArrayList<>();
-
-    public Farm(int number, User owner, int type, Tile[][] tiles) {
+    public Farm(int number , User owner , int type , Tile[][] tiles) {
         this.owner = owner;
-        if (number == 5) initVillage(tiles);
+        if(number == 5)initVillage(tiles);
         else initFarm(type, number, tiles);
     }
 
-    public void initFarm(int type, int number, Tile[][] tiles) {
+    public void initFarm(int type , int number , Tile[][] tiles) {
         FarmType farmType = FarmType.values()[type];
-        int x = 0, y = 0;
+        int x = 0 , y = 0;
         switch (number) {
             case 1:
                 x = 10;
@@ -62,39 +60,49 @@ public class Farm {
                 y = 145;
                 break;
         }
-        bounds.setBounds(x, y, 75, 55);
-        for (int i = bounds.x; i <= bounds.x + bounds.width; i++) {
-            for (int j = bounds.y; j <= bounds.y + bounds.height; j++) {
+        bounds.setBounds(x , y , 75 , 55);
+        for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
+            for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);
-                if (owner != null) tiles[i][j].setOwnerID(owner.getID());
+                if(owner != null)tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
                 tiles[i][j].setTileType(TileType.Soil);
             }
         }
-        cabin = new Cabin(this, tiles);
-        greenhouse = new Greenhouse(this, tiles);
-        lake = new Lake(farmType, tiles, this);
-        quarry = new Quarry(farmType, tiles, this);
-        shippingBin = new ShippingBin(this, tiles);
+        cabin = new Cabin(this , tiles);
+        greenhouse = new Greenhouse(this , tiles);
+        lake = new Lake(farmType , tiles , this);
+        quarry = new Quarry(farmType , tiles , this);
+        shippingBin = new ShippingBin(this , tiles);
 
-        if (owner != null) {// placing the player
+        if(owner != null) {// placing the player
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.HOE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.AXE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.PICKAXE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.SCYTHE), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
+            owner.backPack.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
+
+
+
 
             Rectangle bounds = cabin.getBounds();
-            Tile spawnTile = tiles[bounds.x + bounds.width / 2][bounds.y + bounds.height + 3];
+            Tile spawnTile = tiles[bounds.x + bounds.width/2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
-            owner.setSymbol((char) ('0' + number));
+            owner.setSymbol((char)('0' + number));
             spawnTile.setContentSymbol((char) ('0' + number));
         }
     }
 
     private void initVillage(Tile[][] tiles) {
-        int x = 100, y = 90;
-        bounds.setBounds(x, y, 70, 40);
-        for (int i = bounds.x; i <= bounds.x + bounds.width; i++) {
-            for (int j = bounds.y; j <= bounds.y + bounds.height; j++) {
+        int x = 100 , y = 90;
+        bounds.setBounds(x , y , 70 , 40);
+        for(int i = bounds.x ; i <= bounds.x + bounds.width ; i ++) {
+            for(int j = bounds.y ; j <= bounds.y + bounds.height ; j ++) {
                 tiles[i][j].setOwner(owner);
-                if (owner != null) tiles[i][j].setOwnerID(owner.getID());
+                if(owner != null)tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
                 tiles[i][j].setTileType(TileType.OutSideFarm);
@@ -113,7 +121,6 @@ public class Farm {
     public Rectangle getBounds() {
         return bounds;
     }
-
     public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
     }
@@ -248,7 +255,6 @@ public class Farm {
     public void setShippingBin(ShippingBin shippingBin) {
         this.shippingBin = shippingBin;
     }
-
     public void AddCrop(Crop crop) {
         this.Crop.add(crop);
     }
@@ -264,15 +270,12 @@ public class Farm {
     public void addBuildings(Building building) {
         this.buildings.add(building);
     }
-
     public void addTrees(Tree tree) {
         this.trees.add(tree);
     }
-
     public void addRocks(Rock rock) {
         this.rocks.add(rock);
     }
-
     public void addForages(Foraging forage) {
         this.forages.add(forage);
     }

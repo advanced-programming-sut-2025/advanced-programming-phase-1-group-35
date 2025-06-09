@@ -8,12 +8,10 @@ import Model.CropClasses.Tree;
 import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
-import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class FarmingController {
@@ -128,6 +126,11 @@ public class FarmingController {
 
         if (!isFloorplowed(tile)) {
             return new Result(false, "Floor is not plowed");
+        }
+        if(!seed.getSeedEnum().getCrop().getSeason().contains(App.getCurrentGame().getGameCalender().getSeason())) {
+            if (!tile.getTileType().equals(TileType.BuildingTile)) {
+                return new Result(false, "this ain't the right season for this seed mate and you're not in greenHouse either");
+            }
         }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
@@ -285,10 +288,13 @@ public class FarmingController {
                         App.getCurrentGame().getMap().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
+                        tile.setContentSymbol('.');
+                        tile.setSymbol('.');
                         return new Result(true, "crop harvested");
                     } else {
                         crop1.setCurrentState(crop1.getCurrentState() - 1);
                         crop1.setDaysSinceLastGrowth(0);
+                        crop1.setDaysSincePlanted(0);
                         return new Result(true, "crop harvested and is now regrowing");
                     }
                 }
@@ -333,7 +339,7 @@ public class FarmingController {
                     break;
                 }
             }
-            if(!scareCrow){
+            if(!scareCrow && !crop.getcropTile().getTileType().equals(TileType.BuildingTile)){
                 System.out.println("Crow attacking " +crop.getName() +
                         " at x = " + crop.getCropTile().coordination.x +
                         " and y = " + crop.getCropTile().coordination.y);
@@ -534,7 +540,7 @@ public class FarmingController {
                 sb.append("======================================\n");
                 sb.append("Crop name: " + crop.getName());
                 sb.append("\n**************************************\n");
-                sb.append("days until full growth: " + (crop.getTotalHarvestTime() - crop.getDaysSincePlanted()));
+                sb.append("days until full growth: " + Math.max(crop.getTotalHarvestTime() - crop.getDaysSincePlanted(), 0));
                 sb.append("\n**************************************\n");
                 sb.append("current state: " + crop.getCurrentState());
                 sb.append("\n**************************************\n");

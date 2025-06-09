@@ -12,7 +12,6 @@
     <bytecodeTargetLevel>
       <module name="RegisterAndLogin" target="17" />
       <module name="Stardew_Valley" target="17" />
-      <module name="StardewValley" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

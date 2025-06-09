@@ -1,6 +1,5 @@
 package Model.enums.Shops.Products;
 
-import Model.enums.Buildings.ShopBuildings;
 import Model.enums.Seasons;
 
 public  interface ShopProduct {

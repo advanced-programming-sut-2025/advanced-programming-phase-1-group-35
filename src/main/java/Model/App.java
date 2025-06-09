@@ -1,14 +1,13 @@
 package Model;
 
+import Model.enums.Menu;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-
-import Model.FarmStuff.Rock;
-import Model.enums.Menu;
 //import com.fatboyindustrial.gsonjavatime.LocalDateTimeConverter;
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
@@ -22,22 +21,28 @@ public class App {
     private static Menu currentMenu = Menu.LoginMenu;
 
     public static void serializeApp() throws IOException { // to save the progress
-//        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-//                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).
-//                setPrettyPrinting().create();
-//        AppHolder appHolder = new AppHolder();
-//        try (FileWriter fw = new FileWriter("app.json")) {
-//            gson.toJson(appHolder, fw);
-//        }
+        AppHolder appHolder = new AppHolder();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(User.class , new UserTypeAdapter())
+                .create();
+
+        // Serialize to JSON
+        try (FileWriter writer = new FileWriter("app.json")) {
+            gson.toJson(appHolder, writer);
+        }
     }
     public static void deserializeApp() throws IOException{ // to open a save
-//        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class , new LocalDateTimeConverter())
-//                .registerTypeAdapter(LocalTime.class , new LocalDateTimeConverter()).
-//                setPrettyPrinting().create();
-//        try(FileReader fr = new FileReader("app.json")) {
-//            AppHolder appHolder = gson.fromJson(fr, AppHolder.class);
-//            appHolder.restoreApp();
-//        }
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(User.class , new UserTypeAdapter())
+                .create();
+
+        try (FileReader reader = new FileReader("app.json")) {
+            AppHolder appHolder = gson.fromJson(reader, AppHolder.class);
+            if (appHolder != null) {
+                appHolder.restoreApp();
+            }
+        }
     }
 
     public static Menu getCurrentMenu() {

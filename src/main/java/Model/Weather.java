@@ -2,7 +2,6 @@ package Model;
 
 import Model.CropClasses.Tree;
 import Model.enums.Crops.Minerals;
-import Model.enums.Crops.PlantAble;
 import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 

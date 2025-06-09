@@ -19,7 +19,7 @@ public enum ShopMenuCommands {
     }
 
     public Matcher getMatcher(String input) {
-        java.util.regex.Matcher matcher = Pattern.compile(this.regex).matcher(input);
+        Matcher matcher = Pattern.compile(this.regex).matcher(input);
 
         if (matcher.matches()) {
             return matcher;
