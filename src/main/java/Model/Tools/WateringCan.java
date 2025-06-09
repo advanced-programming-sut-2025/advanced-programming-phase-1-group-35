@@ -6,7 +6,6 @@ public class WateringCan extends Tool {
     private int capacity = 55;
 
     public WateringCan(String name) {
-        // TODO when making this object in shop section
         super(1,1, ToolTypes.WATERING_CAN);
     }
 

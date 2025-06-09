@@ -6,7 +6,6 @@ public class TrashCan extends Tool {
 
 
     public TrashCan(String name) {
-        // TODO when making this object in shop section
         super(1,1, ToolTypes.TRASH_CAN);
     }
 

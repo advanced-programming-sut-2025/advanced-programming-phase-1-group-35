@@ -539,6 +539,7 @@ public class GameMenuController {
         }
         return new Result(true, path.message());
     }
+
     public Result printMap(String xString , String yString , String sizeString) {
         int x = Integer.parseInt(xString);
         int y = Integer.parseInt(yString);
@@ -574,12 +575,14 @@ public class GameMenuController {
         }
         return new Result(true, map + "here is your map Arbab");
     }
+
     public Result validateCoordinates(int x, int y) {
         if(x < 0 || y < 0 || x > 299 || y > 249) {
             return new Result(false, "invalid coordinates");
         }
         return new Result(true, "coordinates good to go");
     }
+
     public Result helpReadingTheMap() {
         String message = ". : ground\n" +
                 "numbers(1-4) : players" +

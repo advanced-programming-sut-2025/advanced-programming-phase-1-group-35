@@ -1,5 +1,6 @@
 package Model.Tools;
 
+import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.enums.CookingIngredient;
 import Model.enums.ToolTypes;
@@ -8,10 +9,17 @@ import java.util.HashMap;
 
 public class BackPack {
     public HashMap<ItemInterface, Integer> items = new HashMap<>();
-    private int capacity = 12;
+    private int capacity = 20;
 
     public BackPack() {
-        // TODO : initial tools that everyone have
+        this.items.put(new Tool(100, 5, ToolTypes.HOE), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.AXE), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.PICKAXE), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.SCYTHE), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
+
     }
 
     public boolean doesBackPackHasSpace() {
@@ -76,8 +84,13 @@ public class BackPack {
         return null;
     }
 
-    public void upgradeBackPack(int newCapacity) {
-        // TODO : check if in Pierre shop
+    public Result upgradeBackPack(int newCapacity) {
+        ShopMenuController controller = new ShopMenuController();
+        if (!controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()).
+                getName().equalsIgnoreCase("GeneralStore")) {
+            return new Result(false, "You are not in Pierre shop");
+        }
         this.capacity = newCapacity;
+        return null;
     }
 }

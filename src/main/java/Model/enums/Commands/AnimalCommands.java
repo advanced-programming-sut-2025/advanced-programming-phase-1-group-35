@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum AnimalCommands {
-    buildAnimalHouse("build -a (?<building_name>\\S+) -l (?<x>\\d+) (?<y>\\d+)"),
+    buildAnimalHouse("build -a (?<buildingName>\\S+) -l (?<x>\\d+) (?<y>\\d+)"),
     buyAnimal("buy animal -a (?<animal>\\S+) -n (?<name>\\S+)"),
     nazAnimal("pet -n (?<name>\\S+)"),
     showAllAnimals("animals"),
