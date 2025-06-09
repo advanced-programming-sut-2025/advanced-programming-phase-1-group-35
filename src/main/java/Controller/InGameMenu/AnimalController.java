@@ -5,13 +5,13 @@ import Model.*;
 import Model.Buildings.AnimalHouse;
 import Model.FarmStuff.Farm;
 import Model.animal.Animal;
+import Model.animal.AnimalProduct;
 import Model.animal.Fish;
 import Model.enums.TileType;
+import Model.enums.ToolTypes;
 import Model.enums.WeatherCondition;
 import Model.enums.animal.AnimalType;
 import Model.enums.animal.FishType;
-
-import java.util.Arrays;
 
 public class AnimalController {
     public Result buildAnimalHouse(String name, int x, int y) {
@@ -74,7 +74,12 @@ public class AnimalController {
             return new Result(false, "there is no animal with that name!");
         }
         Animal animal = farm.findAnimal(animalName);
+        if (Math.abs(animal.location.x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
+                Math.abs(animal.location.y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
+            return new Result(false, "You are not close to the animal");
+        }
         animal.setFriendship(animal.getFriendship() + 15);
+        animal.setNazToday(true);
         return new Result(true, "you naz " + animalName + " successfully!");
     }
 
@@ -106,6 +111,8 @@ public class AnimalController {
         Animal animal = farm.findAnimal(animalName);
         animal.setFeedToday(true);
         animal.setCanProduceTomorrow(true);
+        App.getCurrentGame().getMap().changeTileSymbol(App.getCurrentGame().getMap().getTiles()[x][y], '.', animal.getName().charAt(0));
+        animal.location = new Point(x, y);
         return new Result(true, animal.getName() + " has ate grass!");
     }
 
@@ -113,11 +120,11 @@ public class AnimalController {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
-        Animal animal;
-        try {
-            animal = farm.findAnimal(animalName);
-        } catch (NullPointerException e) {
+        Animal animal = farm.findAnimal(animalName);
+        if (animal == null) {
             return new Result(false, "there is no animal with that name!");
+        } else if (animal.isFeedToday()) {
+            return new Result(false, "you ate today!");
         }
         animal.setFeedToday(true);
         animal.setCanProduceTomorrow(true);
@@ -130,7 +137,10 @@ public class AnimalController {
         Farm farm = player.getFarm();
         StringBuilder output = new StringBuilder();
         for (Animal animal : farm.animals) {
-            output.append(animal.getName()).append(Arrays.toString(animal.getProducts()));
+            output.append(animal.getName()).append(":  ");
+            for (AnimalProduct product : animal.getProducts()) {
+                output.append(product.getName()).append("  ");
+            }
             output.append("\n");
         }
         return new Result(true, output.toString());
@@ -144,16 +154,16 @@ public class AnimalController {
         if (animal == null) {
             return new Result(false, "there is no animal with that name!");
         } else if (!animal.isCanProduceTomorrow()) {
-            return new Result(false, animalName + "can not yield today! try to be nicer with him");
-        } else if (animal.getDaysPastLastProduction() == 0) {
-            return new Result(false, animalName + "you already collect its products");
+            return new Result(false, animalName + " can not yield today! try to be nicer with him");
+        } else if (animal.isCollectedToday()) {
+            return new Result(false, "you already collect its products");
         }
         player.backPack.items.put(animal.getProducts()[0],
-                player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + animal.getProductionRate());
+                player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + 1);
         animal.setDaysPastLastProduction(0);
         animal.setCollectedToday(true);
-        return new Result(true, animal.getName() + "has collected its products! it was " +
-                animal.getProductionRate() + " units of " + animal.getProducts()[0].getProductDetails().name);
+        return new Result(true, animal.getName() + " has collected its products! it was " +
+                animal.getProductionRate());
     }
 
     public Result sellAnimal(String animalName) {
@@ -177,8 +187,10 @@ public class AnimalController {
     }
 
     public Result fishing(String poleName) {
-        if (!new GameMenuController().isCloseTOSea()) {
+        if (!new GameMenuController().isCloseToSea()) {
             return new Result(false, "you are not near to a sea!");
+        } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {
+            return new Result(false, "you are not equipped by a fishing pole!");
         }
         FishType randomFish = FishType.getRandomFish();
         int fishCount = 0;
@@ -206,7 +218,19 @@ public class AnimalController {
         Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
         App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
                 App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
-        return new Result(true, fishCount + " of " + fish.getName() + "has been caught!");
+        return new Result(true, fishCount + " of " + fish.getName() + " has been caught!");
+    }
+
+    public Result cheatFriendshipAnimal(String animalName, int amount) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        Farm farm = player.getFarm();
+        Animal animal = farm.findAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "there is no animal with that name!");
+        }
+        animal.setFriendship(amount);
+        return new Result(true, "friendship with " + animalName + " is now " + animal.getFriendship());
     }
 
 }

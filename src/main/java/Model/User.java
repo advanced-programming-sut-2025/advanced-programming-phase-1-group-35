@@ -27,7 +27,7 @@ public class User {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
-    private int money = 0;
+    private int money = 10000;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class User {
     protected Tool currentTool;
     private Energy energy = new Energy();
     public Cabin cabin;
-    public ArrayList<CookingRecipes> learnedRecipes = new ArrayList<>();
+    public ArrayList<CookingRecipes> learnedRecipes;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -69,6 +69,7 @@ public class User {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.ID = IDCounter++;
+        this.learnedRecipes = new ArrayList<>();
     }
 
     public ArrayList<CraftingRecipes> getCraftingRecipes() {

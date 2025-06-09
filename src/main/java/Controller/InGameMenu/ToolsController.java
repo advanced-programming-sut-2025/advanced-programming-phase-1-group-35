@@ -65,17 +65,20 @@ public class ToolsController {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         ShopMenuController controller = new ShopMenuController();
+        if (toolName.equalsIgnoreCase("backpack")) {
+            return player.backPack.upgradeBackPack();
+        }
         for (ItemInterface item : player.backPack.items.keySet()) {
-            if (item instanceof Tool tool && tool.getToolType().toString().equals(toolName)) {
+            if (item instanceof Tool tool && tool.getToolType().toString().equalsIgnoreCase(toolName)) {
                 if (tool instanceof FishingPole) {
                     if (controller.findShopByTile(player.getCurrentTile()) != null &&
-                            controller.findShopByTile(player.getCurrentTile()).getName().
+                            !controller.findShopByTile(player.getCurrentTile()).getName().
                                     equalsIgnoreCase("FishShop")) {
-                        return new Result(true, "you are not in Willy store!");
+                        return new Result(false, "you are not in Willy store!");
                     }
                 } else {
-                    if (controller.findShopByTile(player.getCurrentTile()) != null &&
-                            controller.findShopByTile(player.getCurrentTile()).getName().
+                    if (controller.findShopByTile(player.getCurrentTile()) == null ||
+                            !controller.findShopByTile(player.getCurrentTile()).getName().
                                     equalsIgnoreCase("Blacksmith")) {
                         return new Result(false, "you are not in the blacksmith");
                     }
@@ -87,8 +90,9 @@ public class ToolsController {
 
     public Result useTrashCan(String itemName) {
         for (ItemInterface item : App.getCurrentGame().getPlayingUser().backPack.items.keySet()) {
-            if (item.getName().equals(itemName)) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
                 App.getCurrentGame().getPlayingUser().backPack.items.remove(item);
+
                 return new Result(true, "You have used the trash can and removed: " + itemName);
             }
         }
@@ -271,8 +275,7 @@ public class ToolsController {
                     }
                     return new Result(true, "You fill the can and its capacity now: " +
                             can.getCapacity());
-                } else if (destenationTile.getTileType() == TileType.Grass ||
-                        destenationTile.getTileType() == TileType.Soil) {
+                } else if (!destenationTile.isWatered) {
                     destenationTile.setWatered(true);
                     if (destenationTile.getPlanted() instanceof Crop crop) {
                         crop.setDaysSinceWatered(0);
@@ -283,7 +286,7 @@ public class ToolsController {
                 }
             }
         }
-        return new Result(false, "you cant use watering on this tile");
+        return new Result(false, "you cant use watering can on this tile");
     }
 
     private Result useScythe(Game game, User player, Tile destenationTile) {

@@ -4,61 +4,96 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2415df6-85b7-4897-bce5-1b49161666ab" name="Changes" comment="added some details" />
+    <list default="true" id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/GameMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/AnimalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/CookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/InGameMenu/ToolsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Tools/BackPack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Tools/BackPack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/enums/CookingRecipes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/enums/CookingRecipes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View/InGameMenu/CookingMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/InGameMenu/CookingMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/GameMenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/AnimalController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CookingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/CookingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/InGameMenu/ToolsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/Tools/BackPack.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/Tools/BackPack.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Model/enums/CookingRecipes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Model/enums/CookingRecipes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/View/InGameMenu/CookingMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/View/InGameMenu/CookingMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/src/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/stardew valley.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_22_2025_3_28_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/src/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/stardew valley.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/target/classes/pom.xml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Enum" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
     &quot;assignee&quot;: &quot;Hosein0withg&quot;
   }
-}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/advanced-programming-sut-2025/advanced-programming-phase-1-group-35&quot;,
+    &quot;accountId&quot;: &quot;c8e4d281-b633-45ad-b63d-8027333c2a18&quot;
+  }
 }</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
-  <component name="ProjectId" id="2vUBdMC0sh1yH2KPxOSdOTryKDD" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectId" id="2xDQCeB4v69Wdw3vz5FQS0VkclI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/ap/advanced-programming-phase-1-group-35",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.language",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;a709e4c3&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/ap_project/advanced-programming-phase-1-group-35&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="advanced-programming-phase-1-group-35" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -70,31 +105,29 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f2415df6-85b7-4897-bce5-1b49161666ab" name="Changes" comment="" />
-      <created>1744189858677</created>
+      <changelist id="c9c3cdf8-fa37-455e-8aed-17aeeea7610b" name="Changes" comment="" />
+      <created>1747470038277</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1744189858677</updated>
-      <workItem from="1744189859812" duration="233000" />
-      <workItem from="1744190110366" duration="2686000" />
-      <workItem from="1744195229246" duration="280000" />
+      <updated>1747470038277</updated>
+      <workItem from="1747470039374" duration="21058000" />
+      <workItem from="1747556179339" duration="27891000" />
+      <workItem from="1747592956976" duration="609000" />
     </task>
-    <task id="LOCAL-00001" summary="added some details">
-      <option name="closed" value="true" />
-      <created>1744192058740</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1744192058740</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="added some details" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some details" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

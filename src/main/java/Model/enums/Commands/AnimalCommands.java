@@ -14,6 +14,7 @@ public enum AnimalCommands {
     collectProducts("collect produce -n (?<name>\\S+)"),
     sellAnimal("sell animal -n (?<name>\\S+)"),
     fishing("fishing -p (?<pole>\\S+)"),
+    cheatFriendshipAnimal("cheat set friendship -n (?<name>\\S+) -c (?<amount>\\d+)"),
     goBack("go back"),
     ;
 

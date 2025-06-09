@@ -3,6 +3,7 @@ package Model.Tools;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.enums.CookingIngredient;
+import Model.enums.CookingRecipes;
 import Model.enums.ToolTypes;
 
 import java.util.HashMap;
@@ -19,6 +20,8 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
         this.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
+        this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
 
     }
 
@@ -43,7 +46,7 @@ public class BackPack {
         User player = game.getPlayingUser();
         for (ItemInterface item : items.keySet()) {
             if (item instanceof Food food) {
-                if (food.recipe.getDisplayName().equals(foodName)) {
+                if (food.recipe.toString().equalsIgnoreCase(foodName)) {
                     return food;
                 }
             }
@@ -75,22 +78,27 @@ public class BackPack {
 
     public ItemInterface findItem(String itemName) {
         for (ItemInterface item : items.keySet()) {
-            if (item instanceof Item) {
-                if (item.getName().equals(itemName)) {
+                if (item.getName().equalsIgnoreCase(itemName)) {
                     return item;
                 }
-            }
         }
         return null;
     }
 
-    public Result upgradeBackPack(int newCapacity) {
+    public Result upgradeBackPack() {
         ShopMenuController controller = new ShopMenuController();
-        if (!controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()).
+        if (controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()) != null &&
+                !controller.findShopByTile(App.getCurrentGame().getPlayingUser().getCurrentTile()).
                 getName().equalsIgnoreCase("GeneralStore")) {
             return new Result(false, "You are not in Pierre shop");
         }
-        this.capacity = newCapacity;
+        if (this.capacity == 20) {
+            this.capacity = 32;
+            return new Result(true, "capacity now is " + this.capacity);
+        } else if (this.capacity > 20) {
+            this.capacity = Integer.MAX_VALUE;
+            return new Result(true, "capacity now is infinite");
+        }
         return null;
     }
 }

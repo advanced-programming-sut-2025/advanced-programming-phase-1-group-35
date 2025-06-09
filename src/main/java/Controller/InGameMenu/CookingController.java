@@ -1,58 +1,80 @@
 package Controller.InGameMenu;
 
 import Model.*;
+import Model.FarmStuff.Home.Cabin;
 import Model.enums.CookingIngredient;
 import Model.enums.CookingRecipes;
 
 import java.util.Map;
 
 public class CookingController {
-    // TODO : check if player is inside the cabin and show proper error if not
-
-    public Result placeItemInFridge(String itemName) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
-        CookingMaterial ingredient = null;
-        for (ItemInterface item : player.backPack.items.keySet()) {
-            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
-                ingredient = (CookingMaterial) item;
-            }
+    private Result isInCabin() {
+        User player = App.getCurrentGame().getPlayingUser();
+        Cabin cabin = player.getFarm().getCabin();
+        if (!cabin.isTileInBounds(player.getCurrentTile())) {
+            return new Result(false, "You are not in a Cabin");
         }
-        if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
-            return new Result(false, "You don't have a item in your inventory");
-        }
-        player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
-        player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
-        if (player.backPack.items.get(ingredient) == 0) {
-            player.backPack.items.remove(ingredient);
-        }
-        return new Result(true, "successfully added ingredient to the refrigerator");
+        return null;
     }
 
-    public Result pickItemFromFridge(String itemName) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
-        CookingMaterial ingredient = null;
-        for (CookingMaterial material : player.cabin.refrigerator.ingredients.keySet()) {
-            if (itemName.equals(material.getName())) {
-                ingredient = material;
-            }
-        }
-        if (ingredient == null) {
-            return new Result(false, "You don't have a item in your refrigerator");
-        }
-        player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.get(ingredient) - 1);
-        player.backPack.items.put(ingredient, player.backPack.items.getOrDefault(ingredient, 0) + 1);
-        if (player.cabin.refrigerator.ingredients.get(ingredient) == 0) {
-            player.cabin.refrigerator.ingredients.remove(ingredient);
-        }
-        return new Result(true, "successfully added ingredient to the refrigerator");
-    }
+//    public Result placeItemInFridge(String itemName) {
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+//        CookingMaterial ingredient = null;
+//        for (ItemInterface item : player.backPack.items.keySet()) {
+//            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
+//                ingredient = (CookingMaterial) item;
+//            }
+//        }
+//        if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
+//            return new Result(false, "You don't have a item in your inventory");
+//        }
+//        player.getFarm().getCabin().refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
+//        player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
+//        if (player.backPack.items.get(ingredient) == 0) {
+//            player.backPack.items.remove(ingredient);
+//        }
+//        return new Result(true, "successfully added ingredient to the refrigerator");
+//    }
+
+//    public Result pickItemFromFridge(String itemName) {
+//        if (isInCabin() != null) {
+//            return isInCabin();
+//        }
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+//        CookingMaterial ingredient = null;
+//        for (CookingMaterial material : player.cabin.refrigerator.ingredients.keySet()) {
+//            if (itemName.equals(material.getName())) {
+//                ingredient = material;
+//            }
+//        }
+//        if (ingredient == null) {
+//            return new Result(false, "You don't have a item in your refrigerator");
+//        } if (player.backPack.doesBackPackHasSpace()) {
+//            player.cabin.refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.get(ingredient) - 1);
+//            player.backPack.items.put(ingredient, player.backPack.items.getOrDefault(ingredient, 0) + 1);
+//        } else {
+//            return new Result(false, "You don't have space in your backpack");
+//        }
+//        if (player.cabin.refrigerator.ingredients.get(ingredient) == 0) {
+//            player.cabin.refrigerator.ingredients.remove(ingredient);
+//        }
+//        return new Result(true, "successfully added ingredient to the refrigerator");
+//    }
 
     public Result showCookingRecipes() {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
+        if (player.learnedRecipes.isEmpty()) {
+            addCookingRecipe(CookingRecipes.FRIED_EGG);
+            addCookingRecipe(CookingRecipes.PIZZA);
+        }
         StringBuilder output = new StringBuilder();
+        output.append("Cooking recipes:\n");
         for (CookingRecipes recipe : player.learnedRecipes) {
             output.append(recipe.getDisplayName()).append("\n");
         }
@@ -66,6 +88,9 @@ public class CookingController {
     }
 
     public Result cook(String recipeName) {
+        if (isInCabin() != null) {
+            return isInCabin();
+        }
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         CookingRecipes recipe = null;
@@ -92,6 +117,9 @@ public class CookingController {
             } else {
                 player.cabin.refrigerator.ingredients.put(material, player.cabin.refrigerator.ingredients.get(material) - requiredAmount);
             }
+        }
+        if (!player.backPack.doesBackPackHasSpace()) {
+            return new Result(false, "You don't have enough space in your backpack");
         }
         player.backPack.items.put(new Food(recipe), 1);
         return new Result(true, "you cooked " + recipeName + " successfully! It looks delicious!");
@@ -121,13 +149,7 @@ public class CookingController {
         }
         player.backPack.items.remove(food);
         player.getEnergy().setEnergyAmount(player.getEnergy().getEnergyAmount() + food.recipe.getEnergy());
-        // TODO : buff
         return new Result(true, "you ate a " + food.recipe.getDisplayName());
-    }
-
-    // TODO
-    private boolean doesInventoryHaveSpace() {
-        return true;
     }
 
 }

@@ -51,7 +51,7 @@ public class ShopItem {
             return new Item(price, name);
         } else if (type.equals("AnimalHouse")) {
             AnimalController animalController = new AnimalController();
-
+            while (true) {
                 GameMenu.print("where do you plan on putting this building buddy ?");
                 String input = GameMenu.scan();
                 Matcher matcher;
@@ -61,8 +61,10 @@ public class ShopItem {
                 if ((matcher = GameMenuCommands.buildABuilding.getMatcher(input)) == null) return null;
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
-                return animalController.buildAnimalHouse(name, x, y);
-
+                Result result = animalController.buildAnimalHouse(name, x, y);
+                GameMenu.print(result.toString());
+                if (result.isSuccess()) return result;
+            }
         } else if (type.equals("CraftingRecipe")) {
             //TODO : Update when crafting recipes added
         } else if (type.equals("Food")) {
