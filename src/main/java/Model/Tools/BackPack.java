@@ -22,10 +22,11 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
         this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
         this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
+
     }
 
     public boolean doesBackPackHasSpace() {
-        return items.size() < capacity;
+        return items.size() <= capacity;
     }
 
     public void setCapacity(int capacity) {

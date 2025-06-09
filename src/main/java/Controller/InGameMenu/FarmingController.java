@@ -8,10 +8,12 @@ import Model.CropClasses.Tree;
 import Model.enums.CraftingItems;
 import Model.enums.Crops.*;
 import Model.enums.Seasons;
+import Model.enums.Shops.Products.GeneralStoreProducts;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FarmingController {

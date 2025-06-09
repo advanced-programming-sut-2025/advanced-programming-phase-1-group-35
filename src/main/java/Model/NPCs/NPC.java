@@ -16,7 +16,7 @@ public class NPC {
     public char symbol;
     public Point location;
 
-    public NPC(String name, String job, ArrayList<Quest> quests, ArrayList<String> favorites, char symbol) {
+    public NPC(String name, String job, ArrayList<Quest> quests, ArrayList<String> favorites) {
         this.name = name;
         this.job = job;
         this.quests = quests;

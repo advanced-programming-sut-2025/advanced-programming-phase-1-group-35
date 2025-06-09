@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class ToolsController {
     public Result toolEquip(String toolName) {
+        System.out.println("Tool equipped");
         User playingUser = App.getCurrentGame().getPlayingUser();
         BackPack backPack = playingUser.backPack;
         ToolTypes toolType;

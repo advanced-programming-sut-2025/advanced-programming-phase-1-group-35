@@ -8,7 +8,10 @@ import Model.FarmStuff.Foraging;
 import Model.FarmStuff.Rock;
 import Model.Shops.Shop;
 import Model.enums.Colors;
+import Model.enums.NPCs.NPCs;
 import Model.enums.Shops.ShopEnum;
+import Model.FarmStuff.Foraging;
+import Model.FarmStuff.Rock;
 import Model.enums.TileType;
 
 import java.util.ArrayList;
