@@ -1,0 +1,28 @@
+package Model.enums;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public enum MainMenuCommands {
+    menuEnter("\\s*menu\\s+enter\\s+(?<menuName>.+?)\\s*"),
+    menuExit("\\s*menu\\s+exit\\s*"),
+    showCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
+    logout("\\s*logout\\s*"),
+    ;
+
+
+    private final String regex;
+
+    MainMenuCommands(String regex) {
+        this.regex = regex;
+    }
+
+    public Matcher getMatcher(String input) {
+        Matcher matcher = Pattern.compile(this.regex).matcher(input);
+
+        if (matcher.matches()) {
+            return matcher;
+        }
+        return null;
+    }
+}
