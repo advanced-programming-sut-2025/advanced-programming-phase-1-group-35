@@ -1,11 +1,15 @@
 package Controller;
 
+import GraphicView.LoginUI;
+import GraphicView.SignUpUI;
 import Model.App;
 import Model.Result;
 import Model.SHA256;
 import Model.User;
 import Model.enums.*;
 import View.LoginMenu;
+import com.StardewValley.Main;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 //import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -17,7 +21,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginMenuController {
+public class LoginMenuController extends Controller {
+    private SignUpUI view ;
+    private LoginUI LoginView;
 
     public void exitMenu() throws IOException {
         if(!App.isStayLoggedIn()) {
@@ -30,22 +36,25 @@ public class LoginMenuController {
     public Result showCurrentMenu() {
         return new Result(true , "login menu");
     }
-    public Result registerUser(String username, String password,
-                               String confirmPassword, String email,
-                               String nickname, String gender) throws IOException {
-        if(getUser(username) != null) {
-            return new Result(false, "Username is already in use");
+    public Result registerUser() throws IOException {
+        if(!view.getAdvanceButton().isChecked())return null;
+        String password;
+        if(getUser(view.getUsernameField().getText()) != null) {
+            showErrorDialog(Dialogues.ErrorUserExists.title, Dialogues.ErrorUserExists.message);
+            view.getAdvanceButton().setChecked(false);
         }
-        if(Regexes.Username.getMatcher(username) == null) {
-            return new Result(false, "Username is not valid");
+        if(Regexes.Username.getMatcher(view.getUsernameField().getText()) == null) {
+            showErrorDialog(Dialogues.ErrorInvalidUserName.title, Dialogues.ErrorInvalidUserName.message);
+            view.getAdvanceButton().setChecked(false);
         }
-        if(Regexes.Email.getMatcher(email) == null) {
-            return new Result(false, "Email is not valid");
+        if(Regexes.Email.getMatcher(view.getEmailField().getText()) == null) {
+            showErrorDialog(Dialogues.ErrorInvalidEmail.title, Dialogues.ErrorInvalidEmail.message);
+            view.getAdvanceButton().setChecked(false);
         }
-        Result managePasswordResult = managePassword(password , confirmPassword);
+        Result managePasswordResult = managePassword(view.getPasswordField().getText() , view.getConfirmPasswordField().getText());
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else password = managePasswordResult.toString();
-        Gender genderEnum = switch (gender.toLowerCase()) {
+        Gender genderEnum = switch (view.getGenderBox().getSelected().toString().toLowerCase()) {
             case "male" -> Gender.male;
             case "female" -> Gender.female;
             default -> null;
@@ -57,36 +66,23 @@ public class LoginMenuController {
             System.out.println(question.question);
         }
         SecurityQuestions question = null;
-        String answer = null;
-        System.out.println("choose a security question . (1/2/3/4)");
-        while (true){
-            String input = LoginMenu.scan();
-            Matcher matcher = LoginMenuCommands.pickQuestion.getMatcher(input);
-            if(matcher == null) {
-                System.out.println("invalid input");
-                continue;
-            }
-            int qNumber = Integer.parseInt(matcher.group("questionNumber"));
-            answer = matcher.group("answer");
-            String answer2 = matcher.group("answerConfirm");
-            if(qNumber < 1 || qNumber > 4) {
-                System.out.println("Invalid question number");
-                continue;
-            }
-            if(!answer.equals(answer2)) {
-                System.out.println("answers do not match");
-                continue;
-            }
-            question = switch (input) {
-                case "1" -> SecurityQuestions.Question1;
-                case "2" -> SecurityQuestions.Question2;
-                case "3" -> SecurityQuestions.Question3;
-                case "4" -> SecurityQuestions.Question4;
-                default -> null;
-            };
-            break;
+        String answer = view.getSecurityAnswerField().getText();
+
+        if(answer.length() < 3) {
+            showErrorDialog(Dialogues.ErrorSecurityAnswerEmpty.title, Dialogues.ErrorSecurityAnswerEmpty.message);
+            view.getAdvanceButton().setChecked(false);
         }
-        App.users.add(new User(username , SHA256.hashString(password) , nickname , email , genderEnum , question , answer));
+        question = switch (view.getSecurityQuestionBox().getSelectedIndex() + 1) {
+            case 1 -> SecurityQuestions.Question1;
+            case 2 -> SecurityQuestions.Question2;
+            case 3 -> SecurityQuestions.Question3;
+            case 4 -> SecurityQuestions.Question4;
+            default -> null;
+        };
+        App.users.add(new User(view.getUsernameField().getText() , SHA256.hashString(password) ,
+            view.getUsernameField().getText(), view.getEmailField().getText() , genderEnum , question , answer));
+        Main.getGame().getScreen().dispose();
+        Main.getGame().setScreen(new LoginUI(new LoginMenuController()));
         return new Result(true , "user successfully registered , now you can log in");
     }
 
@@ -140,15 +136,15 @@ public class LoginMenuController {
         Pattern lowercase = Pattern.compile("[a-z]");
         Pattern number = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[" + Regexes.SpecialCharacters + "]");
-        if(password.length() < 8) return new Result(false, "Password must be at least 8 characters");
+        if(password.length() < 8) return new Result(false, "");
         if(!uppercase.matcher(password).find())
-            return new Result(false, "Password must contain at least one uppercase letter");
+            return new Result(false, "");
         if(!lowercase.matcher(password).find())
-            return new Result(false, "Password must contain at least one lowercase letter");
+            return new Result(false, "");
         if(!number.matcher(password).find())
-            return new Result(false, "Password must contain at least one number");
+            return new Result(false, "");
         if(!special.matcher(password).find())
-            return new Result(false, "Password must contain at least one special character");
+            return new Result(false, "");
         return new Result(true, "password is strong enough");
     }
     public Result managePassword(String password , String confirmPassword) throws IOException {
@@ -206,5 +202,12 @@ public class LoginMenuController {
             chars.add(c);
         }
         return chars;
+    }
+
+    public void setView(SignUpUI signUpUI) {
+        this.view = signUpUI;
+    }
+    public void setView(LoginUI loginUI) {
+        this.LoginView = loginUI;
     }
 }

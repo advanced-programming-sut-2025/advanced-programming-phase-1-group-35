@@ -2,6 +2,7 @@ package View;
 
 import Controller.LoginMenuController;
 import Model.enums.LoginMenuCommands;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,13 +14,13 @@ public class LoginMenu extends AppMenu {
     public void check(Scanner scanner) throws IOException {
         Matcher matcher;
         String input = scan();
-        if((matcher = LoginMenuCommands.register.getMatcher(input)) != null) {
-            System.out.println(controller.registerUser(matcher.group("username") , matcher.group("password"),
-                                                       matcher.group("passwordConfirm") , matcher.group("email"),
-                                                       matcher.group("nickname") , matcher.group("gender") ));
-
-        }
-        else if((matcher = LoginMenuCommands.login.getMatcher(input)) != null) {
+//        if((matcher = LoginMenuCommands.register.getMatcher(input)) != null) {
+//            System.out.println(controller.registerUser(matcher.group("username") , matcher.group("password"),
+//                                                       matcher.group("passwordConfirm") , matcher.group("email"),
+//                                                       matcher.group("nickname") , matcher.group("gender") ));
+//
+//        }
+        if((matcher = LoginMenuCommands.login.getMatcher(input)) != null) {
             System.out.println(controller.login(matcher.group("username") , matcher.group("password"),
                                                 matcher.group("stay")));
         }

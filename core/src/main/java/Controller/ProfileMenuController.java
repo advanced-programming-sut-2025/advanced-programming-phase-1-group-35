@@ -5,6 +5,7 @@ import Model.Result;
 import Model.SHA256;
 import Model.User;
 import Model.enums.Regexes;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.IOException;
 import java.security.PublicKey;
