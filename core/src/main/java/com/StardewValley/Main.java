@@ -2,6 +2,7 @@ package com.StardewValley;
 
 import Controller.LoginMenuController;
 import GraphicView.SignUpUI;
+import Model.App;
 import View.AppView;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -50,6 +51,11 @@ public class Main extends Game {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         game.setScreen(new SignUpUI(new LoginMenuController()));
+        try {
+            App.deserializeApp();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

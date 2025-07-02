@@ -5,10 +5,14 @@ import Model.GameAssetManager;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.io.IOException;
 
 public class LoginUI implements Screen {
     private Stage stage;
@@ -18,6 +22,8 @@ public class LoginUI implements Screen {
     private final TextField passwordField;
     private final TextButton forgotPasswordButton;
     private final TextButton goToSignUpButton;
+    private final CheckBox stayLoggedInCheckBox;
+    private final TextButton exitButton;
     private final Label title;
     public Table table;
     public LoginMenuController controller;
@@ -36,6 +42,17 @@ public class LoginUI implements Screen {
         this.forgotPasswordButton.setChecked(false);
         this.goToSignUpButton = new TextButton("back to signup", skin);
         this.goToSignUpButton.setChecked(false);
+        goToSignUpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getGame().getScreen().dispose();
+                Main.getGame().setScreen(new SignUpUI(new LoginMenuController()));
+            }
+        });
+        stayLoggedInCheckBox = new CheckBox("Stay LoggedIn", skin);
+        stayLoggedInCheckBox.setChecked(false);
+        exitButton = new TextButton("Exit", skin);
+        exitButton.setChecked(false);
         this.table = new Table();
         controller.setView(this);
     }
@@ -55,11 +72,15 @@ public class LoginUI implements Screen {
         table.row().pad(10, 0 , 10 , 0);
         table.add(passwordField).width(600);
         table.row().pad(15, 0 , 10 , 0);
+        table.add(stayLoggedInCheckBox);
+        table.row().pad(10, 0 , 10 , 0);
         table.add(advanceButton).width(300);
         table.row().pad(10, 0 , 10 , 0);
         table.add(forgotPasswordButton).width(300);
         table.row().pad(10, 0 , 10 , 0);
         table.add(goToSignUpButton).width(300);
+        table.row().pad(10, 0 , 10 , 0);
+        table.add(exitButton).width(300);
 
         stage.addActor(table);
     }
@@ -71,7 +92,21 @@ public class LoginUI implements Screen {
         Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
+        try {
+            controller.login(usernameField.getText(),passwordField.getText(),stayLoggedInCheckBox.isChecked());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            controller.forgotPassword(usernameField.getText());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            controller.exitMenu();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -97,5 +132,26 @@ public class LoginUI implements Screen {
     @Override
     public void dispose() {
 
+    }
+    public TextButton getAdvanceButton() {
+        return advanceButton;
+    }
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+    public TextButton getForgotPasswordButton() {
+        return forgotPasswordButton;
+    }
+    public TextButton getGoToSignUpButton() {
+        return goToSignUpButton;
+    }
+    public TextButton getExitButton() {
+        return exitButton;
+    }
+    public TextButton getStayLoggedInCheckBox() {
+        return stayLoggedInCheckBox;
     }
 }

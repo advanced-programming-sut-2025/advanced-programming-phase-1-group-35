@@ -1,0 +1,44 @@
+package GraphicView;
+
+import Controller.MainMenuController;
+import com.badlogic.gdx.Screen;
+
+public class MainMenuUI implements Screen {
+    public MainMenuUI(MainMenuController mainMenuController) {
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float v) {
+
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+}

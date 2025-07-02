@@ -1,6 +1,8 @@
 package Controller;
 
+import GraphicView.ForgotPasswordUI;
 import GraphicView.LoginUI;
+import GraphicView.MainMenuUI;
 import GraphicView.SignUpUI;
 import Model.App;
 import Model.Result;
@@ -52,16 +54,16 @@ public class LoginMenuController extends Controller {
             view.getAdvanceButton().setChecked(false);
         }
         Result managePasswordResult = managePassword(view.getPasswordField().getText() , view.getConfirmPasswordField().getText());
-        if(!managePasswordResult.isSuccess()) return managePasswordResult;
-        else password = managePasswordResult.toString();
+        if(!managePasswordResult.isSuccess()) {
+            view.getAdvanceButton().setChecked(false);
+            return managePasswordResult;
+        }
+        password = view.getPasswordField().getText();
         Gender genderEnum = switch (view.getGenderBox().getSelected().toString().toLowerCase()) {
             case "male" -> Gender.male;
             case "female" -> Gender.female;
             default -> null;
         };
-        if(genderEnum == null) {
-            return new Result(false, "I'm a CE major , I believe in binary");
-        }
         for (SecurityQuestions question : SecurityQuestions.values()) {
             System.out.println(question.question);
         }
@@ -83,10 +85,11 @@ public class LoginMenuController extends Controller {
             view.getUsernameField().getText(), view.getEmailField().getText() , genderEnum , question , answer));
         Main.getGame().getScreen().dispose();
         Main.getGame().setScreen(new LoginUI(new LoginMenuController()));
+        App.serializeApp();
         return new Result(true , "user successfully registered , now you can log in");
     }
 
-    public Result login(String username, String password, String stayLoggedIn) {
+    public Result login(String username, String password, boolean stayLoggedIn) throws IOException {
         User user = getUser(username);
         if(user == null) {
             return new Result(false, "User not found");
@@ -95,30 +98,25 @@ public class LoginMenuController extends Controller {
             return new Result(false, "Wrong password");
         }
         App.setLoggedInUser(user);
-        boolean stayLoggedInUser = stayLoggedIn == null ? false : true;
-        App.setStayLoggedIn(stayLoggedInUser);
+        App.setStayLoggedIn(stayLoggedIn);
         App.setCurrentMenu(Menu.MainMenu);
+        Main.getGame().getScreen().dispose();
+        Main.getGame().setScreen(new MainMenuUI(new MainMenuController()));
+        App.serializeApp();
         return new Result(true, "user successfully logged in");
     }
 
-    public Result forgotPassword(String username , Scanner scanner) throws IOException {
+    public Result forgotPassword(String username) throws IOException {
+        if(!LoginView.getForgotPasswordButton().isChecked())return null;
         User user = getUser(username);
         if(user == null) {
+            showErrorDialog(Dialogues.ErrorUserDoesNotExist.title, Dialogues.ErrorUserDoesNotExist.message);
+            LoginView.getForgotPasswordButton().setChecked(false);
             return new Result(false, "User not found");
         }
-        String input = scanner.nextLine().trim();
-        Matcher matcher = LoginMenuCommands.answerQuestion.getMatcher(input);
-        if(matcher == null) return new Result(false, "Invalid answer question");
-        if(!matcher.group("answer").equalsIgnoreCase(user.getSecurityAnswer())) {
-            return new Result(false, "Wrong answer");
-        }
-        LoginMenu.print("choose a new password . (random for random generated password)");
-        String newPassword = scanner.nextLine().trim();
-        Result managePasswordResult = managePassword(newPassword , newPassword);
-        if(!managePasswordResult.isSuccess()) return managePasswordResult;
-        else newPassword = managePasswordResult.toString();
-        user.setPassword(newPassword);
-        return new Result(true, "password successfully changed");
+        Main.getGame().getScreen().dispose();
+        Main.getGame().setScreen(new ForgotPasswordUI(new ForgotPasswordMenuController(),user));
+        return null;
     }
 
 
@@ -136,33 +134,46 @@ public class LoginMenuController extends Controller {
         Pattern lowercase = Pattern.compile("[a-z]");
         Pattern number = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[" + Regexes.SpecialCharacters + "]");
-        if(password.length() < 8) return new Result(false, "");
-        if(!uppercase.matcher(password).find())
-            return new Result(false, "");
-        if(!lowercase.matcher(password).find())
-            return new Result(false, "");
-        if(!number.matcher(password).find())
-            return new Result(false, "");
-        if(!special.matcher(password).find())
-            return new Result(false, "");
+        boolean Strong = false;
+        if(password.length() < 8) {
+            showErrorDialog(Dialogues.ErrorPasswordNotLongEnough.title, Dialogues.ErrorPasswordNotLongEnough.message);
+            return new Result(false, "Password too short");
+        }
+        if(!uppercase.matcher(password).find()) {
+            showErrorDialog(Dialogues.ErrorNoUpperCase.title, Dialogues.ErrorNoUpperCase.message);
+            return new Result(false, "Password is too short");
+        }
+        if(!lowercase.matcher(password).find()) {
+            showErrorDialog(Dialogues.ErrorNoLowerCase.title, Dialogues.ErrorNoLowerCase.message);
+            return new Result(false, "Password is too short");
+        }
+        if(!number.matcher(password).find()) {
+            showErrorDialog(Dialogues.ErrorNoNumber.title, Dialogues.ErrorNoNumber.message);
+            return new Result(false, "Password is too short");
+        }
+        if(!special.matcher(password).find()) {
+            showErrorDialog(Dialogues.ErrorNoSpecialCharacter.title, Dialogues.ErrorNoSpecialCharacter.message);
+            return new Result(false, "Password is too short");
+        }
         return new Result(true, "password is strong enough");
     }
-    public Result managePassword(String password , String confirmPassword) throws IOException {
-        if(password.equalsIgnoreCase("random")){
+    public Result checkRandom() throws IOException {
+        if(view.getGenerateRandomPasswordButton().isChecked()){
             Result result = generateRandomPassword();
-            if(result.isSuccess()) {
-                password = result.toString();
-                confirmPassword = result.toString();
-                System.out.println("random password was chosen");
-            }
-            else return result;
+            view.getGenerateRandomPasswordButton().setChecked(false);
+            return result;
         }
+        return null;
+    }
+    public Result managePassword(String password , String confirmPassword) throws IOException {
         if(Regexes.Password.getMatcher(password) == null) {
+            showErrorDialog(Dialogues.ErrorInvalidPassword.title, Dialogues.ErrorInvalidPassword.message);
             return new Result(false, "Password is not valid");
         }
         Result passCheckResult = checkPasswordStrength(password);
         if(!passCheckResult.isSuccess()) return passCheckResult;
         if(!password.equals(confirmPassword)) {
+            showErrorDialog(Dialogues.ErrorConfirmPasswordFailed.title, Dialogues.ErrorConfirmPasswordFailed.message);
             return new Result(false, "Password does not match the confirmation");
         }
         return new Result(true, password);
@@ -177,15 +188,8 @@ public class LoginMenuController extends Controller {
         LoginMenu.print("random generated password: " + shuffledPassword);
         LoginMenu.print("do you want to keep the password ? (y/n)\n" +
                            "n will take you back to login menu");
-        while(true) {
-            String answer = LoginMenu.scan();
-            if (answer.equals("y")) {
-                return new Result(true, shuffledPassword.toString());
-            } else if (answer.equals("n")) {
-                return new Result(false, "Redirecting to login menu ...");
-            }
-            else LoginMenu.print("invalid input");
-        }
+        view.getPasswordField().setText(shuffledPassword.toString());
+        return new Result(true, shuffledPassword.toString());
     }
 
     private static List<Character> getCharacters() {

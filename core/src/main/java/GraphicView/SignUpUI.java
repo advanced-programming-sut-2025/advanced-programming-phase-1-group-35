@@ -109,6 +109,7 @@ public class SignUpUI implements Screen {
         stage.draw();
         try {
             controller.registerUser();
+            controller.checkRandom();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -167,5 +168,9 @@ public class SignUpUI implements Screen {
 
     public TextButton getAdvanceButton() {
         return advanceButton;
+    }
+
+    public TextButton getGenerateRandomPasswordButton() {
+        return randomPasswordButton;
     }
 }

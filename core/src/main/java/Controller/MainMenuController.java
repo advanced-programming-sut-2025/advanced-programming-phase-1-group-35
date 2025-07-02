@@ -6,7 +6,7 @@ import Model.Result;
 
 import java.io.IOException;
 
-public class MainMenuController {
+public class MainMenuController extends Controller {
     public Result showCurrentMenu() {
         return new Result(true , "main menu");
     }

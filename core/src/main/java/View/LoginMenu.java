@@ -21,8 +21,9 @@ public class LoginMenu extends AppMenu {
 //
 //        }
         if((matcher = LoginMenuCommands.login.getMatcher(input)) != null) {
+            boolean stayLoggedIn = matcher.group("stay") != null;
             System.out.println(controller.login(matcher.group("username") , matcher.group("password"),
-                                                matcher.group("stay")));
+                                                stayLoggedIn));
         }
         else if(LoginMenuCommands.menuExit.getMatcher(input) != null) {
             controller.exitMenu();

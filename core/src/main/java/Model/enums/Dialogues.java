@@ -10,6 +10,11 @@ public enum Dialogues {
     ErrorNoNumber("Error", "Password must contain at least one number"),
     ErrorNoSpecialCharacter("Error", "Password must contain at least one special"),
     ErrorSecurityAnswerEmpty("Error", "Security answer is too short"),
+    ErrorConfirmPasswordFailed("Error", "Confirm password is incorrect"),
+    ErrorWrongAnswer("Error", "Your answer is incorrect"),
+    ErrorInvalidPassword("Error","Your password format is invalid" ),
+    ErrorPasswordIncorrect("Error", "Password is incorrect"),
+    ErrorUserDoesNotExist("Error", "Username does not exist"),
 
     ;
     public String title, message;
