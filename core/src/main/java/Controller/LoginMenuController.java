@@ -81,6 +81,7 @@ public class LoginMenuController extends Controller {
             case 4 -> SecurityQuestions.Question4;
             default -> null;
         };
+        view.getAdvanceButton().setChecked(false);
         App.users.add(new User(view.getUsernameField().getText() , SHA256.hashString(password) ,
             view.getUsernameField().getText(), view.getEmailField().getText() , genderEnum , question , answer));
         Main.getGame().getScreen().dispose();
@@ -90,13 +91,19 @@ public class LoginMenuController extends Controller {
     }
 
     public Result login(String username, String password, boolean stayLoggedIn) throws IOException {
+        if(!LoginView.getAdvanceButton().isChecked())return null;
         User user = getUser(username);
         if(user == null) {
+            showErrorDialog(Dialogues.ErrorUserDoesNotExist.title, Dialogues.ErrorUserDoesNotExist.message);
+            LoginView.getAdvanceButton().setChecked(false);
             return new Result(false, "User not found");
         }
         if(!user.getPassword().equals(SHA256.hashString(password))) {
+            showErrorDialog(Dialogues.ErrorPasswordIncorrect.title, Dialogues.ErrorPasswordIncorrect.message);
+            LoginView.getAdvanceButton().setChecked(false);
             return new Result(false, "Wrong password");
         }
+        LoginView.getAdvanceButton().setChecked(false);
         App.setLoggedInUser(user);
         App.setStayLoggedIn(stayLoggedIn);
         App.setCurrentMenu(Menu.MainMenu);
@@ -114,6 +121,7 @@ public class LoginMenuController extends Controller {
             LoginView.getForgotPasswordButton().setChecked(false);
             return new Result(false, "User not found");
         }
+        LoginView.getForgotPasswordButton().setChecked(false);
         Main.getGame().getScreen().dispose();
         Main.getGame().setScreen(new ForgotPasswordUI(new ForgotPasswordMenuController(),user));
         return null;
