@@ -2,9 +2,11 @@ package Controller;
 
 import GraphicView.LoginUI;
 import GraphicView.MainMenuUI;
+import GraphicView.ProfileMenuUI;
 import Model.App;
 import Model.enums.Menu;
 import Model.Result;
+import View.MainMenu;
 import com.StardewValley.Main;
 
 import java.io.IOException;
@@ -33,6 +35,8 @@ public class MainMenuController extends Controller {
             menuString = "game menu";
         }
         else if(view.getProfileButton().isChecked()){
+            Main.getGame().getScreen().dispose();
+            Main.getGame().setScreen(new ProfileMenuUI(new MainMenuController()));
             menuString = "profile menu";
         }
         else return null;

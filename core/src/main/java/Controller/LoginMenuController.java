@@ -28,12 +28,14 @@ public class LoginMenuController extends Controller {
     private LoginUI LoginView;
 
     public void exitMenu() throws IOException {
+        if(LoginView != null && !LoginView.getExitButton().isChecked()) return;
         if(!App.isStayLoggedIn()) {
             App.setLoggedInUser(null);
             App.setCurrentMenu(Menu.LoginMenu);
         }
         App.serializeApp();
         App.setCurrentMenu(Menu.ExitMenu);
+        System.exit(0);
     }
     public Result showCurrentMenu() {
         return new Result(true , "login menu");
