@@ -2,6 +2,7 @@ package Controller;
 
 import GraphicView.LoginUI;
 import GraphicView.MainMenuUI;
+import GraphicView.PregameMenuUI;
 import GraphicView.ProfileMenuUI;
 import Model.App;
 import Model.enums.Menu;
@@ -32,6 +33,8 @@ public class MainMenuController extends Controller {
 
     public Result goToMenu(String menuString) {
         if(view.getPreGameButton().isChecked()){
+            Main.getGame().getScreen().dispose();
+            Main.getGame().setScreen(new PregameMenuUI(new MainMenuController()));
             menuString = "game menu";
         }
         else if(view.getProfileButton().isChecked()){
