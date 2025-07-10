@@ -11,7 +11,67 @@
       "securityAnswer": "nope",
       "highScore": 0,
       "gamesPlayed": 0
+    },
+    {
+      "username": "a",
+      "password": "1967bfa68e40013348762184193c2a457be7a6975d1d5da6a8161d0e9165dbbb",
+      "nickname": "a",
+      "email": "aadsas@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "a",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "b",
+      "password": "1967bfa68e40013348762184193c2a457be7a6975d1d5da6a8161d0e9165dbbb",
+      "nickname": "b",
+      "email": "asa@gsg.cggfdg",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "dfdf",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "Hosein",
+      "password": "1967bfa68e40013348762184193c2a457be7a6975d1d5da6a8161d0e9165dbbb",
+      "nickname": "Hosein",
+      "email": "hosein@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question4",
+      "securityQuestionText": "4- on scale of 1 to 100000 how much do you enjoy writing vague docs about AP assignments?",
+      "securityAnswer": "55",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "hosein",
+      "password": "c4318372f98f4c46ed3a32c16ee4d7a76c832886d887631c0294b3314f34edf1",
+      "nickname": "hosein",
+      "email": "asdas@sffdd.vbvb",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "sdsad",
+      "highScore": 0,
+      "gamesPlayed": 0
     }
   ],
+  "loggedInUser": {
+    "username": "hosein",
+    "password": "c4318372f98f4c46ed3a32c16ee4d7a76c832886d887631c0294b3314f34edf1",
+    "nickname": "hosein",
+    "email": "asdas@sffdd.vbvb",
+    "gender": "male",
+    "securityQuestion": "Question1",
+    "securityQuestionText": "1- What is your greatest childhood trauma ?",
+    "securityAnswer": "sdsad",
+    "highScore": 0,
+    "gamesPlayed": 0
+  },
   "stayLoggedIn": false
 }

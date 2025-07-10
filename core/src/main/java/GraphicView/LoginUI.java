@@ -93,7 +93,8 @@ public class LoginUI implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
         try {
-            controller.login(usernameField.getText(),passwordField.getText(),stayLoggedInCheckBox.isChecked());
+            controller.login("hosein", "Aa123456",stayLoggedInCheckBox.isChecked());
+            //controller.login(usernameField.getText(),passwordField.getText(),stayLoggedInCheckBox.isChecked());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
