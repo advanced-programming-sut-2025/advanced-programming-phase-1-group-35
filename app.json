@@ -1,7 +1,43 @@
 {
   "users": [
     {
-      "username": "kazem",
+      "username": "player1",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "nope",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "player2",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "nope",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "player3",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "nope",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "player4",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
       "email": "mahdi@gmail.com",
@@ -13,5 +49,17 @@
       "gamesPlayed": 0
     }
   ],
+  "loggedInUser": {
+    "username": "player1",
+    "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+    "nickname": "mahdi",
+    "email": "mahdi@gmail.com",
+    "gender": "male",
+    "securityQuestion": "Question1",
+    "securityQuestionText": "1- What is your greatest childhood trauma ?",
+    "securityAnswer": "nope",
+    "highScore": 0,
+    "gamesPlayed": 0
+  },
   "stayLoggedIn": false
 }

@@ -25,8 +25,9 @@ public class GameMenu extends AppMenu {
         String input = scan();
         Matcher matcher;
         if ((matcher = GameMenuCommands.newGame.getMatcher(input)) != null) {
+            int[] mapTypes = {1,2,3,3};
             System.out.println(controller.createNewGame(matcher.group("user1"), matcher.group("user2"),
-                    matcher.group("user3")));
+                    matcher.group("user3"), mapTypes));
             FarmingController cont = new FarmingController(App.getCurrentGame().getMap().getTiles());
             cont.generateStartingPlants();
             cont.addForagingCrop();

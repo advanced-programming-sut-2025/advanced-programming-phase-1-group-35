@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PregameMenuUI implements Screen {
     private Stage stage;
@@ -27,6 +28,7 @@ public class PregameMenuUI implements Screen {
     private GameMenuController gameController;
     private Table mainTable;
     private TextButton newGameBtn, loadGameBtn, deleteGameBtn, backButton;
+    ArrayList<Integer> mapNumbers = new ArrayList<>();
 
     // Game creation UI elements
     private Table creationTable;
@@ -203,6 +205,7 @@ public class PregameMenuUI implements Screen {
 
                     int farmType = farmTypeSelect.getSelected();
                     addPlayerToTable(username, farmType);
+                    mapNumbers.add(farmType);
                     usernameField.setText("");
 
                 } catch (Exception e) {
@@ -216,7 +219,7 @@ public class PregameMenuUI implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 try {
                     // Get all added players (excluding the first one which is the current user)
-                    String player1 = null, player2 = null, player3 = null;
+                    String player1 = null, player2 = null, player3 = null, player4 = null;
                     int index = 0;
 
                     for (Actor child : playersTable.getChildren()) {
@@ -231,6 +234,8 @@ public class PregameMenuUI implements Screen {
                                     player2 = username;
                                 } else if (index == 2) {
                                     player3 = username;
+                                } else if (index == 3) {
+                                    player4 = username;
                                 }
                                 index++;
                             }
@@ -238,12 +243,17 @@ public class PregameMenuUI implements Screen {
                     }
 
                     // Create the game
-                    Result result = gameController.createNewGame(player1, player2, player3);
+                    int[] mapTypes = new int[4];
+                    for (int i = 0; i < mapNumbers.size(); i++) {
+                        mapTypes[i] = mapNumbers.get(i);
+                    }
+                    Result result = gameController.createNewGame(player2, player3, player4,mapTypes);
                     if (result.isSuccess()) {
                         // Game created successfully, proceed to game screen
-                        dispose();
-                        // TODO: Set the game screen here
-                        showDialog("Success", "Game created successfully!");
+                        Gdx.app.postRunnable(() -> {
+                            dispose();
+                            gameController.init();
+                        });
                     } else {
                         showDialog("Error", result.toString());
                     }

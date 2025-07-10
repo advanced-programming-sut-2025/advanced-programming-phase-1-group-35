@@ -1,7 +1,11 @@
 package GraphicView;
 
+import Controller.GameMenuController;
 import Controller.LoginMenuController;
+import Model.App;
+import Model.Game;
 import Model.GameAssetManager;
+import Model.User;
 import Model.enums.SecurityQuestions;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
@@ -14,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SignUpUI implements Screen {
     private Stage stage;
@@ -31,6 +36,7 @@ public class SignUpUI implements Screen {
     private final Label title;
     public Table table;
     private final LoginMenuController controller;
+    private final TextButton testButton;
 
     public SignUpUI(LoginMenuController controller) {
         this.controller = controller;
@@ -62,6 +68,18 @@ public class SignUpUI implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Main.getGame().getScreen().dispose();
                 Main.getGame().setScreen(new LoginUI(new LoginMenuController()));
+            }
+        });
+        testButton = new TextButton("Test", skin);
+        testButton.setChecked(false);
+        testButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameMenuController gameController = new GameMenuController();
+                int[] mapTypes = {1,2,3,3};
+                gameController.createNewGame("player2","player3", "player4",mapTypes);
+                gameController.init();
+                System.out.println("game created");
             }
         });
         controller.setView(this);
@@ -96,6 +114,7 @@ public class SignUpUI implements Screen {
         table.add(advanceButton).width(300);
         table.row().pad(10, 0 , 10 , 0);
         table.add(loginButton).width(300);
+        table.add(testButton).width(300);
 
         stage.addActor(table);
     }

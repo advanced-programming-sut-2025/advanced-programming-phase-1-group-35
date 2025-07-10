@@ -20,6 +20,7 @@ public class Main extends Game {
     private static Main game;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
+    public static int TILE_SIZE = 80 ;
 
     public static Main getGame() {
         return game;

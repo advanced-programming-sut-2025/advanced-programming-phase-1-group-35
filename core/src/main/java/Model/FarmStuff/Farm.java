@@ -11,6 +11,7 @@ import Model.User;
 import Model.animal.Animal;
 import Model.enums.FarmType;
 import Model.enums.TileType;
+import com.StardewValley.Main;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -80,6 +81,8 @@ public class Farm {
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width / 2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
+            owner.getCurrentPoint().first = (float) (spawnTile.coordination.x * Main.TILE_SIZE);
+            owner.getCurrentPoint().second = (float) (spawnTile.coordination.y * Main.TILE_SIZE);
             owner.setSymbol((char) ('0' + number));
             spawnTile.setContentSymbol((char) ('0' + number));
         }

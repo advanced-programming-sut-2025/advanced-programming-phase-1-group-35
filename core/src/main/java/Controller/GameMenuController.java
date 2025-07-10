@@ -3,6 +3,7 @@ package Controller;
 import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
+import GraphicView.GameMenuUI;
 import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
@@ -23,7 +24,9 @@ import Model.enums.animal.AnimalProductDetails;
 import Model.enums.animal.FishType;
 import View.GameMenu;
 import View.InGameMenu.ShopMenu;
+import com.StardewValley.Main;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.io.IOException;
 import java.util.*;
@@ -35,7 +38,11 @@ import static Model.enums.Colors.RESET;
 public class GameMenuController {
     CropController cropController = new CropController();
     FarmingController farmingController;
-    Game CurrentGame = null;
+    public Game CurrentGame = null;
+    public GameMenuUI gameMenu;
+
+    public GameMenuController() {
+    }
 
     public String showCropInfo(String cropName) {
         return cropController.getCropInfo(cropName);
@@ -160,7 +167,7 @@ public class GameMenuController {
         App.setCurrentMenu(Menu.ExitMenu);
     }
 
-    public Result createNewGame(String username1, String username2, String username3) throws IOException {
+    public Result createNewGame(String username1, String username2, String username3, int[] mapNumbers) {
         LoginMenuController loginMenuController = new LoginMenuController();
         ArrayList<String> playerNames = new ArrayList<>();
         ArrayList<User> players = new ArrayList<>();
@@ -184,7 +191,7 @@ public class GameMenuController {
         for (User player : players) {
             player.setCurrentGame(game);
         }
-        chooseMap();
+        chooseMap(mapNumbers);
         return new Result(true, "You have created a new game . now redirecting to the game .");
     }
 
@@ -193,39 +200,11 @@ public class GameMenuController {
         return true;
     }
 
-    public void chooseMap() throws IOException {
+    public void chooseMap(int[] mapNumbers) {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
         User[] users = new User[4];
-        int[] types = new int[4];
-        for (int i = 0; i < players.size(); ) { // choosing maps
-            GameMenu.print("choosing map for " + players.get(i).getUsername());
-            String input = GameMenu.scan();
-            Matcher matcher = GameMenuCommands.chooseMap.getMatcher(input);
-            if (matcher == null) {
-                GameMenu.print("invalid input");
-                continue;
-            }
-            int number = Integer.parseInt(matcher.group("number"));
-            int type = Integer.parseInt(matcher.group("type"));
-            if (number < 1 || number > 4) {
-                GameMenu.print("invalid number");
-                continue;
-            }
-            if (type < 0 || type > 3) {
-                GameMenu.print("invalid type");
-                continue;
-            }
-            if (users[number - 1] != null) {
-                GameMenu.print("this farm is taken");
-                continue;
-            }
-            users[number - 1] = players.get(i);
-            types[number - 1] = type;
-            GameMenu.print("farm number " + number + " has been chosen by " + players.get(i).getUsername());
-            i++;
-        }
-        game.getMap().buildMap(users, types);
+        game.getMap().buildMap(users, mapNumbers);
     }
 
     public Result harvest(String direction) throws IOException {
@@ -962,7 +941,7 @@ public class GameMenuController {
     public Result Sell(String productName, String countString) {
         boolean isNearBin = false;
         User player = App.getCurrentGame().getPlayingUser();
-        Point point = player.getCurrentPoint();
+        Point point = new Point(player.getCurrentTile().coordination.x, player.getCurrentTile().coordination.y);
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         for (int i = point.x - 1; i <= point.x + 1; i++) {
             for (int j = point.y - 1; j <= point.y + 1; j++) {
@@ -1086,5 +1065,10 @@ public class GameMenuController {
             }
         }
         return false;
+    }
+
+    public void init() {
+        gameMenu = new GameMenuUI(this, CurrentGame);
+        Main.getGame().setScreen(gameMenu);
     }
 }
