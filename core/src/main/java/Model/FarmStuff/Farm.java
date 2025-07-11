@@ -77,7 +77,6 @@ public class Farm {
         shippingBin = new ShippingBin(this, tiles);
 
         if (owner != null) {// placing the player
-
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width / 2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
@@ -97,7 +96,7 @@ public class Farm {
                 if (owner != null) tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
-                tiles[i][j].setTileType(TileType.OutSideFarm);
+                tiles[i][j].setTileType(TileType.Soil);
             }
         }
     }

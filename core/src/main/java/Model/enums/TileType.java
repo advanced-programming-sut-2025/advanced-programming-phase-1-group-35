@@ -5,7 +5,7 @@ public enum TileType {
     Rock("rock/boulder.png"),
     Grass("flooring/grass.png"),
     Water("flooring/water.png"),
-    OutSideFarm("flooring/water.png"),
+    OutSideFarm("flooring/grass.png"),
     BuildingTile("flooring/water.png"),
     BuildingWall("flooring/water.png"),
     Pathway("flooring/pathway.png"),

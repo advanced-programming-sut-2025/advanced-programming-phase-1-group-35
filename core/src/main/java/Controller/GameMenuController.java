@@ -204,6 +204,9 @@ public class GameMenuController {
         Game game = App.getCurrentGame();
         ArrayList<User> players = game.getPlayers();
         User[] users = new User[4];
+        for (int i = 0; i < players.size(); i++) {
+            users[i] = players.get(i);
+        }
         game.getMap().buildMap(users, mapNumbers);
     }
 
