@@ -10,18 +10,20 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import com.StardewValley.Main;
 import Controller.InGameMenu.ToolsController;
 
 public class toolsUI implements Screen {
 
     private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
     private Texture toggledPictureTexture;
     private final Texture axeTexture = new Texture(Gdx.files.internal("assets/tools/axe.png"));
     private final Texture wateringCanTexture = new Texture(Gdx.files.internal("assets/tools/watering_can.png"));
@@ -31,8 +33,6 @@ public class toolsUI implements Screen {
     private final Texture milkPailTexture = new Texture(Gdx.files.internal("assets/tools/milk_pail.png"));
     private final Texture pickaxeTexture = new Texture(Gdx.files.internal("assets/tools/pickaxe.png"));
     private final Texture shearsTexture = new Texture(Gdx.files.internal("assets/tools/shears.png"));
-
-    private final int TOOL_ICON_SIZE = 45;
 
     private Rect axeRect;
     private Rect wateringCanRect;
@@ -48,16 +48,17 @@ public class toolsUI implements Screen {
 
     private Stage stage;
     private Main game;
-    private ToolsController toolsController;
+    private String equippedToolName = "hoe";
 
     public toolsUI(Main game) {
         this.game = game;
-        this.toolsController = new ToolsController();
+        ToolsController toolsController = new ToolsController();
     }
 
     @Override
     public void show() {
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
         stage = new Stage(new ScreenViewport());
         toggledPictureTexture = new Texture(Gdx.files.internal("assets/toolsShelf.png"));
 
@@ -75,29 +76,29 @@ public class toolsUI implements Screen {
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (isPictureVisible && button == Input.Buttons.LEFT) {
                     if (pickaxeRect != null && pickaxeRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("pickaxe");
+                        equippedToolName = "pickaxe";
                         Gdx.app.log("toolsUI", "Equipped Pickaxe");
                     } else if (axeRect != null && axeRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("axe");
+                        equippedToolName = "axe";
                         Gdx.app.log("toolsUI", "Equipped Axe");
                     } else if (scytheRect != null && scytheRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("scythe");
+                        equippedToolName = "scythe";
                         Gdx.app.log("toolsUI", "Equipped Scythe");
                     } else if (shearsRect != null && shearsRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("shears");
+                        equippedToolName = "shears";
                         Gdx.app.log("toolsUI", "Equipped Shears");
                     } else if (wateringCanRect != null && wateringCanRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("watering_can");
-                        Gdx.app.log("toolsUI", "Equipped Watering_Can");
+                        equippedToolName = "watering_can";
+                        Gdx.app.log("toolsUI", "Equipped Watering Can");
                     } else if (hoeRect != null && hoeRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("hoe");
+                        equippedToolName = "hoe";
                         Gdx.app.log("toolsUI", "Equipped Hoe");
                     } else if (fishingRodRect != null && fishingRodRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("fishing_rod");
-                        Gdx.app.log("toolsUI", "Equipped Fishing_Rod");
+                        equippedToolName = "fishing_rod";
+                        Gdx.app.log("toolsUI", "Equipped Fishing Rod");
                     } else if (milkPailRect != null && milkPailRect.contains(screenX, Gdx.graphics.getHeight() - screenY)) {
-                        //toolsController.toolEquip("milk_pail");
-                        Gdx.app.log("toolsUI", "Equipped Milk_Pail");
+                        equippedToolName = "milk_pail";
+                        Gdx.app.log("toolsUI", "Equipped Milk Pail");
                     }
                     return true;
                 }
@@ -119,7 +120,9 @@ public class toolsUI implements Screen {
             batch.draw(toggledPictureTexture, x, y - 10);
             drawTools();
             batch.end();
+            drawToolBorder();
         }
+
         stage.draw();
     }
 
@@ -130,8 +133,7 @@ public class toolsUI implements Screen {
         int space = 65;
 
         for (ItemInterface itemInterface : backPack.items.keySet()) {
-            if (itemInterface instanceof Tool) {
-                Tool tool = (Tool) itemInterface;
+            if (itemInterface instanceof Tool tool) {
                 String toolName = tool.getName().toLowerCase();
                 Texture currentTexture = null;
 
@@ -149,74 +151,109 @@ public class toolsUI implements Screen {
                         i += space;
                         break;
                     case "shears":
-                        currentTexture = shearsTexture; //
+                        currentTexture = shearsTexture;
                         i += space;
                         break;
                     case "watering_can":
-                        currentTexture = wateringCanTexture; //
+                        currentTexture = wateringCanTexture;
                         i += space;
                         break;
                     case "hoe":
-                        currentTexture = hoeTexture; //
+                        currentTexture = hoeTexture;
                         i += space;
                         break;
                     case "fishing_rod":
-                        currentTexture = fishingRodTexture; //
+                        currentTexture = fishingRodTexture;
                         i += space;
                         break;
                     case "milk_pail":
-                        currentTexture = milkPailTexture; //
+                        currentTexture = milkPailTexture;
                         i += space;
                         break;
                 }
 
                 if (currentTexture != null) {
-                    // Calculate the scaling factor for the current texture
+                    int TOOL_ICON_SIZE = 45;
                     float scaleX = (float) TOOL_ICON_SIZE / currentTexture.getWidth();
                     float scaleY = (float) TOOL_ICON_SIZE / currentTexture.getHeight();
-                    // Use the smaller scale factor to ensure it fits within the square
                     float scale = Math.min(scaleX, scaleY);
 
-                    // Calculate the new width and height based on the uniform scale
                     float scaledWidth = currentTexture.getWidth() * scale;
                     float scaledHeight = currentTexture.getHeight() * scale;
-
-                    // Calculate offset to center the scaled image within the TOOL_ICON_SIZE square
                     float offsetX = (TOOL_ICON_SIZE - scaledWidth) / 2;
                     float offsetY = (TOOL_ICON_SIZE - scaledHeight) / 2;
 
                     batch.draw(currentTexture, i + offsetX, toolY + offsetY, scaledWidth, scaledHeight);
 
-                    // Rect still needs to cover the entire logical slot for clicking
+                    Rect rect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
                     switch (toolName) {
                         case "pickaxe":
-                            pickaxeRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            pickaxeRect = rect;
                             break;
                         case "axe":
-                            axeRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            axeRect = rect;
                             break;
                         case "scythe":
-                            scytheRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            scytheRect = rect;
                             break;
                         case "shears":
-                            shearsRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            shearsRect = rect;
                             break;
                         case "watering_can":
-                            wateringCanRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            wateringCanRect = rect;
                             break;
                         case "hoe":
-                            hoeRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            hoeRect = rect;
                             break;
                         case "fishing_rod":
-                            fishingRodRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            fishingRodRect = rect;
                             break;
                         case "milk_pail":
-                            milkPailRect = new Rect(i, toolY, TOOL_ICON_SIZE, TOOL_ICON_SIZE);
+                            milkPailRect = rect;
                             break;
                     }
                 }
             }
         }
+    }
+
+    private void drawToolBorder() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        Rect selectedRect = null;
+
+        switch (equippedToolName) {
+            case "pickaxe":
+                selectedRect = pickaxeRect;
+                break;
+            case "axe":
+                selectedRect = axeRect;
+                break;
+            case "scythe":
+                selectedRect = scytheRect;
+                break;
+            case "shears":
+                selectedRect = shearsRect;
+                break;
+            case "watering_can":
+                selectedRect = wateringCanRect;
+                break;
+            case "hoe":
+                selectedRect = hoeRect;
+                break;
+            case "fishing_rod":
+                selectedRect = fishingRodRect;
+                break;
+            case "milk_pail":
+                selectedRect = milkPailRect;
+                break;
+        }
+
+        if (selectedRect != null) {
+            shapeRenderer.rect(selectedRect.x, selectedRect.y, selectedRect.width, selectedRect.height);
+        }
+
+        shapeRenderer.end();
     }
 
     @Override
@@ -225,12 +262,10 @@ public class toolsUI implements Screen {
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
@@ -240,6 +275,7 @@ public class toolsUI implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+        shapeRenderer.dispose();
         toggledPictureTexture.dispose();
         axeTexture.dispose();
         wateringCanTexture.dispose();
