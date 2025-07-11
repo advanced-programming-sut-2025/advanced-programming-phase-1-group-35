@@ -243,7 +243,7 @@ public class PregameMenuUI implements Screen {
                     }
 
                     // Create the game
-                    int[] mapTypes = new int[4];
+                    int[] mapTypes = {1,1,1,1};
                     for (int i = 0; i < mapNumbers.size(); i++) {
                         mapTypes[i] = mapNumbers.get(i);
                     }

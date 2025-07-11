@@ -114,8 +114,8 @@ public class GameView {
         int endY = Math.min(tiles[0].length, (int) ((camY + viewportHeight / 2) / tileSize) + 2);
 
         // Render base tiles
-        for (int x = startX; x < endX; x++) {
-            for (int y = startY; y < endY; y++) {
+        for (int x = startX; x < tiles.length; x++) {
+            for (int y = startY; y < tiles[0].length; y++) {
                 Tile id = tiles[x][y];
                 if (id != null) {
                     float drawX = x * tileSize - cameraLeft;

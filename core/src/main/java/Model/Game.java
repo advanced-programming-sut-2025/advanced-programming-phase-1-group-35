@@ -3,6 +3,7 @@ package Model;
 import Model.NPCs.NPC;
 import Model.enums.WeatherCondition;
 import com.StardewValley.Main;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import java.util.ArrayList;
@@ -14,15 +15,19 @@ public class Game {
     private User playingUser;
     private GameCalender gameCalender = new GameCalender();
     private Weather weather = new Weather();
-    private Map map = new Map();
+    private Map map ;
     private ArrayList<NPC> npcs = new ArrayList<>();
     public OrthographicCamera camera = new OrthographicCamera();
 
     public Game(ArrayList<User> players, User playingUser) {
+        map = new Map();
         this.players = players;
         this.playingUser = playingUser;
         this.gameID = IDCounter++;
         this.weather.setWeatherCondition(WeatherCondition.sunny);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(playingUser.getCurrentPoint().first, playingUser.getCurrentPoint().second, 0);
     }
 
 

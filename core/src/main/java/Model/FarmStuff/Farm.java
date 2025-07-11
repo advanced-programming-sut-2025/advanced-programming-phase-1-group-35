@@ -40,7 +40,7 @@ public class Farm {
     }
 
     public void initFarm(int type, int number, Tile[][] tiles) {
-        FarmType farmType = FarmType.values()[type];
+        FarmType farmType = FarmType.values()[type - 1];
         int x = 0, y = 0;
         switch (number) {
             case 1:
@@ -81,8 +81,8 @@ public class Farm {
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width / 2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
-            owner.getCurrentPoint().first = (float) (spawnTile.coordination.x * Main.TILE_SIZE);
-            owner.getCurrentPoint().second = (float) (spawnTile.coordination.y * Main.TILE_SIZE);
+            owner.getCurrentPoint().first = (float) (spawnTile.coordination.x);
+            owner.getCurrentPoint().second = (float) (spawnTile.coordination.y);
             owner.setSymbol((char) ('0' + number));
             spawnTile.setContentSymbol((char) ('0' + number));
         }

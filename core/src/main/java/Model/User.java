@@ -38,7 +38,7 @@ public class User {
     private int currentGameFarmIndex = -1;
     private int currentGameID = 0;
     private Tile currentTile = null;
-    private Pair<Float, Float> currentPoint = new Pair<>(0f, 0f);
+    private Pair<Float, Float> currentPoint = new Pair<>(10f, 10f);
     private char symbol;
     private Map map;
     private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
@@ -505,8 +505,8 @@ public class User {
         int newY = (int) (currentPoint.second + dy);
 
         if (newX < 0 || newX >= tiles.length || newY < 0 || newY >= tiles[0].length) return false;
-
-        if (tiles[newX][newY].isWalkable()) {
+        currentTile = tiles[newX][newY];
+        if (currentTile.isWalkable() && (currentTile.getOwner() == null || currentTile.getOwner().equals(this)) ) {
             currentPoint.first += dx;
             currentPoint.second += dy;
             return true;

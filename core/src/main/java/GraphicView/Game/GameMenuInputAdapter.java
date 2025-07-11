@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.StardewValley.Main;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,14 @@ public class GameMenuInputAdapter extends InputAdapter {
             int selectedSlot = keycode - Input.Keys.NUM_1;
             game.getPlayingUser().setSelectedSlot(selectedSlot);
             return true;
+        }
+
+        if(keycode == Input.Keys.N){
+            try {
+                gameController.goToNextTurn(null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 // TODO : add escape function
