@@ -4,6 +4,7 @@ import GraphicView.CraftingUI;
 import Model.*;
 import Model.enums.CraftingItems;
 import Model.enums.CraftingRecipes;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -122,7 +123,12 @@ public class CraftingController {
                     ingredientNames.add(ingredient.getName());
                 }
             }
-            craftItem(selectedItem.getName(), ingredientNames);
+            Result result = craftItem(selectedItem.getName(), ingredientNames);
+            if(result.isSuccess()){
+                craftingUI.getCraftMessage().setColor(Color.GREEN);
+            }
+            craftingUI.getCraftMessage().setText(result.toString());
+
         }
 
         else if(craftingUI.getBack().isChecked()){

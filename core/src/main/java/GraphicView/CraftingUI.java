@@ -24,6 +24,7 @@ private Image selectedRecipe;
 private Label selectedRecipeLabel;
 private TextButton Back;
 private TextButton Craft;
+private Label craftMessage;
 
 
 public CraftingUI(Skin skin, User user, CraftingController controller) {
@@ -36,6 +37,7 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
     this.selectedRecipe = new Image();
     this.selectedRecipeLabel = new Label("", skin);
     this.controller = controller;
+    this.craftMessage = new Label("", skin);
     controller.setCraftingUI(this);
 }
 
@@ -52,22 +54,31 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        table.setFillParent(true);
-        table.center();
-        table.pad(20);
-
+        table = new Table(table.getSkin());
+        table.setSize(800, 700);
+        table.setTransform(true);
+        table.setOrigin(Align.center);
+        table.setPosition(
+            (Gdx.graphics.getWidth() - table.getWidth()) / 2f,
+            (Gdx.graphics.getHeight() - table.getHeight()) / 2f
+        );
+        table.pad(30);
+        table.defaults().space(10);
+        table.setBackground("window");
 
         title.setAlignment(Align.center);
-        table.add(title).padBottom(20).colspan(5).center().row();
-
+//        title.setDisabled(true);
+        table.add(title).colspan(5).center().padBottom(20).row();
 
         selectedRecipe.setSize(64, 64);
-        table.add(selectedRecipe).colspan(5).padBottom(30).center().row();
-        table.add(selectedRecipeLabel).colspan(5).padBottom(30).center().row();
+        table.add(selectedRecipe).colspan(5).center().padBottom(10).row();
+
+        selectedRecipeLabel.setAlignment(Align.center);
+        table.add(selectedRecipeLabel).colspan(5).center().padBottom(20).row();
 
         int colCount = 0;
         for (ImageButton ib : controller.showRecipes()) {
-            table.add(ib).pad(10).size(64);
+            table.add(ib).size(64);
             colCount++;
             if (colCount == 5) {
                 table.row();
@@ -76,14 +87,17 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
         }
 
         TextButton craftButton = new TextButton("Craft", table.getSkin());
-        controller.getCraftingUI().setCraft(craftButton); // Store if needed
+        controller.getCraftingUI().setCraft(craftButton);
         table.row().padTop(30);
-        table.add(craftButton).colspan(5).center().pad(10).height(40).width(120).row();
-        table.add(Back).colspan(5).center().pad(10).height(40).width(120);
-        table.setBackground("window");
+        table.add(craftButton).colspan(5).center().height(40).width(120).row();
+
+        table.add(craftMessage).colspan(5).center().padTop(10).row();
+
+        table.add(Back).colspan(5).center().padTop(20).height(40).width(120);
 
         stage.addActor(table);
     }
+
 
 
     @Override
@@ -157,5 +171,9 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
 
     public void setCraft(TextButton craft) {
         Craft = craft;
+    }
+
+    public Label getCraftMessage() {
+        return craftMessage;
     }
 }
