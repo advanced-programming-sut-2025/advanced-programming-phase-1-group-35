@@ -6,7 +6,9 @@ import Model.enums.CraftingRecipes;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class CraftingUI implements Screen {
 private Stage stage;
 private Table table;
+private Image bg = new Image(new Texture(Gdx.files.internal("craftBG2.png")));
 private Label title;
 private ArrayList<CraftingRecipes> knownRecipes = new ArrayList<CraftingRecipes>();
 private CraftingController controller;
@@ -94,6 +97,19 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
         table.add(craftMessage).colspan(5).center().padTop(10).row();
 
         table.add(Back).colspan(5).center().padTop(20).height(40).width(120);
+        bg.setFillParent(true);
+        stage.addActor(bg);
+        table.setScale(0f); // Start scaled down
+        table.getColor().a = 0f; // Start fully transparent
+
+        table.addAction(
+            Actions.sequence(
+                Actions.parallel(
+                    Actions.fadeIn(0.4f),
+                    Actions.scaleTo(1f, 1f, 0.4f)
+                )
+            )
+        );
 
         stage.addActor(table);
     }
