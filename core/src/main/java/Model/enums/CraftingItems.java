@@ -3,7 +3,6 @@ package Model.enums;
 import Model.ItemInterface;
 import Model.enums.Crops.ForagingSeeds;
 import Model.enums.Crops.Minerals;
-import Model.enums.Crops.SaplingEnum;
 import Model.enums.Shops.Products.BlackSmithProducts;
 import Model.enums.Shops.Products.CarpenterShopProducts;
 import Model.enums.machines.ArtisanProductDetails;
@@ -44,7 +43,7 @@ public enum CraftingItems implements ItemInterface {
             entry(Minerals.IRIDIUM, 1)
     ))), -1, Skill.farming, 3),
 
-    CharcoalKlin((new HashMap<>(Map.ofEntries(
+    CharcoalKiln((new HashMap<>(Map.ofEntries(
             entry(CarpenterShopProducts.WOOD, 20),
             entry(Minerals.COPPER, 2)
     ))), -1, Skill.farming, 1),
@@ -114,10 +113,10 @@ public enum CraftingItems implements ItemInterface {
             entry(ForagingSeeds.FIBER, 30)
     ))), -1, null, 0),
 
-    GrassStarter((new HashMap<>(Map.ofEntries(
-            entry(CarpenterShopProducts.WOOD, 1),
-            entry(ForagingSeeds.FIBER, 1)
-    ))), -1, null, 0),
+//    GrassStarter((new HashMap<>(Map.ofEntries(
+//            entry(CarpenterShopProducts.WOOD, 1),
+//            entry(ForagingSeeds.FIBER, 1)
+//    ))), -1, null, 0),
 
     FishSmoker((new HashMap<>(Map.ofEntries(
             entry(CarpenterShopProducts.WOOD, 50),
@@ -125,19 +124,21 @@ public enum CraftingItems implements ItemInterface {
             entry(ArtisanProductDetails.Coal, 10)
     ))), -1, null, 0),
 
-    MysticTreeSeed((new HashMap<>(Map.ofEntries(
-            entry(SaplingEnum.ACORNS_SAPLING, 5),
-            entry(SaplingEnum.MAPLE_SEEDS, 5),
-            entry(SaplingEnum.PINE_CONES, 5),
-            entry(SaplingEnum.MAHOGANY_SEEDS, 5)
-    ))), 100, Skill.foraging, 4);
+//    MysticTreeSeed((new HashMap<>(Map.ofEntries(
+//            entry(SaplingEnum.ACORNS_SAPLING, 5),
+//            entry(SaplingEnum.MAPLE_SEEDS, 5),
+//            entry(SaplingEnum.PINE_CONES, 5),
+//            entry(SaplingEnum.MAHOGANY_SEEDS, 5)
+//    ))), 100, Skill.foraging, 4)
+    ;
 
     private final HashMap<ItemInterface, Integer> ingredients;
     private final int price;
     private final Skill skill;
     private final int Level;
 
-    CraftingItems(HashMap<ItemInterface, Integer> ingredients, int price, Skill skill, int Level) {
+
+    CraftingItems(HashMap<ItemInterface, Integer> ingredients, int price, Skill skill, int Level ) {
         this.ingredients = ingredients;
         this.price = price;
         this.skill = skill;
@@ -165,4 +166,9 @@ public enum CraftingItems implements ItemInterface {
     public int getCurrentLevel() {
         return Level;
     }
+
+    public String getPath() {
+        return "craftingItems/" + this.name() + ".png";
+    }
+
 }

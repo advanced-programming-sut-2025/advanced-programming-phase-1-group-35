@@ -1,16 +1,40 @@
 package Controller.InGameMenu;
 
-import Model.App;
-import Model.Result;
-import Model.Tile;
-import Model.ItemInterface;
+import GraphicView.CraftingUI;
+import Model.*;
 import Model.enums.CraftingItems;
+import Model.enums.CraftingRecipes;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CraftingController {
-    private List<CraftingItems> showRecepies(){return null;}
+    private CraftingUI craftingUI;
 
+    public CraftingUI getCraftingUI() {
+        return craftingUI;
+    }
+
+    public void setCraftingUI(CraftingUI craftingUI) {
+        this.craftingUI = craftingUI;
+    }
+
+
+    private CraftingItems selectedItem;
+
+    public void setSelectedItem(CraftingItems item) {
+        this.selectedItem = item;
+    }
+
+    public CraftingItems getSelectedItem() {
+        return selectedItem;
+    }
 
     private Result craftItem(String itemName, List<String> Ingredients){
         ItemInterface item = null;
@@ -57,5 +81,55 @@ public class CraftingController {
     public void placeItem(String ItemName, Tile tile){}
     public ItemInterface findItemWithName(String ItemName){return null;}
     public void addItemToInventory(String ItemName){}
+
+    public List<ImageButton> showRecipes() {
+        List<ImageButton> buttons = new ArrayList<>();
+
+        for (CraftingRecipes recipe : App.getCurrentGame().getPlayingUser().getCraftingRecipes()) {
+            CraftingItems item = (CraftingItems) recipe.getItem();
+            Texture texture = new Texture(item.getPath());
+
+            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+            style.imageUp = new TextureRegionDrawable(new TextureRegion(texture));
+
+            ImageButton button = new ImageButton(style);
+
+            // You can also store metadata on the button if needed
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Handle crafting action
+                    craftingUI.getSelectedRecipe().setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
+                    craftingUI.getSelectedRecipeLabel().setText(item.getName());
+                    selectedItem = item;
+                    //System.out.println("Crafting: " + item.getName());
+                }
+            });
+
+            buttons.add(button);
+        }
+
+        return buttons;
+    }
+    public void handleButtons(){
+
+        if(craftingUI.getCraft().isChecked()){
+            craftingUI.getCraft().setChecked(false);
+            List<String> ingredientNames = new ArrayList<>();
+            for (ItemInterface ingredient : selectedItem.getIngredients().keySet()) {
+                int count = selectedItem.getIngredients().get(ingredient);
+                for (int i = 0; i < count; i++) {
+                    ingredientNames.add(ingredient.getName());
+                }
+            }
+            craftItem(selectedItem.getName(), ingredientNames);
+        }
+
+        else if(craftingUI.getBack().isChecked()){
+            craftingUI.getBack().setChecked(false);
+            //TODO:return to the game menu
+        }
+
+    }
 
 }

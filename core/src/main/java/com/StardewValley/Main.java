@@ -1,8 +1,15 @@
 package com.StardewValley;
 
+import Controller.InGameMenu.CraftingController;
 import Controller.LoginMenuController;
+import GraphicView.CraftingUI;
 import GraphicView.SignUpUI;
 import Model.App;
+import Model.GameAssetManager;
+import Model.User;
+import Model.enums.CraftingRecipes;
+import Model.enums.Gender;
+import Model.enums.SecurityQuestions;
 import View.AppView;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -14,6 +21,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
@@ -50,7 +58,24 @@ public class Main extends Game {
         game = this;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        game.setScreen(new SignUpUI(new LoginMenuController()));
+//        game.setScreen(new SignUpUI(new LoginMenuController()));
+        User guest = new User("mahdi", "123","mah", "aksdjfj", Gender.male, SecurityQuestions.Question1, "yes");
+        guest.getCraftingRecipes().add(CraftingRecipes.MegaBomb);
+        guest.getCraftingRecipes().add(CraftingRecipes.BeeHouse);
+        guest.getCraftingRecipes().add(CraftingRecipes.Loom);
+        guest.getCraftingRecipes().add(CraftingRecipes.Keg);
+        guest.getCraftingRecipes().add(CraftingRecipes.IridiumSprinkler);
+        guest.getCraftingRecipes().add(CraftingRecipes.CheesePress);
+
+//        for (CraftingRecipes recipe : CraftingRecipes.values()) {
+//            guest.getCraftingRecipes().add(recipe);
+//        }
+
+
+        ArrayList<User> players = new ArrayList<>();
+        players.add(guest);
+        App.setCurrentGame(new Model.Game(players,guest));
+        game.setScreen(new CraftingUI(GameAssetManager.getDefaultSkin(),guest,new CraftingController()));
         try {
             App.deserializeApp();
         } catch (IOException e) {
