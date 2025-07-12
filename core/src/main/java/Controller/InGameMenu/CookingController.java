@@ -60,7 +60,21 @@ public class CookingController {
         if (player.learnedRecipes.isEmpty()) {
             addCookingRecipe(CookingRecipes.FRIED_EGG);
             addCookingRecipe(CookingRecipes.PIZZA);
+            addCookingRecipe(CookingRecipes.COOKIE);
+            addCookingRecipe(CookingRecipes.BAKED_FISH);
+            addCookingRecipe(CookingRecipes.SALAD);
+            addCookingRecipe(CookingRecipes.OMELET);
+            addCookingRecipe(CookingRecipes.PUMPKIN_PIE);
+            addCookingRecipe(CookingRecipes.SPAGHETTI);
+            addCookingRecipe(CookingRecipes.TORTILLA);
+            addCookingRecipe(CookingRecipes.MAKI_ROLL);
+            addCookingRecipe(CookingRecipes.TRIPLE_SHOT_ESPRESSO);
+            addCookingRecipe(CookingRecipes.PANCAKES);
+            addCookingRecipe(CookingRecipes.FRUIT_SALAD);
+            addCookingRecipe(CookingRecipes.RED_PLATE);
+            addCookingRecipe(CookingRecipes.BREAD);
         }
+
         StringBuilder output = new StringBuilder();
         output.append("Cooking recipes:\n");
         for (CookingRecipes recipe : player.learnedRecipes) {

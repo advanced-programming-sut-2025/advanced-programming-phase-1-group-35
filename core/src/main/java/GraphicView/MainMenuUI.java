@@ -42,7 +42,7 @@ public class MainMenuUI implements Screen {
         exitButton.setChecked(false);
         profileButton = new TextButton("Profile", skin);
         profileButton.setChecked(false);
-        testButton = new TextButton("Test Tools", skin);
+        testButton = new TextButton("Cook", skin);
         testButton.setChecked(false);
         table = new Table(skin);
         controller.setView(this);
@@ -90,7 +90,7 @@ public class MainMenuUI implements Screen {
         testButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Main.getGame().setScreen(new toolsUI(Main.getGame()));
+                Main.getGame().setScreen(new cookUI(Main.getGame()));
             }
         });
     }

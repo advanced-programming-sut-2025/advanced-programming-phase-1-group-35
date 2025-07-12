@@ -61,7 +61,7 @@ public class toolsUI implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new ScreenViewport());
-        toggledPictureTexture = new Texture(Gdx.files.internal("assets/toolsShelf.png"));
+        toggledPictureTexture = new Texture(Gdx.files.internal("assets/shelf.png"));
 
         Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
             @Override
