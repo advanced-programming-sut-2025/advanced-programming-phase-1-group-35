@@ -48,11 +48,12 @@ public class toolsUI implements Screen {
 
     private Stage stage;
     private Main game;
+    private final ToolsController toolsController;
     private String equippedToolName = "hoe";
 
     public toolsUI(Main game) {
         this.game = game;
-        ToolsController toolsController = new ToolsController();
+        toolsController = new ToolsController();
     }
 
     @Override
@@ -100,6 +101,7 @@ public class toolsUI implements Screen {
                         equippedToolName = "milk_pail";
                         Gdx.app.log("toolsUI", "Equipped Milk Pail");
                     }
+                    toolsController.toolEquip(equippedToolName);
                     return true;
                 }
                 return false;
