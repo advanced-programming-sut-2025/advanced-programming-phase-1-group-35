@@ -28,6 +28,7 @@ public class AssetManager {
     public Texture troutSoup = new Texture("assets/recipe/Trout_Soup.png");
     public Texture vegetableMedley = new Texture("assets/recipe/Vegetable_Medley.png");
     public Texture cupOfCoffee = new Texture("assets/recipe/Coffee.png");
+    public Texture hashbrowns = new Texture("assets/recipe/Hashbrowns.png");
 
     // Tool assets
     public Texture axe = new Texture("assets/tools/axe.png");
@@ -52,7 +53,6 @@ public class AssetManager {
     public Texture eggplant = new Texture("assets/Cooking_Ingredient/Eggplant.png");
     public Texture fiber = new Texture("assets/Cooking_Ingredient/Fiber.png");
     public Texture flounder = new Texture("assets/Cooking_Ingredient/Flounder.png");
-    public Texture hashbrowns = new Texture("assets/Cooking_Ingredient/Hashbrowns.png");
     public Texture kale = new Texture("assets/Cooking_Ingredient/Kale.png");
     public Texture melon = new Texture("assets/Cooking_Ingredient/Melon.png");
     public Texture midnightCarp = new Texture("assets/Cooking_Ingredient/Midnight_Carp.png");

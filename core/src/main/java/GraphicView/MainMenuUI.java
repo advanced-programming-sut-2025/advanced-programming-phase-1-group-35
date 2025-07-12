@@ -90,7 +90,7 @@ public class MainMenuUI implements Screen {
         testButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Main.getGame().setScreen(new cookUI(Main.getGame()));
+                Main.getGame().setScreen(new InventoryUI(Main.getGame()));
             }
         });
     }

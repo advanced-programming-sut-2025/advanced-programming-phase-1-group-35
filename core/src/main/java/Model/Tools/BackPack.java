@@ -3,6 +3,7 @@ package Model.Tools;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.enums.CookingIngredient;
+import Model.enums.CookingRecipes;
 import Model.enums.ToolTypes;
 
 import java.util.HashMap;
@@ -21,6 +22,10 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
         this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
         this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
+        this.items.put(new CookingMaterial(CookingIngredient.CARROT), 20);
+        this.items.put(new CookingMaterial(CookingIngredient.CHEESE), 3);
+        this.items.put(new CookingMaterial(CookingIngredient.TOMATO), 5);
+        this.items.put(new Food(CookingRecipes.PIZZA), 2);
     }
 
     public boolean doesBackPackHasSpace() {
