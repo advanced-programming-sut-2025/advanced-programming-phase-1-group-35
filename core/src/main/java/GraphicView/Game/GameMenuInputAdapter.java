@@ -1,6 +1,7 @@
 package GraphicView.Game;
 
 import Controller.GameMenuController;
+import GraphicView.GameMenuUI;
 import Model.Game;
 import Model.Pair;
 import Model.User;
@@ -19,6 +20,7 @@ public class GameMenuInputAdapter extends InputAdapter {
     private final Game game;
     private final GameMenuController gameController;
     private final Set<Integer> keysHeld = new HashSet<>();
+    public GameMenuUI gameMenuUI;
 
     public GameMenuInputAdapter(Game game, GameMenuController gameController) {
         this.game = game;
@@ -41,6 +43,9 @@ public class GameMenuInputAdapter extends InputAdapter {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if(keycode == Input.Keys.P){
+            gameMenuUI.goToShopMenu();
         }
 
 // TODO : add escape function
@@ -80,21 +85,22 @@ public class GameMenuInputAdapter extends InputAdapter {
         User player = game.getPlayingUser();
         float vx = 0, vy = 0;
         int dir = 0;
+        float sp = 1 ;
 
         if (keysHeld.contains(Input.Keys.W)) {
-            vy += 1;
+            vy += sp;
             dir = 3;
         }
         if (keysHeld.contains(Input.Keys.S)) {
-            vy -= 1;
+            vy -= sp;
             dir = 1;
         }
         if (keysHeld.contains(Input.Keys.A)) {
-            vx -= 1;
+            vx -= sp;
             dir = 4;
         }
         if (keysHeld.contains(Input.Keys.D)) {
-            vx += 1;
+            vx += sp;
             dir = 2;
         }
 

@@ -1,10 +1,13 @@
 package GraphicView;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.ShopMenuController;
 import GraphicView.Game.GameMenuInputAdapter;
 import GraphicView.Game.GameView;
 import Model.Game;
+import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
@@ -14,8 +17,8 @@ import java.io.IOException;
 public class GameMenuUI implements Screen {
     private GameView gameView;
     public Game gameModel;
-    private GameMenuInputAdapter gameMenuInputAdapter;
-    private GameMenuController gameController;
+    public GameMenuInputAdapter gameMenuInputAdapter;
+    public GameMenuController gameController;
     private boolean isSleeping = false;
     private float sleepAlpha = 0f;
     private float sleepTimer = 0f;
@@ -34,6 +37,7 @@ public class GameMenuUI implements Screen {
         gameView = new GameView(gameModel);
         gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        gameMenuInputAdapter.gameMenuUI = this;
     }
 
     @Override
@@ -111,6 +115,12 @@ public class GameMenuUI implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void goToShopMenu() {
+        ShopMenuController shopMenuController = new ShopMenuController(gameModel.getMap().getTiles()[105][94]);
+        ShopMenuUI shopMenuUI = new ShopMenuUI(shopMenuController, this);
+        Main.getGame().setScreen(shopMenuUI);
     }
 
     // Other Screen methods
