@@ -80,12 +80,14 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
         table.add(selectedRecipeLabel).colspan(5).center().padBottom(20).row();
 
         int colCount = 0;
-        for (ImageButton ib : controller.showRecipes()) {
-            table.add(ib).size(64);
-            colCount++;
-            if (colCount == 5) {
-                table.row();
-                colCount = 0;
+        if(!controller.showRecipes().isEmpty()) {
+            for (ImageButton ib : controller.showRecipes()) {
+                table.add(ib).size(64);
+                colCount++;
+                if (colCount == 5) {
+                    table.row();
+                    colCount = 0;
+                }
             }
         }
 
