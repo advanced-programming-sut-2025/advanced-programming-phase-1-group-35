@@ -65,7 +65,7 @@ public class InventoryMenuUI implements Screen {
 
         inventoryPanel = new InventoryUI(game, stage);
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
+        Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
@@ -77,24 +77,21 @@ public class InventoryMenuUI implements Screen {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                if (!isInventoryMenuVisible) return false;
                 screenY = Gdx.graphics.getHeight() - screenY;
                 if (inventoryRect.contains(screenX, screenY)) {
                     currentState = MenuState.INVENTORY;
-                    System.out.println("Inventory menu visible");
-                    return true; // Mark event as handled
                 } else if (skillsRect.contains(screenX, screenY)) {
                     currentState = MenuState.SKILLS;
-                    return true;
                 } else if (socialRect.contains(screenX, screenY)) {
                     currentState = MenuState.SOCIAL;
-                    return true;
                 } else if (mapRect.contains(screenX, screenY)) {
                     currentState = MenuState.MAP;
-                    return true;
                 }
-                return false;
+
+                return true;
             }
-        }));
+        }, stage));
     }
 
     @Override
