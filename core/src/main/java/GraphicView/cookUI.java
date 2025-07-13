@@ -1,72 +1,39 @@
 package GraphicView;
 
 import Controller.InGameMenu.CookingController;
-import Model.App;
-import Model.Rect;
+import Model.*;
 import Model.enums.CookingRecipes;
 import com.StardewValley.Main;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class cookUI implements Screen {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Texture toggledPictureTexture;
     private boolean isPictureVisible = false;
+    private boolean isFridgeVisible = false;
     private final int y = 65;
+    private AssetManager assetManager;
+    private Map<CookingRecipes, Texture> recipeTextures;
+    private Map<CookingRecipes, Rect> recipeRects;
 
-    private final Texture bakedFishTexture = new Texture(Gdx.files.internal("assets/recipe/Baked_Fish.png"));
-    private final Texture breadTexture = new Texture(Gdx.files.internal("assets/recipe/Bread.png"));
-    private final Texture cookieTexture = new Texture(Gdx.files.internal("assets/recipe/Cookie.png"));
-    private final Texture dishOfTheSeaTexture = new Texture(Gdx.files.internal("assets/recipe/Dish_O_The_Sea.png"));
-    private final Texture farmersLunchTexture = new Texture(Gdx.files.internal("assets/recipe/Farmers_Lunch.png"));
-    private final Texture friedEggTexture = new Texture(Gdx.files.internal("assets/recipe/Fried_Egg.png"));
-    private final Texture fruitSaladTexture = new Texture(Gdx.files.internal("assets/recipe/Fruit_Salad.png"));
-    private final Texture makiRollTexture = new Texture(Gdx.files.internal("assets/recipe/Maki_Roll.png"));
-    private final Texture minersTreatTexture = new Texture(Gdx.files.internal("assets/recipe/Miners_Treat.png"));
-    private final Texture omeletTexture = new Texture(Gdx.files.internal("assets/recipe/Omelet.png"));
-    private final Texture pancakesTexture = new Texture(Gdx.files.internal("assets/recipe/Pancakes.png"));
-    private final Texture pizzaTexture = new Texture(Gdx.files.internal("assets/recipe/Pizza.png"));
-    private final Texture pumpkinPieTexture = new Texture(Gdx.files.internal("assets/recipe/Pumpkin_Pie.png"));
-    private final Texture redPlateTexture = new Texture(Gdx.files.internal("assets/recipe/Red_Plate.png"));
-    private final Texture saladTexture = new Texture(Gdx.files.internal("assets/recipe/Salad.png"));
-    private final Texture salmonDinnerTexture = new Texture(Gdx.files.internal("assets/recipe/Salmon_Dinner.png"));
-    private final Texture seafoamPuddingTexture = new Texture(Gdx.files.internal("assets/recipe/Seafoam_Pudding.png"));
-    private final Texture spaghettiTexture = new Texture(Gdx.files.internal("assets/recipe/Spaghetti.png"));
-    private final Texture survivalBurgerTexture = new Texture(Gdx.files.internal("assets/recipe/Survival_Burger.png"));
-    private final Texture tortillaTexture = new Texture(Gdx.files.internal("assets/recipe/Tortilla.png"));
-    private final Texture tripleShotEspressoTexture = new Texture(Gdx.files.internal("assets/recipe/Triple_Shot_Espresso.png"));
-    private final Texture troutSoupTexture = new Texture(Gdx.files.internal("assets/recipe/Trout_Soup.png"));
-    private final Texture vegetableMedleyTexture = new Texture(Gdx.files.internal("assets/recipe/Vegetable_Medley.png"));
-
-    private Rect bakedFishRect;
-    private Rect breadRect;
-    private Rect cookieRect;
-    private Rect dishOfTheSeaRect;
-    private Rect farmersLunchRect;
-    private Rect friedEggRect;
-    private Rect fruitSaladRect;
-    private Rect makiRollRect;
-    private Rect minersTreatRect;
-    private Rect omeletRect;
-    private Rect pancakesRect;
-    private Rect pizzaRect;
-    private Rect pumpkinPieRect;
-    private Rect redPlateRect;
-    private Rect saladRect;
-    private Rect salmonDinnerRect;
-    private Rect seafoamPuddingRect;
-    private Rect spaghettiRect;
-    private Rect survivalBurgerRect;
-    private Rect tortillaRect;
-    private Rect tripleShotEspressoRect;
-    private Rect troutSoupRect;
-    private Rect vegetableMedleyRect;
+    private Texture refrigeratorIconTexture;
+    private Rect refrigeratorRect;
+    private Texture fridgeShelfTexture;
+    private static final int FRIDGE_SHELF_COLS = 12;
+    private static final int FRIDGE_SHELF_ICON_SIZE = 64;
 
     private Stage stage;
     private Main game;
@@ -83,43 +50,49 @@ public class cookUI implements Screen {
         cookingController.showCookingRecipes();
     }
 
+    public void showDialog(String title, String message) {
+        Skin skin = GameAssetManager.getDefaultSkin();
+        Dialog dialog = new Dialog(title, skin) {
+            @Override
+            protected void result(Object object) {
+            }
+        };
+
+        dialog.text(message);
+        dialog.button("OK");
+        dialog.show(stage);
+    }
+
     @Override
     public void show() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         stage = new Stage(new ScreenViewport());
+
+        assetManager = new AssetManager();
+
         toggledPictureTexture = new Texture(Gdx.files.internal("assets/shelf2.png"));
+        refrigeratorIconTexture = new Texture(Gdx.files.internal("assets/refrigerator.png"));
+        fridgeShelfTexture = new Texture(Gdx.files.internal("assets/shelf.png"));
+        refrigeratorRect = new Rect(Gdx.graphics.getWidth() - 500, 100, 80, 80);
 
-        bakedFishRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        breadRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        cookieRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        dishOfTheSeaRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        farmersLunchRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        friedEggRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        fruitSaladRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        makiRollRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        minersTreatRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        omeletRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        pancakesRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        pizzaRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        pumpkinPieRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        redPlateRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        saladRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        salmonDinnerRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        seafoamPuddingRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        spaghettiRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        survivalBurgerRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        tortillaRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        tripleShotEspressoRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        troutSoupRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-        vegetableMedleyRect = new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
+        recipeTextures = new HashMap<>();
+        recipeRects = new HashMap<>();
 
+        for (CookingRecipes recipe : CookingRecipes.values()) {
+            Texture texture = getRecipeTexture(recipe);
+            if (texture != null) {
+                recipeTextures.put(recipe, texture);
+                recipeRects.put(recipe, new Rect(0, 0, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE));
+            }
+        }
 
         Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.C) {
                     isPictureVisible = !isPictureVisible;
+                    isFridgeVisible = false;
                     return true;
                 }
                 return false;
@@ -127,78 +100,23 @@ public class cookUI implements Screen {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (isPictureVisible && button == Input.Buttons.LEFT) {
-                    int libGdxY = Gdx.graphics.getHeight() - screenY;
+                int libGdxY = Gdx.graphics.getHeight() - screenY;
+                if (refrigeratorRect.contains(screenX, libGdxY)) {
+                    isFridgeVisible = !isFridgeVisible;
+                    isPictureVisible = false;
+                    return true;
+                }
 
-                    if (bakedFishRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.BAKED_FISH.name());
-                        return true;
-                    } else if (breadRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.BREAD.name());
-                        return true;
-                    } else if (cookieRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.COOKIE.name());
-                        return true;
-                    } else if (dishOfTheSeaRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.DISH_O_THE_SEA.name());
-                        return true;
-                    } else if (farmersLunchRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.FARMERS_LUNCH.name());
-                        return true;
-                    } else if (friedEggRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.FRIED_EGG.name());
-                        return true;
-                    } else if (fruitSaladRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.FRUIT_SALAD.name());
-                        return true;
-                    } else if (makiRollRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.MAKI_ROLL.name());
-                        return true;
-                    } else if (minersTreatRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.MINERS_TREAT.name());
-                        return true;
-                    } else if (omeletRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.OMELET.name());
-                        return true;
-                    } else if (pancakesRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.PANCAKES.name());
-                        return true;
-                    } else if (pizzaRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.PIZZA.name());
-                        return true;
-                    } else if (pumpkinPieRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.PUMPKIN_PIE.name());
-                        return true;
-                    } else if (redPlateRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.RED_PLATE.name());
-                        return true;
-                    } else if (saladRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.SALAD.name());
-                        return true;
-                    } else if (salmonDinnerRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.SALMON_DINNER.name());
-                        return true;
-                    } else if (seafoamPuddingRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.SEAFOAM_PUDDING.name());
-                        return true;
-                    } else if (spaghettiRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.SPAGHETTI.name());
-                        return true;
-                    } else if (survivalBurgerRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.SURVIVAL_BURGER.name());
-                        return true;
-                    } else if (tortillaRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.TORTILLA.name());
-                        return true;
-                    } else if (tripleShotEspressoRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.TRIPLE_SHOT_ESPRESSO.name());
-                        return true;
-                    } else if (troutSoupRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.TROUT_SOUP.name());
-                        return true;
-                    } else if (vegetableMedleyRect.contains(screenX, libGdxY)) {
-                        cookingController.cook(CookingRecipes.VEGETABLE_MEDLEY.name());
-                        return true;
+                if (isPictureVisible && button == Input.Buttons.LEFT) {
+                    for (Map.Entry<CookingRecipes, Rect> entry : recipeRects.entrySet()) {
+                        if (entry.getValue().contains(screenX, libGdxY)) {
+                            Result result = cookingController.cook(entry.getKey().name());
+                            if (!result.isSuccess()) {
+                                showDialog("Error", result.toString());
+                                return false;
+                            }
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -210,152 +128,147 @@ public class cookUI implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act(delta);
+        batch.begin();
+        batch.draw(refrigeratorIconTexture, refrigeratorRect.x, refrigeratorRect.y, refrigeratorRect.width, refrigeratorRect.height);
 
         if (isPictureVisible) {
-            batch.begin();
             float shelfX = (Gdx.graphics.getWidth() - toggledPictureTexture.getWidth()) / 2f;
             batch.draw(toggledPictureTexture, shelfX, y - 10);
-            batch.end();
-
             drawRecipes();
+        } else if (isFridgeVisible) {
+            drawFridgeContents();
         }
-
+        batch.end();
         stage.draw();
     }
 
-    private void drawRecipes() {
-        if (App.getLoggedInUser() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().learnedRecipes == null) {
+    private void drawFridgeContents() {
+        if (App.getLoggedInUser() == null || App.getLoggedInUser().backPack == null) {
             return;
+        } //todo
+
+        float shelfWidth = FRIDGE_SHELF_COLS * (FRIDGE_SHELF_ICON_SIZE + 10);
+        float shelfX = (Gdx.graphics.getWidth() - shelfWidth) / 2f;
+        float shelfY = Gdx.graphics.getHeight() / 4f;
+
+        batch.draw(fridgeShelfTexture, shelfX, shelfY, shelfWidth, FRIDGE_SHELF_ICON_SIZE + 20);
+
+        int currentItemIndex = 0;
+        for (ItemInterface item : App.getLoggedInUser().backPack.refrigerator) {
+            if (currentItemIndex >= FRIDGE_SHELF_COLS) {
+                break;
+            }
+
+            Texture itemTexture = getItemTexture(item);
+
+            if (itemTexture != null) {
+                float itemX = shelfX + (currentItemIndex * (FRIDGE_SHELF_ICON_SIZE + 10)) + 10;
+                float itemY = shelfY + 10;
+                batch.draw(itemTexture, itemX, itemY, FRIDGE_SHELF_ICON_SIZE, FRIDGE_SHELF_ICON_SIZE);
+            }
+            currentItemIndex++;
         }
+    }
+
+    private void drawRecipes() {
+//        if (App.getLoggedInUser() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().learnedRecipes == null) {
+//            return;
+//        }
+        // todo
 
         float shelfWidth = toggledPictureTexture.getWidth();
         float shelfX = (Gdx.graphics.getWidth() - shelfWidth) / 2f;
-
         float rowContentWidth = (RECIPES_PER_ROW * RECIPE_ICON_SIZE) + ((RECIPES_PER_ROW - 1) * RECIPE_PADDING_X);
         float startRecipeX = (shelfX + (shelfWidth - rowContentWidth) / 2f) - 4;
 
-        int currentRecipeIndex = 0;
-        batch.begin();
-
-        // Iterate through learned recipes and draw them
-        for (CookingRecipes recipe : App.getLoggedInUser().learnedRecipes) {
-            Texture recipeTexture = null;
-            Rect recipeRect = null;
-
-            switch (recipe) {
-                case BAKED_FISH:
-                    recipeTexture = bakedFishTexture;
-                    recipeRect = bakedFishRect;
-                    break;
-                case BREAD:
-                    recipeTexture = breadTexture;
-                    recipeRect = breadRect;
-                    break;
-                case COOKIE:
-                    recipeTexture = cookieTexture;
-                    recipeRect = cookieRect;
-                    break;
-                case DISH_O_THE_SEA:
-                    recipeTexture = dishOfTheSeaTexture;
-                    recipeRect = dishOfTheSeaRect;
-                    break;
-                case FARMERS_LUNCH:
-                    recipeTexture = farmersLunchTexture;
-                    recipeRect = farmersLunchRect;
-                    break;
-                case FRIED_EGG:
-                    recipeTexture = friedEggTexture;
-                    recipeRect = friedEggRect;
-                    break;
-                case FRUIT_SALAD:
-                    recipeTexture = fruitSaladTexture;
-                    recipeRect = fruitSaladRect;
-                    break;
-                case MAKI_ROLL:
-                    recipeTexture = makiRollTexture;
-                    recipeRect = makiRollRect;
-                    break;
-                case MINERS_TREAT:
-                    recipeTexture = minersTreatTexture;
-                    recipeRect = minersTreatRect;
-                    break;
-                case OMELET:
-                    recipeTexture = omeletTexture;
-                    recipeRect = omeletRect;
-                    break;
-                case PANCAKES:
-                    recipeTexture = pancakesTexture;
-                    recipeRect = pancakesRect;
-                    break;
-                case PIZZA:
-                    recipeTexture = pizzaTexture;
-                    recipeRect = pizzaRect;
-                    break;
-                case PUMPKIN_PIE:
-                    recipeTexture = pumpkinPieTexture;
-                    recipeRect = pumpkinPieRect;
-                    break;
-                case RED_PLATE:
-                    recipeTexture = redPlateTexture;
-                    recipeRect = redPlateRect;
-                    break;
-                case SALAD:
-                    recipeTexture = saladTexture;
-                    recipeRect = saladRect;
-                    break;
-                case SALMON_DINNER:
-                    recipeTexture = salmonDinnerTexture;
-                    recipeRect = salmonDinnerRect;
-                    break;
-                case SEAFOAM_PUDDING:
-                    recipeTexture = seafoamPuddingTexture;
-                    recipeRect = seafoamPuddingRect;
-                    break;
-                case SPAGHETTI:
-                    recipeTexture = spaghettiTexture;
-                    recipeRect = spaghettiRect;
-                    break;
-                case SURVIVAL_BURGER:
-                    recipeTexture = survivalBurgerTexture;
-                    recipeRect = survivalBurgerRect;
-                    break;
-                case TORTILLA:
-                    recipeTexture = tortillaTexture;
-                    recipeRect = tortillaRect;
-                    break;
-                case TRIPLE_SHOT_ESPRESSO:
-                    recipeTexture = tripleShotEspressoTexture;
-                    recipeRect = tripleShotEspressoRect;
-                    break;
-                case TROUT_SOUP:
-                    recipeTexture = troutSoupTexture;
-                    recipeRect = troutSoupRect;
-                    break;
-                case VEGETABLE_MEDLEY:
-                    recipeTexture = vegetableMedleyTexture;
-                    recipeRect = vegetableMedleyRect;
-                    break;
-                default:
-                    System.err.println("Unknown recipe: " + recipe.name());
-                    continue;
-            }
-
+        CookingRecipes[] allRecipes = CookingRecipes.values();
+        for (int i = 0; i < 24 && i < allRecipes.length; i++) {
+            CookingRecipes recipe = allRecipes[i];
+            Texture recipeTexture = recipeTextures.get(recipe);
+            Rect recipeRect = recipeRects.get(recipe);
             if (recipeTexture != null && recipeRect != null) {
-                int row = currentRecipeIndex / RECIPES_PER_ROW;
-                int col = currentRecipeIndex % RECIPES_PER_ROW;
-
+                boolean isLearned = App.getLoggedInUser().learnedRecipes.contains(recipe);
+                if (!isLearned) {
+                    batch.setColor(0.5f, 0.5f, 0.5f, 1.0f); // Dark gray tint
+                }
+                int row = i / RECIPES_PER_ROW;
+                int col = i % RECIPES_PER_ROW;
                 float recipeX = startRecipeX + (col * (RECIPE_ICON_SIZE + RECIPE_PADDING_X));
                 float recipeY = y + (row * (RECIPE_ICON_SIZE + RECIPE_PADDING_Y));
-
                 batch.draw(recipeTexture, recipeX, recipeY, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
-
+                batch.setColor(Color.WHITE);
                 recipeRect.set(recipeX, recipeY, RECIPE_ICON_SIZE, RECIPE_ICON_SIZE);
             }
-            currentRecipeIndex++;
         }
-        batch.end();
+    }
+
+    private Texture getItemTexture(ItemInterface item) {
+        if (item instanceof Food food) {
+            return getRecipeTexture(food.recipe);
+        } else if (item instanceof CookingMaterial material) {
+            switch (material.getName().toUpperCase()) {
+                case "AMARANTH": return assetManager.amaranth;
+                case "APRICOT": return assetManager.apricot;
+                case "BEET": return assetManager.beet;
+                case "BLUEBERRY": return assetManager.blueberry;
+                case "CARROT": return assetManager.carrot;
+                case "CHEESE": return assetManager.cheese;
+                case "COFFEE": return assetManager.coffee;
+                case "CORN": return assetManager.corn;
+                case "EGG": return assetManager.egg;
+                case "EGGPLANT": return assetManager.eggplant;
+                case "FIBER": return assetManager.fiber;
+                case "FLOUNDER": return assetManager.flounder;
+                case "HASH_BROWNS": return assetManager.hashbrowns;
+                case "KALE": return assetManager.kale;
+                case "MELON": return assetManager.melon;
+                case "MIDNIGHT_CARP": return assetManager.midnightCarp;
+                case "MILK": return assetManager.milk;
+                case "OIL": return assetManager.oil;
+                case "PARSNIP": return assetManager.parsnip;
+                case "POTATO": return assetManager.potato;
+                case "PUMPKIN": return assetManager.pumpkin;
+                case "RADISH": return assetManager.radish;
+                case "RED_CABBAGE": return assetManager.redCabbage;
+                case "RICE": return assetManager.rice;
+                case "SALMON": return assetManager.salmon;
+                case "SARDINE": return assetManager.sardine;
+                case "SUGAR": return assetManager.sugar;
+                case "TOMATO": return assetManager.tomato;
+                case "WHEAT": return assetManager.wheat;
+            }
+        }
+        return null;
+    }
+
+    private Texture getRecipeTexture(CookingRecipes recipe) {
+        switch (recipe) {
+            case BAKED_FISH: return assetManager.bakedFish;
+            case BREAD: return assetManager.bread;
+            case COOKIE: return assetManager.cookie;
+            case DISH_O_THE_SEA: return assetManager.dishOfTheSea;
+            case FARMERS_LUNCH: return assetManager.farmersLunch;
+            case FRIED_EGG: return assetManager.friedEgg;
+            case FRUIT_SALAD: return assetManager.fruitSalad;
+            case MAKI_ROLL: return assetManager.makiRoll;
+            case MINERS_TREAT: return assetManager.minersTreat;
+            case OMELET: return assetManager.omelet;
+            case PANCAKES: return assetManager.pancakes;
+            case PIZZA: return assetManager.pizza;
+            case PUMPKIN_PIE: return assetManager.pumpkinPie;
+            case RED_PLATE: return assetManager.redPlate;
+            case SALAD: return assetManager.salad;
+            case SALMON_DINNER: return assetManager.salmonDinner;
+            case SEAFOAM_PUDDING: return assetManager.seafoamPudding;
+            case SPAGHETTI: return assetManager.spaghetti;
+            case SURVIVAL_BURGER: return assetManager.survivalBurger;
+            case TORTILLA: return assetManager.tortilla;
+            case TRIPLE_SHOT_ESPRESSO: return assetManager.tripleShotEspresso;
+            case TROUT_SOUP: return assetManager.troutSoup;
+            case VEGETABLE_MEDLEY: return assetManager.vegetableMedley;
+        }
+        return null;
     }
 
     @Override
@@ -383,31 +296,8 @@ public class cookUI implements Screen {
             shapeRenderer.dispose();
         }
         toggledPictureTexture.dispose();
-
-        bakedFishTexture.dispose();
-        breadTexture.dispose();
-        cookieTexture.dispose();
-        dishOfTheSeaTexture.dispose();
-        farmersLunchTexture.dispose();
-        friedEggTexture.dispose();
-        fruitSaladTexture.dispose();
-        makiRollTexture.dispose();
-        minersTreatTexture.dispose();
-        omeletTexture.dispose();
-        pancakesTexture.dispose();
-        pizzaTexture.dispose();
-        pumpkinPieTexture.dispose();
-        redPlateTexture.dispose();
-        saladTexture.dispose();
-        salmonDinnerTexture.dispose();
-        seafoamPuddingTexture.dispose();
-        spaghettiTexture.dispose();
-        survivalBurgerTexture.dispose();
-        tortillaTexture.dispose();
-        tripleShotEspressoTexture.dispose();
-        troutSoupTexture.dispose();
-        vegetableMedleyTexture.dispose();
-
+        refrigeratorIconTexture.dispose();
+        fridgeShelfTexture.dispose();
         stage.dispose();
     }
 }

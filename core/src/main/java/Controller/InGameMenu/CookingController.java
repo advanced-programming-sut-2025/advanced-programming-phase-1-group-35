@@ -8,25 +8,25 @@ import Model.enums.CookingRecipes;
 import java.util.Map;
 
 public class CookingController {
-//    public Result placeItemInFridge(String itemName) {
-//        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-//        CookingMaterial ingredient = null;
-//        for (ItemInterface item : player.backPack.items.keySet()) {
-//            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
-//                ingredient = (CookingMaterial) item;
-//            }
-//        }
-//        if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
-//            return new Result(false, "You don't have a item in your inventory");
-//        }
-//        player.getFarm().getCabin().refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
-//        player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
-//        if (player.backPack.items.get(ingredient) == 0) {
-//            player.backPack.items.remove(ingredient);
-//        }
-//        return new Result(true, "successfully added ingredient to the refrigerator");
-//    }
+    public Result placeItemInFridge(String itemName) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        CookingMaterial ingredient = null;
+        for (ItemInterface item : player.backPack.items.keySet()) {
+            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
+                ingredient = (CookingMaterial) item;
+            }
+        }
+        if (ingredient == null || !player.backPack.items.containsKey(ingredient)) {
+            return new Result(false, "You don't have a item in your inventory");
+        }
+        player.getFarm().getCabin().refrigerator.ingredients.put(ingredient, player.cabin.refrigerator.ingredients.getOrDefault(ingredient, 0) + 1);
+        player.backPack.items.put(ingredient, player.backPack.items.get(ingredient) - 1);
+        if (player.backPack.items.get(ingredient) == 0) {
+            player.backPack.items.remove(ingredient);
+        }
+        return new Result(true, "successfully added ingredient to the refrigerator");
+    }
 
 //    public Result pickItemFromFridge(String itemName) {
 //        if (isInCabin() != null) {
@@ -55,8 +55,10 @@ public class CookingController {
 //    }
 
     public Result showCookingRecipes() {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         if (player.learnedRecipes.isEmpty()) {
             addCookingRecipe(CookingRecipes.FRIED_EGG);
             addCookingRecipe(CookingRecipes.PIZZA);
@@ -84,14 +86,18 @@ public class CookingController {
     }
 
     public void addCookingRecipe(CookingRecipes recipe) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         player.learnedRecipes.add(recipe);
     }
 
     public Result cook(String recipeName) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         CookingRecipes recipe = null;
         try {
             recipe = CookingRecipes.valueOf(recipeName.toUpperCase());

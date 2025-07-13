@@ -6,10 +6,12 @@ import Model.enums.CookingIngredient;
 import Model.enums.CookingRecipes;
 import Model.enums.ToolTypes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BackPack {
     public HashMap<ItemInterface, Integer> items = new HashMap<>();
+    public ArrayList<ItemInterface> refrigerator = new ArrayList<>();
     private int capacity = 20;
 
     public BackPack() {
@@ -26,6 +28,9 @@ public class BackPack {
         this.items.put(new CookingMaterial(CookingIngredient.CHEESE), 3);
         this.items.put(new CookingMaterial(CookingIngredient.TOMATO), 5);
         this.items.put(new Food(CookingRecipes.PIZZA), 2);
+        this.refrigerator.add(new Food(CookingRecipes.TROUT_SOUP));
+        this.refrigerator.add(new Food(CookingRecipes.OMELET));
+        this.refrigerator.add(new CookingMaterial(CookingIngredient.APRICOT));
     }
 
     public boolean doesBackPackHasSpace() {
@@ -58,8 +63,10 @@ public class BackPack {
     }
 
     public CookingMaterial getCookingMaterial(CookingIngredient ingredient) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+        //        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         for (ItemInterface item : items.keySet()) {
             if (item instanceof CookingMaterial && ingredient.toString().equals(((CookingMaterial) item).ingredientName.toString())) {
                 return (CookingMaterial) item;
