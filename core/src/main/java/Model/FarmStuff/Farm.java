@@ -11,6 +11,7 @@ import Model.User;
 import Model.animal.Animal;
 import Model.enums.FarmType;
 import Model.enums.TileType;
+import com.StardewValley.Main;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Farm {
     }
 
     public void initFarm(int type, int number, Tile[][] tiles) {
-        FarmType farmType = FarmType.values()[type];
+        FarmType farmType = FarmType.values()[type - 1];
         int x = 0, y = 0;
         switch (number) {
             case 1:
@@ -76,10 +77,11 @@ public class Farm {
         shippingBin = new ShippingBin(this, tiles);
 
         if (owner != null) {// placing the player
-
             Rectangle bounds = cabin.getBounds();
             Tile spawnTile = tiles[bounds.x + bounds.width / 2][bounds.y + bounds.height + 3];
             owner.setCurrentTile(spawnTile);
+            owner.getCurrentPoint().first = (float) (spawnTile.coordination.x);
+            owner.getCurrentPoint().second = (float) (spawnTile.coordination.y);
             owner.setSymbol((char) ('0' + number));
             spawnTile.setContentSymbol((char) ('0' + number));
         }
@@ -94,7 +96,7 @@ public class Farm {
                 if (owner != null) tiles[i][j].setOwnerID(owner.getID());
                 tiles[i][j].setSymbol('.');
                 tiles[i][j].setWalkable(true);
-                tiles[i][j].setTileType(TileType.OutSideFarm);
+                tiles[i][j].setTileType(TileType.Soil);
             }
         }
     }

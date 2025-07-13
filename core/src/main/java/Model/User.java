@@ -10,7 +10,10 @@ import Model.Tools.Tool;
 import Model.TradeAndGift.Gift;
 import Model.TradeAndGift.Trade;
 import Model.enums.*;
+import com.StardewValley.Main;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,7 +38,7 @@ public class User {
     private int currentGameFarmIndex = -1;
     private int currentGameID = 0;
     private Tile currentTile = null;
-    private Point currentPoint = null;
+    private Pair<Float, Float> currentPoint = new Pair<>(10f, 10f);
     private char symbol;
     private Map map;
     private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
@@ -58,6 +61,12 @@ public class User {
     private Energy energy = new Energy();
     public Cabin cabin;
     public ArrayList<CookingRecipes> learnedRecipes;
+    private int selectedSlot = -1;
+    private int maxInventorySize = 9;
+    private int movingDirection = 0;
+    private float speed = 2f;
+    float vx , vy ;
+    public OrthographicCamera camera ;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -341,11 +350,11 @@ public class User {
         this.currentGameID = currentGameID;
     }
 
-    public Point getCurrentPoint() {
+    public Pair<Float, Float> getCurrentPoint() {
         return currentPoint;
     }
 
-    public void setCurrentPoint(Point currentPoint) {
+    public void setCurrentPoint(Pair<Float, Float> currentPoint) {
         this.currentPoint = currentPoint;
     }
 
@@ -452,5 +461,56 @@ public class User {
 
     public void setAskedMarriage(User askedMarriage) {
         this.askedMarriage = askedMarriage;
+    }
+
+    public void setSelectedSlot(int selectedSlot) {
+        this.selectedSlot = selectedSlot;
+    }
+
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public int getMaxInventorySize() {
+        return maxInventorySize;
+    }
+
+    public int getMovingDirection() {
+        return movingDirection;
+    }
+
+    public void setMovingDirection(int movingDirection) {
+        this.movingDirection = movingDirection;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void setVelocity(float vx, float vy) {
+        this.vx = vx;
+        this.vy = vy;
+    }
+
+    public void update(float delta, Tile[][] tiles) {
+        tryMove(vx * delta, vy * delta, tiles);
+    }
+    public boolean tryMove(float dx, float dy, Tile[][] tiles) {
+
+        int newX = (int) (currentPoint.first + dx);
+        int newY = (int) (currentPoint.second + dy);
+
+        if (newX < 0 || newX >= tiles.length || newY < 0 || newY >= tiles[0].length) return false;
+        currentTile = tiles[newX][newY];
+        if (currentTile.isWalkable() && (currentTile.getOwner() == null || currentTile.getOwner().equals(this)) ) {
+            currentPoint.first += dx;
+            currentPoint.second += dy;
+            return true;
+        }
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "username": "kazem",
+      "username": "player1",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
       "email": "mahdi@gmail.com",
@@ -13,27 +13,51 @@
       "gamesPlayed": 0
     },
     {
-      "username": "mahdi",
-      "password": "13316a7446d3557d7a1ec81811c4861008af2c6a8c350110aa157b2d34864c04",
+      "username": "player2",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
-      "email": "msrjk1384@gmail.com",
+      "email": "mahdi@gmail.com",
       "gender": "male",
       "securityQuestion": "Question1",
       "securityQuestionText": "1- What is your greatest childhood trauma ?",
-      "securityAnswer": "yes",
+      "securityAnswer": "nope",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "player3",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "nope",
+      "highScore": 0,
+      "gamesPlayed": 0
+    },
+    {
+      "username": "player4",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "nope",
       "highScore": 0,
       "gamesPlayed": 0
     }
   ],
   "loggedInUser": {
-    "username": "mahdi",
-    "password": "13316a7446d3557d7a1ec81811c4861008af2c6a8c350110aa157b2d34864c04",
+    "username": "player1",
+    "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
     "nickname": "mahdi",
-    "email": "msrjk1384@gmail.com",
+    "email": "mahdi@gmail.com",
     "gender": "male",
     "securityQuestion": "Question1",
     "securityQuestionText": "1- What is your greatest childhood trauma ?",
-    "securityAnswer": "yes",
+    "securityAnswer": "nope",
     "highScore": 0,
     "gamesPlayed": 0
   },
