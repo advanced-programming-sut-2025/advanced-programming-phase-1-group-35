@@ -6,28 +6,21 @@ import Model.CookingMaterial;
 import Model.ItemInterface;
 import Model.Food;
 import Model.Tools.Tool;
-import Model.enums.CookingRecipes;
 import com.StardewValley.Main;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class InventoryUI implements Screen {
-    private SpriteBatch batch;
+public class InventoryUI {
     private Texture inventoryBackgroundTexture;
-    private boolean isInventoryVisible = false;
     private BitmapFont font;
     private GlyphLayout glyphLayout;
 
-    private Stage stage;
     private Main game;
-    private AssetManager assetManager = new AssetManager();
+    private AssetManager assetManager;
 
     private static final int INVENTORY_ROWS = 3;
     private static final int INVENTORY_COLS = 12;
@@ -40,52 +33,34 @@ public class InventoryUI implements Screen {
 
     public InventoryUI(Main game) {
         this.game = game;
+        this.assetManager = new AssetManager();
+        initialize();
     }
 
-    @Override
-    public void show() {
-        batch = new SpriteBatch();
-        stage = new Stage(new ScreenViewport());
+    private void initialize() {
         inventoryBackgroundTexture = new Texture(Gdx.files.internal("assets/shelf3.png"));
-
         font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(1.0f);
         glyphLayout = new GlyphLayout();
-
-        startX = ((Gdx.graphics.getWidth() - TOTAL_WIDTH) / 2);
-        startY = (Gdx.graphics.getHeight() - TOTAL_HEIGHT - TOP_PADDING);
-
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
-            @Override
-            public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.ESCAPE) {
-                    isInventoryVisible = !isInventoryVisible;
-                    return true;
-                }
-                return false;
-            }
-        }));
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
-        if (isInventoryVisible) {
-            batch.begin();
-            batch.draw(inventoryBackgroundTexture, startX - 20, startY - 20, TOTAL_WIDTH + 40, TOTAL_HEIGHT + 40);
-            drawInventoryItems();
-            batch.end();
-        }
-        stage.draw();
+    public void draw(SpriteBatch batch) {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        startX = ((screenWidth - TOTAL_WIDTH) / 2);
+        startY = (screenHeight - TOTAL_HEIGHT - TOP_PADDING);
+
+        batch.draw(inventoryBackgroundTexture, startX - 20, startY - 20, TOTAL_WIDTH + 40, TOTAL_HEIGHT + 40);
+        drawInventoryItems(batch);
     }
 
-    private void drawInventoryItems() {
+    private void drawInventoryItems(SpriteBatch batch) {
 //        if (App.getCurrentGame() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().backPack == null) {
 //            return;
-//        } // todo
+//        }
+        // todo
 
         int currentItemIndex = 0;
 
@@ -119,161 +94,83 @@ public class InventoryUI implements Screen {
     private Texture getItemTexture(ItemInterface item) {
         if (item instanceof Tool tool) {
             switch (tool.getToolType()) {
-                case AXE:
-                    return assetManager.axe;
-                case FISHING_ROD:
-                    return assetManager.fishingRod;
-                case HOE:
-                    return assetManager.hoe;
-                case MILK_PAIL:
-                    return assetManager.milkPail;
-                case PICKAXE:
-                    return assetManager.pickaxe;
-                case SCYTHE:
-                    return assetManager.scythe;
-                case SHEARS:
-                    return assetManager.shears;
-                case WATERING_CAN:
-                    return assetManager.wateringCan;
+                case AXE: return assetManager.axe;
+                case FISHING_ROD: return assetManager.fishingRod;
+                case HOE: return assetManager.hoe;
+                case MILK_PAIL: return assetManager.milkPail;
+                case PICKAXE: return assetManager.pickaxe;
+                case SCYTHE: return assetManager.scythe;
+                case SHEARS: return assetManager.shears;
+                case WATERING_CAN: return assetManager.wateringCan;
             }
         } else if (item instanceof CookingMaterial ingredient) {
-            if (ingredient.getName().equalsIgnoreCase("AMARANTH")) {
-                return assetManager.amaranth;
-            } else if (ingredient.getName().equalsIgnoreCase("APRICOT")) {
-                return assetManager.apricot;
-            } else if (ingredient.getName().equalsIgnoreCase("BEET")) {
-                return assetManager.beet;
-            } else if (ingredient.getName().equalsIgnoreCase("BLUEBERRY")) {
-                return assetManager.blueberry;
-            } else if (ingredient.getName().equalsIgnoreCase("CARROT")) {
-                return assetManager.carrot;
-            } else if (ingredient.getName().equalsIgnoreCase("CHEESE")) {
-                return assetManager.cheese;
-            } else if (ingredient.getName().equalsIgnoreCase("COFFEE")) {
-                return assetManager.coffee;
-            } else if (ingredient.getName().equalsIgnoreCase("CORN")) {
-                return assetManager.corn;
-            } else if (ingredient.getName().equalsIgnoreCase("EGG")) {
-                return assetManager.egg;
-            } else if (ingredient.getName().equalsIgnoreCase("EGGPLANT")) {
-                return assetManager.eggplant;
-            } else if (ingredient.getName().equalsIgnoreCase("FIBER")) {
-                return assetManager.fiber;
-            } else if (ingredient.getName().equalsIgnoreCase("FLOUNDER")) {
-                return assetManager.flounder;
-            } else if (ingredient.getName().equalsIgnoreCase("HASH_BROWNS")) {
-                return assetManager.hashbrowns;
-            } else if (ingredient.getName().equalsIgnoreCase("KALE")) {
-                return assetManager.kale;
-            } else if (ingredient.getName().equalsIgnoreCase("MELON")) {
-                return assetManager.melon;
-            } else if (ingredient.getName().equalsIgnoreCase("MIDNIGHT_CARP")) {
-                return assetManager.midnightCarp;
-            } else if (ingredient.getName().equalsIgnoreCase("MILK")) {
-                return assetManager.milk;
-            } else if (ingredient.getName().equalsIgnoreCase("OIL")) {
-                return assetManager.oil;
-            } else if (ingredient.getName().equalsIgnoreCase("PARSNIP")) {
-                return assetManager.parsnip;
-            } else if (ingredient.getName().equalsIgnoreCase("POTATO")) {
-                return assetManager.potato;
-            } else if (ingredient.getName().equalsIgnoreCase("PUMPKIN")) {
-                return assetManager.pumpkin;
-            } else if (ingredient.getName().equalsIgnoreCase("RADISH")) {
-                return assetManager.radish;
-            } else if (ingredient.getName().equalsIgnoreCase("RED_CABBAGE")) {
-                return assetManager.redCabbage;
-            } else if (ingredient.getName().equalsIgnoreCase("RICE")) {
-                return assetManager.rice;
-            } else if (ingredient.getName().equalsIgnoreCase("SALMON")) {
-                return assetManager.salmon;
-            } else if (ingredient.getName().equalsIgnoreCase("SARDINE")) {
-                return assetManager.sardine;
-            } else if (ingredient.getName().equalsIgnoreCase("SUGAR")) {
-                return assetManager.sugar;
-            } else if (ingredient.getName().equalsIgnoreCase("TOMATO")) {
-                return assetManager.tomato;
-            } else if (ingredient.getName().equalsIgnoreCase("WHEAT")) {
-                return assetManager.wheat;
+            switch (ingredient.getName().toUpperCase()) {
+                case "AMARANTH": return assetManager.amaranth;
+                case "APRICOT": return assetManager.apricot;
+                case "BEET": return assetManager.beet;
+                case "BLUEBERRY": return assetManager.blueberry;
+                case "CARROT": return assetManager.carrot;
+                case "CHEESE": return assetManager.cheese;
+                case "COFFEE": return assetManager.coffee;
+                case "CORN": return assetManager.corn;
+                case "EGG": return assetManager.egg;
+                case "EGGPLANT": return assetManager.eggplant;
+                case "FIBER": return assetManager.fiber;
+                case "FLOUNDER": return assetManager.flounder;
+                case "HASH_BROWNS": return assetManager.hashbrowns;
+                case "KALE": return assetManager.kale;
+                case "MELON": return assetManager.melon;
+                case "MIDNIGHT_CARP": return assetManager.midnightCarp;
+                case "MILK": return assetManager.milk;
+                case "OIL": return assetManager.oil;
+                case "PARSNIP": return assetManager.parsnip;
+                case "POTATO": return assetManager.potato;
+                case "PUMPKIN": return assetManager.pumpkin;
+                case "RADISH": return assetManager.radish;
+                case "RED_CABBAGE": return assetManager.redCabbage;
+                case "RICE": return assetManager.rice;
+                case "SALMON": return assetManager.salmon;
+                case "SARDINE": return assetManager.sardine;
+                case "SUGAR": return assetManager.sugar;
+                case "TOMATO": return assetManager.tomato;
+                case "WHEAT": return assetManager.wheat;
             }
         } else if (item instanceof Food food) {
             switch (food.recipe) {
-                case BAKED_FISH:
-                    return assetManager.bakedFish;
-                case BREAD:
-                    return assetManager.bread;
-                case COOKIE:
-                    return assetManager.cookie;
-                case DISH_O_THE_SEA:
-                    return assetManager.dishOfTheSea;
-                case FARMERS_LUNCH:
-                    return assetManager.farmersLunch;
-                case FRIED_EGG:
-                    return assetManager.friedEgg;
-                case FRUIT_SALAD:
-                    return assetManager.fruitSalad;
-                case MAKI_ROLL:
-                    return assetManager.makiRoll;
-                case MINERS_TREAT:
-                    return assetManager.minersTreat;
-                case OMELET:
-                    return assetManager.omelet;
-                case PANCAKES:
-                    return assetManager.pancakes;
-                case PIZZA:
-                    return assetManager.pizza;
-                case PUMPKIN_PIE:
-                    return assetManager.pumpkinPie;
-                case RED_PLATE:
-                    return assetManager.redPlate;
-                case SALAD:
-                    return assetManager.salad;
-                case SALMON_DINNER:
-                    return assetManager.salmonDinner;
-                case SEAFOAM_PUDDING:
-                    return assetManager.seafoamPudding;
-                case SPAGHETTI:
-                    return assetManager.spaghetti;
-                case SURVIVAL_BURGER:
-                    return assetManager.survivalBurger;
-                case TORTILLA:
-                    return assetManager.tortilla;
-                case TRIPLE_SHOT_ESPRESSO:
-                    return assetManager.tripleShotEspresso;
-                case TROUT_SOUP:
-                    return assetManager.troutSoup;
-                case VEGETABLE_MEDLEY:
-                    return assetManager.vegetableMedley;
+                case BAKED_FISH: return assetManager.bakedFish;
+                case BREAD: return assetManager.bread;
+                case COOKIE: return assetManager.cookie;
+                case DISH_O_THE_SEA: return assetManager.dishOfTheSea;
+                case FARMERS_LUNCH: return assetManager.farmersLunch;
+                case FRIED_EGG: return assetManager.friedEgg;
+                case FRUIT_SALAD: return assetManager.fruitSalad;
+                case MAKI_ROLL: return assetManager.makiRoll;
+                case MINERS_TREAT: return assetManager.minersTreat;
+                case OMELET: return assetManager.omelet;
+                case PANCAKES: return assetManager.pancakes;
+                case PIZZA: return assetManager.pizza;
+                case PUMPKIN_PIE: return assetManager.pumpkinPie;
+                case RED_PLATE: return assetManager.redPlate;
+                case SALAD: return assetManager.salad;
+                case SALMON_DINNER: return assetManager.salmonDinner;
+                case SEAFOAM_PUDDING: return assetManager.seafoamPudding;
+                case SPAGHETTI: return assetManager.spaghetti;
+                case SURVIVAL_BURGER: return assetManager.survivalBurger;
+                case TORTILLA: return assetManager.tortilla;
+                case TRIPLE_SHOT_ESPRESSO: return assetManager.tripleShotEspresso;
+                case TROUT_SOUP: return assetManager.troutSoup;
+                case VEGETABLE_MEDLEY: return assetManager.vegetableMedley;
             }
         }
         return null;
     }
 
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        startX = (width - TOTAL_WIDTH) / 2;
-        startY = Gdx.graphics.getHeight() - TOTAL_HEIGHT - TOP_PADDING;
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
     public void dispose() {
-        batch.dispose();
-        stage.dispose();
-        inventoryBackgroundTexture.dispose();
-        font.dispose();
+        if (inventoryBackgroundTexture != null) {
+            inventoryBackgroundTexture.dispose();
+        }
+        if (font != null) {
+            font.dispose();
+        }
     }
 }
