@@ -40,8 +40,8 @@ public class InventoryMenuUI implements Screen {
 
     private static final int BUTTON_SIZE = 64;
     private static final int BUTTON_PADDING = 10;
-    private static final int START_X = 200;
-    private static final int START_Y = 800;
+    private static final int START_X = 500;
+    private static final int START_Y = 840;
 
     public InventoryMenuUI(Main game) {
         this.game = game;

@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class InventoryUI {
     private Texture inventoryBackgroundTexture;
+    private Texture trashCanIconTexture;
     private BitmapFont font;
     private GlyphLayout glyphLayout;
 
@@ -39,6 +40,7 @@ public class InventoryUI {
 
     private void initialize() {
         inventoryBackgroundTexture = new Texture(Gdx.files.internal("assets/shelf3.png"));
+        trashCanIconTexture = new Texture(Gdx.files.internal("assets/inventory/Trash_Can.png"));
         font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(1.0f);
@@ -50,9 +52,10 @@ public class InventoryUI {
         int screenHeight = Gdx.graphics.getHeight();
 
         startX = ((screenWidth - TOTAL_WIDTH) / 2);
-        startY = (screenHeight - TOTAL_HEIGHT - TOP_PADDING);
+        startY = (screenHeight - TOTAL_HEIGHT - TOP_PADDING) - 200;
 
         batch.draw(inventoryBackgroundTexture, startX - 20, startY - 20, TOTAL_WIDTH + 40, TOTAL_HEIGHT + 40);
+        batch.draw(trashCanIconTexture, 1500, 600, ICON_SIZE, ICON_SIZE);
         drawInventoryItems(batch);
     }
 
