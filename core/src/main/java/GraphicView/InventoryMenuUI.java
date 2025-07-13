@@ -63,7 +63,7 @@ public class InventoryMenuUI implements Screen {
         socialRect = new Rect(START_X + 2 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
         mapRect = new Rect(START_X + 3 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
 
-        inventoryPanel = new InventoryUI(game);
+        inventoryPanel = new InventoryUI(game, stage);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
             @Override
@@ -77,15 +77,20 @@ public class InventoryMenuUI implements Screen {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                int libGdxY = Gdx.graphics.getHeight() - screenY;
-                if (inventoryRect.contains(screenX, libGdxY)) {
+                screenY = Gdx.graphics.getHeight() - screenY;
+                if (inventoryRect.contains(screenX, screenY)) {
                     currentState = MenuState.INVENTORY;
-                } else if (skillsRect.contains(screenX, libGdxY)) {
+                    System.out.println("Inventory menu visible");
+                    return true; // Mark event as handled
+                } else if (skillsRect.contains(screenX, screenY)) {
                     currentState = MenuState.SKILLS;
-                } else if (socialRect.contains(screenX, libGdxY)) {
+                    return true;
+                } else if (socialRect.contains(screenX, screenY)) {
                     currentState = MenuState.SOCIAL;
-                } else if (mapRect.contains(screenX, libGdxY)) {
+                    return true;
+                } else if (mapRect.contains(screenX, screenY)) {
                     currentState = MenuState.MAP;
+                    return true;
                 }
                 return false;
             }

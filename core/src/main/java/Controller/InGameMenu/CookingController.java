@@ -9,8 +9,10 @@ import java.util.Map;
 
 public class CookingController {
     public Result placeItemInFridge(String itemName) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+//        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         CookingMaterial ingredient = null;
         for (ItemInterface item : player.backPack.items.keySet()) {
             if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
@@ -144,8 +146,10 @@ public class CookingController {
     }
 
     public Result eatFood(String name) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
+        //        Game game = App.getCurrentGame();
+//        User player = game.getPlayingUser();
+        // todo
+        User player = App.getLoggedInUser();
         Food food = player.backPack.getFood(name);
         if (food == null) {
             return new Result(false, "You don't have this food in your backpack!");
