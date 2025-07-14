@@ -44,6 +44,8 @@ public class cookUI implements Screen {
     private static final int RECIPE_PADDING_X = 15;
     private static final int RECIPE_PADDING_Y = 15;
 
+    private Texture backgroundTexture;
+
     public cookUI(Main game) {
         this.game = game;
         cookingController = new CookingController();
@@ -71,6 +73,7 @@ public class cookUI implements Screen {
 
         assetManager = new AssetManager();
 
+        backgroundTexture = new Texture(Gdx.files.internal("assets/background/cook.jpg"));
         toggledPictureTexture = new Texture(Gdx.files.internal("assets/shelf2.png"));
         refrigeratorIconTexture = new Texture(Gdx.files.internal("assets/refrigerator.png"));
         fridgeShelfTexture = new Texture(Gdx.files.internal("assets/shelf.png"));
@@ -130,6 +133,9 @@ public class cookUI implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         batch.begin();
+
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         batch.draw(refrigeratorIconTexture, refrigeratorRect.x, refrigeratorRect.y, refrigeratorRect.width, refrigeratorRect.height);
 
         if (isPictureVisible) {
@@ -298,6 +304,9 @@ public class cookUI implements Screen {
         toggledPictureTexture.dispose();
         refrigeratorIconTexture.dispose();
         fridgeShelfTexture.dispose();
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+        }
         stage.dispose();
     }
 }

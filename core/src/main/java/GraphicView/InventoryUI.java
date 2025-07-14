@@ -63,7 +63,7 @@ public class InventoryUI {
         glyphLayout = new GlyphLayout();
 
         itemRects = new HashMap<>();
-        trashCanRect = new Rect(1500, 600, ICON_SIZE, ICON_SIZE);
+        trashCanRect = new Rect(1560, 600, ICON_SIZE * 1.7f, ICON_SIZE * 1.7f);
 
         stage.addListener(new ClickListener() {
             @Override
