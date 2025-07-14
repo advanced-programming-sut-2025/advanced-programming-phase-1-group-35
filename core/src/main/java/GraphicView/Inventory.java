@@ -113,7 +113,8 @@ public class Inventory {
                             break;
                         case MOVE_TO_FRIDGE:
                             if ((item instanceof Food) || (item instanceof CookingMaterial)) {
-                                new CookingController().placeItemInFridge(item.getName());
+                                App.getCurrentGame().getPlayingUser().backPack.refrigerator.add(item);
+                                App.getCurrentGame().getPlayingUser().backPack.items.remove(item);
                             } else {
                                 showDialog("Error", "you cant move this to the fridge!");
                             }

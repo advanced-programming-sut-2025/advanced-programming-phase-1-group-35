@@ -2,13 +2,21 @@ package GraphicView;
 
 import Model.Rect;
 import com.StardewValley.Main;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class InventoryMenuUI implements Screen {
     private enum MenuState {
@@ -21,14 +29,14 @@ public class InventoryMenuUI implements Screen {
     private SpriteBatch batch;
     private Stage stage;
     private Main game;
+    private GameMenuUI gameMenuUI;
     private MenuState currentState;
-    private boolean isInventoryMenuVisible = false;
 
     private Texture inventoryButtonTexture;
     private Texture skillsButtonTexture;
     private Texture socialButtonTexture;
     private Texture mapButtonTexture;
-    private Texture menuBackgroundTexture; // Added for the background
+    private Texture menuBackgroundTexture;
 
     private Rect inventoryRect;
     private Rect skillsRect;
@@ -40,13 +48,13 @@ public class InventoryMenuUI implements Screen {
     // private SocialUI socialPanel;
     // private MapUI mapPanel;
 
-    private static final int BUTTON_SIZE = 64;
-    private static final int BUTTON_PADDING = 10;
-    private static final int START_X = 500;
-    private static final int START_Y = 840;
+    private static final int BUTTON_SIZE = 100;
+    private static final int START_X = 480;
+    private static final int START_Y = 810;
 
-    public InventoryMenuUI(Main game) {
+    public InventoryMenuUI(Main game, GameMenuUI gameMenuUI) {
         this.game = game;
+        this.gameMenuUI = gameMenuUI;
         this.currentState = MenuState.INVENTORY;
     }
 
@@ -61,44 +69,69 @@ public class InventoryMenuUI implements Screen {
         mapButtonTexture = new Texture(Gdx.files.internal("assets/inventory/map.png"));
         menuBackgroundTexture = new Texture(Gdx.files.internal("assets/background/inventory.jpg"));
 
+        ImageButton inventoryBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(inventoryButtonTexture)));
+        ImageButton skillsBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(skillsButtonTexture)));
+        ImageButton socialBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(socialButtonTexture)));
+        ImageButton mapBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(mapButtonTexture)));
+
+        inventoryBtn.setBounds(START_X, START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        skillsBtn.setBounds(START_X + 60, START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        socialBtn.setBounds(START_X + 2 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        mapBtn.setBounds(START_X + 3 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
+
+        inventoryBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                currentState = MenuState.INVENTORY;
+            }
+        });
+        skillsBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                currentState = MenuState.SKILLS;
+            }
+        });
+        socialBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                currentState = MenuState.SOCIAL;
+            }
+        });
+        mapBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                currentState = MenuState.MAP;
+            }
+        });
+
+        stage.addActor(inventoryBtn);
+        stage.addActor(skillsBtn);
+        stage.addActor(socialBtn);
+        stage.addActor(mapBtn);
+
+
         inventoryRect = new Rect(START_X, START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        skillsRect = new Rect(START_X + BUTTON_SIZE + BUTTON_PADDING, START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        socialRect = new Rect(START_X + 2 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        mapRect = new Rect(START_X + 3 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        skillsRect = new Rect(START_X + 60, START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        socialRect = new Rect(START_X + 2 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
+        mapRect = new Rect(START_X + 3 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
 
         inventoryPanel = new Inventory(game, stage);
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.addProcessor(stage);
+        mainMultiplexer.addProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    isInventoryMenuVisible = !isInventoryMenuVisible;
+                    gameMenuUI.toggleInventoryMenu();
                     return true;
                 }
                 return false;
             }
+        });
 
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (!isInventoryMenuVisible) return false;
+        Gdx.input.setInputProcessor(mainMultiplexer);
 
-                Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
-                float x = stageCoords.x;
-                float y = stageCoords.y;
-
-                if (inventoryRect.contains(x, y)) {
-                    currentState = MenuState.INVENTORY;
-                } else if (skillsRect.contains(x, y)) {
-                    currentState = MenuState.SKILLS;
-                } else if (socialRect.contains(x, y)) {
-                    currentState = MenuState.SOCIAL;
-                } else if (mapRect.contains(x, y)) {
-                    currentState = MenuState.MAP;
-                }
-
-                return false;
-            }
-        }, stage));
     }
 
     @Override
@@ -108,29 +141,21 @@ public class InventoryMenuUI implements Screen {
 
         stage.act(delta);
 
-        if (isInventoryMenuVisible) {
-            batch.begin();
-            // Draw the background image first so other elements are on top
-            batch.draw(menuBackgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.begin();
+        batch.draw(menuBackgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-            batch.draw(inventoryButtonTexture, inventoryRect.x, inventoryRect.y, inventoryRect.width, inventoryRect.height);
-            batch.draw(skillsButtonTexture, skillsRect.x, skillsRect.y, skillsRect.width, skillsRect.height);
-            batch.draw(socialButtonTexture, socialRect.x, socialRect.y, socialRect.width, socialRect.height);
-            batch.draw(mapButtonTexture, mapRect.x, mapRect.y, mapRect.width, mapRect.height);
-
-            switch (currentState) {
-                case INVENTORY:
-                    inventoryPanel.draw(batch);
-                    break;
-                case SKILLS:
-                    break;
-                case SOCIAL:
-                    break;
-                case MAP:
-                    break;
-            }
-            batch.end();
+        switch (currentState) {
+            case INVENTORY:
+                inventoryPanel.draw(batch);
+                break;
+            case SKILLS:
+                break;
+            case SOCIAL:
+                break;
+            case MAP:
+                break;
         }
+        batch.end();
         stage.draw();
     }
 
@@ -149,7 +174,8 @@ public class InventoryMenuUI implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.removeProcessor(stage);
     }
 
     @Override
@@ -160,7 +186,9 @@ public class InventoryMenuUI implements Screen {
         skillsButtonTexture.dispose();
         socialButtonTexture.dispose();
         mapButtonTexture.dispose();
-        menuBackgroundTexture.dispose(); // Dispose the new background texture
-        inventoryPanel.dispose();
+        menuBackgroundTexture.dispose();
+        if (inventoryPanel != null) {
+            inventoryPanel.dispose();
+        }
     }
 }

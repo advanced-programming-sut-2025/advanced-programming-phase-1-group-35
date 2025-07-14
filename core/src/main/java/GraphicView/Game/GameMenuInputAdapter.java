@@ -48,11 +48,15 @@ public class GameMenuInputAdapter extends InputAdapter {
             gameMenuUI.goToShopMenu();
         }
 
-// TODO : add escape function
-//        if (keycode == Input.Keys.ESCAPE) {
-//            gameController.goToMain();
-//            return true;
-//        }
+        if (keycode == Input.Keys.C) {
+            gameMenuUI.toggleCookMenu();
+            return true;
+        }
+
+        if (keycode == Input.Keys.ESCAPE) {
+            gameMenuUI.toggleInventoryMenu();
+            return true;
+        }
 
         return true;
     }
@@ -85,7 +89,7 @@ public class GameMenuInputAdapter extends InputAdapter {
         User player = game.getPlayingUser();
         float vx = 0, vy = 0;
         int dir = 0;
-        float sp = 1 ;
+        float sp = 1;
 
         if (keysHeld.contains(Input.Keys.W)) {
             vy += sp;
