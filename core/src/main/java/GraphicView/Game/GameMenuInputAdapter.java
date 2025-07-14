@@ -44,6 +44,11 @@ public class GameMenuInputAdapter extends InputAdapter {
             }
         }
 
+        if (keycode == Input.Keys.C) {
+            gameMenuUI.toggleCookMenu();
+            return true;
+        }
+
         if (keycode == Input.Keys.ESCAPE) {
             gameMenuUI.toggleInventoryMenu();
             return true;

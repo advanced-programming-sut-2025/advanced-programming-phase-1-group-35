@@ -22,7 +22,6 @@ public class CookUI implements Screen {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Texture toggledPictureTexture;
-    private boolean isPictureVisible = false;
     private boolean isFridgeVisible = false;
     private final int y = 65;
     private AssetManager assetManager;
@@ -38,6 +37,7 @@ public class CookUI implements Screen {
     private Stage stage;
     private Main game;
     private final CookingController cookingController;
+    private GameMenuUI gameMenuUI; // Reference to GameMenuUI
 
     private static final int RECIPES_PER_ROW = 12;
     private static final int RECIPE_ICON_SIZE = 49;
@@ -46,8 +46,9 @@ public class CookUI implements Screen {
 
     private Texture backgroundTexture;
 
-    public CookUI(Main game) {
+    public CookUI(Main game, GameMenuUI gameMenuUI) {
         this.game = game;
+        this.gameMenuUI = gameMenuUI;
         cookingController = new CookingController();
         cookingController.showCookingRecipes();
     }
@@ -94,8 +95,7 @@ public class CookUI implements Screen {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.C) {
-                    isPictureVisible = !isPictureVisible;
-                    isFridgeVisible = false;
+                    gameMenuUI.toggleCookMenu();
                     return true;
                 }
                 return false;
@@ -106,11 +106,10 @@ public class CookUI implements Screen {
                 int libGdxY = Gdx.graphics.getHeight() - screenY;
                 if (refrigeratorRect.contains(screenX, libGdxY)) {
                     isFridgeVisible = !isFridgeVisible;
-                    isPictureVisible = false;
                     return true;
                 }
 
-                if (isPictureVisible && button == Input.Buttons.LEFT) {
+                if (button == Input.Buttons.LEFT) {
                     for (Map.Entry<CookingRecipes, Rect> entry : recipeRects.entrySet()) {
                         if (entry.getValue().contains(screenX, libGdxY)) {
                             Result result = cookingController.cook(entry.getKey().name());
@@ -138,11 +137,10 @@ public class CookUI implements Screen {
 
         batch.draw(refrigeratorIconTexture, refrigeratorRect.x, refrigeratorRect.y, refrigeratorRect.width, refrigeratorRect.height);
 
-        if (isPictureVisible) {
-            float shelfX = (Gdx.graphics.getWidth() - toggledPictureTexture.getWidth()) / 2f;
-            batch.draw(toggledPictureTexture, shelfX, y - 10);
-            drawRecipes();
-        } else if (isFridgeVisible) {
+        float shelfX = (Gdx.graphics.getWidth() - toggledPictureTexture.getWidth()) / 2f;
+        batch.draw(toggledPictureTexture, shelfX, y - 10);
+        drawRecipes();
+        if (isFridgeVisible) {
             drawFridgeContents();
         }
         batch.end();
@@ -195,7 +193,7 @@ public class CookUI implements Screen {
             if (recipeTexture != null && recipeRect != null) {
                 boolean isLearned = App.getCurrentGame().getPlayingUser().learnedRecipes.contains(recipe);
                 if (!isLearned) {
-                    batch.setColor(0.5f, 0.5f, 0.5f, 1.0f); // Dark gray tint
+                    batch.setColor(0.5f, 0.5f, 0.5f, 1.0f);
                 }
                 int row = i / RECIPES_PER_ROW;
                 int col = i % RECIPES_PER_ROW;
@@ -291,7 +289,7 @@ public class CookUI implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -307,5 +305,6 @@ public class CookUI implements Screen {
             backgroundTexture.dispose();
         }
         stage.dispose();
+
     }
 }
