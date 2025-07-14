@@ -1,6 +1,7 @@
 package Model.Buildings;
 
 import Model.FarmStuff.Farm;
+import Model.TextureSplitter;
 import Model.Tile;
 import Model.enums.TileType;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,7 +39,7 @@ public class Building {
         }
     }
     public void placeBuilding(char symbol, int x, int y, int width, int height, Tile[][] tiles, String textureAddress) {
-        TextureRegion[][] textures = new TextureRegion[width][height];
+        TextureSplitter splitter = new TextureSplitter(textureAddress, height, width);
 
         bounds.setBounds(farm.getBounds().x + x, farm.getBounds().y + y, width, height);
         for (int i = bounds.x; i < bounds.x + bounds.width; i++) {
@@ -53,6 +54,7 @@ public class Building {
                     tiles[i][j].setTileType(TileType.BuildingWall);
                     tiles[i][j].setWalkable(false);
                 }
+                tiles[i][j].setTexture(splitter.getRegion(height - 1 - (j - bounds.y) , i - bounds.x));
             }
         }
         if (doorTile != null) {

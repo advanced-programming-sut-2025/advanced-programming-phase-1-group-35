@@ -158,4 +158,8 @@ public class Tile {
     public TextureRegion getTexture() {
         return this.texture;
     }
+
+    public void setTexture(TextureRegion texture) {
+        this.texture = texture;
+    }
 }

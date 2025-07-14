@@ -6,10 +6,10 @@ public enum TileType {
     Grass("flooring/grass.png"),
     Water("flooring/water.png"),
     OutSideFarm("flooring/grass.png"),
-    BuildingTile("flooring/water.png"),
-    BuildingWall("flooring/water.png"),
+    BuildingTile("flooring/dirt.png"),
+    BuildingWall("flooring/dirt.png"),
     Pathway("flooring/pathway.png"),
-    ShippingBin("flooring/water.png"),
+    ShippingBin("flooring/dirt.png"),
     ;
 
     String iconPath ;
