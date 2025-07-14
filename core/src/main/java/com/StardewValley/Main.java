@@ -1,8 +1,15 @@
 package com.StardewValley;
 
+import Controller.InGameMenu.CraftingController;
 import Controller.LoginMenuController;
+import GraphicView.CraftingUI;
 import GraphicView.SignUpUI;
 import Model.App;
+import Model.GameAssetManager;
+import Model.User;
+import Model.enums.CraftingRecipes;
+import Model.enums.Gender;
+import Model.enums.SecurityQuestions;
 import View.AppView;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -14,6 +21,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
@@ -52,6 +60,7 @@ public class Main extends Game {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         game.setScreen(new SignUpUI(new LoginMenuController()));
+
         try {
             App.deserializeApp();
         } catch (IOException e) {

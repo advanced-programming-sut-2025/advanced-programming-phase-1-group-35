@@ -3,12 +3,15 @@ package Model.Tools;
 import Controller.InGameMenu.ShopMenuController;
 import Model.*;
 import Model.enums.CookingIngredient;
+import Model.enums.CookingRecipes;
 import Model.enums.ToolTypes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BackPack {
     public HashMap<ItemInterface, Integer> items = new HashMap<>();
+    public ArrayList<ItemInterface> refrigerator = new ArrayList<>();
     private int capacity = 20;
 
     public BackPack() {
@@ -17,10 +20,17 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.PICKAXE), 1);
         this.items.put(new Tool(100, 5, ToolTypes.SCYTHE), 1);
         this.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
-        this.items.put(new Tool(100, 5, ToolTypes.TRASH_CAN), 1);
+        this.items.put(new Tool(100, 5, ToolTypes.SHEARS), 1);
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
         this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
         this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
+        this.items.put(new CookingMaterial(CookingIngredient.CARROT), 20);
+        this.items.put(new CookingMaterial(CookingIngredient.CHEESE), 3);
+        this.items.put(new CookingMaterial(CookingIngredient.TOMATO), 5);
+        this.items.put(new Food(CookingRecipes.PIZZA), 2);
+        this.refrigerator.add(new Food(CookingRecipes.TROUT_SOUP));
+        this.refrigerator.add(new Food(CookingRecipes.OMELET));
+        this.refrigerator.add(new CookingMaterial(CookingIngredient.APRICOT));
     }
 
     public boolean doesBackPackHasSpace() {
@@ -53,8 +63,6 @@ public class BackPack {
     }
 
     public CookingMaterial getCookingMaterial(CookingIngredient ingredient) {
-        Game game = App.getCurrentGame();
-        User player = game.getPlayingUser();
         for (ItemInterface item : items.keySet()) {
             if (item instanceof CookingMaterial && ingredient.toString().equals(((CookingMaterial) item).ingredientName.toString())) {
                 return (CookingMaterial) item;

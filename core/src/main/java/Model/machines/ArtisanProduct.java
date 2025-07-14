@@ -3,15 +3,20 @@ package Model.machines;
 import Model.ItemInterface;
 import Model.enums.machines.ArtisanProductDetails;
 
+import java.util.HashMap;
+
 public class ArtisanProduct implements ItemInterface {
     private String name;
     private int processingTime; //hourBased
     private int energy;
     private int sellingPrice;
+    private String description; //Hours
+    private HashMap<ItemInterface[],Integer> ingredients; // to be set manually in logic
 
     public ArtisanProduct(ArtisanProductDetails details) {
         this.name = details.getName();
         this.processingTime = details.processingTime;
+        this.description = details.description;
         this.energy = details.energy;
         this.sellingPrice = details.sellPrice;
     }
@@ -37,6 +42,18 @@ public class ArtisanProduct implements ItemInterface {
     }
 
     public int getPrice() {
+        return sellingPrice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public HashMap<ItemInterface[], Integer> getIngredients() {
+        return ingredients;
+    }
+
+    public int getSellingPrice() {
         return sellingPrice;
     }
 }

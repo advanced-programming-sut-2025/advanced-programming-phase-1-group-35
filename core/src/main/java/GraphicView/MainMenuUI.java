@@ -5,11 +5,13 @@ import Model.GameAssetManager;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -61,7 +63,6 @@ public class MainMenuUI implements Screen {
         table.row().pad(15 , 0 , 10 , 0);
         table.add(exitButton);
         table.row().pad(15 , 0 , 10 , 0);
-
         stage.addActor(table);
     }
 
