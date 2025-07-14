@@ -45,6 +45,7 @@ public class CookUI implements Screen {
     private static final int RECIPE_PADDING_Y = 15;
 
     private Texture backgroundTexture;
+    private InputAdapter cookKeyInputAdapter;
 
     public CookUI(Main game, GameMenuUI gameMenuUI) {
         this.game = game;
@@ -91,7 +92,9 @@ public class CookUI implements Screen {
             }
         }
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.addProcessor(stage);
+        cookKeyInputAdapter = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.C) {
@@ -123,7 +126,9 @@ public class CookUI implements Screen {
                 }
                 return false;
             }
-        }));
+        };
+        mainMultiplexer.addProcessor(cookKeyInputAdapter);
+        Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
     @Override
@@ -289,7 +294,9 @@ public class CookUI implements Screen {
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.removeProcessor(stage);
+        mainMultiplexer.removeProcessor(cookKeyInputAdapter);
     }
 
     @Override
@@ -305,6 +312,5 @@ public class CookUI implements Screen {
             backgroundTexture.dispose();
         }
         stage.dispose();
-
     }
 }

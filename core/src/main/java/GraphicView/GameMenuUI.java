@@ -7,9 +7,7 @@ import GraphicView.Game.GameView;
 import Model.Game;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.StardewValley.Main;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +27,6 @@ import Model.Tools.BackPack;
 import Model.Tools.Tool;
 import Controller.InGameMenu.ToolsController;
 import com.badlogic.gdx.graphics.Color;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,8 +48,8 @@ public class GameMenuUI implements Screen {
     private boolean isCook = false;
 
     private SpriteBatch toolsBatch;
-    private ShapeRenderer toolsShapeRenderer; // Renamed
-    private Texture toolsToggledPictureTexture; // Renamed
+    private ShapeRenderer toolsShapeRenderer;
+    private Texture toolsToggledPictureTexture;
     private final Texture axeTexture = new Texture(Gdx.files.internal("assets/tools/axe.png"));
     private final Texture wateringCanTexture = new Texture(Gdx.files.internal("assets/tools/watering_can.png"));
     private final Texture fishingRodTexture = new Texture(Gdx.files.internal("assets/tools/fishing_rod.png"));
@@ -68,6 +65,9 @@ public class GameMenuUI implements Screen {
     private boolean isToolsUIVisible = false;
     private static final int TOOLS_Y_OFFSET = 65;
 
+    private InputMultiplexer mainMultiplexer;
+    private InputAdapter toolsKeyInputAdapter;
+
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -78,8 +78,6 @@ public class GameMenuUI implements Screen {
     private void initializeGame() {
         gameView = new GameView(gameModel);
         gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController);
-        Gdx.input.setInputProcessor(gameMenuInputAdapter);
-        gameMenuInputAdapter.gameMenuUI = this;
         gameMenuInputAdapter.gameMenuUI = this;
 
         toolsBatch = new SpriteBatch();
@@ -89,12 +87,21 @@ public class GameMenuUI implements Screen {
         toolRects = new HashMap<>();
         showToolsUIElements();
 
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new InputAdapter() {
+        mainMultiplexer = new InputMultiplexer();
+
+        toolsKeyInputAdapter = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.T) {
                     toggleToolsUI();
+                    return true;
+                }
+                if (keycode == Input.Keys.C) {
+                    toggleCookMenu();
+                    return true;
+                }
+                if (keycode == Input.Keys.ESCAPE) {
+                    toggleInventoryMenu();
                     return true;
                 }
                 return false;
@@ -106,14 +113,16 @@ public class GameMenuUI implements Screen {
                 }
                 return false;
             }
-        });
-        multiplexer.addProcessor(gameMenuInputAdapter);
-        Gdx.input.setInputProcessor(multiplexer);
+        };
+
+        mainMultiplexer.addProcessor(toolsKeyInputAdapter);
+        mainMultiplexer.addProcessor(gameMenuInputAdapter);
+        Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
     @Override
@@ -169,49 +178,58 @@ public class GameMenuUI implements Screen {
     public void toggleInventoryMenu() {
         if (Main.getGame().getScreen() == this) {
             this.isInInventory = true;
+            mainMultiplexer.removeProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.removeProcessor(toolsStage);
+            }
+            mainMultiplexer.removeProcessor(toolsKeyInputAdapter);
             Main.getGame().setScreen(new InventoryMenuUI(Main.getGame(), this));
             isToolsUIVisible = false;
         } else if (isInInventory) {
             isInInventory = false;
             Main.getGame().setScreen(this);
-            InputMultiplexer multiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
-            if (!multiplexer.getProcessors().contains(toolsStage, true)) {
-                multiplexer.addProcessor(toolsStage);
+            mainMultiplexer.addProcessor(toolsKeyInputAdapter);
+            mainMultiplexer.addProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.addProcessor(toolsStage);
             }
-            Gdx.input.setInputProcessor(multiplexer);
+            Gdx.input.setInputProcessor(mainMultiplexer);
         }
     }
 
     public void toggleCookMenu() {
         if (Main.getGame().getScreen() == this) {
             this.isCook = true;
+            mainMultiplexer.removeProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.removeProcessor(toolsStage);
+            }
+            mainMultiplexer.removeProcessor(toolsKeyInputAdapter);
             Main.getGame().setScreen(new CookUI(Main.getGame(), this));
             isToolsUIVisible = false;
         } else if (isCook) {
             isCook = false;
             Main.getGame().setScreen(this);
-            InputMultiplexer multiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
-            if (!multiplexer.getProcessors().contains(toolsStage, true)) {
-                multiplexer.addProcessor(toolsStage);
+            // Re-add GameMenuUI's processors after returning
+            mainMultiplexer.addProcessor(toolsKeyInputAdapter);
+            mainMultiplexer.addProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.addProcessor(toolsStage);
             }
-            Gdx.input.setInputProcessor(multiplexer);
+            Gdx.input.setInputProcessor(mainMultiplexer);
         }
     }
 
     public void toggleToolsUI() {
         isToolsUIVisible = !isToolsUIVisible;
-        InputMultiplexer multiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
-
         if (isToolsUIVisible) {
             toolsStage.clear();
             showToolsUIElements();
-            if (!multiplexer.getProcessors().contains(toolsStage, true)) {
-                multiplexer.addProcessor(toolsStage);
-            }
+            mainMultiplexer.addProcessor(toolsStage);
         } else {
-            multiplexer.removeProcessor(toolsStage);
+            mainMultiplexer.removeProcessor(toolsStage);
         }
-        Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
     public void showToolsUIElements() {
@@ -342,5 +360,7 @@ public class GameMenuUI implements Screen {
         Main.getGame().setScreen(shopMenuUI);
     }
 
-    // Other Screen methods
+    public InputMultiplexer getMainMultiplexer() {
+        return mainMultiplexer;
+    }
 }

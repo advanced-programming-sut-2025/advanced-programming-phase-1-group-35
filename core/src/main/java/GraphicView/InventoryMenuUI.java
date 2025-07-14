@@ -117,7 +117,9 @@ public class InventoryMenuUI implements Screen {
 
         inventoryPanel = new Inventory(game, stage);
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.addProcessor(stage);
+        mainMultiplexer.addProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
@@ -126,12 +128,10 @@ public class InventoryMenuUI implements Screen {
                 }
                 return false;
             }
+        });
 
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                return false;
-            }
-        }));
+        Gdx.input.setInputProcessor(mainMultiplexer);
+
     }
 
     @Override
@@ -174,7 +174,8 @@ public class InventoryMenuUI implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
+        mainMultiplexer.removeProcessor(stage);
     }
 
     @Override
