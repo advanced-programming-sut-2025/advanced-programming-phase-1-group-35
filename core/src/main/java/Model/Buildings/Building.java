@@ -3,6 +3,7 @@ package Model.Buildings;
 import Model.FarmStuff.Farm;
 import Model.Tile;
 import Model.enums.TileType;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.awt.*;
 
@@ -22,6 +23,29 @@ public class Building {
                 tiles[i][j].setSymbol(symbol);
                 if (i != bounds.x && j != bounds.y && i != bounds.x + bounds.width - 1 &&
                         j != bounds.y + bounds.height - 1) {
+                    floorTiles[i - bounds.x - 1][j - bounds.y - 1] = tiles[i][j];
+                    tiles[i][j].setWalkable(true);
+                    tiles[i][j].setTileType(TileType.BuildingTile);
+                } else {
+                    tiles[i][j].setTileType(TileType.BuildingWall);
+                    tiles[i][j].setWalkable(false);
+                }
+            }
+        }
+        if (doorTile != null) {
+            doorTile.setWalkable(true);
+            doorTile.setSymbol('╬');
+        }
+    }
+    public void placeBuilding(char symbol, int x, int y, int width, int height, Tile[][] tiles, String textureAddress) {
+        TextureRegion[][] textures = new TextureRegion[width][height];
+
+        bounds.setBounds(farm.getBounds().x + x, farm.getBounds().y + y, width, height);
+        for (int i = bounds.x; i < bounds.x + bounds.width; i++) {
+            for (int j = bounds.y; j < bounds.y + bounds.height; j++) {
+                tiles[i][j].setSymbol(symbol);
+                if (i != bounds.x && j != bounds.y && i != bounds.x + bounds.width - 1 &&
+                    j != bounds.y + bounds.height - 1) {
                     floorTiles[i - bounds.x - 1][j - bounds.y - 1] = tiles[i][j];
                     tiles[i][j].setWalkable(true);
                     tiles[i][j].setTileType(TileType.BuildingTile);

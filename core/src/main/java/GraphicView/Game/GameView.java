@@ -129,9 +129,14 @@ public class GameView {
 //                        batch.setColor(1f, 1f, 1f, 1f);
 //                    }
 
-                    TextureRegion texture = textures.get(id.getTileType().name());
+                    TextureRegion texture ;
+                    TextureRegion layer1 = id.getTexture() ;
+                    texture = textures.get(id.getTileType().name());
                     if (texture != null) {
                         batch.draw(texture, drawX, drawY, tileSize, tileSize);
+                    }
+                    if (layer1 != null){
+                        batch.draw(layer1, drawX, drawY, tileSize, tileSize);
                     }
                 }
             }

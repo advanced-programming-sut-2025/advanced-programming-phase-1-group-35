@@ -2,6 +2,7 @@ package Model;
 
 import Model.enums.Crops.PlantAble;
 import Model.enums.TileType;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class Tile {
     private TileType tileType = TileType.OutSideFarm;
     private char symbol = '0';
     private char contentSymbol = '0';
+    private TextureRegion texture;
 
     public Point getCoordination() {
         return coordination;
@@ -151,5 +153,9 @@ public class Tile {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public TextureRegion getTexture() {
+        return this.texture;
     }
 }
