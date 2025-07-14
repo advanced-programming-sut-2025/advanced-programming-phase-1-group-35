@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.StardewValley.Main;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,12 +37,15 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
-        if (keycode == Input.Keys.N) {
+        if(keycode == Input.Keys.N){
             try {
                 gameController.goToNextTurn(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if(keycode == Input.Keys.P){
+            gameMenuUI.goToShopMenu();
         }
 
         if (keycode == Input.Keys.C) {

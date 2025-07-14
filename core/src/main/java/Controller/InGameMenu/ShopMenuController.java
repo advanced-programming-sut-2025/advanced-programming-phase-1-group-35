@@ -5,6 +5,7 @@ import Model.*;
 import Model.Shops.Shop;
 import Model.Shops.ShopItem;
 import Model.enums.Menu;
+import View.InGameMenu.ShopMenu;
 
 import java.io.IOException;
 
@@ -14,6 +15,9 @@ public class ShopMenuController {
         if(App.getCurrentGame() == null)return;
         if(App.getCurrentGame().getPlayingUser() == null)return;
         Tile tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
+        shop = findShopByTile(tile);
+    }
+    public ShopMenuController(Tile tile) {
         shop = findShopByTile(tile);
     }
 
