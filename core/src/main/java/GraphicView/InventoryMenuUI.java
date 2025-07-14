@@ -35,7 +35,7 @@ public class InventoryMenuUI implements Screen {
     private Rect socialRect;
     private Rect mapRect;
 
-    private InventoryUI inventoryPanel;
+    private Inventory inventoryPanel;
     // private SkillsUI skillsPanel;
     // private SocialUI socialPanel;
     // private MapUI mapPanel;
@@ -66,7 +66,7 @@ public class InventoryMenuUI implements Screen {
         socialRect = new Rect(START_X + 2 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
         mapRect = new Rect(START_X + 3 * (BUTTON_SIZE + BUTTON_PADDING), START_Y, BUTTON_SIZE, BUTTON_SIZE);
 
-        inventoryPanel = new InventoryUI(game, stage);
+        inventoryPanel = new Inventory(game, stage);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
             @Override

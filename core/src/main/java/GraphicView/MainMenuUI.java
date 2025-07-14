@@ -24,7 +24,6 @@ public class MainMenuUI implements Screen {
     private final TextButton logoutButton;
     private final TextButton exitButton;
     private final TextButton profileButton;
-    private final TextButton testButton;
     private final Table table;
     private Stage stage;
     private Skin skin;
@@ -42,8 +41,6 @@ public class MainMenuUI implements Screen {
         exitButton.setChecked(false);
         profileButton = new TextButton("Profile", skin);
         profileButton.setChecked(false);
-        testButton = new TextButton("Cook", skin);
-        testButton.setChecked(false);
         table = new Table(skin);
         controller.setView(this);
     }
@@ -66,9 +63,6 @@ public class MainMenuUI implements Screen {
         table.row().pad(15 , 0 , 10 , 0);
         table.add(exitButton);
         table.row().pad(15 , 0 , 10 , 0);
-        table.add(testButton);
-        table.row().pad(15 , 0 , 10 , 0);
-
         stage.addActor(table);
     }
 
@@ -86,13 +80,6 @@ public class MainMenuUI implements Screen {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        testButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Main.getGame().setScreen(new InventoryMenuUI(Main.getGame()));
-            }
-        });
     }
 
     @Override
@@ -134,5 +121,3 @@ public class MainMenuUI implements Screen {
     }
 
 }
-
-// TODO: remove test bottom

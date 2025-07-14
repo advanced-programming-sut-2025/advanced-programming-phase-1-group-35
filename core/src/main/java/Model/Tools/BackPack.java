@@ -63,10 +63,6 @@ public class BackPack {
     }
 
     public CookingMaterial getCookingMaterial(CookingIngredient ingredient) {
-        //        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
         for (ItemInterface item : items.keySet()) {
             if (item instanceof CookingMaterial && ingredient.toString().equals(((CookingMaterial) item).ingredientName.toString())) {
                 return (CookingMaterial) item;

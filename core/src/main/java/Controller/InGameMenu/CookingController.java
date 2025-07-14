@@ -9,13 +9,12 @@ import java.util.Map;
 
 public class CookingController {
     public Result placeItemInFridge(String itemName) {
-//        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        //User player = App.getLoggedInUser();
         CookingMaterial ingredient = null;
         for (ItemInterface item : player.backPack.items.keySet()) {
-            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial)item).getName())) {
+            if (item instanceof CookingMaterial && itemName.equals(((CookingMaterial) item).getName())) {
                 ingredient = (CookingMaterial) item;
             }
         }
@@ -57,10 +56,9 @@ public class CookingController {
 //    }
 
     public Result showCookingRecipes() {
-//        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        //User player = App.getLoggedInUser();
         if (player.learnedRecipes.isEmpty()) {
             addCookingRecipe(CookingRecipes.FRIED_EGG);
             addCookingRecipe(CookingRecipes.PIZZA);
@@ -88,18 +86,14 @@ public class CookingController {
     }
 
     public void addCookingRecipe(CookingRecipes recipe) {
-//        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
         player.learnedRecipes.add(recipe);
     }
 
     public Result cook(String recipeName) {
-//        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
         CookingRecipes recipe = null;
         try {
             recipe = CookingRecipes.valueOf(recipeName.toUpperCase());
@@ -146,10 +140,8 @@ public class CookingController {
     }
 
     public Result eatFood(String name) {
-        //        Game game = App.getCurrentGame();
-//        User player = game.getPlayingUser();
-        // todo
-        User player = App.getLoggedInUser();
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
         Food food = player.backPack.getFood(name);
         if (food == null) {
             return new Result(false, "You don't have this food in your backpack!");

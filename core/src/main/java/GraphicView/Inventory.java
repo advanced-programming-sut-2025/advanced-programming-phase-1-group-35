@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InventoryUI {
+public class Inventory {
     private Texture inventoryBackgroundTexture;
     private Texture trashCanIconTexture;
     private BitmapFont font;
@@ -47,7 +47,7 @@ public class InventoryUI {
         EAT
     }
 
-    public InventoryUI(Main game, Stage stage) {
+    public Inventory(Main game, Stage stage) {
         this.game = game;
         this.stage = stage;
         this.assetManager = new AssetManager();
@@ -106,8 +106,7 @@ public class InventoryUI {
                     switch (action) {
                         case MOVE_TO_TRASH:
                             if (!(item instanceof Tool)) {
-                                // todo
-                                App.getLoggedInUser().backPack.items.remove(item);
+                                App.getCurrentGame().getPlayingUser().backPack.items.remove(item);
                             } else {
                                 showDialog("Error", "cant remove a tool!");
                             }
@@ -150,18 +149,17 @@ public class InventoryUI {
     }
 
     private void drawInventoryItems(SpriteBatch batch) {
-        // TODO
-//        if (App.getCurrentGame() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().backPack == null) {
-//            return;
-//        }
+        if (App.getCurrentGame() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().backPack == null) {
+            return;
+        }
         itemRects.clear();
         int currentItemIndex = 0;
-        for (ItemInterface item : App.getLoggedInUser().backPack.items.keySet()) {
+        for (ItemInterface item : App.getCurrentGame().getPlayingUser().backPack.items.keySet()) {
             if (currentItemIndex >= INVENTORY_COLS * INVENTORY_ROWS) {
                 break;
             }
             Texture itemTexture = getItemTexture(item);
-            int count = App.getLoggedInUser().backPack.items.get(item);
+            int count = App.getCurrentGame().getPlayingUser().backPack.items.get(item);
             if (itemTexture != null) {
                 int col = currentItemIndex % INVENTORY_COLS;
                 int row = currentItemIndex / INVENTORY_COLS;

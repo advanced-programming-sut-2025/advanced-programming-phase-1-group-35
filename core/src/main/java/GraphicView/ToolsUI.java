@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.StardewValley.Main;
 import Controller.InGameMenu.ToolsController;
 
-public class toolsUI implements Screen {
+public class ToolsUI implements Screen {
 
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -51,7 +51,7 @@ public class toolsUI implements Screen {
     private final ToolsController toolsController;
     private String equippedToolName = "hoe";
 
-    public toolsUI(Main game) {
+    public ToolsUI(Main game) {
         this.game = game;
         toolsController = new ToolsController();
     }
@@ -129,7 +129,7 @@ public class toolsUI implements Screen {
     }
 
     private void drawTools() {
-        BackPack backPack = App.getLoggedInUser().backPack;
+        BackPack backPack = App.getCurrentGame().getPlayingUser().backPack;
         int i = 520;
         int toolY = y + 2;
         int space = 65;

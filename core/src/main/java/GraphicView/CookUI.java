@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.HashMap;
 import java.util.Map;
 
-public class cookUI implements Screen {
+public class CookUI implements Screen {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Texture toggledPictureTexture;
@@ -46,7 +46,7 @@ public class cookUI implements Screen {
 
     private Texture backgroundTexture;
 
-    public cookUI(Main game) {
+    public CookUI(Main game) {
         this.game = game;
         cookingController = new CookingController();
         cookingController.showCookingRecipes();
@@ -150,9 +150,9 @@ public class cookUI implements Screen {
     }
 
     private void drawFridgeContents() {
-        if (App.getLoggedInUser() == null || App.getLoggedInUser().backPack == null) {
+        if (App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().backPack == null) {
             return;
-        } //todo
+        }
 
         float shelfWidth = FRIDGE_SHELF_COLS * (FRIDGE_SHELF_ICON_SIZE + 10);
         float shelfX = (Gdx.graphics.getWidth() - shelfWidth) / 2f;
@@ -161,7 +161,7 @@ public class cookUI implements Screen {
         batch.draw(fridgeShelfTexture, shelfX, shelfY, shelfWidth, FRIDGE_SHELF_ICON_SIZE + 20);
 
         int currentItemIndex = 0;
-        for (ItemInterface item : App.getLoggedInUser().backPack.refrigerator) {
+        for (ItemInterface item : App.getCurrentGame().getPlayingUser().backPack.refrigerator) {
             if (currentItemIndex >= FRIDGE_SHELF_COLS) {
                 break;
             }
@@ -178,10 +178,9 @@ public class cookUI implements Screen {
     }
 
     private void drawRecipes() {
-//        if (App.getLoggedInUser() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().learnedRecipes == null) {
-//            return;
-//        }
-        // todo
+        if (App.getCurrentGame() == null || App.getCurrentGame().getPlayingUser() == null || App.getCurrentGame().getPlayingUser().learnedRecipes == null) {
+            return;
+        }
 
         float shelfWidth = toggledPictureTexture.getWidth();
         float shelfX = (Gdx.graphics.getWidth() - shelfWidth) / 2f;
@@ -194,7 +193,7 @@ public class cookUI implements Screen {
             Texture recipeTexture = recipeTextures.get(recipe);
             Rect recipeRect = recipeRects.get(recipe);
             if (recipeTexture != null && recipeRect != null) {
-                boolean isLearned = App.getLoggedInUser().learnedRecipes.contains(recipe);
+                boolean isLearned = App.getCurrentGame().getPlayingUser().learnedRecipes.contains(recipe);
                 if (!isLearned) {
                     batch.setColor(0.5f, 0.5f, 0.5f, 1.0f); // Dark gray tint
                 }
