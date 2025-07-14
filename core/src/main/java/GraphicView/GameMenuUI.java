@@ -1,10 +1,13 @@
 package GraphicView;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.ShopMenuController;
 import GraphicView.Game.GameMenuInputAdapter;
 import GraphicView.Game.GameView;
 import Model.Game;
+import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
@@ -14,14 +17,15 @@ import java.io.IOException;
 public class GameMenuUI implements Screen {
     private GameView gameView;
     public Game gameModel;
-    private GameMenuInputAdapter gameMenuInputAdapter;
-    private GameMenuController gameController;
+    public GameMenuInputAdapter gameMenuInputAdapter;
+    public GameMenuController gameController;
     private boolean isSleeping = false;
     private float sleepAlpha = 0f;
     private float sleepTimer = 0f;
     private static final float SLEEP_DURATION = 2f; // seconds
     private static final float FADE_SPEED = 1.5f;   // speed of fading
     private boolean advancingDay = false;
+    private boolean isInInventory = false;
 
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
@@ -34,11 +38,13 @@ public class GameMenuUI implements Screen {
         gameView = new GameView(gameModel);
         gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        gameMenuInputAdapter.gameMenuUI = this;
     }
 
     @Override
     public void show() {
-
+        // This method is called when this screen becomes the current screen.
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
     @Override
@@ -87,31 +93,41 @@ public class GameMenuUI implements Screen {
         advancingDay = false;
     }
 
+    public void toggleInventoryMenu() {
+        if (Main.getGame().getScreen() == this) {
+            this.isInInventory = true;
+            Main.getGame().setScreen(new InventoryMenuUI(Main.getGame(), this));
+        } else if (isInInventory) {
+            isInInventory = false;
+            Main.getGame().setScreen(this);
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
 
     @Override
     public void resize(int i, int i1) {
-
+        gameModel.camera.viewportWidth = i;
+        gameModel.camera.viewportHeight = i1;
+        gameModel.camera.update();
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
+        if (gameView != null) {
+            //gameView.dispose();
+        }
     }
-
-    // Other Screen methods
 }
