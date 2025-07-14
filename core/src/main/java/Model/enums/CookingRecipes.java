@@ -99,7 +99,6 @@ public enum CookingRecipes implements ItemConstant {
             CookingIngredient.MILK, 1
     ), 125, "Mining (5h)", "Mining Level 1", 200),
 
-    // ✅ Fixed this one to avoid null pointer crash
     TROUT_SOUP("Trout Soup", Map.of(), 200 , "", "", 250);
 
     private final String displayName;
@@ -111,7 +110,6 @@ public enum CookingRecipes implements ItemConstant {
 
     CookingRecipes(String displayName, Map<CookingIngredient, Integer> ingredients, int energy, String buff, String source, int price) {
         this.displayName = displayName;
-        // ✅ Defensive fix: treat null as empty map
         this.ingredients = Collections.unmodifiableMap(ingredients != null ? ingredients : Map.of());
         this.energy = energy;
         this.buff = buff;
