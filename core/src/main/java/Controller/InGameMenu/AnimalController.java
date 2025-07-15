@@ -16,30 +16,32 @@ import Model.enums.animal.FishType;
 public class AnimalController {
     public Result buildAnimalHouse(String name, int x, int y) {
         if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
-            return new Result(false, "there are something else on this tile!");
+            return new Result(false, "There is something else on this tile!");
         }
         Model.enums.Buildings.AnimalHouse animalHouseEnum = null;
         try {
-             animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(name);
+            String enumName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+            animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(enumName);
+        } catch (Exception e) {
+            return new Result(false, "Invalid building type specified.");
         }
-        catch (Exception e) {
 
-        }
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         for (int i = x; i < x + animalHouseEnum.width; i++) {
-            for(int j = y; j < y + animalHouseEnum.height; j++) {
-                if(!tiles[i][j].getTileType().equals(TileType.Soil) && !tiles[i][j].getTileType().equals(TileType.Grass)) {
-                    return new Result(false, "there is something else on tile : " + "<" + i +  "," + j + ">");
+            for (int j = y; j < y + animalHouseEnum.height; j++) {
+                if (!tiles[i][j].getTileType().equals(TileType.Soil) && !tiles[i][j].getTileType().equals(TileType.Grass)) {
+                    return new Result(false, "There is something on tile: <" + i + "," + j + "> that blocks construction.");
                 }
             }
         }
+
         AnimalHouse animalHouse = new AnimalHouse(animalHouseEnum.type, animalHouseEnum.level);
         App.getCurrentGame().getPlayingUser().getFarm().animalHouses.add(animalHouse);
         animalHouse.setFarm(App.getCurrentGame().getPlayingUser().getFarm());
-        animalHouse.setFloorTiles(new Tile[animalHouseEnum.width][animalHouseEnum.height]);
-        animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles);
+        animalHouse.setFloorTiles(new Tile[animalHouseEnum.width - 2][animalHouseEnum.height - 2]);
+        animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles, animalHouseEnum.texturePath);
 
-        return new Result(true, "your " + name + " has been built!");
+        return new Result(true, "Your " + name + " has been built!");
     }
 
     public Result buyAnimal(String animal, String name) {
