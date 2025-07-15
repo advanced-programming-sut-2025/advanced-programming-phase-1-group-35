@@ -2,11 +2,7 @@ package Model.enums.Buildings;
 
 public enum AnimalHouse {
     Coop("coop", 1, 6 , 3),
-    BigCoop("coop",2, 6, 3),
-    DeluxeCoop("coop",3, 6, 3),
-    Barn("barn", 1, 7, 4),
-    BigBarn("barn", 2,7, 4),
-    DeluxeBarn("barn", 3,7,4);
+    Barn("barn", 1, 7, 4);
 
     public final String type;
     public final int level;

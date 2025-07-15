@@ -1,6 +1,3 @@
-
-//A class for every animal , all factory owners are proud now.
-
 package Model.animal;
 
 import Model.ItemInterface;
