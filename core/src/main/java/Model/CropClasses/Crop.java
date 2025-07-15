@@ -1,5 +1,6 @@
 package Model.CropClasses;
 
+import Controller.Controller;
 import Model.App;
 import Model.ItemInterface;
 import Model.Tile;
@@ -7,6 +8,7 @@ import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.PlantAble;
 import Model.enums.Crops.SeedEnum;
 import Model.enums.Seasons;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Crop implements PlantAble, ItemInterface {
     private int daysSinceWatered;
     private boolean isFertilized;
     private ItemInterface fertilizer;
+    private Texture texture;
 
     public ItemInterface getFertilizer() {
         return fertilizer;
@@ -55,6 +58,14 @@ public class Crop implements PlantAble, ItemInterface {
     }
     public int getDaysSincePlanted() {
         return daysSincePlanted;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
     public boolean isGiant() {
@@ -83,6 +94,7 @@ public class Crop implements PlantAble, ItemInterface {
         this.daysSinceWatered = 0;
         this.cropEnum = cropEnum;
         this.cropTile = tile;
+        this.texture = new Texture(cropEnum.state1Path());
     }
 
     public void EmptyTile() {
@@ -179,16 +191,27 @@ public class Crop implements PlantAble, ItemInterface {
     public void setCropTile(Tile cropTile) {
         this.cropTile = cropTile;
     }
+
+    public String getIconPath(){
+        return "crops/" + getName() + ".png";
+    }
+
+    public String getStatePath(){
+        return "crops/" + Controller.formatUpperSnakeCase(getName())+ "_Stage_" + currentState + ".png";
+    }
+
+
+
+
     //TODO:use this at the end of the day(if current tile is fertilized do it twice)
     //actually this is pretty complicated because i need to keep in mind how many days have passed and then use this;
     //my current idea is this
-
-
     public boolean grow() {
         if (daysSinceWatered <= 1) {
             if (this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
                 this.currentState++;
                 this.daysSinceLastGrowth = 0;
+                this.texture = new Texture(getStatePath());
             } else {
                 daysSinceLastGrowth++;
             }

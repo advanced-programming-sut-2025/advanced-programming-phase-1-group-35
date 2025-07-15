@@ -4,11 +4,13 @@
     //to do: change stages and seasons into Lists//
 
 
+    import Controller.Controller;
     import Model.CropClasses.Crop;
     import Model.ItemInterface;
     import Model.Tile;
     import Model.enums.ItemConstant;
     import Model.enums.Seasons;
+    import com.badlogic.gdx.graphics.Texture;
 
     import java.util.ArrayList;
     import java.util.List;
@@ -206,8 +208,22 @@
             return foragingCrops.get(random.nextInt(foragingCrops.size()));
         }
 
+        public String state1Path(){
+            return "crops/" + Controller.formatUpperSnakeCase(getName())+ "_Stage_1" + ".png";
+        }
+
+        public String getIconPath(){
+           return "crops/" + Controller.formatUpperSnakeCase(getName()) + ".png";
+        }
+
+        public String getStatePath(){
+            return "crops/" + Controller.formatUpperSnakeCase(getName())+ "_Stage_" + currentState + ".png";
+        }
+
         @Override
         public ItemInterface getItem() {
             return new Crop(this,new Tile()); //TODO: is this right?
         }
+
+
     }
