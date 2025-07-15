@@ -1,5 +1,6 @@
 package GraphicView;
 
+import Controller.GameMenuController;
 import Controller.InGameMenu.CookingController;
 import Model.*;
 import Model.Tools.Tool;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class Inventory {
     private Main game;
     private AssetManager assetManager;
     private Stage stage;
+    public GameMenuController gameMenuController;
 
     private Map<Rect, ItemInterface> itemRects;
     private Rect trashCanRect;
@@ -42,15 +45,17 @@ public class Inventory {
     private int startX, startY;
 
     private enum InventoryAction {
+        SELL,
         MOVE_TO_TRASH,
         MOVE_TO_FRIDGE,
-        EAT
+        CANCEL, EAT
     }
 
-    public Inventory(Main game, Stage stage) {
+    public Inventory(Main game, Stage stage, GameMenuController gameMenuController) {
         this.game = game;
         this.stage = stage;
         this.assetManager = new AssetManager();
+        this.gameMenuController = gameMenuController;
         initialize();
     }
 
@@ -99,6 +104,8 @@ public class Inventory {
 
     public void showItemActionDialog(final ItemInterface item) {
         Skin skin = GameAssetManager.getDefaultSkin();
+        TextField amountField = new TextField("", skin);
+        amountField.setMessageText("amount");
         Dialog dialog = new Dialog("Item Action: " + item.getName(), skin) {
             @Override
             protected void result(Object object) {
@@ -126,15 +133,49 @@ public class Inventory {
                                 showDialog("Error", "you cant eat this item!");
                             }
                             break;
+                        case SELL:
+                            Result checkAmount = checkAmount(amountField, item);
+                            if(!checkAmount.isSuccess()){
+                                showDialog("Error", checkAmount.toString());
+                            }
+                            else {
+                                Result result = gameMenuController.Sell(item.getName(), checkAmount.toString());
+                                if(result.isSuccess()){
+                                    showDialog("Success", result.toString());
+                                }
+                                else {
+                                    showDialog("Error", result.toString());
+                                }
+                            }
+                            break;
+                        case CANCEL:
+                            break;
                     }
                 }
             }
         };
         dialog.text("What would you like to do with " + item.getName() + "?");
-        dialog.button("Move to Trash", InventoryAction.MOVE_TO_TRASH);
-        dialog.button("Move to Fridge", InventoryAction.MOVE_TO_FRIDGE);
+        dialog.button("To Trash", InventoryAction.MOVE_TO_TRASH);
+        dialog.button("To Fridge", InventoryAction.MOVE_TO_FRIDGE);
         dialog.button("Eat", InventoryAction.EAT);
+        dialog.button("Sell", InventoryAction.SELL);
+        dialog.add(amountField).width(100);
+        dialog.button("Cancel", InventoryAction.CANCEL) ;
         dialog.show(stage);
+    }
+
+    public Result checkAmount(TextField amountField, ItemInterface item) { //TODO: handle ItemAmount check
+        int amount ;
+        try{
+            amount = Integer.parseInt(amountField.getText());
+        }
+        catch(NumberFormatException e){
+            return new Result(false, "Invalid amount!");
+        }
+        if(amount > App.getCurrentGame().getPlayingUser().getBackPack().items.get(item)){
+            return new Result(false, "amount is greater than what you have");
+        };
+        return new Result(true, String.format("%d", amount));
     }
 
     public void draw(SpriteBatch batch) {

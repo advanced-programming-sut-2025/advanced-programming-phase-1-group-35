@@ -115,7 +115,7 @@ public class InventoryMenuUI implements Screen {
         socialRect = new Rect(START_X + 2 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
         mapRect = new Rect(START_X + 3 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
 
-        inventoryPanel = new Inventory(game, stage);
+        inventoryPanel = new Inventory(game, stage, gameMenuUI.gameController);
 
         InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
         mainMultiplexer.addProcessor(stage);
