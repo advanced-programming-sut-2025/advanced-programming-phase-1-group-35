@@ -286,6 +286,7 @@ public class GameMenuUI implements Screen {
         AnimalType type = animal.getAnimalType();
         StringBuilder info = new StringBuilder();
         info.append("Type: ").append(type.name()).append("\n");
+        info.append("Friendship: ").append(animal.getFriendship()).append("\n");
         info.append("Buying Price: ").append(type.getBuyingPrice()).append("g\n");
         info.append("House: ").append(type.getConfinement()).append("\n");
         info.append("Days between products: ").append(type.getProductionRate()).append("\n");
