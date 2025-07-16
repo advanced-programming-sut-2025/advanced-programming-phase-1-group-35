@@ -7,6 +7,7 @@ import Model.FarmStuff.Farm;
 import Model.animal.Animal;
 import Model.animal.AnimalProduct;
 import Model.animal.Fish;
+import Model.enums.Buildings.AnimalHouseEnum;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 import Model.enums.WeatherCondition;
@@ -18,11 +19,12 @@ public class AnimalController {
         if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
             return new Result(false, "There is something else on this tile!");
         }
-        Model.enums.Buildings.AnimalHouse animalHouseEnum = null;
-        try {
-            String enumName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-            animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(enumName);
-        } catch (Exception e) {
+        AnimalHouseEnum animalHouseEnum = null;
+        if (name.equalsIgnoreCase("barn")) {
+            animalHouseEnum = AnimalHouseEnum.Barn;
+        } else if (name.equalsIgnoreCase("coop")) {
+            animalHouseEnum = AnimalHouseEnum.Coop;
+        } else {
             return new Result(false, "Invalid building type specified.");
         }
 
@@ -40,7 +42,6 @@ public class AnimalController {
         animalHouse.setFarm(App.getCurrentGame().getPlayingUser().getFarm());
         animalHouse.setFloorTiles(new Tile[animalHouseEnum.width - 2][animalHouseEnum.height - 2]);
         animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles, animalHouseEnum.texturePath);
-
         return new Result(true, "Your " + name + " has been built!");
     }
 
@@ -61,10 +62,9 @@ public class AnimalController {
         } else if (house == null) {
             return new Result(false, "no animal house!");
         }
-        int x = 0,y = 0;
         house.thisHouseAnimals.add(type.createAnimal(name));
         farm.animals.add(type.createAnimal(name));
-        //shepherdAnimal(name, 0, 0);
+        shepherdAnimal(name, 15, 50);
         return new Result(true, "animal " + name + " has been bought!");
     }
 

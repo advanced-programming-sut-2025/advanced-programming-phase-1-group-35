@@ -7,8 +7,12 @@ import Controller.InGameMenu.ToolsController;
 import GraphicView.Game.GameMenuInputAdapter;
 import GraphicView.Game.GameView;
 import Model.*;
+import Model.Buildings.AnimalHouse;
 import Model.Tools.BackPack;
 import Model.Tools.Tool;
+import Model.animal.Animal;
+import Model.enums.Buildings.AnimalHouseEnum;
+import Model.enums.animal.AnimalType;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,6 +25,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -74,6 +79,7 @@ public class GameMenuUI implements Screen {
     private String buildingToPlace = null;
     private Texture barnTexture;
     private Texture coopTexture;
+
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -148,13 +154,12 @@ public class GameMenuUI implements Screen {
     }
 
     public void handleBuildingPlacement(int screenX, int screenY) {
-        if (!buildingPlacementMode || buildingToPlace == null) return;
-
         Vector3 worldCoordinates = gameModel.camera.unproject(new Vector3(screenX, screenY, 0));
         int tileX = (int) (worldCoordinates.x / Main.TILE_SIZE);
         int tileY = (int) (worldCoordinates.y / Main.TILE_SIZE);
         Result result = animalController.buildAnimalHouse(buildingToPlace, tileX, tileY);
         showDialog(result.isSuccess() ? "Success" : "Error", result.toString());
+
         buildingPlacementMode = false;
         buildingToPlace = null;
     }
@@ -174,12 +179,12 @@ public class GameMenuUI implements Screen {
 
         if ("Barn".equals(buildingToPlace)) {
             previewTexture = barnTexture;
-            buildingWidthTiles = Model.enums.Buildings.AnimalHouse.Barn.width;
-            buildingHeightTiles = Model.enums.Buildings.AnimalHouse.Barn.height;
+            buildingWidthTiles = AnimalHouseEnum.Barn.width;
+            buildingHeightTiles = AnimalHouseEnum.Barn.height;
         } else if ("Coop".equals(buildingToPlace)) {
             previewTexture = coopTexture;
-            buildingWidthTiles = Model.enums.Buildings.AnimalHouse.Coop.width;
-            buildingHeightTiles = Model.enums.Buildings.AnimalHouse.Coop.height;
+            buildingWidthTiles = AnimalHouseEnum.Coop.width;
+            buildingHeightTiles = AnimalHouseEnum.Coop.height;
         }
 
         if (previewTexture != null) {
@@ -306,7 +311,6 @@ public class GameMenuUI implements Screen {
         pickaxeTexture.dispose();
         shearsTexture.dispose();
         if (stage != null) stage.dispose();
-        // Dispose new textures
         if (barnTexture != null) barnTexture.dispose();
         if (coopTexture != null) coopTexture.dispose();
     }

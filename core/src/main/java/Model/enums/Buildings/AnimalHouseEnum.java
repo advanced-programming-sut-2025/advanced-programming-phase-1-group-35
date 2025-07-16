@@ -1,6 +1,8 @@
 package Model.enums.Buildings;
 
-public enum AnimalHouse {
+import Model.Buildings.AnimalHouse;
+
+public enum AnimalHouseEnum {
     Coop("coop", 1, 6, 12, "buildings/Coop.png"),
     Barn("barn", 1, 8, 14, "buildings/Barn.png");
 
@@ -9,7 +11,7 @@ public enum AnimalHouse {
     public final int height, width;
     public final String texturePath;
 
-    AnimalHouse(String type, int level, int height, int width, String texturePath) {
+    AnimalHouseEnum(String type, int level, int height, int width, String texturePath) {
         this.type = type;
         this.level = level;
         this.height = height;
@@ -17,7 +19,7 @@ public enum AnimalHouse {
         this.texturePath = texturePath;
     }
 
-    public Model.Buildings.AnimalHouse getAnimalHouse() {
-        return new Model.Buildings.AnimalHouse(type, level);
+    public AnimalHouse getAnimalHouse() {
+        return new AnimalHouse(type, level);
     }
 }
