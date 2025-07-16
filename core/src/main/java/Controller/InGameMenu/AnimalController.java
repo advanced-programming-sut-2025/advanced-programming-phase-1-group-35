@@ -22,8 +22,11 @@ public class AnimalController {
         AnimalHouseEnum animalHouseEnum = null;
         if (name.equalsIgnoreCase("barn")) {
             animalHouseEnum = AnimalHouseEnum.Barn;
+            buyAnimal("Cow", "cowy", x + 5, y + 5);
+
         } else if (name.equalsIgnoreCase("coop")) {
             animalHouseEnum = AnimalHouseEnum.Coop;
+            buyAnimal("Dinosaur", "diny", x + 5, y + 5);
         } else {
             return new Result(false, "Invalid building type specified.");
         }
@@ -62,14 +65,37 @@ public class AnimalController {
         } else if (house == null) {
             return new Result(false, "no animal house!");
         }
-        house.thisHouseAnimals.add(type.createAnimal(name));
-        farm.animals.add(type.createAnimal(name));
-        shepherdAnimal(name, 15, 50);
+        Animal newAnimal = type.createAnimal(name);
+        house.thisHouseAnimals.add(newAnimal);
+        farm.animals.add(newAnimal);
+        newAnimal.location = new Point(15, 45);
         return new Result(true, "animal " + name + " has been bought!");
     }
 
-    public Result nazTheAnimal(String animalName) {
+    public void buyAnimal(String animal, String name, int x, int y) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        Farm farm = player.getFarm();
+        AnimalType type;
         AnimalHouse house = null;
+        try {
+            type = AnimalType.valueOf(animal);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        house = type.getAnimalHouse(player, type);
+        if (farm.isAnimalNameExist(name)) {
+            return;
+        } else if (house == null) {
+            return;
+        }
+        Animal newAnimal = type.createAnimal(name);
+        house.thisHouseAnimals.add(newAnimal);
+        farm.animals.add(newAnimal);
+        newAnimal.location = new Point(x, y);
+    }
+
+    public Result nazTheAnimal(String animalName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
@@ -78,7 +104,7 @@ public class AnimalController {
         }
         Animal animal = farm.findAnimal(animalName);
         if (Math.abs(animal.location.x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
-                Math.abs(animal.location.y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
+            Math.abs(animal.location.y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
             return new Result(false, "You are not close to the animal");
         }
         animal.setFriendship(animal.getFriendship() + 15);
@@ -107,8 +133,8 @@ public class AnimalController {
         if (!farm.isAnimalNameExist(animalName)) {
             return new Result(false, "there is no animal with that name!");
         } else if (game.getWeather().getWeatherCondition() == WeatherCondition.snow ||
-                game.getWeather().getWeatherCondition() == WeatherCondition.rain ||
-                game.getWeather().getWeatherCondition() == WeatherCondition.storm) {
+            game.getWeather().getWeatherCondition() == WeatherCondition.rain ||
+            game.getWeather().getWeatherCondition() == WeatherCondition.storm) {
             return new Result(false, "weather condition is not good for outside shepherd!");
         }
         Animal animal = farm.findAnimal(animalName);
@@ -162,11 +188,11 @@ public class AnimalController {
             return new Result(false, "you already collect its products");
         }
         player.backPack.items.put(animal.getProducts()[0],
-                player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + 1);
+            player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + 1);
         animal.setDaysPastLastProduction(0);
         animal.setCollectedToday(true);
         return new Result(true, animal.getName() + " has collected its products! it was " +
-                animal.getProductionRate());
+            animal.getProductionRate());
     }
 
     public Result sellAnimal(String animalName) {
@@ -220,7 +246,7 @@ public class AnimalController {
 
         Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
         App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
-                App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
+            App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
         return new Result(true, fishCount + " of " + fish.getName() + " has been caught!");
     }
 

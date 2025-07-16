@@ -1,5 +1,6 @@
 package Model.animal;
 
+import Model.Buildings.AnimalHouse;
 import Model.ItemInterface;
 import Model.Point;
 import Model.enums.animal.AnimalType;
@@ -22,10 +23,11 @@ public class Animal implements ItemInterface {
     private boolean isNazToday;
     private boolean isCollectedToday;
     public Point location;
+    public AnimalHouse house;
 
 
     public Animal(String name, AnimalType animalType, int buyingPrice, double productionRate, String confinement
-            , AnimalProduct[] products) {
+            , AnimalProduct[] products, AnimalHouse house) {
         this.name = name;
         this.animalType = animalType;
         this.buyingPrice = buyingPrice;
@@ -36,6 +38,7 @@ public class Animal implements ItemInterface {
         this.isNazToday = false;
         this.canProduceTomorrow = false;
         this.isCollectedToday = false;
+        this.house = house;
     }
 
 

@@ -1,6 +1,8 @@
 package Model.enums.animal;
 
+import Model.App;
 import Model.Buildings.AnimalHouse;
+import Model.Game;
 import Model.Rect;
 import Model.User;
 import Model.animal.Animal;
@@ -28,7 +30,6 @@ public enum AnimalType {
     private final AnimalProduct[] products;
     private final String confinement;
     public final String texturePath;
-    public Rect rect;
 
     AnimalType(int buyingPrice, int productionRate, String confinement
         , AnimalProduct[] products, String texturePath) {
@@ -40,7 +41,7 @@ public enum AnimalType {
     }
 
     public Animal createAnimal(String name) {
-        return new Animal(name, this, buyingPrice, productionRate, confinement, products);
+        return new Animal(name, this, buyingPrice, productionRate, confinement, products, getAnimalHouse(App.getCurrentGame().getPlayingUser(), this));
     }
 
     public int getBuyingPrice() {

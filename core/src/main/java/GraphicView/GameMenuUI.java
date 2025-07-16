@@ -7,10 +7,10 @@ import Controller.InGameMenu.ToolsController;
 import GraphicView.Game.GameMenuInputAdapter;
 import GraphicView.Game.GameView;
 import Model.*;
-import Model.Buildings.AnimalHouse;
 import Model.Tools.BackPack;
 import Model.Tools.Tool;
 import Model.animal.Animal;
+import Model.animal.AnimalProduct;
 import Model.enums.Buildings.AnimalHouseEnum;
 import Model.enums.animal.AnimalType;
 import com.StardewValley.Main;
@@ -25,7 +25,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -37,6 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class GameMenuUI implements Screen {
@@ -44,7 +44,7 @@ public class GameMenuUI implements Screen {
     public Game gameModel;
     public GameMenuInputAdapter gameMenuInputAdapter;
     public GameMenuController gameController;
-    private AnimalController animalController;
+    private final AnimalController animalController;
     private boolean isSleeping = false;
     private float sleepAlpha = 0f;
     private float sleepTimer = 0f;
@@ -80,6 +80,10 @@ public class GameMenuUI implements Screen {
     private Texture barnTexture;
     private Texture coopTexture;
 
+    private Map<Animal, Rect> animalRects = new HashMap<>();
+    private Map<Animal, Float> pettedAnimals = new HashMap<>();
+    private Texture heartTexture;
+
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -101,6 +105,8 @@ public class GameMenuUI implements Screen {
 
         barnTexture = new Texture(Gdx.files.internal("assets/buildings/Barn.png"));
         coopTexture = new Texture(Gdx.files.internal("assets/buildings/Coop.png"));
+        heartTexture = new Texture(Gdx.files.internal("assets/animal_product/heart.png"));
+
 
         mainMultiplexer = new InputMultiplexer();
 
@@ -125,12 +131,25 @@ public class GameMenuUI implements Screen {
                 }
                 return false;
             }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                if (button == Input.Buttons.LEFT) {
+                    Vector3 worldCoordinates = gameModel.camera.unproject(new Vector3(screenX, screenY, 0));
+                    for (Map.Entry<Animal, Rect> entry : animalRects.entrySet()) {
+                        if (entry.getValue().contains(worldCoordinates.x, worldCoordinates.y)) {
+                            showAnimalInteractionDialog(entry.getKey());
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
         };
 
         mainMultiplexer.addProcessor(stage);
         mainMultiplexer.addProcessor(hotkeyAdapter);
         mainMultiplexer.addProcessor(gameMenuInputAdapter);
-
         Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
@@ -151,6 +170,130 @@ public class GameMenuUI implements Screen {
         dialog.button("Coop", "Coop");
         dialog.button("Cancel");
         dialog.show(stage);
+    }
+
+    private void showAnimalInteractionDialog(final Animal animal) {
+        Skin skin = GameAssetManager.getDefaultSkin();
+        new Dialog("Interact with " + animal.getName(), skin) {
+            {
+                text("What would you like to do?");
+                button("Feed", "feed");
+                button("Move", "move");
+                button("Sell", "sell");
+                button("Collect Product", "collect");
+                button("Pet", "pet");
+                button("Shepherd", "shepherd");
+                button("Info", "info");
+                button("Cancel", "cancel");
+            }
+
+            @Override
+            protected void result(Object object) {
+                switch (object.toString()) {
+                    case "feed":
+                        showDialog("Feed", animalController.feedByHay(animal.getName()).toString());
+                        break;
+                    case "move":
+                        showMoveDialog(animal);
+                        break;
+                    case "sell":
+                        showDialog("Sell", animalController.sellAnimal(animal.getName()).toString());
+                        break;
+                    case "collect":
+                        showDialog("Collect", animalController.collectProducts(animal.getName()).toString());
+                        break;
+                    case "pet":
+                        Result petResult = animalController.nazTheAnimal(animal.getName());
+                        if(petResult.isSuccess()) {
+                            pettedAnimals.put(animal, 5f);
+                        }
+                        showDialog("Pet", petResult.toString());
+                        break;
+                    case "shepherd":
+                        showShepherdDialog(animal);
+                        break;
+                    case "info":
+                        showAnimalInfoDialog(animal);
+                        break;
+                }
+            }
+        }.show(stage);
+    }
+
+    private void showMoveDialog(final Animal animal) {
+        new Dialog("Move " + animal.getName(), GameAssetManager.getDefaultSkin()) {
+            {
+                text("Choose a direction to move 5 tiles:");
+                button("Up", "up");
+                button("Down", "down");
+                button("Left", "left");
+                button("Right", "right");
+                button("Cancel", "cancel");
+            }
+            @Override
+            protected void result(Object object) {
+                int moveDistance = 5;
+                Point currentLocation = animal.location;
+                switch (object.toString()) {
+                    case "up":
+                        currentLocation.y += moveDistance;
+                        break;
+                    case "down":
+                        currentLocation.y -= moveDistance;
+                        break;
+                    case "left":
+                        currentLocation.x -= moveDistance;
+                        break;
+                    case "right":
+                        currentLocation.x += moveDistance;
+                        break;
+                }
+            }
+        }.show(stage);
+    }
+
+    private void showShepherdDialog(final Animal animal) {
+        new Dialog("Shepherd " + animal.getName(), GameAssetManager.getDefaultSkin()) {
+            {
+                text("Choose a direction to shepherd 5 tiles:");
+                button("Up", "up");
+                button("Down", "down");
+                button("Left", "left");
+                button("Right", "right");
+                button("Cancel", "cancel");
+            }
+            @Override
+            protected void result(Object object) {
+                int moveDistance = 5;
+                Point currentLocation = animal.location;
+                int newX = currentLocation.x;
+                int newY = currentLocation.y;
+
+                switch (object.toString()) {
+                    case "up": newY += moveDistance; break;
+                    case "down": newY -= moveDistance; break;
+                    case "left": newX -= moveDistance; break;
+                    case "right": newX += moveDistance; break;
+                    default: return;
+                }
+                Result result = animalController.shepherdAnimal(animal.getName(), newX, newY);
+                showDialog("Shepherd", result.toString());
+            }
+        }.show(stage);
+    }
+
+    private void showAnimalInfoDialog(final Animal animal) {
+        AnimalType type = animal.getAnimalType();
+        StringBuilder info = new StringBuilder();
+        info.append("Type: ").append(type.name()).append("\n");
+        info.append("Buying Price: ").append(type.getBuyingPrice()).append("g\n");
+        info.append("House: ").append(type.getConfinement()).append("\n");
+        info.append("Days between products: ").append(type.getProductionRate()).append("\n");
+        info.append("Possible Products: \n");
+        for(AnimalProduct product : type.getProducts()){
+            info.append(" - ").append(product.getName()).append("\n");
+        }
+        showDialog(animal.getName() + " Info", info.toString());
     }
 
     public void handleBuildingPlacement(int screenX, int screenY) {
@@ -209,7 +352,10 @@ public class GameMenuUI implements Screen {
 
         gameModel.update(delta);
         gameView.render();
+        renderAnimals();
+        renderPettedHearts(delta);
         gameMenuInputAdapter.update(delta);
+
 
         if (isToolsUIVisible) {
             renderToolsUI();
@@ -223,6 +369,39 @@ public class GameMenuUI implements Screen {
 
         stage.act(delta);
         stage.draw();
+    }
+
+    private void renderAnimals() {
+        SpriteBatch batch = gameView.getBatch();
+        batch.begin();
+        for (Animal animal : gameModel.getPlayingUser().getFarm().animals) {
+            Texture animalTexture = animal.getAnimalType().getTexture();
+            float x = animal.location.x * Main.TILE_SIZE;
+            float y = animal.location.y * Main.TILE_SIZE;
+            batch.draw(animalTexture, x, y, Main.TILE_SIZE, Main.TILE_SIZE);
+            animalRects.put(animal, new Rect(x, y, Main.TILE_SIZE, Main.TILE_SIZE));
+        }
+        batch.end();
+    }
+
+    private void renderPettedHearts(float delta) {
+        SpriteBatch batch = gameView.getBatch();
+        batch.begin();
+        Iterator<Map.Entry<Animal, Float>> iterator = pettedAnimals.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<Animal, Float> entry = iterator.next();
+            Animal animal = entry.getKey();
+            float timer = entry.getValue();
+
+            timer -= delta;
+            if(timer <= 0) {
+                iterator.remove();
+            } else {
+                pettedAnimals.put(animal, timer);
+                batch.draw(heartTexture, animal.location.x * Main.TILE_SIZE, (animal.location.y * Main.TILE_SIZE) + Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE);
+            }
+        }
+        batch.end();
     }
 
     public void toggleToolsUI() {
@@ -310,6 +489,7 @@ public class GameMenuUI implements Screen {
         milkPailTexture.dispose();
         pickaxeTexture.dispose();
         shearsTexture.dispose();
+        if(heartTexture != null) heartTexture.dispose();
         if (stage != null) stage.dispose();
         if (barnTexture != null) barnTexture.dispose();
         if (coopTexture != null) coopTexture.dispose();
