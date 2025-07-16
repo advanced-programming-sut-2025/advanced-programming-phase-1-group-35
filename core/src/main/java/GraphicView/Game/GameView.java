@@ -3,6 +3,7 @@ package GraphicView.Game;
 import Model.Game;
 import Model.Pair;
 import Model.Tile;
+import Model.User;
 import Model.enums.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 import java.awt.*;
@@ -26,6 +28,8 @@ public class GameView {
     private Map<String, TextureRegion> textures;
     private Texture pixel;
     private TextureAtlas playerAtlas;
+    private Label coordinateLabel;
+    public Table infoTable;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
     private int moveDirection = 0;
     private float stateTime = 0f;
@@ -33,6 +37,7 @@ public class GameView {
     public GameView(Game game) {
         this.game = game;
         batch = new SpriteBatch();
+        coordinateLabel = new Label();
         loadTextures();
         loadFont();
     }
@@ -92,7 +97,11 @@ public class GameView {
         batch.begin();
         renderTiles();
         renderPlayer();
+        renderCoordinates();
         batch.end();
+    }
+
+    private void renderCoordinates() {
     }
 
     private void renderTiles() {
@@ -173,17 +182,17 @@ public class GameView {
     }
 
     private void renderPlayer() {
-        Pair<Float,Float> pos = game.getPlayingUser().getCurrentPoint();
+        for (User player : game.getPlayers()) {
+            Pair<Float,Float> pos = player.getCurrentPoint();
+            moveDirection = player.getMovingDirection();
 
-        moveDirection = game.getPlayingUser().getMovingDirection();
+            stateTime += Gdx.graphics.getDeltaTime();
 
-        stateTime += Gdx.graphics.getDeltaTime();
+            Animation<TextureRegion> currentAnimation = playerAnimations.get(moveDirection);
+            TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
-        Animation<TextureRegion> currentAnimation = playerAnimations.get(moveDirection);
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-
-        batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-//        renderInventory();
+            batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+        }
     }
 
     public SpriteBatch getBatch() {
