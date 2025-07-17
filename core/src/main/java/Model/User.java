@@ -64,7 +64,7 @@ public class User {
     private int selectedSlot = -1;
     private int maxInventorySize = 9;
     private int movingDirection = 0;
-    private float speed = 2f;
+    private float speed = 20f;
     float vx , vy ;
     public OrthographicCamera camera ;
 

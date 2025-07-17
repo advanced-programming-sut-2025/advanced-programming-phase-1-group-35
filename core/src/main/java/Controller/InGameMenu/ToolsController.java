@@ -255,7 +255,7 @@ public class ToolsController {
         if (destenationTile.getTileType() == TileType.Water) {
             for (ItemInterface item : player.backPack.items.keySet()) {
                 if (item instanceof FishingPole pole) {
-                    return new AnimalController().fishing(pole.getName());
+                    return new AnimalController().fishing();
                 }
             }
         }

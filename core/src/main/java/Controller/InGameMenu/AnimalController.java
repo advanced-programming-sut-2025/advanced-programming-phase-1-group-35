@@ -7,6 +7,7 @@ import Model.FarmStuff.Farm;
 import Model.animal.Animal;
 import Model.animal.AnimalProduct;
 import Model.animal.Fish;
+import Model.enums.Buildings.AnimalHouseEnum;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 import Model.enums.WeatherCondition;
@@ -16,30 +17,35 @@ import Model.enums.animal.FishType;
 public class AnimalController {
     public Result buildAnimalHouse(String name, int x, int y) {
         if (!App.getCurrentGame().getMap().getTiles()[x][y].getContents().isEmpty()) {
-            return new Result(false, "there are something else on this tile!");
+            return new Result(false, "There is something else on this tile!");
         }
-        Model.enums.Buildings.AnimalHouse animalHouseEnum = null;
-        try {
-             animalHouseEnum = Model.enums.Buildings.AnimalHouse.valueOf(name);
-        }
-        catch (Exception e) {
+        AnimalHouseEnum animalHouseEnum = null;
+        if (name.equalsIgnoreCase("barn")) {
+            animalHouseEnum = AnimalHouseEnum.Barn;
+            buyAnimal("Cow", "cowy", x + 5, y + 5);
 
+        } else if (name.equalsIgnoreCase("coop")) {
+            animalHouseEnum = AnimalHouseEnum.Coop;
+            buyAnimal("Dinosaur", "diny", x + 5, y + 5);
+        } else {
+            return new Result(false, "Invalid building type specified.");
         }
+
         Tile[][] tiles = App.getCurrentGame().getMap().getTiles();
         for (int i = x; i < x + animalHouseEnum.width; i++) {
-            for(int j = y; j < y + animalHouseEnum.height; j++) {
-                if(!tiles[i][j].getTileType().equals(TileType.Soil) && !tiles[i][j].getTileType().equals(TileType.Grass)) {
-                    return new Result(false, "there is something else on tile : " + "<" + i +  "," + j + ">");
+            for (int j = y; j < y + animalHouseEnum.height; j++) {
+                if (!tiles[i][j].getTileType().equals(TileType.Soil) && !tiles[i][j].getTileType().equals(TileType.Grass)) {
+                    return new Result(false, "There is something on tile: <" + i + "," + j + "> that blocks construction.");
                 }
             }
         }
+
         AnimalHouse animalHouse = new AnimalHouse(animalHouseEnum.type, animalHouseEnum.level);
         App.getCurrentGame().getPlayingUser().getFarm().animalHouses.add(animalHouse);
         animalHouse.setFarm(App.getCurrentGame().getPlayingUser().getFarm());
-        animalHouse.setFloorTiles(new Tile[animalHouseEnum.width][animalHouseEnum.height]);
-        animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles);
-
-        return new Result(true, "your " + name + " has been built!");
+        animalHouse.setFloorTiles(new Tile[animalHouseEnum.width - 2][animalHouseEnum.height - 2]);
+        animalHouse.placeBuilding('ǂ', x, y, animalHouseEnum.width, animalHouseEnum.height, tiles, animalHouseEnum.texturePath);
+        return new Result(true, "Your " + name + " has been built!");
     }
 
     public Result buyAnimal(String animal, String name) {
@@ -59,15 +65,37 @@ public class AnimalController {
         } else if (house == null) {
             return new Result(false, "no animal house!");
         }
-        int x = 0,y = 0;
-        house.thisHouseAnimals.add(type.createAnimal(name));
-        farm.animals.add(type.createAnimal(name));
-        //shepherdAnimal(name, 0, 0);
+        Animal newAnimal = type.createAnimal(name);
+        house.thisHouseAnimals.add(newAnimal);
+        farm.animals.add(newAnimal);
+        newAnimal.location = new Point(15, 45);
         return new Result(true, "animal " + name + " has been bought!");
     }
 
-    public Result nazTheAnimal(String animalName) {
+    public void buyAnimal(String animal, String name, int x, int y) {
+        Game game = App.getCurrentGame();
+        User player = game.getPlayingUser();
+        Farm farm = player.getFarm();
+        AnimalType type;
         AnimalHouse house = null;
+        try {
+            type = AnimalType.valueOf(animal);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        house = type.getAnimalHouse(player, type);
+        if (farm.isAnimalNameExist(name)) {
+            return;
+        } else if (house == null) {
+            return;
+        }
+        Animal newAnimal = type.createAnimal(name);
+        house.thisHouseAnimals.add(newAnimal);
+        farm.animals.add(newAnimal);
+        newAnimal.location = new Point(x, y);
+    }
+
+    public Result nazTheAnimal(String animalName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
         Farm farm = player.getFarm();
@@ -76,7 +104,7 @@ public class AnimalController {
         }
         Animal animal = farm.findAnimal(animalName);
         if (Math.abs(animal.location.x - game.getPlayingUser().getCurrentTile().getCoordination().x) > 1 ||
-                Math.abs(animal.location.y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
+            Math.abs(animal.location.y - game.getPlayingUser().getCurrentTile().getCoordination().y) > 1) {
             return new Result(false, "You are not close to the animal");
         }
         animal.setFriendship(animal.getFriendship() + 15);
@@ -105,8 +133,8 @@ public class AnimalController {
         if (!farm.isAnimalNameExist(animalName)) {
             return new Result(false, "there is no animal with that name!");
         } else if (game.getWeather().getWeatherCondition() == WeatherCondition.snow ||
-                game.getWeather().getWeatherCondition() == WeatherCondition.rain ||
-                game.getWeather().getWeatherCondition() == WeatherCondition.storm) {
+            game.getWeather().getWeatherCondition() == WeatherCondition.rain ||
+            game.getWeather().getWeatherCondition() == WeatherCondition.storm) {
             return new Result(false, "weather condition is not good for outside shepherd!");
         }
         Animal animal = farm.findAnimal(animalName);
@@ -160,11 +188,11 @@ public class AnimalController {
             return new Result(false, "you already collect its products");
         }
         player.backPack.items.put(animal.getProducts()[0],
-                player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + 1);
+            player.backPack.items.getOrDefault(animal.getProducts()[0], 0) + 1);
         animal.setDaysPastLastProduction(0);
         animal.setCollectedToday(true);
         return new Result(true, animal.getName() + " has collected its products! it was " +
-                animal.getProductionRate());
+            animal.getProductionRate());
     }
 
     public Result sellAnimal(String animalName) {
@@ -187,7 +215,7 @@ public class AnimalController {
         return new Result(true, "you sold " + animalName + "! price: " + price);
     }
 
-    public Result fishing(String poleName) {
+    public Result fishing() {
         if (!new GameMenuController().isCloseToSea()) {
             return new Result(false, "you are not near to a sea!");
         } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {
@@ -218,7 +246,7 @@ public class AnimalController {
 
         Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
         App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
-                App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
+            App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
         return new Result(true, fishCount + " of " + fish.getName() + " has been caught!");
     }
 

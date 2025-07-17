@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.StardewValley.Main;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,6 +77,13 @@ public class GameMenuInputAdapter extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (gameMenuUI.buildingPlacementMode) {
+            if (button == Input.Buttons.LEFT) {
+                gameMenuUI.handleBuildingPlacement(screenX, screenY);
+                return true;
+            }
+        }
+
         if (button == Input.Buttons.LEFT) {
             performAction(screenX, screenY);
             return true;
