@@ -1,12 +1,15 @@
 package GraphicView.Game;
 
+import Model.App;
+import Model.CropClasses.Crop;
 import Model.Game;
 import Model.Pair;
 import Model.Tile;
+import Model.enums.Crops.CropEnum;
 import Model.enums.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Gdx;
+import Controller.Controller;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -52,6 +55,14 @@ public class GameView {
             String path = id.getIconPath();
             textures.put(id.name(), new TextureRegion(new Texture(Gdx.files.internal(path))));
         }
+        for (CropEnum cropEnum : CropEnum.values()) {
+            for (int i = 1; i <= cropEnum.getStages().size(); i++) { // or a fixed max stage
+                String path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + "_Stage_" + i + ".png";
+                if(cropEnum.isForaging()) path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+            }
+        }
+
         // TODO : load other things
 //        for (ItemDescriptionId id : ItemDescriptionId.values()) {
 //            String path = id.getIconPath();
@@ -122,33 +133,39 @@ public class GameView {
                     float drawY = y * tileSize - cameraBottom;
 
                     //TODO: also render crops
-//                    GrowingCrop crop = game.getGrowingCrops().get(new Point(x, y));
-//                    if (crop != null && crop.watered()) {
-//                        batch.setColor(0.7f, 0.7f, 0.7f, 1f);
-//                    } else {
-//                        batch.setColor(1f, 1f, 1f, 1f);
-//                    }
+                    if (id.getPlanted() != null && id.getPlanted().getClass().equals(Crop.class)) {
+                        Crop GrowingCrop = (Crop)id.getPlanted();
 
-                    TextureRegion texture = textures.get(id.getTileType().name());
-                    if (texture != null) {
-                        batch.draw(texture, drawX, drawY, tileSize, tileSize);
+                    if (GrowingCrop != null && GrowingCrop.getDaysSinceWatered()<=1) {
+                        batch.setColor(0.7f, 0.7f, 0.7f, 1f);
+                    } else {
+                        batch.setColor(1f, 1f, 1f, 1f);
+                    }
+
+                        }
+                        TextureRegion texture = textures.get(id.getTileType().name());
+                        if (texture != null) {
+                            batch.draw(texture, drawX, drawY, tileSize, tileSize);
                     }
                 }
             }
         }
         //TODO : render crops
 //        for (Map.Entry<Point, GrowingCrop> entry : game.getGrowingCrops().entrySet()) {
+//        App.getCurrentGame().getMap().getCrops().add(new Crop(CropEnum.BLUEBERRY, App.getCurrentGame().getPlayingUser().getCurrentTile()));
+          for (Crop crop : App.getCurrentGame().getMap().getCrops()){
 //            Point point = entry.getKey();
 //            GrowingCrop crop = entry.getValue();
 //
 //            int x = point.x;
 //            int y = point.y;
+              int x = crop.getCropTile().getCoordination().getX();
+              int y = crop.getCropTile().getCoordination().getY();
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                float drawX = x * tileSize - cameraLeft;
+                float drawY = y * tileSize - cameraBottom;
 //
-//            if (x >= startX && x < endX && y >= startY && y < endY) {
-//                float drawX = x * tileSize - cameraLeft;
-//                float drawY = y * tileSize - cameraBottom;
-//
-//                int growth = crop.getGrowth();
+                int growth = crop.getCurrentState();
 //                CarrotStages cs;
 //
 //                if (growth < 2) cs = CarrotStages.CARROT_STAGE_1;
@@ -156,13 +173,13 @@ public class GameView {
 //                else if (growth < 6) cs = CarrotStages.CARROT_STAGE_3;
 //                else cs = CarrotStages.CARROT_STAGE_4;
 //
-//                TextureRegion cropTexture = textures.get(cs.name());
-//                if (cropTexture != null) {
-//                    batch.setColor(1f, 1f, 1f, 1f);
-//                    batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
-//                }
-//            }
-//        }
+                TextureRegion cropTexture = textures.get(crop.getCropEnum().getStatePath());
+                if (cropTexture != null) {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
+                }
+            }
+        }
 
         batch.setColor(1f, 1f, 1f, 1f);
     }
