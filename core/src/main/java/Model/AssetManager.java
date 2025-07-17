@@ -69,4 +69,16 @@ public class AssetManager {
     public Texture sugar = new Texture("assets/Cooking_Ingredient/Sugar.png");
     public Texture tomato = new Texture("assets/Cooking_Ingredient/Tomato.png");
     public Texture wheat = new Texture("assets/Cooking_Ingredient/Wheat.png");
+
+    // Animal Product assets
+    public Texture dinosaurEgg = new Texture("assets/animal_product/Dinosaur_Egg.png");
+    public Texture duckEgg = new Texture("assets/animal_product/Duck_Egg.png");
+    public Texture duckFeather = new Texture("assets/animal_product/Duck_Feather.png");
+    public Texture largeEgg = new Texture("assets/animal_product/Large_Egg.png");
+    public Texture goatMilk = new Texture("assets/animal_product/Goat_Milk.png");
+    public Texture largeGoatMilk = new Texture("assets/animal_product/Large_Goat_Milk.png");
+    public Texture largeMilk = new Texture("assets/animal_product/Large_Milk.png");
+    public Texture rabbitsFoot = new Texture("assets/animal_product/Rabbits_Foot.png");
+    public Texture truffle = new Texture("assets/animal_product/Truffle.png");
+    public Texture wool = new Texture("assets/animal_product/Wool.png");
 }

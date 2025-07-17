@@ -4,6 +4,9 @@ import Controller.GameMenuController;
 import Controller.InGameMenu.CookingController;
 import Model.*;
 import Model.Tools.Tool;
+import Model.animal.AnimalProduct;
+import Model.animal.Fish;
+import Model.enums.animal.FishType;
 import com.StardewValley.Main;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
@@ -348,6 +351,39 @@ public class Inventory {
                     return assetManager.troutSoup;
                 case VEGETABLE_MEDLEY:
                     return assetManager.vegetableMedley;
+            }
+        } else if (item instanceof AnimalProduct animalProduct) {
+            switch (animalProduct.getName()) {
+                case "dinosaur egg":
+                    return assetManager.dinosaurEgg;
+                case "duck egg":
+                    return assetManager.duckEgg;
+                case "duck feather":
+                    return assetManager.duckFeather;
+                case "egg":
+                    return assetManager.egg;
+                case "goat milk":
+                    return assetManager.goatMilk;
+                case "large egg":
+                    return assetManager.largeEgg;
+                case "large goat milk":
+                    return assetManager.largeGoatMilk;
+                case "large milk":
+                    return assetManager.largeMilk;
+                case "milk":
+                    return assetManager.milk;
+                case "rabbit foot":
+                    return assetManager.rabbitsFoot;
+                case "truffle":
+                    return assetManager.truffle;
+                case "wool":
+                    return assetManager.wool;
+            }
+        } else if (item instanceof Fish fish) {
+            for (FishType fishType : FishType.values()) {
+                if (fishType.getName().equalsIgnoreCase(fish.getName())) {
+                    return fishType.getTexture();
+                }
             }
         }
         return null;

@@ -4,7 +4,6 @@ import Model.FarmStuff.Farm;
 import Model.TextureSplitter;
 import Model.Tile;
 import Model.enums.TileType;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.awt.*;
 
