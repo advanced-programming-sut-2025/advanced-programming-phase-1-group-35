@@ -215,7 +215,7 @@ public class AnimalController {
         return new Result(true, "you sold " + animalName + "! price: " + price);
     }
 
-    public Result fishing(String poleName) {
+    public Result fishing() {
         if (!new GameMenuController().isCloseToSea()) {
             return new Result(false, "you are not near to a sea!");
         } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {

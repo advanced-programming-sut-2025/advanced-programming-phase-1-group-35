@@ -53,6 +53,7 @@ public class GameMenuUI implements Screen {
     private boolean advancingDay = false;
     private boolean isInInventory = false;
     private boolean isCook = false;
+    private boolean isCheating = false;
 
     private SpriteBatch toolsBatch;
     private ShapeRenderer toolsShapeRenderer;
@@ -83,6 +84,7 @@ public class GameMenuUI implements Screen {
     private Map<Animal, Rect> animalRects = new HashMap<>();
     private Map<Animal, Float> pettedAnimals = new HashMap<>();
     private Texture heartTexture;
+    private CheatUI cheatUI;
 
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
@@ -105,7 +107,7 @@ public class GameMenuUI implements Screen {
 
         barnTexture = new Texture(Gdx.files.internal("assets/buildings/Barn.png"));
         coopTexture = new Texture(Gdx.files.internal("assets/buildings/Coop.png"));
-        heartTexture = new Texture(Gdx.files.internal("assets/animal_product/heart.png"));
+        heartTexture = new Texture(Gdx.files.internal("assets/heart.png"));
 
 
         mainMultiplexer = new InputMultiplexer();
@@ -127,6 +129,13 @@ public class GameMenuUI implements Screen {
                         return true;
                     case Input.Keys.M:
                         showBuildingSelectionDialog();
+                        return true;
+                    case Input.Keys.Z:
+                        toggleCheatMenu();
+                        return true;
+                    case Input.Keys.F:
+                        Result result = animalController.fishing();
+                        showDialog("Fishing Result", result.toString());
                         return true;
                 }
                 return false;
@@ -528,6 +537,25 @@ public class GameMenuUI implements Screen {
             isToolsUIVisible = false;
         } else if (isCook) {
             isCook = false;
+            Main.getGame().setScreen(this);
+            mainMultiplexer.addProcessor(hotkeyAdapter);
+            mainMultiplexer.addProcessor(gameMenuInputAdapter);
+            Gdx.input.setInputProcessor(mainMultiplexer);
+        }
+    }
+
+    public void toggleCheatMenu() {
+        if (Main.getGame().getScreen() == this) {
+            isCheating = true;
+            mainMultiplexer.removeProcessor(gameMenuInputAdapter);
+            mainMultiplexer.removeProcessor(hotkeyAdapter);
+            if (cheatUI == null) {
+                cheatUI = new CheatUI(gameController, this);
+            }
+            Main.getGame().setScreen(cheatUI);
+            isToolsUIVisible = false;
+        } else if (isCheating) {
+            isCheating = false;
             Main.getGame().setScreen(this);
             mainMultiplexer.addProcessor(hotkeyAdapter);
             mainMultiplexer.addProcessor(gameMenuInputAdapter);
