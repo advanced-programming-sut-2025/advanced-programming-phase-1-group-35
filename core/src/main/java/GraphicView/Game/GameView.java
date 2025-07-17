@@ -101,9 +101,6 @@ public class GameView {
         batch.end();
     }
 
-    private void renderCoordinates() {
-    }
-
     private void renderTiles() {
         Tile[][] tiles = game.getMap().getTiles();
 
@@ -248,6 +245,27 @@ public class GameView {
 //            }
 //        }
 //    }
+    private void renderCoordinates() {
+        User playingUser = game.getPlayingUser(); // Assuming you have this method
+        if (playingUser == null) return;
+
+        Pair<Float, Float> pos = playingUser.getCurrentPoint();
+        String coordText = String.format("x : %.1f y : %.1f", pos.first, pos.second);
+
+        // Calculate position (top right corner with some padding)
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 100;
+        float y = game.camera.viewportHeight - padding;
+
+        // Draw background for better readability
+        batch.setColor(0, 0, 0, 0.5f); // Semi-transparent black
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+             10, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1); // Reset color
+
+        // Draw text
+        smallFont.draw(batch, coordText, x, y);
+    }
 
 
 }

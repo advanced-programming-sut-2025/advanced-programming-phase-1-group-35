@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import static Model.enums.Colors.RESET;
 
 public class Map {
-    private Tile[][] tiles = new Tile[300][250];
+    private Tile[][] tiles = new Tile[300][210];
     private ArrayList<Farm> farms = new ArrayList<>();
     private Farm village ;
     public ArrayList<Building> buildings = new ArrayList<>();
