@@ -58,6 +58,11 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
+        if(keycode == Input.Keys.T){
+            gameMenuUI.toggleTradeMenu();
+            return true;
+        }
+
         return true;
     }
 

@@ -85,5 +85,5 @@
     "highScore": 0,
     "gamesPlayed": 0
   },
-  "stayLoggedIn": true
+  "stayLoggedIn": false
 }

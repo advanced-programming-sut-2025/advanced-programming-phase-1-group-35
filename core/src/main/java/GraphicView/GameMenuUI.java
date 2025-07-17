@@ -46,6 +46,7 @@ public class GameMenuUI implements Screen {
     private boolean advancingDay = false;
     private boolean isInInventory = false;
     private boolean isCook = false;
+    private boolean isInTrade = false;
 
     private SpriteBatch toolsBatch;
     private ShapeRenderer toolsShapeRenderer;
@@ -173,6 +174,28 @@ public class GameMenuUI implements Screen {
         sleepAlpha = 0f;
         sleepTimer = 0f;
         advancingDay = false;
+    }
+
+    public void toggleTradeMenu() {
+        if (Main.getGame().getScreen() == this) {
+            this.isInTrade = true;
+            mainMultiplexer.removeProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.removeProcessor(toolsStage);
+            }
+            mainMultiplexer.removeProcessor(toolsKeyInputAdapter);
+            Main.getGame().setScreen(new TradeMenuUI(Main.getGame(), this));
+            isToolsUIVisible = false;
+        } else if (isInTrade) {
+            isInTrade = false;
+            Main.getGame().setScreen(this);
+            mainMultiplexer.addProcessor(toolsKeyInputAdapter);
+            mainMultiplexer.addProcessor(gameMenuInputAdapter);
+            if (isToolsUIVisible) {
+                mainMultiplexer.addProcessor(toolsStage);
+            }
+            Gdx.input.setInputProcessor(mainMultiplexer);
+        }
     }
 
     public void toggleInventoryMenu() {
@@ -355,7 +378,10 @@ public class GameMenuUI implements Screen {
     }
 
     public void goToShopMenu() {
-        ShopMenuController shopMenuController = new ShopMenuController(gameModel.getMap().getTiles()[105][94]);
+        ShopMenuController shopMenuController = new ShopMenuController(gameModel.getPlayingUser().getCurrentTile());
+        if(shopMenuController.shop == null){
+            return;
+        }
         ShopMenuUI shopMenuUI = new ShopMenuUI(shopMenuController, this);
         Main.getGame().setScreen(shopMenuUI);
     }
