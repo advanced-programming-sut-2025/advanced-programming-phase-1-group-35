@@ -1,6 +1,7 @@
 package GraphicView.Game;
 
 import Controller.GameMenuController;
+import GraphicView.GameMenuUI;
 import Model.Game;
 import Model.Pair;
 import Model.User;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.StardewValley.Main;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +19,7 @@ public class GameMenuInputAdapter extends InputAdapter {
     private final Game game;
     private final GameMenuController gameController;
     private final Set<Integer> keysHeld = new HashSet<>();
+    public GameMenuUI gameMenuUI;
 
     public GameMenuInputAdapter(Game game, GameMenuController gameController) {
         this.game = game;
@@ -42,12 +43,23 @@ public class GameMenuInputAdapter extends InputAdapter {
                 throw new RuntimeException(e);
             }
         }
+        if(keycode == Input.Keys.P){
+            gameMenuUI.goToShopMenu();
+        }
 
-// TODO : add escape function
-//        if (keycode == Input.Keys.ESCAPE) {
-//            gameController.goToMain();
-//            return true;
-//        }
+        if (keycode == Input.Keys.C) {
+            gameMenuUI.toggleCookMenu();
+            return true;
+        }
+
+        if (keycode == Input.Keys.ESCAPE) {
+            gameMenuUI.toggleInventoryMenu();
+            return true;
+        }
+
+        if(keycode == Input.Keys.T){
+            return true;
+        }
 
         return true;
     }
@@ -69,6 +81,13 @@ public class GameMenuInputAdapter extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (gameMenuUI.buildingPlacementMode) {
+            if (button == Input.Buttons.LEFT) {
+                gameMenuUI.handleBuildingPlacement(screenX, screenY);
+                return true;
+            }
+        }
+
         if (button == Input.Buttons.LEFT) {
             performAction(screenX, screenY);
             return true;
@@ -80,21 +99,22 @@ public class GameMenuInputAdapter extends InputAdapter {
         User player = game.getPlayingUser();
         float vx = 0, vy = 0;
         int dir = 0;
+        float sp = 1;
 
         if (keysHeld.contains(Input.Keys.W)) {
-            vy += 1;
+            vy += sp;
             dir = 3;
         }
         if (keysHeld.contains(Input.Keys.S)) {
-            vy -= 1;
+            vy -= sp;
             dir = 1;
         }
         if (keysHeld.contains(Input.Keys.A)) {
-            vx -= 1;
+            vx -= sp;
             dir = 4;
         }
         if (keysHeld.contains(Input.Keys.D)) {
-            vx += 1;
+            vx += sp;
             dir = 2;
         }
 

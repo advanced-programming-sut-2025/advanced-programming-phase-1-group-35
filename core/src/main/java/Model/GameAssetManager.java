@@ -16,8 +16,6 @@ public class GameAssetManager {
     public static Texture pathway = new Texture(Gdx.files.internal("flooring/pathway.png"));
     public static Texture water = new Texture(Gdx.files.internal("flooring/water.png"));
     public static Texture rock = new Texture(Gdx.files.internal("rock/boulder.png"));
-    public static Texture cabin = new Texture(Gdx.files.internal("buildings/cabin.png"));
-    public static Texture greenhouse = new Texture(Gdx.files.internal("buildings/greenhouse.png"));
 
     public static void setDefaultSkin(Skin defaultSkin) {
         GameAssetManager.defaultSkin = defaultSkin;

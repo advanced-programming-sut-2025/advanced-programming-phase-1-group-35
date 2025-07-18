@@ -2,7 +2,9 @@ package com.StardewValley;
 
 import Controller.InGameMenu.CraftingController;
 import Controller.LoginMenuController;
+import Controller.MainMenuController;
 import GraphicView.CraftingUI;
+import GraphicView.MainMenuUI;
 import GraphicView.SignUpUI;
 import Model.App;
 import Model.GameAssetManager;
@@ -28,7 +30,7 @@ public class Main extends Game {
     private static Main game;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
-    public static int TILE_SIZE = 20 ;
+    public static int TILE_SIZE = 5;
 
     public static Main getGame() {
         return game;
@@ -63,6 +65,9 @@ public class Main extends Game {
 
         try {
             App.deserializeApp();
+            if(App.isStayLoggedIn()){
+                game.setScreen(new MainMenuUI(new MainMenuController()));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

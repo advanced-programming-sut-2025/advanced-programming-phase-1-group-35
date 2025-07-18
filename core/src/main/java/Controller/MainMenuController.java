@@ -60,6 +60,6 @@ public class MainMenuController extends Controller {
             App.setCurrentMenu(Menu.LoginMenu);
         }
         App.serializeApp();
-        App.setCurrentMenu(Menu.ExitMenu);
+        System.exit(0);
     }
 }
