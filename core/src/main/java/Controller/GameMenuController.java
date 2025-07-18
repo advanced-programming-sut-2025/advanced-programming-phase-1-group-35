@@ -418,9 +418,6 @@ public class GameMenuController {
         if (user.isHasNewTradeRequest()) {
             notifications += "\nyou have new trade request(s), look your trade history for more info";
         }
-        user.setHasNewMessages(false);
-        user.setHasNewGift(false);
-        user.setHasNewTradeRequest(false);
         return new Result(true, "going to next turn . now turn of : " +
                 user.getUsername() + notifications);
     }

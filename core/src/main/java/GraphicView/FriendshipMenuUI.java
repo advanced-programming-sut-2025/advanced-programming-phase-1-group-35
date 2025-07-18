@@ -1,11 +1,7 @@
 package GraphicView;
 
 import Controller.InGameMenu.FriendshipMenuController;
-import Model.App;
-import Model.GameAssetManager;
-import Model.Message;
-import Model.Result;
-import Model.User;
+import Model.*;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -34,6 +30,11 @@ public class FriendshipMenuUI implements Screen {
     private Window messagesWindow;
     private boolean hasNewMessages;
 
+    private Inventory giftInventory;
+    private TextField giftAmountField;
+    private User selectedGiftRecipient;
+    private TextButton sendGiftButton;
+
     public FriendshipMenuUI(GameMenuUI gameMenuUI) {
         this.gameMenuUI = gameMenuUI;
         this.controller = new FriendshipMenuController();
@@ -50,6 +51,7 @@ public class FriendshipMenuUI implements Screen {
         // Create main table
         mainTable = new Table();
         mainTable.setFillParent(true);
+        mainTable.setWidth(Gdx.graphics.getWidth() * 0.7f); // Take 70% of width
         stage.addActor(mainTable);
 
         // Title with notification badge
@@ -109,6 +111,30 @@ public class FriendshipMenuUI implements Screen {
             }
         });
         buttonsTable.add(viewMessagesButton);
+        Label giftLabel = new Label("Gift Items:", skin);
+        mainTable.add(giftLabel).colspan(2).left().padTop(20).row();
+
+        // Initialize inventory for gifting
+        giftInventory = new Inventory(Main.getGame(), stage, gameMenuUI.gameController);
+
+        // Gift amount input
+        Table giftInputTable = new Table();
+        giftInputTable.add(new Label("Amount:", skin)).padRight(10);
+        giftAmountField = new TextField("1", skin);
+        giftAmountField.setMessageText("Enter amount");
+        giftInputTable.add(giftAmountField).width(100);
+        mainTable.add(giftInputTable).colspan(2).pad(10).row();
+
+        // Send gift button
+        sendGiftButton = new TextButton("Send Gift", skin);
+        sendGiftButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sendGift();
+            }
+        });
+        mainTable.add(sendGiftButton).colspan(2).pad(10).width(200).height(50);
+
 
         // Back button
         TextButton backButton = new TextButton("Back", skin);
@@ -229,7 +255,9 @@ public class FriendshipMenuUI implements Screen {
     private void addPlayerRow(User player) {
         // Player name
         Label nameLabel = new Label(player.getUsername(), skin);
+        Label xpLabel = new Label(String.format("%d",player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser())),skin);
         playersTable.add(nameLabel).width(200).pad(5);
+        playersTable.add(xpLabel).width(200).pad(5);
 
         // Talk button
         TextButton talkButton = new TextButton("Talk", skin);
@@ -249,6 +277,50 @@ public class FriendshipMenuUI implements Screen {
         messageField.setUserObject(player);
         messageField.setText("");
         messageField.setMessageText("Message to " + player.getUsername());
+        selectedGiftRecipient = player; // Set as gift recipient
+    }
+
+    private void sendGift() {
+        if (selectedGiftRecipient == null) {
+            statusLabel.setText("Please select a recipient first");
+            statusLabel.setColor(1, 0, 0, 1);
+            return;
+        }
+
+        ItemInterface selectedItem = giftInventory.getSelectedItem();
+        if (selectedItem == null) {
+            statusLabel.setText("Please select an item to gift");
+            statusLabel.setColor(1, 0, 0, 1);
+            return;
+        }
+
+        String amountText = giftAmountField.getText();
+        try {
+            int amount = Integer.parseInt(amountText);
+            if (amount <= 0) {
+                statusLabel.setText("Amount must be positive");
+                statusLabel.setColor(1, 0, 0, 1);
+                return;
+            }
+
+            Result result = controller.giftPlayer(
+                selectedGiftRecipient.getUsername(),
+                selectedItem.getName(),
+                String.valueOf(amount)
+            );
+
+            if (result.isSuccess()) {
+                statusLabel.setText("Gift sent successfully!");
+                statusLabel.setColor(0, 1, 0, 1);
+                giftInventory.refresh(); // Refresh inventory display
+            } else {
+                statusLabel.setText(result.toString());
+                statusLabel.setColor(1, 0, 0, 1);
+            }
+        } catch (NumberFormatException e) {
+            statusLabel.setText("Invalid amount");
+            statusLabel.setColor(1, 0, 0, 1);
+        }
     }
 
     private void sendMessage() {
@@ -304,13 +376,20 @@ public class FriendshipMenuUI implements Screen {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act(delta);
+        stage.draw();
+
+        // Draw inventory on the right side
+        batch.begin();
+        // Position inventory on the right with some padding
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        giftInventory.drawOnRight(batch);
+        batch.end();
+
         // Update notification badge
         Label notificationBadge = (Label)((Table)mainTable.getChild(0)).getChild(1);
         notificationBadge.setText(hasNewMessages ? "!" : "");
         notificationBadge.setVisible(hasNewMessages);
-
-        stage.act(delta);
-        stage.draw();
     }
 
     private void goBackToGameMenu() {
