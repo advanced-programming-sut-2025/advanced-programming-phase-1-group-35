@@ -255,6 +255,7 @@ public class Crop implements PlantAble, ItemInterface {
         return null;
     }
 
+
     @Override
     public int getPrice() {
         return price;

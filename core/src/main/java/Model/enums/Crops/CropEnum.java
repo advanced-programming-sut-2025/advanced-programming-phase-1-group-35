@@ -216,9 +216,7 @@
            return "crops/" + Controller.formatUpperSnakeCase(getName()) + ".png";
         }
 
-        public String getStatePath(){
-            return "crops/" + Controller.formatUpperSnakeCase(getName())+ "_Stage_" + currentState + ".png";
-        }
+
 
         @Override
         public ItemInterface getItem() {
