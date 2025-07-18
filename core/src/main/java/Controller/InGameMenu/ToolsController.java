@@ -71,14 +71,14 @@ public class ToolsController {
             if (item instanceof Tool tool && tool.getToolType().toString().equalsIgnoreCase(toolName)) {
                 if (tool instanceof FishingPole) {
                     if (controller.findShopByTile(player.getCurrentTile()) != null &&
-                            !controller.findShopByTile(player.getCurrentTile()).getName().
-                                    equalsIgnoreCase("FishShop")) {
+                        !controller.findShopByTile(player.getCurrentTile()).getName().
+                            equalsIgnoreCase("FishShop")) {
                         return new Result(false, "you are not in Willy store!");
                     }
                 } else {
                     if (controller.findShopByTile(player.getCurrentTile()) == null ||
-                            !controller.findShopByTile(player.getCurrentTile()).getName().
-                                    equalsIgnoreCase("Blacksmith")) {
+                        !controller.findShopByTile(player.getCurrentTile()).getName().
+                            equalsIgnoreCase("Blacksmith")) {
                         return new Result(false, "you are not in the blacksmith");
                     }
                 }
@@ -112,39 +112,33 @@ public class ToolsController {
         User player = App.getCurrentGame().getPlayingUser();
         BackPack backPack = player.backPack;
         Tool tool = player.getCurrentTool();
+        if (tool == null) {
+            return new Result(false, "No tool is equipped!");
+        }
         if (!backPack.isToolInBackPack(tool.getToolType())) {
             return new Result(false, "you don't have a " + tool.getToolType() + " in your backpack!");
         }
-        Tile currentTile = player.getCurrentTile();
         Tile destenationTile = game.getMap().getTileWithDirection(direction);
         if (destenationTile == null) {
             return new Result(false, "wrong direction!");
         }
         switch (tool.getToolType()) {
-            case HOE -> {
-                return useHoe(game, player, destenationTile);
-            }
-            case PICKAXE -> {
-                return usePickaxe(game, player, destenationTile);
-            }
-            case AXE -> {
-                return useAxe(game, player, destenationTile, direction);
-            }
-            case SHEARS -> {
-                return useShears(game, player, destenationTile);
-            }
-            case MILK_PAIL -> {
-                return useMilkPail(game, player, destenationTile);
-            }
-            case FISHING_ROD -> {
-                return useFishingPole(game, player, destenationTile);
-            }
-            case WATERING_CAN -> {
-                return useWateringCan(game, player, destenationTile);
-            }
-            case SCYTHE -> {
+            case HOE:
+                return useHoe(player, destenationTile);
+            case PICKAXE:
+                return usePickaxe(player, destenationTile);
+            case AXE:
+                return useAxe(player, destenationTile, direction);
+            case SHEARS:
+                return useShears(player, destenationTile);
+            case MILK_PAIL:
+                return useMilkPail(player, destenationTile);
+            case FISHING_ROD:
+                return useFishingPole(player, destenationTile);
+            case WATERING_CAN:
+                return useWateringCan(player, destenationTile);
+            case SCYTHE:
                 return useScythe(game, player, destenationTile);
-            }
         }
         return null;
     }
@@ -157,7 +151,7 @@ public class ToolsController {
         return true;
     }
 
-    private Result useHoe(Game game, User player, Tile destenationTile) {
+    private Result useHoe(User player, Tile destenationTile) {
         if (!energyCheck(player, 5)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -170,7 +164,7 @@ public class ToolsController {
         }
     }
 
-    private Result usePickaxe(Game game, User player, Tile destenationTile) {
+    private Result usePickaxe(User player, Tile destenationTile) {
         if (!energyCheck(player, 5)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -185,7 +179,7 @@ public class ToolsController {
         }
     }
 
-    private Result useAxe(Game game, User player, Tile destenationTile, int direction) {
+    private Result useAxe(User player, Tile destenationTile, int direction) {
         if (!energyCheck(player, 5)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -220,7 +214,7 @@ public class ToolsController {
         return new Result(false, "you cant use axe on this tile");
     }
 
-    private Result useShears(Game game, User player, Tile destenationTile) {
+    private Result useShears(User player, Tile destenationTile) {
         if (!energyCheck(player, 4)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -234,7 +228,7 @@ public class ToolsController {
         return new Result(false, "you is no sheep in this tile");
     }
 
-    private Result useMilkPail(Game game, User player, Tile destenationTile) {
+    private Result useMilkPail(User player, Tile destenationTile) {
         if (!energyCheck(player, 4)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -248,21 +242,14 @@ public class ToolsController {
         return new Result(false, "you is no cow in this tile");
     }
 
-    private Result useFishingPole(Game game, User player, Tile destenationTile) {
+    private Result useFishingPole(User player, Tile destenationTile) {
         if (!energyCheck(player, 8)) {
             return new Result(false, "you don't have enough energy!");
         }
-        if (destenationTile.getTileType() == TileType.Water) {
-            for (ItemInterface item : player.backPack.items.keySet()) {
-                if (item instanceof FishingPole pole) {
-                    return new AnimalController().fishing();
-                }
-            }
-        }
-        return new Result(false, "you are not near to water!");
+        return new AnimalController().fishing();
     }
 
-    private Result useWateringCan(Game game, User player, Tile destenationTile) {
+    private Result useWateringCan(User player, Tile destenationTile) {
         if (!energyCheck(player, 5)) {
             return new Result(false, "you don't have enough energy!");
         }
@@ -273,7 +260,7 @@ public class ToolsController {
                         can.setCapacity(can.getCapacity() + 1);
                     }
                     return new Result(true, "You fill the can and its capacity now: " +
-                            can.getCapacity());
+                        can.getCapacity());
                 } else if (!destenationTile.isWatered) {
                     destenationTile.setWatered(true);
                     if (destenationTile.getPlanted() instanceof Crop crop) {
@@ -293,7 +280,7 @@ public class ToolsController {
             return new Result(false, "you don't have enough energy!");
         }
         if (destenationTile.getTileType() == TileType.Grass ||
-                destenationTile.getTileType() == TileType.Soil) {
+            destenationTile.getTileType() == TileType.Soil) {
 
             return new FarmingController(game.getMap().getTiles()).harvestCrop(destenationTile);
         }
