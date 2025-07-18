@@ -71,6 +71,9 @@ public class GameView {
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
             }
         }
+//        Tree test = new Tree(TreeEnum.APPLE_TREE);
+//        test.setTile(App.getCurrentGame().getPlayingUser().getCurrentTile());
+//        App.getCurrentGame().getMap().getTrees().add(test);
 
         // TODO : load other things
 //        for (ItemDescriptionId id : ItemDescriptionId.values()) {
