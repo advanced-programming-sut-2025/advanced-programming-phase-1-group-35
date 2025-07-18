@@ -1,9 +1,11 @@
 package GraphicView.Game;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.ToolsController;
 import GraphicView.GameMenuUI;
 import Model.Game;
 import Model.Pair;
+import Model.Result;
 import Model.User;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -18,12 +20,15 @@ import java.util.Set;
 public class GameMenuInputAdapter extends InputAdapter {
     private final Game game;
     private final GameMenuController gameController;
+    private final ToolsController toolsController;
     private final Set<Integer> keysHeld = new HashSet<>();
     public GameMenuUI gameMenuUI;
 
-    public GameMenuInputAdapter(Game game, GameMenuController gameController) {
+    public GameMenuInputAdapter(Game game, GameMenuController gameController, GameMenuUI gameMenuUI) {
         this.game = game;
         this.gameController = gameController;
+        this.gameMenuUI = gameMenuUI;
+        this.toolsController = new ToolsController();
     }
 
     @Override
@@ -91,11 +96,44 @@ public class GameMenuInputAdapter extends InputAdapter {
             }
         }
 
-        if (button == Input.Buttons.LEFT) {
-            performAction(screenX, screenY);
+        if (button == Input.Buttons.RIGHT) {
+            handleRightClick(screenX, screenY);
             return true;
         }
         return false;
+    }
+
+    private void handleRightClick(int screenX, int screenY) {
+        OrthographicCamera camera = game.camera;
+        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+        Pair<Float, Float> playerPos = game.getPlayingUser().getCurrentPoint();
+
+        int playerTileX = Math.round(playerPos.first);
+        int playerTileY = Math.round(playerPos.second);
+
+        int targetTileX = (int) (worldCoordinates.x / Main.TILE_SIZE);
+        int targetTileY = (int) (worldCoordinates.y / Main.TILE_SIZE);
+
+        int direction = calculateDirection(playerTileX, playerTileY, targetTileX, targetTileY);
+
+        if (direction != 0) {
+            Result result = toolsController.useTool(direction);
+            if (result != null) {
+                gameMenuUI.showDialog("Tool Used", result.toString());
+            }
+        }
+    }
+
+    private int calculateDirection(int startX, int startY, int endX, int endY) {
+        int dx = endX - startX;
+        int dy = endY - startY;
+
+        if (Math.abs(dy) > Math.abs(dx) && dy > 0) return 8;
+        if (Math.abs(dy) > Math.abs(dx) && dy < 0) return 2;
+        if (Math.abs(dy) < Math.abs(dx) && dx > 0) return 6;
+        if (Math.abs(dy) < Math.abs(dx) && dx < 0) return 4;
+
+        return 0;
     }
 
     public void update(float delta) {
@@ -133,28 +171,5 @@ public class GameMenuInputAdapter extends InputAdapter {
         float speed = player.getSpeed();
         player.setVelocity(vx * speed, vy * speed);
         player.update(delta, game.getMap().getTiles());
-    }
-
-
-    private void performAction(int screenX, int screenY) {
-        OrthographicCamera camera = game.camera;
-        camera.update();
-        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
-        Pair<Float, Float> playerPos = game.getPlayingUser().getCurrentPoint();
-
-        int tileX = (int) (worldCoordinates.x / Main.TILE_SIZE);
-        int tileY = (int) (worldCoordinates.y / Main.TILE_SIZE);
-
-        int dx = tileX - Math.round(playerPos.first);
-        int dy = tileY - Math.round(playerPos.second);
-
-        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-            return;
-        }
-// TODO: fix this after managing inventory
-//        ItemDescriptionId selectedItem = game.getPlayingUser().getSelectedItem();
-//        if (selectedItem != null) {
-//            gameController.useItem(selectedItem, new Point(tileX, tileY), game);
-//        }
     }
 }

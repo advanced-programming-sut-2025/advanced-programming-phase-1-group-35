@@ -96,7 +96,7 @@ public class GameMenuUI implements Screen {
 
     private void initializeGame() {
         gameView = new GameView(gameModel);
-        gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController);
+        gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController, this);
         gameMenuInputAdapter.gameMenuUI = this;
 
         toolsBatch = new SpriteBatch();
