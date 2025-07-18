@@ -594,6 +594,10 @@ public class GameMenuUI implements Screen {
         Main.getGame().setScreen(shopMenuUI);
     }
 
+    public void goToFriendsMenu() {
+        Main.getGame().setScreen(new FriendshipMenuUI(this));
+    }
+
     public InputMultiplexer getMainMultiplexer() {
         return mainMultiplexer;
     }
