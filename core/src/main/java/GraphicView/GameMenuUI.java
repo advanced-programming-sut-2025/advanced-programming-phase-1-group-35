@@ -589,7 +589,7 @@ public class GameMenuUI implements Screen {
     public void hide() {}
 
     public void goToShopMenu() {
-        ShopMenuController shopMenuController = new ShopMenuController(gameModel.getMap().getTiles()[105][94]);
+        ShopMenuController shopMenuController = new ShopMenuController(gameModel.getPlayingUser().getCurrentTile());
         ShopMenuUI shopMenuUI = new ShopMenuUI(shopMenuController, this);
         Main.getGame().setScreen(shopMenuUI);
     }

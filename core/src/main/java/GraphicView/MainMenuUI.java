@@ -77,6 +77,7 @@ public class MainMenuUI implements Screen {
         controller.logout();
         try {
             controller.exitMenu();
+            controller.logout();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

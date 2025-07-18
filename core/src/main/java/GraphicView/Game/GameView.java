@@ -1,16 +1,23 @@
 package GraphicView.Game;
 
+import Model.App;
+import Model.CropClasses.Crop;
+import Model.CropClasses.Tree;
 import Model.Game;
 import Model.Pair;
 import Model.Tile;
+import Model.enums.Crops.CropEnum;
+import Model.enums.Crops.TreeEnum;
+import Model.User;
 import Model.enums.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Gdx;
+import Controller.Controller;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 import java.awt.*;
@@ -26,6 +33,8 @@ public class GameView {
     private Map<String, TextureRegion> textures;
     private Texture pixel;
     private TextureAtlas playerAtlas;
+    private Label coordinateLabel;
+    public Table infoTable;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
     private int moveDirection = 0;
     private float stateTime = 0f;
@@ -33,6 +42,7 @@ public class GameView {
     public GameView(Game game) {
         this.game = game;
         batch = new SpriteBatch();
+        coordinateLabel = new Label();
         loadTextures();
         loadFont();
     }
@@ -40,7 +50,7 @@ public class GameView {
     private void loadFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 16;
+        parameter.size = 20;
         smallFont = generator.generateFont(parameter);
         generator.dispose();
     }
@@ -52,6 +62,24 @@ public class GameView {
             String path = id.getIconPath();
             textures.put(id.name(), new TextureRegion(new Texture(Gdx.files.internal(path))));
         }
+        for (CropEnum cropEnum : CropEnum.values()) {
+            for (int i = 1; i <= cropEnum.getStages().size(); i++) { // or a fixed max stage
+                String path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + "_Stage_" + i + ".png";
+                if(cropEnum.isForaging()) path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+            }
+        }
+
+        for(TreeEnum treeEnum : TreeEnum.values()) {
+            for (int i = 1; i <= treeEnum.getStages().size(); i++) {
+                String path = "trees/" + Controller.formatUpperSnakeCase(treeEnum.getName()) + "_Stage_" + i + ".png";
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+            }
+        }
+//        Tree test = new Tree(TreeEnum.APPLE_TREE);
+//        test.setTile(App.getCurrentGame().getPlayingUser().getCurrentTile());
+//        App.getCurrentGame().getMap().getTrees().add(test);
+
         // TODO : load other things
 //        for (ItemDescriptionId id : ItemDescriptionId.values()) {
 //            String path = id.getIconPath();
@@ -92,6 +120,11 @@ public class GameView {
         batch.begin();
         renderTiles();
         renderPlayer();
+        renderCoordinates();
+        renderDateTime();
+        renderWeather();
+        renderSeason();
+        renderEnergyBar();
         batch.end();
     }
 
@@ -122,68 +155,89 @@ public class GameView {
                     float drawY = y * tileSize - cameraBottom;
 
                     //TODO: also render crops
-//                    GrowingCrop crop = game.getGrowingCrops().get(new Point(x, y));
-//                    if (crop != null && crop.watered()) {
-//                        batch.setColor(0.7f, 0.7f, 0.7f, 1f);
-//                    } else {
-//                        batch.setColor(1f, 1f, 1f, 1f);
-//                    }
+                    if (id.getPlanted() != null && id.getPlanted().getClass().equals(Crop.class)) {
+                        Crop GrowingCrop = (Crop) id.getPlanted();
 
-                    TextureRegion texture ;
-                    TextureRegion layer1 = id.getTexture() ;
-                    texture = textures.get(id.getTileType().name());
+                        if (GrowingCrop != null && GrowingCrop.getDaysSinceWatered() <= 1) {
+                            batch.setColor(0.7f, 0.7f, 0.7f, 1f);
+                        } else {
+                            batch.setColor(1f, 1f, 1f, 1f);
+                        }
+
+                    } else if (id.getPlanted() != null && id.getPlanted().getClass().equals(Tree.class)) {
+                        Tree GrowingTree = (Tree) id.getPlanted();
+
+                        if (GrowingTree != null && GrowingTree.getDaysSinceWatered() <= 1) {
+                            batch.setColor(0.7f, 0.7f, 0.7f, 1f);
+                        } else {
+                            batch.setColor(1f, 1f, 1f, 1f);
+                        }
+                    }
+                    TextureRegion texture = textures.get(id.getTileType().name());
                     if (texture != null) {
                         batch.draw(texture, drawX, drawY, tileSize, tileSize);
-                    }
-                    if (layer1 != null){
-                        batch.draw(layer1, drawX, drawY, tileSize, tileSize);
+                        TextureRegion layer1 = id.getTexture();
+                        texture = textures.get(id.getTileType().name());
+                        if (texture != null) {
+                            batch.draw(texture, drawX, drawY, tileSize, tileSize);
+                        }
+                        if (layer1 != null) {
+                            batch.draw(layer1, drawX, drawY, tileSize, tileSize);
+                        }
                     }
                 }
             }
         }
         //TODO : render crops
-//        for (Map.Entry<Point, GrowingCrop> entry : game.getGrowingCrops().entrySet()) {
-//            Point point = entry.getKey();
-//            GrowingCrop crop = entry.getValue();
-//
-//            int x = point.x;
-//            int y = point.y;
-//
-//            if (x >= startX && x < endX && y >= startY && y < endY) {
-//                float drawX = x * tileSize - cameraLeft;
-//                float drawY = y * tileSize - cameraBottom;
-//
-//                int growth = crop.getGrowth();
-//                CarrotStages cs;
-//
-//                if (growth < 2) cs = CarrotStages.CARROT_STAGE_1;
-//                else if (growth < 4) cs = CarrotStages.CARROT_STAGE_2;
-//                else if (growth < 6) cs = CarrotStages.CARROT_STAGE_3;
-//                else cs = CarrotStages.CARROT_STAGE_4;
-//
-//                TextureRegion cropTexture = textures.get(cs.name());
-//                if (cropTexture != null) {
-//                    batch.setColor(1f, 1f, 1f, 1f);
-//                    batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
-//                }
-//            }
-//        }
+        for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
+
+            int x = crop.getCropTile().getCoordination().getX();
+            int y = crop.getCropTile().getCoordination().getY();
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                float drawX = x * tileSize - cameraLeft;
+                float drawY = y * tileSize - cameraBottom;
+
+                int growth = crop.getCurrentState();
+
+
+                TextureRegion cropTexture = textures.get(crop.getStatePath());
+                if (cropTexture != null) {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
+                }
+            }
+        }
+        for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
+            int x = tree.getTile().getCoordination().getX();
+            int y = tree.getTile().getCoordination().getY();
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                float drawX = x * tileSize - cameraLeft;
+                float drawY = y * tileSize - cameraBottom;
+                int growth = tree.getCurrentState();
+
+                TextureRegion treeTexture = textures.get(tree.stagePath());
+                if (treeTexture != null) {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.draw(treeTexture, drawX, drawY, tileSize, tileSize);
+                }
+            }
+        }
 
         batch.setColor(1f, 1f, 1f, 1f);
     }
 
     private void renderPlayer() {
-        Pair<Float,Float> pos = game.getPlayingUser().getCurrentPoint();
+        for (User player : game.getPlayers()) {
+            Pair<Float, Float> pos = player.getCurrentPoint();
+            moveDirection = player.getMovingDirection();
 
-        moveDirection = game.getPlayingUser().getMovingDirection();
+            stateTime += Gdx.graphics.getDeltaTime();
 
-        stateTime += Gdx.graphics.getDeltaTime();
+            Animation<TextureRegion> currentAnimation = playerAnimations.get(moveDirection);
+            TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
-        Animation<TextureRegion> currentAnimation = playerAnimations.get(moveDirection);
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-
-        batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-//        renderInventory();
+            batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+        }
     }
 
     public SpriteBatch getBatch() {
@@ -193,52 +247,126 @@ public class GameView {
     public Texture getPixel() {
         return pixel;
     }
-    // TODO: render inventory
-//    private void renderInventory() {
-//        Player player = game.getPlayer();
-//        Map<ItemDescriptionId, Pair<Integer, Integer>> inventory = player.getInventory();
-//        int selectedSlot = player.getSelectedSlot(); // Assuming you have this method
-//
-//        int screenWidth = Gdx.graphics.getWidth();
-//        int slotSize = StardewMini.TILE_SIZE /2;
-//        int numSlots = player.getMaxInventorySize();
-//        int startX = (screenWidth - numSlots * slotSize) / 2;
-//        int y = StardewMini.TILE_SIZE /2;
-//
-//        for (int i = 0; i < numSlots; i++) {
-//            int x = startX + i * slotSize;
-//
-//            batch.draw(textures.get(TileDescriptionId.SLOT.name()), x, y, slotSize, slotSize);
-//
-//            String slotNum = String.valueOf(i + 1);
-//            smallFont.draw(batch, slotNum, x + 2, y + slotSize - 2);
-//        }
-//
-//        // Highlight selected slot
-//        if (selectedSlot >= 0 && selectedSlot < numSlots) {
-//            int highlightX = startX + selectedSlot * slotSize;
-//            batch.draw(textures.get(TileDescriptionId.HIGHLIGHT.name()), highlightX, y, slotSize, slotSize);
-//        }
-//
-//        for (Map.Entry<ItemDescriptionId, Pair<Integer, Integer>> entry : inventory.entrySet()) {
-//            ItemDescriptionId id = entry.getKey();
-//            int quantity = entry.getValue().first;
-//            int index = entry.getValue().second;
-//
-//            if (index < 0 || index >= numSlots) continue;
-//
-//            TextureRegion itemTex = textures.get(id.name());
-//            if (itemTex != null) {
-//                int x = startX + index * slotSize;
-//                batch.draw(itemTex, x, y, slotSize, slotSize);
-//
-//                // Draw item quantity at bottom-right corner
-//                String count = String.valueOf(quantity);
-//                layout.setText(smallFont, count);
-//                smallFont.draw(batch, count, x + slotSize - layout.width - 2, y + layout.height + 2);
-//            }
-//        }
-//    }
+    private void renderCoordinates() {
+        User playingUser = game.getPlayingUser(); // Assuming you have this method
+        if (playingUser == null) return;
 
+        Pair<Float, Float> pos = playingUser.getCurrentPoint();
+        String coordText = String.format("x : %.1f y : %.1f", pos.first, pos.second);
 
+        // Calculate position (top right corner with some padding)
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150;
+        float y = game.camera.viewportHeight - padding;
+
+        // Draw background for better readability
+        batch.setColor(0, 0, 0, 0.5f); // Semi-transparent black
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            10, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1); // Reset color
+
+        // Draw text
+        smallFont.draw(batch, coordText, x, y);
+    }
+    private void renderDateTime() {
+        String dateTimeText = game.getGameCalender().getGameDateTime().toString();
+        // Assuming this returns a formatted string, adjust if needed
+
+        // Calculate position (top right corner below coordinates)
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150; // Wider for date/time
+        float y = game.camera.viewportHeight - padding - smallFont.getLineHeight() - 5;
+
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, dateTimeText, x, y);
+    }
+
+    private void renderWeather() {
+        String weatherText = "Weather: " + game.getWeather().getWeatherCondition().toString();
+
+        // Position below date/time
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 2;
+
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, weatherText, x, y);
+    }
+
+    private void renderSeason() {
+        String seasonText = "Season: " + game.getGameCalender().getSeason().toString();
+
+        // Position below weather
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 3;
+
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, seasonText, x, y);
+    }
+    private void renderEnergyBar() {
+        User player = game.getPlayingUser();
+        if (player == null) return;
+
+        float energyRatio = (float) ((float) player.getEnergy().getEnergyAmount() / player.getEnergy().getEnergyCapacity());
+        energyRatio = Math.max(0, Math.min(1, energyRatio)); // Clamp between 0 and 1
+
+        // Dimensions and positioning
+        float padding = 10f;
+        float width = 150f;
+        float height = 20f;
+        float x = game.camera.viewportWidth - padding - width;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 4 - height;
+
+        // Draw background (empty energy)
+        batch.setColor(0.2f, 0.2f, 0.2f, 0.7f);
+        batch.draw(pixel, x, y, width, height);
+
+        // Draw filled energy (color changes based on energy level)
+        if (energyRatio > 0.6f) {
+            batch.setColor(0.2f, 0.8f, 0.2f, 0.9f); // Green when high
+        } else if (energyRatio > 0.3f) {
+            batch.setColor(1f, 0.8f, 0.2f, 0.9f); // Yellow when medium
+        } else {
+            batch.setColor(0.8f, 0.2f, 0.2f, 0.9f); // Red when low
+        }
+        batch.draw(pixel, x, y, width * energyRatio, height);
+
+        // Draw border
+        batch.setColor(1f, 1f, 1f, 0.5f);
+        batch.draw(pixel, x - 1, y - 1, width + 2, 1); // Top border
+        batch.draw(pixel, x - 1, y + height, width + 2, 1); // Bottom border
+        batch.draw(pixel, x - 1, y - 1, 1, height + 2); // Left border
+        batch.draw(pixel, x + width, y - 1, 1, height + 2); // Right border
+
+        // Draw energy text
+        batch.setColor(1f, 1f, 1f, 1f);
+        String energyText = String.format("%d/%d",
+            (int)player.getEnergy().getEnergyAmount(),
+            (int)player.getEnergy().getEnergyCapacity());
+
+        // Center text in the bar
+        GlyphLayout layout = new GlyphLayout(smallFont, energyText);
+        float textX = x + (width - layout.width) / 2;
+        float textY = y + (height + layout.height) / 2;
+        smallFont.draw(batch, energyText, textX, textY);
+    }
 }

@@ -1,5 +1,6 @@
 package Model.enums.Crops;
 
+import Controller.Controller;
 import Model.enums.Seasons;
 
 import java.util.List;
@@ -7,20 +8,20 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public enum TreeEnum {
-    APRICOT_TREE("Apricot Tree", "Apricot Sapling", 28, Fruit.APRICOT,true,List.of(Seasons.Spring)),
-    CHERRY_TREE("Cherry Tree", "Cherry Sapling", 28, Fruit.CHERRY,false,List.of(Seasons.Spring)),
-    BANANA_TREE("Banana Tree", "Banana Sapling", 28, Fruit.BANANA,false,List.of(Seasons.Summer)),
-    MANGO_TREE("Mango Tree", "Mango Sapling", 28, Fruit.MANGO,false,List.of(Seasons.Summer)),
-    ORANGE_TREE("Orange Tree", "Orange Sapling", 28, Fruit.ORANGE,false,List.of(Seasons.Summer)),
-    PEACH_TREE("Peach Tree", "Peach Sapling", 28, Fruit.PEACH,false,List.of(Seasons.Summer)),
-    APPLE_TREE("Apple Tree", "Apple Sapling", 28, Fruit.APPLE,false,List.of(Seasons.Fall)),
-    POMEGRANATE_TREE("Pomegranate Tree", "Pomegranate Sapling", 28, Fruit.POMEGRANATE, false,List.of(Seasons.Fall)),
-    OAK_TREE("Oak Tree", "Acorns", 28, Fruit.OAK_RESIN,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
-    MAPLE_TREE("Maple Tree", "Maple Seeds", 28, Fruit.MAPLE_SYRUP,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
-    PINE_TREE("Pine Tree", "Pine Cones", 28, Fruit.PINE_TAR,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
-    MAHOGANY_TREE("Mahogany Tree", "Mahogany Seeds", 28, Fruit.SAP,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
-    MUSHROOM_TREE("Mushroom Tree", "Mushroom Tree Seeds", 28, Fruit.COMMON_MUSHROOM,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
-    MYSTIC_TREE("Mystic Tree", "Mystic Tree Seeds", 28, Fruit.MYSTIC_SYRUP,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),;
+    APRICOT_TREE("Apricot", "Apricot_Sapling", 28, Fruit.APRICOT,true,List.of(Seasons.Spring)),
+    CHERRY_TREE("Cherry", "Cherry_Sapling", 28, Fruit.CHERRY,false,List.of(Seasons.Spring)),
+    BANANA_TREE("Banana", "Banana_Sapling", 28, Fruit.BANANA,false,List.of(Seasons.Summer)),
+    MANGO_TREE("Mango", "Mango_Sapling", 28, Fruit.MANGO,false,List.of(Seasons.Summer)),
+    ORANGE_TREE("Orange", "Orange_Sapling", 28, Fruit.ORANGE,false,List.of(Seasons.Summer)),
+    PEACH_TREE("Peach", "Peach_Sapling", 28, Fruit.PEACH,false,List.of(Seasons.Summer)),
+    APPLE_TREE("Apple", "Apple_Sapling", 28, Fruit.APPLE,false,List.of(Seasons.Fall)),
+    POMEGRANATE_TREE("Pomegranate", "Pomegranate_Sapling", 28, Fruit.POMEGRANATE, false,List.of(Seasons.Fall)),
+    OAK_TREE("Oak", "Acorns_Sapling", 28, Fruit.OAK_RESIN,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
+    MAPLE_TREE("Maple", "Maple_Sapling", 28, Fruit.MAPLE_SYRUP,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
+    PINE_TREE("Pine", "Pine_Cones", 28, Fruit.PINE_TAR,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
+    MAHOGANY_TREE("Mahogany", "Mahogany_", 28, Fruit.SAP,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
+    MUSHROOM_TREE("MushroomTree", "Mushroom_Tree_Seeds", 28, Fruit.COMMON_MUSHROOM,true,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),
+    MYSTIC_TREE("Mystic_Tree", "Mystic_Tree_Seeds", 28, Fruit.MYSTIC_SYRUP,false,List.of(Seasons.Summer, Seasons.Fall, Seasons.Spring, Seasons.Winter)),;
 
     private final String name;
     private final String source;

@@ -62,6 +62,10 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
+        if(keycode == Input.Keys.T){
+            return true;
+        }
+
         return true;
     }
 

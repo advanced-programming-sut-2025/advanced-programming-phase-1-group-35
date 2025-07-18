@@ -92,26 +92,26 @@ public class GameMenu extends AppMenu {
             System.out.println(controller.chopTree(matcher.group("direction")));
         } else if ((matcher = GameMenuCommands.GoToNextDay.getMatcher(input)) != null) {
             App.getCurrentGame().getGameCalender().goToNextDay();
-        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
-            System.out.println(controller.talk(matcher.group("username"), matcher.group("message")));
-        } else if ((matcher = GameMenuCommands.talkHistory.getMatcher(input)) != null) {
-            System.out.println(controller.talkHistory(matcher.group("username")));
-        } else if ((matcher = GameMenuCommands.giftPlayer.getMatcher(input)) != null) {
-            System.out.println(controller.giftPlayer(matcher.group("username"), matcher.group("item"),
-                    matcher.group("amount")));
-        } else if ((matcher = GameMenuCommands.friendshipStatus.getMatcher(input)) != null) {
-            System.out.println(controller.friendShipStatus(matcher.group("username")));
-        } else if ((matcher = GameMenuCommands.giftHistory.getMatcher(input)) != null) {
-            System.out.println(controller.giftHistory(matcher.group("username")));
-        } else if ((matcher = GameMenuCommands.giftList.getMatcher(input)) != null) {
-            System.out.println(controller.giftList());
-        } else if ((matcher = GameMenuCommands.rateGift.getMatcher(input)) != null) {
-            System.out.println(controller.rateGift(matcher.group("id"), matcher.group("rate")));
-        } else if ((matcher = GameMenuCommands.hug.getMatcher(input)) != null) {
-            System.out.println(controller.hug(matcher.group("username")));
-        } else if ((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
-            System.out.println(controller.flower(matcher.group("username")));
-        } else if ((matcher = NPCCommands.meetNPC.getMatcher(input)) != null) {
+//        } else if ((matcher = GameMenuCommands.talkPlayer.getMatcher(input)) != null) {
+//            System.out.println(controller.talk(matcher.group("username"), matcher.group("message")));
+//        } else if ((matcher = GameMenuCommands.talkHistory.getMatcher(input)) != null) {
+//            System.out.println(controller.talkHistory(matcher.group("username")));
+//        } else if ((matcher = GameMenuCommands.giftPlayer.getMatcher(input)) != null) {
+//            System.out.println(controller.giftPlayer(matcher.group("username"), matcher.group("item"),
+//                    matcher.group("amount")));
+//        } else if ((matcher = GameMenuCommands.friendshipStatus.getMatcher(input)) != null) {
+//            System.out.println(controller.friendShipStatus(matcher.group("username")));
+//        } else if ((matcher = GameMenuCommands.giftHistory.getMatcher(input)) != null) {
+//            System.out.println(controller.giftHistory(matcher.group("username")));
+//        } else if ((matcher = GameMenuCommands.giftList.getMatcher(input)) != null) {
+//            System.out.println(controller.giftList());
+//        } else if ((matcher = GameMenuCommands.rateGift.getMatcher(input)) != null) {
+//            System.out.println(controller.rateGift(matcher.group("id"), matcher.group("rate")));
+//        } else if ((matcher = GameMenuCommands.hug.getMatcher(input)) != null) {
+//            System.out.println(controller.hug(matcher.group("username")));
+//        } else if ((matcher = GameMenuCommands.flower.getMatcher(input)) != null) {
+//            System.out.println(controller.flower(matcher.group("username")));
+//        } else if ((matcher = NPCCommands.meetNPC.getMatcher(input)) != null) {
             System.out.println(npcController.meetNPC(matcher.group(1)));
         } else if ((matcher = NPCCommands.giftNPC.getMatcher(input)) != null) {
             System.out.println(npcController.sendGift(matcher.group(1), matcher.group(2)));
@@ -121,8 +121,8 @@ public class GameMenu extends AppMenu {
             System.out.println(npcController.seeQuestList(matcher.group(1)));
         } else if ((matcher = NPCCommands.finishQuest.getMatcher(input)) != null) {
             System.out.println(npcController.finishQuest(matcher.group(1), matcher.group(2)));
-        } else if ((matcher = GameMenuCommands.askMarriage.getMatcher(input)) != null) {
-            System.out.println(controller.askMarriage(matcher.group("username")));
+//        } else if ((matcher = GameMenuCommands.askMarriage.getMatcher(input)) != null) {
+//            System.out.println(controller.askMarriage(matcher.group("username")));
         } else if ((matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input)) != null) {
             System.out.println(controller.respondToMarriageRequest());
         } else if (GameMenuCommands.getTime.getMatcher(input) != null) {
