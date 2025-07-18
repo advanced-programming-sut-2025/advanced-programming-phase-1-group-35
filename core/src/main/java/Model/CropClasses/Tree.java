@@ -1,5 +1,6 @@
 package Model.CropClasses;
 
+import Controller.Controller;
 import Model.App;
 import Model.ItemInterface;
 import Model.Tile;
@@ -147,7 +148,12 @@ public class Tree implements PlantAble,ItemInterface {
             return false;
         }
     }
-
+    public String saplingPath(){
+        return "trees/" + Controller.formatUpperSnakeCase(fruit.getName()) + "_Sapling.png";
+    }
+    public String stagePath(){
+        return "trees/" + Controller.formatUpperSnakeCase(fruit.getName()) +"_Stage_" + currentState + ".png";
+    }
 
     @Override
     public int getPrice() {

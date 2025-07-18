@@ -47,7 +47,7 @@ public enum ForagingSeeds implements ItemInterface,ItemConstant {
     BEET(Arrays.asList(Fall), CropEnum.BEET, SeedEnum.BEET),
     BOK_CHO(Arrays.asList(Fall), CropEnum.BOK_CHOY,SeedEnum.BOK_CHO),
     BROCCOLI(Arrays.asList(Fall), CropEnum.BROCCOLI, SeedEnum.BROCCOLI),
-    CRANBERRY(Arrays.asList(Fall), CRANBERRIES, SeedEnum.CRANBERRY),
+    CRANBERRY(Arrays.asList(Fall), CropEnum.CRANBERRY, SeedEnum.CRANBERRY),
     EGGPLANT(Arrays.asList(Fall), CropEnum.EGGPLANT, SeedEnum.EGGPLANT),
     FAIRY(Arrays.asList(Fall), FAIRY_ROSE,SeedEnum.FAIRY),
     GRAPE(Arrays.asList(Fall), CropEnum.GRAPE, SeedEnum.GRAPE),

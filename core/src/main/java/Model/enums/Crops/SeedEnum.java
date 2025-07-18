@@ -39,7 +39,7 @@ public enum SeedEnum implements ItemInterface, ItemConstant {
     BEET("Beet Seeds", false, CropEnum.BEET),
     BOK_CHO("Bok Choy Seeds", false, CropEnum.BOK_CHOY),
     BROCCOLI("Broccoli Seeds", false, CropEnum.BROCCOLI),
-    CRANBERRY("Cranberry Seeds", false, CropEnum.CRANBERRIES),
+    CRANBERRY("Cranberry Seeds", false, CropEnum.CRANBERRY),
     EGGPLANT("Eggplant Seeds", false, CropEnum.EGGPLANT),
     FAIRY("Fairy Seeds", false, CropEnum.FAIRY_ROSE),
     GRAPE("Grape Starter", false, CropEnum.GRAPE),
