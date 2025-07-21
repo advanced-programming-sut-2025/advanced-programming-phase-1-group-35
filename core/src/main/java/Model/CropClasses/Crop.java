@@ -88,6 +88,7 @@ public class Crop implements PlantAble, ItemInterface {
         this.energy = cropEnum.getEnergy();
         this.season = cropEnum.getSeasons();
         this.canBecomeGiant = cropEnum.canBecomeGiant();
+        this.isForaging = cropEnum.isForaging();
         this.daysSinceLastGrowth = 0;
         this.currentState = 1;
         this.daysSincePlanted = 0;

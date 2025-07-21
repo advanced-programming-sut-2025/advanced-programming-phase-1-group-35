@@ -65,7 +65,9 @@ public class GameView {
         for (CropEnum cropEnum : CropEnum.values()) {
             for (int i = 1; i <= cropEnum.getStages().size(); i++) { // or a fixed max stage
                 String path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + "_Stage_" + i + ".png";
-                if(cropEnum.isForaging()) path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
+                if(cropEnum.isForaging()) {path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
+                    textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+                    break;}
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
             }
         }
@@ -154,7 +156,7 @@ public class GameView {
                     if (id.getPlanted() != null && id.getPlanted().getClass().equals(Crop.class)) {
                         Crop GrowingCrop = (Crop) id.getPlanted();
 
-                        if (GrowingCrop != null && GrowingCrop.getDaysSinceWatered() <= 1) {
+                        if (GrowingCrop != null && GrowingCrop.getDaysSinceWatered() > 1) {
                             batch.setColor(0.7f, 0.7f, 0.7f, 1f);
                         } else {
                             batch.setColor(1f, 1f, 1f, 1f);
@@ -163,7 +165,7 @@ public class GameView {
                     } else if (id.getPlanted() != null && id.getPlanted().getClass().equals(Tree.class)) {
                         Tree GrowingTree = (Tree) id.getPlanted();
 
-                        if (GrowingTree != null && GrowingTree.getDaysSinceWatered() <= 1) {
+                        if (GrowingTree != null && GrowingTree.getDaysSinceWatered() > 1) {
                             batch.setColor(0.7f, 0.7f, 0.7f, 1f);
                         } else {
                             batch.setColor(1f, 1f, 1f, 1f);
@@ -186,7 +188,6 @@ public class GameView {
         }
         //TODO : render crops
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
-
             int x = crop.getCropTile().getCoordination().getX();
             int y = crop.getCropTile().getCoordination().getY();
             if (x >= startX && x < endX && y >= startY && y < endY) {
@@ -194,9 +195,10 @@ public class GameView {
                 float drawY = y * tileSize - cameraBottom;
 
                 int growth = crop.getCurrentState();
-
-
-                TextureRegion cropTexture = textures.get(crop.getStatePath());
+                TextureRegion cropTexture;
+                String test = crop.getIconPath();
+                if(!crop.getCropEnum().isForaging()) cropTexture = textures.get(crop.getStatePath());
+                else cropTexture = textures.get(crop.getCropEnum().getIconPath());
                 if (cropTexture != null) {
                     batch.setColor(1f, 1f, 1f, 1f);
                     batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
@@ -295,7 +297,7 @@ public class GameView {
         if (playingUser == null) return;
 
         Pair<Float, Float> pos = playingUser.getCurrentPoint();
-        String coordText = String.format("x : %.1f y : %.1f", pos.first, pos.second);
+        String coordText = String.format("x : %.1f y : %.1f\n%s", pos.first, pos.second,App.getCurrentGame().getPlayingUser().getCurrentTile().getTileType());
 
         // Calculate position (top right corner with some padding)
         float padding = 10f;
