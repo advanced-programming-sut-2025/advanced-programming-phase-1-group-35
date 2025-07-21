@@ -791,14 +791,8 @@ public class GameMenuController {
 
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
-        Crop crop1 = new Crop(CropEnum.BLUEBERRY, App.getCurrentGame().getPlayingUser().getCurrentTile());
-        crop1.setCurrentState(5);
-        App.getCurrentGame().getMap().getCrops().add(crop1);
-//        Tree tree = new Tree(TreeEnum.APRICOT_TREE);
-//        tree.setTile(App.getCurrentGame().getPlayingUser().getCurrentTile());
-//        tree.setCurrentState(4);
-//        App.getCurrentGame().getMap().getTrees().add(tree);
         farmingController.addForagingCrop();
+        farmingController.addForAgingTree();
         Main.getGame().setScreen(gameMenu);
     }
 }

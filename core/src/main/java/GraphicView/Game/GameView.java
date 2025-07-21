@@ -72,10 +72,25 @@ public class GameView {
             }
         }
 
+        String[] seasons = {"Spring","Summer","Fall","Winter"};
         for(TreeEnum treeEnum : TreeEnum.values()) {
             for (int i = 1; i <= treeEnum.getStages().size(); i++) {
                 String path = "trees/" + Controller.formatUpperSnakeCase(treeEnum.getName()) + "_Stage_" + i + ".png";
+                if(i == treeEnum.getStages().size()) {
+                    for(String season : seasons) {
+                            path = "trees/" + Controller.formatUpperSnakeCase(treeEnum.getName()) + "_Stage_" + i + "_" + season + ".png";
+                        try {
+                            textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+                        }catch(Exception e) {
+                            textures.put("Debug.png", new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+                        }
+                    }
+                }
+                        try {
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+                        }catch(Exception e) {
+                            textures.put("Debug.png", new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+                        }
             }
         }
 //        Tree test = new Tree(TreeEnum.APPLE_TREE);
@@ -206,17 +221,25 @@ public class GameView {
             }
         }
         for (Tree tree : App.getCurrentGame().getMap().getTrees()) {
+            tree.setCurrentState(5);
             int x = tree.getTile().getCoordination().getX();
             int y = tree.getTile().getCoordination().getY();
             if (x >= startX && x < endX && y >= startY && y < endY) {
                 float drawX = x * tileSize - cameraLeft;
                 float drawY = y * tileSize - cameraBottom;
-                int growth = tree.getCurrentState();
 
+                int growth = tree.getCurrentState();
+                String test = tree.stagePath();
                 TextureRegion treeTexture = textures.get(tree.stagePath());
                 if (treeTexture != null) {
                     batch.setColor(1f, 1f, 1f, 1f);
-                    batch.draw(treeTexture, drawX, drawY, tileSize, tileSize);
+                    float treeWidth = tileSize * 2f;
+                    float treeHeight = tileSize * 3f;
+                    float adjustedX = drawX - (treeWidth - tileSize) / 2f;
+                    float adjustedY = drawY; // - (treeHeight - tileSize);
+
+                    batch.draw(treeTexture, adjustedX, adjustedY, treeWidth, treeHeight);
+
                 }
             }
         }

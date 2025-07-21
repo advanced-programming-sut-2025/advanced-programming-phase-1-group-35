@@ -149,10 +149,13 @@ public class Tree implements PlantAble,ItemInterface {
         }
     }
     public String saplingPath(){
-        return "trees/" + Controller.formatUpperSnakeCase(fruit.getName()) + "_Sapling.png";
+        return "trees/" + Controller.formatUpperSnakeCase(getName()) + "_Sapling.png";
     }
     public String stagePath(){
-        return "trees/" + Controller.formatUpperSnakeCase(fruit.getName()) +"_Stage_" + currentState + ".png";
+        if(currentState == stages.size()){
+            return "trees/" + Controller.formatUpperSnakeCase(getName()) + "_Stage_5_" + App.getCurrentGame().getGameCalender().getSeason() + ".png";
+        }
+        return "trees/" + Controller.formatUpperSnakeCase(getName()) +"_Stage_" + currentState + ".png";
     }
 
     @Override

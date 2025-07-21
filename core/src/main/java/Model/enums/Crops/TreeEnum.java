@@ -34,7 +34,7 @@ public enum TreeEnum {
     TreeEnum(String name, String source, int totalHarvestTime, Fruit fruit, boolean isForaging, List<Seasons> seasons) {
         this.name = name;
         this.source = source;
-        this.stages = List.of(7, 7, 7, 7);
+        this.stages = List.of(7, 7, 7, 7 , 7);
         this.totalHarvestTime = totalHarvestTime;
         this.fruit = fruit;
         this.isForaging = isForaging;
