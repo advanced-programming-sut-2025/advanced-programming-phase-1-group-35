@@ -81,4 +81,11 @@ public class AssetManager {
     public Texture rabbitsFoot = new Texture("assets/animal_product/Rabbits_Foot.png");
     public Texture truffle = new Texture("assets/animal_product/Truffle.png");
     public Texture wool = new Texture("assets/animal_product/Wool.png");
+
+    //Default trees
+    public static Texture[] trees = new Texture[]{
+        new Texture("Default (1).png"),
+        new Texture("Default (2).png"),
+        new Texture("Default (3).png"),
+    };
 }

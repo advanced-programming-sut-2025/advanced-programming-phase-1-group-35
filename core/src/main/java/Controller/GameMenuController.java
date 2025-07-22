@@ -791,8 +791,9 @@ public class GameMenuController {
 
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
-        farmingController.addForagingCrop();
-        farmingController.addForAgingTree();
+//        farmingController.addForagingCrop();
+//        farmingController.addForAgingTree();
+        farmingController.generateStartingPlants();
         Main.getGame().setScreen(gameMenu);
     }
 }

@@ -391,7 +391,7 @@ public class FarmingController {
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
                 if (tile.getPlanted() == null
-//                    && tile.isPlowed() //todo
+                    && tile.isPlowed() //todo
                     && tile.getTileType().equals(TileType.Soil)) {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
