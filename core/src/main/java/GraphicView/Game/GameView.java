@@ -6,6 +6,7 @@ import Model.CropClasses.Tree;
 import Model.Point;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.TreeEnum;
+import Model.User;
 import Model.enums.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,7 +58,7 @@ public class GameView {
     private void loadFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 16;
+        parameter.size = 20;
         smallFont = generator.generateFont(parameter);
         generator.dispose();
     }
@@ -158,7 +159,10 @@ public class GameView {
         renderTiles();
         renderPlayer();
         renderCoordinates();
-
+        renderDateTime();
+        renderWeather();
+        renderSeason();
+        renderEnergyBar();
         batch.end();
     }
 
@@ -421,7 +425,7 @@ public class GameView {
 
         // Calculate position (top right corner with some padding)
         float padding = 10f;
-        float x = game.camera.viewportWidth - padding - 100;
+        float x = game.camera.viewportWidth - padding - 150;
         float y = game.camera.viewportHeight - padding;
 
         // Draw background for better readability
@@ -433,6 +437,105 @@ public class GameView {
         // Draw text
         smallFont.draw(batch, coordText, x, y);
     }
+    private void renderDateTime() {
+        String dateTimeText = game.getGameCalender().getGameDateTime().toString();
+        // Assuming this returns a formatted string, adjust if needed
 
+        // Calculate position (top right corner below coordinates)
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150; // Wider for date/time
+        float y = game.camera.viewportHeight - padding - smallFont.getLineHeight() - 5;
 
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, dateTimeText, x, y);
+    }
+
+    private void renderWeather() {
+        String weatherText = "Weather: " + game.getWeather().getWeatherCondition().toString();
+
+        // Position below date/time
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 2;
+
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, weatherText, x, y);
+    }
+
+    private void renderSeason() {
+        String seasonText = "Season: " + game.getGameCalender().getSeason().toString();
+
+        // Position below weather
+        float padding = 10f;
+        float x = game.camera.viewportWidth - padding - 150;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 3;
+
+        // Draw background
+        batch.setColor(0, 0, 0, 0.5f);
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            150, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, seasonText, x, y);
+    }
+    private void renderEnergyBar() {
+        User player = game.getPlayingUser();
+        if (player == null) return;
+
+        float energyRatio = (float) ((float) player.getEnergy().getEnergyAmount() / player.getEnergy().getEnergyCapacity());
+        energyRatio = Math.max(0, Math.min(1, energyRatio)); // Clamp between 0 and 1
+
+        // Dimensions and positioning
+        float padding = 10f;
+        float width = 150f;
+        float height = 20f;
+        float x = game.camera.viewportWidth - padding - width;
+        float y = game.camera.viewportHeight - padding - (smallFont.getLineHeight() + 5) * 4 - height;
+
+        // Draw background (empty energy)
+        batch.setColor(0.2f, 0.2f, 0.2f, 0.7f);
+        batch.draw(pixel, x, y, width, height);
+
+        // Draw filled energy (color changes based on energy level)
+        if (energyRatio > 0.6f) {
+            batch.setColor(0.2f, 0.8f, 0.2f, 0.9f); // Green when high
+        } else if (energyRatio > 0.3f) {
+            batch.setColor(1f, 0.8f, 0.2f, 0.9f); // Yellow when medium
+        } else {
+            batch.setColor(0.8f, 0.2f, 0.2f, 0.9f); // Red when low
+        }
+        batch.draw(pixel, x, y, width * energyRatio, height);
+
+        // Draw border
+        batch.setColor(1f, 1f, 1f, 0.5f);
+        batch.draw(pixel, x - 1, y - 1, width + 2, 1); // Top border
+        batch.draw(pixel, x - 1, y + height, width + 2, 1); // Bottom border
+        batch.draw(pixel, x - 1, y - 1, 1, height + 2); // Left border
+        batch.draw(pixel, x + width, y - 1, 1, height + 2); // Right border
+
+        // Draw energy text
+        batch.setColor(1f, 1f, 1f, 1f);
+        String energyText = String.format("%d/%d",
+            (int)player.getEnergy().getEnergyAmount(),
+            (int)player.getEnergy().getEnergyCapacity());
+
+        // Center text in the bar
+        GlyphLayout layout = new GlyphLayout(smallFont, energyText);
+        float textX = x + (width - layout.width) / 2;
+        float textY = y + (height + layout.height) / 2;
+        smallFont.draw(batch, energyText, textX, textY);
+    }
 }

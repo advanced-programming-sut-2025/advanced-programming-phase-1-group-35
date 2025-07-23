@@ -31,6 +31,7 @@ public class ShopMenuUI implements Screen {
     private TextField amountField;
     private Label moneyLabel;
     private Label statusLabel;
+    private SelectBox<String> filterSelectBox;
 
     public ShopMenuUI(ShopMenuController shopController, GameMenuUI gameMenuUI) {
         this.shopController = shopController;
@@ -60,6 +61,21 @@ public class ShopMenuUI implements Screen {
         statusLabel = new Label("", skin);
         statusLabel.setColor(1, 0, 0, 1); // Red color for error messages
         mainTable.add(statusLabel).pad(5).row();
+
+        // Filter selection
+        Table filterTable = new Table();
+        filterSelectBox = new SelectBox<>(skin);
+        filterSelectBox.setItems("All", "Available");
+        filterSelectBox.setSelected("All");
+        filterSelectBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refreshShopItems();
+            }
+        });
+        filterTable.add(new Label("Filter:", skin)).padRight(10);
+        filterTable.add(filterSelectBox).width(150);
+        mainTable.add(filterTable).pad(10).row();
 
         // Create scrollable items table
         itemsTable = new Table();
@@ -103,8 +119,16 @@ public class ShopMenuUI implements Screen {
 
         itemsTable.add(new Label("════════════════════════════════", skin)).colspan(4).row();
 
+        String filter = filterSelectBox.getSelected();
+        boolean showAvailableOnly = "Available".equals(filter);
+
         // Add shop items
         for (var product : shopController.shop.getProducts()) {
+            // Skip unavailable items if filter is set to "Available"
+            if (showAvailableOnly && (product.getDailyLimit() - product.getDailyBoughtCount()) <= 0) {
+                continue;
+            }
+
             // Item name
             Label nameLabel = new Label(product.getName(), skin);
             itemsTable.add(nameLabel).width(150).pad(5);

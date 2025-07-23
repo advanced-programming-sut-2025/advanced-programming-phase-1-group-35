@@ -222,7 +222,7 @@ public class Inventory {
         }
     }
 
-    private Texture getItemTexture(ItemInterface item) {
+    public Texture getItemTexture(ItemInterface item) {
         if (item instanceof Tool tool) {
             switch (tool.getToolType()) {
                 case AXE:

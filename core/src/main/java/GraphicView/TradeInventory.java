@@ -16,12 +16,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +34,11 @@ public class TradeInventory {
     private Stage stage;
     public GameMenuController gameMenuController;
 
+    public SelectBox playerSelectBox;
+    private Inventory inventory ;
+    private Table table;
+
     private Map<Rect, ItemInterface> itemRects;
-    private Rect trashCanRect;
 
     private static final int INVENTORY_ROWS = 3;
     private static final int INVENTORY_COLS = 12;
@@ -50,7 +52,7 @@ public class TradeInventory {
     TradeMenuController tradeMenuController;
 
     private enum InventoryAction {
-
+        OFFER,
         CANCEL
     }
 
@@ -59,8 +61,18 @@ public class TradeInventory {
         this.stage = stage;
         this.assetManager = new AssetManager();
         this.gameMenuController = gameMenuController;
+        this.inventory = new Inventory(game,stage,gameMenuController);
+        table = new Table();
         TradeMenuController tradeMenuController = new TradeMenuController();
         initialize();
+        checkForRequests();
+    }
+
+    private void checkForRequests() {
+        if(App.getCurrentGame().getPlayingUser().isHasNewTradeRequest()){
+            showDialog("Notification", "You have new trade requests");
+            App.getCurrentGame().getPlayingUser().setHasNewTradeRequest(false);
+        }
     }
 
     private void initialize() {
@@ -70,8 +82,15 @@ public class TradeInventory {
         font.getData().setScale(1.0f);
         glyphLayout = new GlyphLayout();
 
+        playerSelectBox.setItems(App.users);
+        playerSelectBox.setSelectedIndex(0);
+
+        table.setFillParent(true);
+        table.center();
+        table.addActor(playerSelectBox);
+        stage.addActor(table);
+
         itemRects = new HashMap<>();
-        trashCanRect = new Rect(1560, 600, ICON_SIZE * 1.7f, ICON_SIZE * 1.7f);
 
         stage.addListener(new ClickListener() {
             @Override
@@ -108,13 +127,36 @@ public class TradeInventory {
     public void showItemActionDialog(final ItemInterface item) {
         Skin skin = GameAssetManager.getDefaultSkin();
         TextField amountField = new TextField("", skin);
+        TextField priceField = new TextField("", skin);
         amountField.setMessageText("amount");
+        priceField.setMessageText("price");
         Dialog dialog = new Dialog("Item Action: " + item.getName(), skin) {
             @Override
             protected void result(Object object) {
                 if (object instanceof InventoryAction action) {
                     switch (action) {
-
+                        case OFFER:
+                            Result checkAmntResult = checkAmount(amountField, item);
+                            int price = 0;
+                            try{
+                                price = Integer.parseInt(priceField.getText());
+                            }
+                            catch (Exception e){
+                                showDialog("Error","Invalid price");
+                            }
+                            if (checkAmntResult.isSuccess() ) {
+                                User them = App.getCurrentGame().getPlayers().get(playerSelectBox.getSelectedIndex());
+                                try {
+                                    Result result = tradeMenuController.requestTrade(them.getUsername(),
+                                        "cash",item.getName(),checkAmntResult.toString(),
+                                        String.format("%d",price),null,null);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            else {
+                                showDialog("Error", checkAmntResult.toString());
+                            }
                         case CANCEL:
                             break;
                     }
@@ -123,6 +165,7 @@ public class TradeInventory {
         };
         dialog.text("What would you like to do with " + item.getName() + "?");
         dialog.button("Cancel", InventoryAction.CANCEL) ;
+        dialog.button("Send Offer", InventoryAction.OFFER);
         dialog.show(stage);
     }
 
@@ -181,170 +224,7 @@ public class TradeInventory {
     }
 
     private Texture getItemTexture(ItemInterface item) {
-        if (item instanceof Tool tool) {
-            switch (tool.getToolType()) {
-                case AXE:
-                    return assetManager.axe;
-                case FISHING_ROD:
-                    return assetManager.fishingRod;
-                case HOE:
-                    return assetManager.hoe;
-                case MILK_PAIL:
-                    return assetManager.milkPail;
-                case PICKAXE:
-                    return assetManager.pickaxe;
-                case SCYTHE:
-                    return assetManager.scythe;
-                case SHEARS:
-                    return assetManager.shears;
-                case WATERING_CAN:
-                    return assetManager.wateringCan;
-            }
-        } else if (item instanceof CookingMaterial ingredient) {
-            switch (ingredient.getName().toUpperCase()) {
-                case "AMARANTH":
-                    return assetManager.amaranth;
-                case "APRICOT":
-                    return assetManager.apricot;
-                case "BEET":
-                    return assetManager.beet;
-                case "BLUEBERRY":
-                    return assetManager.blueberry;
-                case "CARROT":
-                    return assetManager.carrot;
-                case "CHEESE":
-                    return assetManager.cheese;
-                case "COFFEE":
-                    return assetManager.coffee;
-                case "CORN":
-                    return assetManager.corn;
-                case "EGG":
-                    return assetManager.egg;
-                case "EGGPLANT":
-                    return assetManager.eggplant;
-                case "FIBER":
-                    return assetManager.fiber;
-                case "FLOUNDER":
-                    return assetManager.flounder;
-                case "HASH_BROWNS":
-                    return assetManager.hashbrowns;
-                case "KALE":
-                    return assetManager.kale;
-                case "MELON":
-                    return assetManager.melon;
-                case "MIDNIGHT_CARP":
-                    return assetManager.midnightCarp;
-                case "MILK":
-                    return assetManager.milk;
-                case "OIL":
-                    return assetManager.oil;
-                case "PARSNIP":
-                    return assetManager.parsnip;
-                case "POTATO":
-                    return assetManager.potato;
-                case "PUMPKIN":
-                    return assetManager.pumpkin;
-                case "RADISH":
-                    return assetManager.radish;
-                case "RED_CABBAGE":
-                    return assetManager.redCabbage;
-                case "RICE":
-                    return assetManager.rice;
-                case "SALMON":
-                    return assetManager.salmon;
-                case "SARDINE":
-                    return assetManager.sardine;
-                case "SUGAR":
-                    return assetManager.sugar;
-                case "TOMATO":
-                    return assetManager.tomato;
-                case "WHEAT":
-                    return assetManager.wheat;
-            }
-        } else if (item instanceof Food food) {
-            switch (food.recipe) {
-                case BAKED_FISH:
-                    return assetManager.bakedFish;
-                case BREAD:
-                    return assetManager.bread;
-                case COOKIE:
-                    return assetManager.cookie;
-                case DISH_O_THE_SEA:
-                    return assetManager.dishOfTheSea;
-                case FARMERS_LUNCH:
-                    return assetManager.farmersLunch;
-                case FRIED_EGG:
-                    return assetManager.friedEgg;
-                case FRUIT_SALAD:
-                    return assetManager.fruitSalad;
-                case MAKI_ROLL:
-                    return assetManager.makiRoll;
-                case MINERS_TREAT:
-                    return assetManager.minersTreat;
-                case OMELET:
-                    return assetManager.omelet;
-                case PANCAKES:
-                    return assetManager.pancakes;
-                case PIZZA:
-                    return assetManager.pizza;
-                case PUMPKIN_PIE:
-                    return assetManager.pumpkinPie;
-                case RED_PLATE:
-                    return assetManager.redPlate;
-                case SALAD:
-                    return assetManager.salad;
-                case SALMON_DINNER:
-                    return assetManager.salmonDinner;
-                case SEAFOAM_PUDDING:
-                    return assetManager.seafoamPudding;
-                case SPAGHETTI:
-                    return assetManager.spaghetti;
-                case SURVIVAL_BURGER:
-                    return assetManager.survivalBurger;
-                case TORTILLA:
-                    return assetManager.tortilla;
-                case TRIPLE_SHOT_ESPRESSO:
-                    return assetManager.tripleShotEspresso;
-                case TROUT_SOUP:
-                    return assetManager.troutSoup;
-                case VEGETABLE_MEDLEY:
-                    return assetManager.vegetableMedley;
-            }
-        } else if (item instanceof AnimalProduct animalProduct) {
-            switch (animalProduct.getName()) {
-                case "dinosaur egg":
-                    return assetManager.dinosaurEgg;
-                case "duck egg":
-                    return assetManager.duckEgg;
-                case "duck feather":
-                    return assetManager.duckFeather;
-                case "egg":
-                    return assetManager.egg;
-                case "goat milk":
-                    return assetManager.goatMilk;
-                case "large egg":
-                    return assetManager.largeEgg;
-                case "large goat milk":
-                    return assetManager.largeGoatMilk;
-                case "large milk":
-                    return assetManager.largeMilk;
-                case "milk":
-                    return assetManager.milk;
-                case "rabbit foot":
-                    return assetManager.rabbitsFoot;
-                case "truffle":
-                    return assetManager.truffle;
-                case "wool":
-                    return assetManager.wool;
-            }
-        } else if (item instanceof Fish fish) {
-            for (FishType fishType : FishType.values()) {
-                if (fishType.getName().equalsIgnoreCase(fish.getName())) {
-                    return fishType.getTexture();
-                }
-            }
-        }
-        return null;
+        return inventory.getItemTexture(item);
     }
 
     public void dispose() {
