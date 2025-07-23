@@ -69,16 +69,29 @@ public class GameView {
             String path = id.getIconPath();
             textures.put(id.name(), new TextureRegion(new Texture(Gdx.files.internal(path))));
         }
+        ArrayList<CropEnum> giants = new ArrayList<>();
         for (CropEnum cropEnum : CropEnum.values()) {
+            if(cropEnum.canBecomeGiant()) giants.add(cropEnum);
             for (int i = 1; i <= cropEnum.getStages().size(); i++) { // or a fixed max stage
                 String path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + "_Stage_" + i + ".png";
                 if(cropEnum.isForaging()) {path = "crops/" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
                     textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
                     break;}
-                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+                try {
+                    textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+                }catch (Exception e) {
+                    textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+                }
             }
         }
-
+        for (CropEnum cropEnum : giants) {
+            String path = "crops/Giant_" + Controller.formatUpperSnakeCase(cropEnum.getName()) + ".png";
+            try {
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+            }catch (Exception e) {
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+            }
+        }
         String[] seasons = {"Spring","Summer","Fall","Winter"};
         for(TreeEnum treeEnum : TreeEnum.values()) {
             for (int i = 1; i <= treeEnum.getStages().size(); i++) {
@@ -89,7 +102,7 @@ public class GameView {
                         try {
                             textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
                         }catch(Exception e) {
-                            textures.put("Debug.png", new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+                            textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
                         }
                     }
                 }
@@ -281,6 +294,7 @@ public class GameView {
 
 
         //TODO : render crops
+        int cropSize = Main.TILE_SIZE;
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
             int x = crop.getCropTile().getCoordination().getX();
             int y = crop.getCropTile().getCoordination().getY();
@@ -293,9 +307,13 @@ public class GameView {
                 String test = crop.getIconPath();
                 if(!crop.getCropEnum().isForaging()) cropTexture = textures.get(crop.getStatePath());
                 else cropTexture = textures.get(crop.getCropEnum().getIconPath());
+                if(crop.isGiant()){
+                    cropTexture = textures.get("crops/Giant_" + Controller.formatUpperSnakeCase(crop.getName()) + ".png");
+                    cropSize *= 2;
+                }
                 if (cropTexture != null) {
                     batch.setColor(1f, 1f, 1f, 1f);
-                    batch.draw(cropTexture, drawX, drawY, tileSize, tileSize);
+                    batch.draw(cropTexture, drawX, drawY, cropSize, cropSize);
                 }
             }
         }
