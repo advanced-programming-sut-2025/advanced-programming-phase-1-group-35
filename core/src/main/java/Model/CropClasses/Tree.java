@@ -27,6 +27,7 @@ public class Tree implements PlantAble,ItemInterface {
     private boolean fertilized;
     private int currentState;
     private ItemInterface fertilizer;
+    private boolean isChopped;
     public Tree(TreeEnum Tree){
         this.name = Tree.getName();
         this.source = Tree.getSource();
@@ -36,6 +37,17 @@ public class Tree implements PlantAble,ItemInterface {
         this.seasons = Tree.getSeasons();
         this.daysSinceLastGrowth = 0;
         this.currentState = 1;
+        this.fertilized = false;
+        this.fertilizer = null;
+        this.isChopped = false;
+    }
+
+    public boolean isChopped() {
+        return isChopped;
+    }
+
+    public void setChopped(boolean chopped) {
+        isChopped = chopped;
     }
 
     public int getDaysSinceWatered() {
@@ -152,6 +164,9 @@ public class Tree implements PlantAble,ItemInterface {
         return "trees/" + Controller.formatUpperSnakeCase(getName()) + "_Sapling.png";
     }
     public String stagePath(){
+        if(isChopped){
+            return "trees/Stump.png";
+        }
         if(currentState == stages.size()){
             return "trees/" + Controller.formatUpperSnakeCase(getName()) + "_Stage_5_" + App.getCurrentGame().getGameCalender().getSeason() + ".png";
         }

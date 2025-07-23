@@ -93,6 +93,7 @@ public class GameView {
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
             }
         }
+        textures.put("trees/Stump.png", new TextureRegion(new Texture(Gdx.files.internal("trees/Stump.png"))));
         String[] seasons = {"Spring","Summer","Fall","Winter"};
         for(TreeEnum treeEnum : TreeEnum.values()) {
             for (int i = 1; i <= treeEnum.getStages().size(); i++) {
@@ -338,7 +339,7 @@ public class GameView {
                     float treeHeight = tileSize * 3f;
                     float adjustedX = drawX - (treeWidth - tileSize) / 2f;
                     float adjustedY = drawY; // - (treeHeight - tileSize);
-
+                    if (tree.isChopped()) treeHeight /=3;
                     batch.draw(treeTexture, adjustedX, adjustedY, treeWidth, treeHeight);
 
                 }

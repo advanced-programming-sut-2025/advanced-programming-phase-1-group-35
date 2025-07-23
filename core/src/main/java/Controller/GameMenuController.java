@@ -601,8 +601,9 @@ public class GameMenuController {
         Tree tree = (Tree) tile.getPlanted();
         App.getCurrentGame().getPlayingUser().backPack.items.put(CarpenterShopProducts.WOOD, 1);
         App.getCurrentGame().getPlayingUser().getForagingSkill().gainXp();
-        App.getCurrentGame().getMap().getTrees().remove(tree);
-        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+//        App.getCurrentGame().getMap().getTrees().remove(tree);
+//        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+        tree.setChopped(true);
         tile.setSymbol('.');
         tile.setPlanted(null);
         tile.getContents().remove(tree);
