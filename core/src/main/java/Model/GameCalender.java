@@ -123,7 +123,7 @@ public class GameCalender {
         }
     }
 
-    public void goToNextDay() throws IOException {
+    public Result goToNextDay() throws IOException {
         Game game = App.getCurrentGame();
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
@@ -250,6 +250,7 @@ public class GameCalender {
             this.dayPassedFromSeason = 0;
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
+        return new Result(true, "went to next day");
     }
 
     public Result cheatTime(int hour) throws IOException {

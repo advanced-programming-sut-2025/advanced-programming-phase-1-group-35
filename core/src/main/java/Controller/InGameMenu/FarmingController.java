@@ -126,9 +126,9 @@ public class FarmingController {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
-//        if (!isFloorplowed(tile)) {
-//            return new Result(false, "Floor is not plowed");
-//        }
+        if (!isFloorplowed(tile)) {
+            return new Result(false, "Floor is not plowed");
+        }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
             App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
