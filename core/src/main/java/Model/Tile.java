@@ -13,6 +13,7 @@ public class Tile {
     private char symbol = '0';
     private char contentSymbol = '0';
     private TextureRegion texture;
+    private float lightningTimer = 0;
 
     public Point getCoordination() {
         return coordination;
@@ -92,9 +93,14 @@ public class Tile {
 
     }
 
-    public void setGotHitWithThunder(boolean gotHitWithThunder) {
-        this.gotHitWithThunder = gotHitWithThunder;
+    public float getLightningTimer() {
+        return lightningTimer;
     }
+
+    public void setLightningTimer(float lightningTimer) {
+        this.lightningTimer = lightningTimer;
+    }
+
     public boolean hasBeenHitWithThunder() {
         return gotHitWithThunder;
     }

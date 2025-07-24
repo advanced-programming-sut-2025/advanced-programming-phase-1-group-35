@@ -93,6 +93,7 @@ public class GameMenuUI implements Screen {
     private Point moveTarget = null;
     private float moveTimer = 0f;
     private static final float TILE_MOVE_SPEED = 0.2f;
+    private Texture lightningTexture;
 
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
@@ -116,6 +117,7 @@ public class GameMenuUI implements Screen {
         barnTexture = new Texture(Gdx.files.internal("assets/buildings/Barn.png"));
         coopTexture = new Texture(Gdx.files.internal("assets/buildings/Coop.png"));
         heartTexture = new Texture(Gdx.files.internal("assets/heart.png"));
+        lightningTexture = new Texture(Gdx.files.internal("assets/light.png"));
 
 
         mainMultiplexer = new InputMultiplexer();
@@ -388,7 +390,8 @@ public class GameMenuUI implements Screen {
 
         gameModel.update(delta);
         gameView.render();
-        updateAnimalMovement(delta); // Update animal movement each frame
+        updateAnimalMovement(delta);
+        renderLightningEffects(delta);
         renderAnimals();
         renderPettedHearts(delta);
         gameMenuInputAdapter.update(delta);
@@ -435,6 +438,27 @@ public class GameMenuUI implements Screen {
             }
         }
     }
+
+    private void renderLightningEffects(float delta) {
+        SpriteBatch batch = gameView.getBatch();
+        batch.begin();
+        for (Tile[] row : gameModel.getMap().getTiles()) {
+            for (Tile tile : row) {
+                if (tile.getLightningTimer() > 0) {
+                    float newTime = tile.getLightningTimer() - delta;
+                    tile.setLightningTimer(newTime);
+                    float x = tile.coordination.x * Main.TILE_SIZE;
+                    float y = tile.coordination.y * Main.TILE_SIZE;
+                    batch.draw(lightningTexture, x, y, Main.TILE_SIZE, Main.TILE_SIZE);
+                    if (tile.getLightningTimer() <= 0) {
+                        tile.setLightningTimer(0);
+                    }
+                }
+            }
+        }
+        batch.end();
+    }
+
 
     private void renderAnimals() {
         SpriteBatch batch = gameView.getBatch();
@@ -558,6 +582,7 @@ public class GameMenuUI implements Screen {
         if (stage != null) stage.dispose();
         if (barnTexture != null) barnTexture.dispose();
         if (coopTexture != null) coopTexture.dispose();
+        if (lightningTexture != null) lightningTexture.dispose();
     }
 
     public void startSleepTransition() {

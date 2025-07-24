@@ -550,7 +550,7 @@ public class GameMenuController {
             player.getEnergy().setEnergyCapacity(energy);
         }
         player.getEnergy().setEnergyAmount(energy);
-        return new Result(true, "cheat energy set");
+        return new Result(true, "energy set to " + energy);
     }
 
     public Result cheatEnergyUnlimited() {

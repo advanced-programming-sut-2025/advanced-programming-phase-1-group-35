@@ -9,12 +9,6 @@ public class Weather {
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowCondition;
 
-//    public Result hitTileWithThunder(Tile tile){
-//        if(tile == null){
-//            return new Result(false, "coordination unavailable");
-//        }
-//    }
-
     public void applySnowWeather() {
 
     }
@@ -23,10 +17,10 @@ public class Weather {
 
     }
 
-    public static Result hitTileWithThunder(Tile tile){
-        tile.setGotHitWithThunder(true);
+    public static Result hitTileWithThunder(Tile tile) {
+        tile.setLightningTimer(5.0f);
 
-        if(tile.getPlanted()!= null && tile.getPlanted() instanceof Tree){
+        if (tile.getPlanted() != null && tile.getPlanted() instanceof Tree) {
             App.getCurrentGame().getMap().getCrops().remove(tile.getPlanted());
             App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(tile.getPlanted());
             tile.getContents().remove(tile.getPlanted());
@@ -37,17 +31,17 @@ public class Weather {
         }
         return new Result(true, "tile with x=" + tile.coordination.x + " y=" + tile.coordination.y + " got hit thunder");
     }
+
     public Weather() {
         weatherCondition = randomWeatherCondition(Seasons.Spring);
         tomorrowCondition = randomWeatherCondition(Seasons.Spring);
     }
 
-    public Result cheatWeatherSet(String weatherString){
+    public Result cheatWeatherSet(String weatherString) {
         WeatherCondition weather;
         try {
             weather = WeatherCondition.valueOf(weatherString);
-        }
-        catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return new Result(false, "invalid weather string");
         }
         setTomorrowCondition(weather);
@@ -56,9 +50,9 @@ public class Weather {
 
     public WeatherCondition randomWeatherCondition(Seasons season) {
         Game currentGame = App.getCurrentGame();
-        int randomNumber = (int)((Math.random()*4) + 1);
-        for(WeatherCondition condition : WeatherCondition.values()){
-            if(condition.getNumber() == randomNumber){
+        int randomNumber = (int) ((Math.random() * 4) + 1);
+        for (WeatherCondition condition : WeatherCondition.values()) {
+            if (condition.getNumber() == randomNumber) {
                 return condition;
             }
         }
