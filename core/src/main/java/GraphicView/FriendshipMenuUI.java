@@ -2,9 +2,11 @@ package GraphicView;
 
 import Controller.InGameMenu.FriendshipMenuController;
 import Model.*;
+import Model.TradeAndGift.Gift;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,14 +28,22 @@ public class FriendshipMenuUI implements Screen {
     private ScrollPane scrollPane;
     private TextField messageField;
     private Label statusLabel;
-    private TextButton viewMessagesButton;
-    private Window messagesWindow;
     private boolean hasNewMessages;
 
     private Inventory giftInventory;
     private TextField giftAmountField;
     private User selectedGiftRecipient;
     private TextButton sendGiftButton;
+    private Window chatHistoryWindow;
+    private Table chatHistoryPlayersTable;
+    private Table chatHistoryMessagesTable;
+    private ScrollPane chatHistoryScrollPane;
+
+    private Window giftHistoryWindow;
+    private Table giftHistoryPlayersTable;
+    private Table giftHistoryGiftsTable;
+    private ScrollPane giftHistoryScrollPane;
+    private TextField ratingField;
 
     public FriendshipMenuUI(GameMenuUI gameMenuUI) {
         this.gameMenuUI = gameMenuUI;
@@ -48,10 +58,12 @@ public class FriendshipMenuUI implements Screen {
         Gdx.input.setInputProcessor(stage);
         skin = GameAssetManager.getDefaultSkin();
 
-        // Create main table
+        // Create main table - now aligned to left
         mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.setWidth(Gdx.graphics.getWidth() * 0.7f); // Take 70% of width
+        mainTable.align(Align.left); // Align contents to left
+        mainTable.setWidth(Gdx.graphics.getWidth() * 0.6f); // Take only 60% of width
+        mainTable.padLeft(20); // Add some left padding
         stage.addActor(mainTable);
 
         // Title with notification badge
@@ -102,15 +114,6 @@ public class FriendshipMenuUI implements Screen {
         });
         buttonsTable.add(sendButton);
 
-        // View Messages button
-        viewMessagesButton = new TextButton("View Messages", skin);
-        viewMessagesButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                showMessagesWindow();
-            }
-        });
-        buttonsTable.add(viewMessagesButton);
         Label giftLabel = new Label("Gift Items:", skin);
         mainTable.add(giftLabel).colspan(2).left().padTop(20).row();
 
@@ -149,90 +152,9 @@ public class FriendshipMenuUI implements Screen {
         mainTable.add(buttonsTable).colspan(2).pad(10);
 
         // Initialize messages window (hidden by default)
-        createMessagesWindow();
-
+        createChatHistoryWindow();
+        createGiftHistoryWindow();
         refreshPlayersList();
-    }
-
-    private void createMessagesWindow() {
-        messagesWindow = new Window("Your Messages", skin);
-        messagesWindow.setModal(true);
-        messagesWindow.setMovable(false);
-        messagesWindow.setSize(600, 400);
-        messagesWindow.setPosition(
-            (Gdx.graphics.getWidth() - messagesWindow.getWidth()) / 2,
-            (Gdx.graphics.getHeight() - messagesWindow.getHeight()) / 2
-        );
-
-        // Create messages table and scroll pane
-        Table messagesTable = new Table();
-        ScrollPane scrollPane = new ScrollPane(messagesTable, skin);
-        scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(true, false);
-
-        // Store references we'll need later
-        messagesWindow.setUserObject(new Object[]{scrollPane, messagesTable});
-
-        // Close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                messagesWindow.setVisible(false);
-                hasNewMessages = false;
-            }
-        });
-
-        // Add content to window
-        messagesWindow.add(scrollPane).expand().fill().pad(10);
-        messagesWindow.row();
-        messagesWindow.add(closeButton).padBottom(10).padTop(10);
-
-        stage.addActor(messagesWindow);
-        messagesWindow.setVisible(false);
-    }
-
-    private void refreshMessagesWindow() {
-        // Get the stored references
-        Object[] windowObjects = (Object[]) messagesWindow.getUserObject();
-        ScrollPane scrollPane = (ScrollPane) windowObjects[0];
-        Table messagesTable = (Table) windowObjects[1];
-
-        messagesTable.clear();
-
-        User currentUser = App.getCurrentGame().getPlayingUser();
-        List<Message> messages = currentUser.getMessages();
-
-        // Header
-        messagesTable.add(new Label("From", skin)).width(150).pad(5);
-        messagesTable.add(new Label("Message", skin)).expandX().fillX().pad(5);
-        messagesTable.row();
-        messagesTable.add(new Label("════════════════════════════════", skin)).colspan(2).row();
-
-        if (messages.isEmpty()) {
-            messagesTable.add(new Label("No messages yet", skin)).colspan(2);
-        } else {
-            for (Message message : messages) {
-                User sender = controller.getUserByID(message.getSenderID());
-                String senderName = sender != null ? sender.getUsername() : "Unknown";
-
-                // Message row
-                Table messageRow = new Table();
-                messageRow.add(new Label(senderName, skin)).width(150).pad(5);
-                messageRow.add(new Label(message.getMessage(), skin)).expandX().fillX().pad(5).left();
-                messagesTable.add(messageRow).expandX().fillX();
-                messagesTable.row();
-            }
-        }
-
-        // Clear notifications after viewing
-        currentUser.setHasNewMessages(false);
-        hasNewMessages = false;
-    }
-
-    private void showMessagesWindow() {
-        refreshMessagesWindow();
-        messagesWindow.setVisible(true);
     }
 
     private void refreshPlayersList() {
@@ -255,7 +177,8 @@ public class FriendshipMenuUI implements Screen {
     private void addPlayerRow(User player) {
         // Player name
         Label nameLabel = new Label(player.getUsername(), skin);
-        Label xpLabel = new Label(String.format("%d",player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser())),skin);
+        int xp = player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser()) == null ? 0 : player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser());
+        Label xpLabel = new Label(String.format("%d", xp),skin);
         playersTable.add(nameLabel).width(200).pad(5);
         playersTable.add(xpLabel).width(200).pad(5);
 
@@ -269,6 +192,28 @@ public class FriendshipMenuUI implements Screen {
             }
         });
         playersTable.add(talkButton).width(100).pad(5);
+
+        // Chat History button
+        TextButton historyButton = new TextButton("Chat History", skin);
+        historyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showChatHistoryWindow();
+                showChatWithPlayer(player);
+            }
+        });
+        playersTable.add(historyButton).width(100).pad(5);
+
+        // Gift History button
+        TextButton giftHistoryButton = new TextButton("Gift History", skin);
+        giftHistoryButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showGiftHistoryWindow();
+                showGiftsFromPlayer(player);
+            }
+        });
+        playersTable.add(giftHistoryButton).width(100).pad(5);
 
         playersTable.row();
     }
@@ -321,6 +266,7 @@ public class FriendshipMenuUI implements Screen {
             statusLabel.setText("Invalid amount");
             statusLabel.setColor(1, 0, 0, 1);
         }
+        refreshPlayersList();
     }
 
     private void sendMessage() {
@@ -344,6 +290,7 @@ public class FriendshipMenuUI implements Screen {
         } else {
             statusLabel.setColor(1, 0, 0, 1); // Red for error
         }
+        refreshPlayersList();
     }
 
     private void checkNotifications() {
@@ -376,9 +323,6 @@ public class FriendshipMenuUI implements Screen {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(delta);
-        stage.draw();
-
         // Draw inventory on the right side
         batch.begin();
         // Position inventory on the right with some padding
@@ -386,10 +330,304 @@ public class FriendshipMenuUI implements Screen {
         giftInventory.drawOnRight(batch);
         batch.end();
 
+        stage.act(delta);
+        stage.draw();
+
         // Update notification badge
         Label notificationBadge = (Label)((Table)mainTable.getChild(0)).getChild(1);
         notificationBadge.setText(hasNewMessages ? "!" : "");
         notificationBadge.setVisible(hasNewMessages);
+    }
+
+    private void createChatHistoryWindow() {
+        chatHistoryWindow = new Window("Chat History", skin);
+        chatHistoryWindow.setModal(true);
+        chatHistoryWindow.setMovable(false);
+        chatHistoryWindow.setSize(800, 500);
+        chatHistoryWindow.setPosition(
+            (Gdx.graphics.getWidth() - chatHistoryWindow.getWidth()) / 2,
+            (Gdx.graphics.getHeight() - chatHistoryWindow.getHeight()) / 2
+        );
+
+        // Create main table for the window
+        Table mainTable = new Table();
+        mainTable.pad(10);
+
+        // Players list on left
+        chatHistoryPlayersTable = new Table();
+        ScrollPane playersScroll = new ScrollPane(chatHistoryPlayersTable, skin);
+        playersScroll.setScrollingDisabled(false, true);
+        playersScroll.setFadeScrollBars(false);
+
+        // Messages on right
+        chatHistoryMessagesTable = new Table();
+        chatHistoryScrollPane = new ScrollPane(chatHistoryMessagesTable, skin);
+        chatHistoryScrollPane.setFadeScrollBars(false);
+        chatHistoryScrollPane.setScrollbarsOnTop(true);
+
+        // Add both tables side by side
+        mainTable.add(playersScroll).width(200).fillY();
+        mainTable.add(chatHistoryScrollPane).expand().fill();
+
+        // Close button
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                chatHistoryWindow.setVisible(false);
+            }
+        });
+
+        chatHistoryWindow.add(mainTable).expand().fill().pad(10);
+        chatHistoryWindow.row();
+        chatHistoryWindow.add(closeButton).padBottom(10).padTop(10);
+
+        stage.addActor(chatHistoryWindow);
+        chatHistoryWindow.setVisible(false);
+    }
+
+    private void refreshChatHistoryWindow() {
+        chatHistoryPlayersTable.clear();
+        chatHistoryMessagesTable.clear();
+
+        User currentUser = App.getCurrentGame().getPlayingUser();
+
+        // Add player buttons
+        for (User player : App.getCurrentGame().getPlayers()) {
+            if (player.getID() != currentUser.getID()) {
+                TextButton playerButton = new TextButton(player.getUsername(), skin);
+                playerButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        showChatWithPlayer(player);
+                    }
+                });
+                chatHistoryPlayersTable.add(playerButton).width(180).pad(5);
+                chatHistoryPlayersTable.row();
+            }
+        }
+    }
+
+    private void createGiftHistoryWindow() {
+        giftHistoryWindow = new Window("Gift History", skin);
+        giftHistoryWindow.setModal(true);
+        giftHistoryWindow.setMovable(false);
+        giftHistoryWindow.setSize(800, 500);
+        giftHistoryWindow.setPosition(
+            (Gdx.graphics.getWidth() - giftHistoryWindow.getWidth()) / 2,
+            (Gdx.graphics.getHeight() - giftHistoryWindow.getHeight()) / 2
+        );
+
+        // Create main table for the window
+        Table mainTable = new Table();
+        mainTable.pad(10);
+
+        // Players list on left
+        giftHistoryPlayersTable = new Table();
+        ScrollPane playersScroll = new ScrollPane(giftHistoryPlayersTable, skin);
+        playersScroll.setScrollingDisabled(false, true);
+        playersScroll.setFadeScrollBars(false);
+
+        // Gifts on right
+        giftHistoryGiftsTable = new Table();
+        giftHistoryScrollPane = new ScrollPane(giftHistoryGiftsTable, skin);
+        giftHistoryScrollPane.setFadeScrollBars(false);
+        giftHistoryScrollPane.setScrollbarsOnTop(true);
+
+        // Rating input
+        Table ratingTable = new Table();
+        ratingTable.add(new Label("Rating (1-5):", skin)).padRight(10);
+        ratingField = new TextField("", skin);
+        ratingField.setMessageText("Enter rating");
+        ratingTable.add(ratingField).width(100);
+
+        TextButton rateButton = new TextButton("Rate Gift", skin);
+        rateButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                rateSelectedGift();
+            }
+        });
+        ratingTable.add(rateButton).padLeft(10);
+
+        // Add both tables side by side
+        mainTable.add(playersScroll).width(200).fillY();
+        mainTable.add(giftHistoryScrollPane).expand().fill();
+        mainTable.row();
+        mainTable.add(ratingTable).colspan(2).padTop(10);
+
+        // Close button
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                giftHistoryWindow.setVisible(false);
+            }
+        });
+
+        giftHistoryWindow.add(mainTable).expand().fill().pad(10);
+        giftHistoryWindow.row();
+        giftHistoryWindow.add(closeButton).padBottom(10).padTop(10);
+
+        stage.addActor(giftHistoryWindow);
+        giftHistoryWindow.setVisible(false);
+    }
+
+    private void showGiftHistoryWindow() {
+        refreshGiftHistoryPlayers();
+        giftHistoryWindow.setVisible(true);
+    }
+
+    private void refreshGiftHistoryPlayers() {
+        giftHistoryPlayersTable.clear();
+        giftHistoryGiftsTable.clear();
+
+        User currentUser = App.getCurrentGame().getPlayingUser();
+
+        // Add player buttons
+        for (User player : App.getCurrentGame().getPlayers()) {
+            if (player.getID() != currentUser.getID()) {
+                TextButton playerButton = new TextButton(player.getUsername(), skin);
+                playerButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        showGiftsFromPlayer(player);
+                    }
+                });
+                giftHistoryPlayersTable.add(playerButton).width(180).pad(5);
+                giftHistoryPlayersTable.row();
+            }
+        }
+    }
+
+    private void showGiftsFromPlayer(User player) {
+        giftHistoryGiftsTable.clear();
+
+        User currentUser = App.getCurrentGame().getPlayingUser();
+        List<Gift> gifts = currentUser.getGifts();
+
+        // Header
+        giftHistoryGiftsTable.add(new Label("Gifts from " + player.getUsername(), skin)).colspan(3).padBottom(10).row();
+        giftHistoryGiftsTable.add(new Label("════════════════════════════════", skin)).colspan(3).row();
+
+        boolean hasGifts = false;
+        for (Gift gift : gifts) {
+            if (gift.getSenderID() == player.getID() && gift.getRecipientID() == currentUser.getID()) {
+                hasGifts = true;
+
+                // Gift info
+                String rating = gift.getRate() == -1 ? "Not rated yet" : "Rating: " + gift.getRate();
+                Label giftLabel = new Label(
+                    gift.getAmount() + " " + gift.getItemInterface().getName() +
+                        " (" + rating + ")",
+                    skin
+                );
+
+                // Select button for unrated gifts
+                if (gift.getRate() == -1) {
+                    TextButton selectButton = new TextButton("Select", skin);
+                    selectButton.setUserObject(gift);
+                    selectButton.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            ratingField.setUserObject(gift);
+                            ratingField.setText("");
+                        }
+                    });
+
+                    giftHistoryGiftsTable.add(giftLabel).left().padRight(10).padTop(5);
+                    giftHistoryGiftsTable.add(selectButton).padTop(5).row();
+                } else {
+                    giftHistoryGiftsTable.add(giftLabel).left().colspan(2).padTop(5).row();
+                }
+            }
+        }
+
+        if (!hasGifts) {
+            giftHistoryGiftsTable.add(new Label("No gifts from this player yet", skin)).colspan(3);
+        }
+    }
+
+    private void rateSelectedGift() {
+        Gift gift = (Gift) ratingField.getUserObject();
+        if (gift == null) {
+            statusLabel.setText("Please select a gift first");
+            statusLabel.setColor(1, 0, 0, 1);
+            return;
+        }
+
+        String ratingText = ratingField.getText();
+        try {
+            int rating = Integer.parseInt(ratingText);
+            if (rating < 1 || rating > 5) {
+                statusLabel.setText("Rating must be between 1 and 5");
+                statusLabel.setColor(1, 0, 0, 1);
+                return;
+            }
+
+            Result result = controller.rateGift(
+                String.valueOf(gift.getID()),
+                String.valueOf(rating)
+            );
+
+            if (result.isSuccess()) {
+                statusLabel.setText("Gift rated successfully!");
+                statusLabel.setColor(0, 1, 0, 1);
+                // Refresh the view
+                if (messageField.getUserObject() != null) {
+                    User selectedPlayer = (User) messageField.getUserObject();
+                    showGiftsFromPlayer(selectedPlayer);
+                }
+            } else {
+                statusLabel.setText(result.toString());
+                statusLabel.setColor(1, 0, 0, 1);
+            }
+        } catch (NumberFormatException e) {
+            statusLabel.setText("Invalid rating");
+            statusLabel.setColor(1, 0, 0, 1);
+        }
+    }
+
+    private void showChatWithPlayer(User player) {
+        chatHistoryMessagesTable.clear();
+
+        User currentUser = App.getCurrentGame().getPlayingUser();
+        List<Message> messages = currentUser.getMessages();
+
+        // Header
+        chatHistoryMessagesTable.add(new Label("Chat with " + player.getUsername(), skin)).colspan(2).padBottom(10).row();
+        chatHistoryMessagesTable.add(new Label("════════════════════════════════", skin)).colspan(2).row();
+
+        boolean hasMessages = false;
+        for (Message message : messages) {
+            if ((message.getSenderID() == player.getID() && message.getReceiverID() == currentUser.getID()) ||
+                (message.getSenderID() == currentUser.getID() && message.getReceiverID() == player.getID())) {
+
+                hasMessages = true;
+                String senderName = message.getSenderID() == currentUser.getID() ? "You" : player.getUsername();
+
+                Label senderLabel = new Label(senderName + ":", skin);
+                senderLabel.setColor(message.getSenderID() == currentUser.getID() ?
+                    Color.BLUE : Color.GREEN);
+
+                chatHistoryMessagesTable.add(senderLabel).left().padRight(10).padTop(5);
+                chatHistoryMessagesTable.add(new Label(message.getMessage(), skin)).left().padTop(5).row();
+            }
+        }
+
+        if (!hasMessages) {
+            chatHistoryMessagesTable.add(new Label("No messages with this player yet", skin)).colspan(2);
+        }
+
+        // Scroll to bottom
+        Gdx.app.postRunnable(() -> {
+            chatHistoryScrollPane.setScrollPercentY(1);
+        });
+    }
+
+    private void showChatHistoryWindow() {
+        refreshChatHistoryWindow();
+        chatHistoryWindow.setVisible(true);
     }
 
     private void goBackToGameMenu() {
@@ -401,12 +639,6 @@ public class FriendshipMenuUI implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        if (messagesWindow != null) {
-            messagesWindow.setPosition(
-                (width - messagesWindow.getWidth()) / 2,
-                (height - messagesWindow.getHeight()) / 2
-            );
-        }
     }
 
     @Override
