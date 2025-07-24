@@ -126,9 +126,9 @@ public class FarmingController {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
-        if (!isFloorplowed(tile)) {
-            return new Result(false, "Floor is not plowed");
-        }
+//        if (!isFloorplowed(tile)) {
+//            return new Result(false, "Floor is not plowed");
+//        }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
             App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
@@ -145,6 +145,7 @@ public class FarmingController {
                 Crop temp1 = (Crop) tile1.getPlanted();
                 if (temp1.getCurrentState() > temp.getCurrentState()) {
                     temp = temp1;
+                    App.getCurrentGame().getMap().getCrops().remove(temp1);
                 }
             }
             for (Tile tile1 : findTilesWithSameSeed(tile)) {
@@ -390,17 +391,20 @@ public class FarmingController {
         Random random1 = new Random();
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
-                if (tile.getPlanted() == null && tile.isPlowed() && tile.getTileType().equals(TileType.Soil)) {
+                if (tile.getPlanted() == null
+                    && tile.isPlowed() //todo
+                    && tile.getTileType().equals(TileType.Soil)) {
                     if (random1.nextInt(100) < 1) {
                         Crop crop;
                         do {
-                            crop = new Crop(CropEnum.getRandomForagingCrop(),tile);
+                                crop = new Crop(CropEnum.getRandomForagingCrop(), tile);
                         } while (!crop.getSeasons().contains(App.getCurrentGame().getGameCalender().getSeason()));
-                        tile.setPlanted(crop);
-                        tile.setContentSymbol(crop.getSymbol());
-                        App.getCurrentGame().getMap().AddCrop(crop);
-                        App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
-                        tile.addContents(crop);
+                                tile.setPlanted(crop);
+                                tile.setContentSymbol(crop.getSymbol());
+                                App.getCurrentGame().getMap().AddCrop(crop);
+                                App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
+                                tile.addContents(crop);
+
                     }
                 }
             }

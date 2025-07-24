@@ -6,6 +6,7 @@ import Controller.InGameMenu.ShopMenuController;
 import GraphicView.GameMenuUI;
 import Model.*;
 import Model.CropClasses.Crop;
+import Model.CropClasses.Seed;
 import Model.CropClasses.Tree;
 import Model.FarmStuff.Greenhouse;
 import Model.Tools.BackPack;
@@ -788,6 +789,7 @@ public class GameMenuController {
 
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
+        farmingController.generateStartingPlants();
         Main.getGame().setScreen(gameMenu);
     }
 }

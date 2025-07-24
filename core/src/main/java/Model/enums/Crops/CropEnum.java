@@ -209,7 +209,9 @@
         }
 
         public String state1Path(){
+            if(!isForaging)
             return "crops/" + Controller.formatUpperSnakeCase(getName())+ "_Stage_1" + ".png";
+            return  "crops/" + Controller.formatUpperSnakeCase(getName()) + ".png";
         }
 
         public String getIconPath(){

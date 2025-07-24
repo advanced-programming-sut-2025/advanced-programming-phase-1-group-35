@@ -215,13 +215,12 @@ public class AnimalController {
         return new Result(true, "you sold " + animalName + "! price: " + price);
     }
 
-    public Result fishing() {
+    public Result fishing(FishType fishType, boolean isPerfect) {
         if (!new GameMenuController().isCloseToSea()) {
             return new Result(false, "you are not near to a sea!");
         } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {
             return new Result(false, "you are not equipped by a fishing pole!");
         }
-        FishType randomFish = FishType.getRandomFish();
         int fishCount = 0;
         double m = switch (App.getCurrentGame().getWeather().getWeatherCondition().name()) {
             case "sunny" -> 1.5;
@@ -230,6 +229,9 @@ public class AnimalController {
             default -> 1;
         };
         double fishingSkill = App.getCurrentGame().getPlayingUser().getFishingSkill().getCurrentLevel();
+        if (isPerfect) {
+            fishingSkill *= 2.4;
+        }
         fishCount = (int) Math.ceil((Math.random()) * m * (fishingSkill + 2));
         fishCount = Math.max(fishCount, 6);
 
@@ -237,14 +239,14 @@ public class AnimalController {
         double fishQuality = (Math.random() * (fishingSkill + 2) * poleCoefficient) / (7 - m);
         double price = 0.0;
         if (fishQuality >= 0.5 && fishQuality < 0.7) {
-            price = randomFish.getBasePrice() * 1.25;
+            price = fishType.getBasePrice() * 1.25;
         } else if (fishQuality >= 0.7 && fishQuality < 0.9) {
-            price = randomFish.getBasePrice() * 1.5;
+            price = fishType.getBasePrice() * 1.5;
         } else if (fishQuality >= 0.9) {
-            price = randomFish.getBasePrice() * 2;
+            price = fishType.getBasePrice() * 2;
         }
 
-        Fish fish = new Fish(randomFish.getName(), (int) price, randomFish.getSeason(), "normal");
+        Fish fish = new Fish(fishType.getName(), (int) price, fishType.getSeason(), "normal");
         App.getCurrentGame().getPlayingUser().backPack.items.put(fish,
             App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(fish, 0) + fishCount);
         return new Result(true, fishCount + " of " + fish.getName() + " has been caught!");
