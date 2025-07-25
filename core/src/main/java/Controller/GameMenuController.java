@@ -794,6 +794,10 @@ public class GameMenuController {
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
         farmingController.generateStartingPlants();
+        Crop crop = new Crop(CropEnum.COFFEE_BEAN,App.getCurrentGame().getPlayingUser().getCurrentTile());
+        crop.setCurrentState(crop.getStages().size());
+        App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
+        App.getCurrentGame().getMap().getCrops().add(crop);
         Main.getGame().setScreen(gameMenu);
     }
 }
