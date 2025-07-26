@@ -201,6 +201,12 @@ public class GameView {
                     if(id.isPlowed()){
                         plowedTiles.add(id);
                     }
+                    if(id.isWatered){
+                        batch.setColor(0.6f, 0.6f, 0.9f, 1f);
+                    }
+                    if(id.isFertilized){
+                        batch.setColor(0.8f, 0.8f, 0.5f, 1f);
+                    }
                     //TODO: also render crops
                     if (id.getPlanted() != null && id.getPlanted().getClass().equals(Crop.class)) {
                         Crop GrowingCrop = (Crop) id.getPlanted();
