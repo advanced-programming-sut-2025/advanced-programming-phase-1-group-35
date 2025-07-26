@@ -8,7 +8,7 @@ import Model.enums.Gender;
 import java.util.Map;
 
 public class FriendshipMenuController {
-    private Result acceptMarriageRequest(User user) {
+    public Result acceptMarriageRequest(User user) {
         Map.Entry<ItemInterface, Integer> ring = getItemFromBackPack("WEDDING_RING", user.getAskedMarriage().backPack);
         if (ring == null) {
             return new Result(false, "that stupid boy forgot the ring");
@@ -20,7 +20,7 @@ public class FriendshipMenuController {
         addToBackPack(ring, user.backPack, 1);
         return new Result(true, "You have successfully accepted the marriage");
     }
-    private Result rejectMarriageRequest(User user) {
+    public Result rejectMarriageRequest(User user) {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
         increaseMutualXP(user, user.getAskedMarriage(), -xp);
         user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity() / 2);
