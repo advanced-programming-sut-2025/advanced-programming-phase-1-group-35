@@ -22,7 +22,8 @@ public class BackPack {
         this.items.put(new Tool(100, 5, ToolTypes.FISHING_ROD), 1);
         this.items.put(new Tool(100, 5, ToolTypes.SHEARS), 1);
         this.items.put(new Tool(100, 5, ToolTypes.MILK_PAIL), 1);
-        this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
+        //this.items.put(new Tool(100, 5, ToolTypes.WATERING_CAN), 1);
+        this.items.put(new WateringCan("can"), 1);
         this.items.put(new CookingMaterial(CookingIngredient.EGG), 5);
         this.items.put(new CookingMaterial(CookingIngredient.CARROT), 20);
         this.items.put(new CookingMaterial(CookingIngredient.CHEESE), 3);
