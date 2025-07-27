@@ -23,7 +23,6 @@ import Model.enums.Crops.*;
 import Model.enums.Shops.Products.*;
 import Model.enums.animal.AnimalProductDetails;
 import Model.enums.animal.FishType;
-import View.GameMenu;
 import View.InGameMenu.ShopMenu;
 import com.StardewValley.Main;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -187,6 +186,7 @@ public class GameMenuController {
         Game game = new Game(players, App.getLoggedInUser());
         App.games.add(game);
         App.setCurrentGame(game);
+        game.npcController.init();
         CurrentGame = game;
         setFarmingController();
         for (User player : players) {
@@ -294,18 +294,6 @@ public class GameMenuController {
         for (User player : game.getPlayers()) {
             if (player.equals(requester)) continue;
             System.out.println(player.getUsername() + " must vote about termination : (y/n)");
-            while (true) {
-                String input = GameMenu.scan();
-                if (input.equalsIgnoreCase("y")) {
-                    terminationVotes.put(player, true);
-                    positiveVotes++;
-                    break;
-                } else if (input.equalsIgnoreCase("n")) {
-                    terminationVotes.put(player, false);
-                    break;
-                }
-                System.out.println("invalid input");
-            }
         }
         if (positiveVotes == game.getPlayers().size()) {
             App.setCurrentGame(null);

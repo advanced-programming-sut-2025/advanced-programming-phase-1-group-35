@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.InGameMenu.NPCController;
 import Model.NPCs.NPC;
 import Model.enums.WeatherCondition;
 import com.StardewValley.Main;
@@ -18,6 +19,7 @@ public class Game {
     private Map map ;
     private ArrayList<NPC> npcs = new ArrayList<>();
     public OrthographicCamera camera = new OrthographicCamera();
+    public NPCController npcController = new NPCController();
 
     public Game(ArrayList<User> players, User playingUser) {
         map = new Map();
@@ -28,6 +30,7 @@ public class Game {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(playingUser.getCurrentPoint().first, playingUser.getCurrentPoint().second, 0);
+        npcController = new NPCController();
     }
 
 

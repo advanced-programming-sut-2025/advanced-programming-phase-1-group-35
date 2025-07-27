@@ -2,6 +2,8 @@ package Model.enums.NPCs;
 
 import Model.NPCs.NPC;
 import Model.NPCs.Quest;
+import Model.Point;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
@@ -14,24 +16,43 @@ public enum NPCs {
     Marnie,
     Gus,
     //quest
-    Sebastian,
-    Abigail,
-    Harvey,
-    Lia,
+    Sebastian(120 , 110 , "npc/sebastianSimple.png"),
+    Abigail(125 , 110 , "npc/AbigailSimple.png"),
+    Harvey(130 , 110 , "npc/HarveySimple.png"),
+    Leah(135 , 110 , "npc/LeahSimple.png"),
     //shop and quest
-    Robin;
+    Robin(140 , 110 , "npc/RobinSimple.png"),;
+
+    public int x , y;
+    public String spriteAddress ;
+
+    NPCs (){
+
+    }
+
+    NPCs(int x , int y, String spriteAddress){
+        this.x = x;
+        this.y = y;
+        this.spriteAddress = spriteAddress;
+    }
 
     public NPC createNPC() {
+        NPC npc ;
         if (hasQuests()) {
-            return new NPC(this.name(), getJob(), quests(), favorites(), getSymbol());
+            npc = new NPC(this.name(), getJob(), quests(), favorites(), getSymbol());
         } else {
-            return new NPC(this.name(), getJob(), new ArrayList<>(), new ArrayList<>(), getSymbol());
+            npc = new NPC(this.name(), getJob(), new ArrayList<>(), new ArrayList<>(), getSymbol());
         }
+        if(spriteAddress != null){
+            npc.location = new Point(x, y);
+            npc.texture = new Texture(spriteAddress);
+        }
+        return npc;
     }
 
     private boolean hasQuests() {
         return switch (this) {
-            case Sebastian, Abigail, Harvey, Lia, Robin -> true;
+            case Sebastian, Abigail, Harvey, Leah, Robin -> true;
             default -> false;
         };
     }
@@ -67,7 +88,7 @@ public enum NPCs {
                 favorites.add("Pickles");
                 favorites.add("Wine");
                 break;
-            case Lia:
+            case Leah:
                 favorites.add("Salad");
                 favorites.add("Grape");
                 favorites.add("Wine");
@@ -99,7 +120,7 @@ public enum NPCs {
                 quests.add(new Quest("1 salmon", "1 friendship level"));
                 quests.add(new Quest("1 bottle of wine", "5 salads"));
                 break;
-            case Lia:
+            case Leah:
                 quests.add(new Quest("10 hardwood", "500 gold coins"));
                 quests.add(new Quest("1 salmon", "Salmon dinner recipe"));
                 quests.add(new Quest("200 wood", "3 deluxe scarecrows"));
@@ -118,7 +139,7 @@ public enum NPCs {
             case Sebastian -> 'S';
             case Abigail -> 'A';
             case Harvey -> 'H';
-            case Lia -> 'L';
+            case Leah -> 'L';
             case Robin -> 'R';
             default -> 'V';
         };

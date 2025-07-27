@@ -16,10 +16,7 @@ public class TradeMenu extends AppMenu {
         controller.setUser(App.getCurrentGame().getPlayingUser());
         String input = TradeMenu.scan();
         Matcher matcher ;
-        if(TradeMenuCommands.goBack.getMatcher(input) != null){
-            App.setCurrentMenu(Menu.GameMenu);
-        }
-        else if((matcher = TradeMenuCommands.requestTrade.getMatcher(input)) != null){
+        if((matcher = TradeMenuCommands.requestTrade.getMatcher(input)) != null){
             System.out.println(controller.requestTrade(matcher.group("username"), matcher.group("type"),
                     matcher.group("item"), matcher.group("amount"), matcher.group("price"),
                     matcher.group("tItem"), matcher.group("tAmount")));
