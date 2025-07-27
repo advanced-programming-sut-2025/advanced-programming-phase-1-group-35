@@ -35,6 +35,13 @@ public class ShopMenuUI implements Screen {
 
     public ShopMenuUI(ShopMenuController shopController, GameMenuUI gameMenuUI) {
         this.shopController = shopController;
+        if(shopController.shop == null){
+            Gdx.input.setInputProcessor(gameMenuUI.gameMenuInputAdapter);
+            // Set the screen back to game menu
+            if (gameMenuUI.gameModel != null) {
+                Main.getGame().setScreen(gameMenuUI);
+            }
+        }
         this.gameMenuUI = gameMenuUI;
         initializeUI();
     }

@@ -5,6 +5,7 @@ import Controller.InGameMenu.AnimalController;
 import Model.App;
 import Model.GameAssetManager;
 import Model.Result;
+import Model.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.io.IOException;
+
+import java.util.Objects;
 
 public class CheatUI implements Screen {
 
@@ -79,10 +82,14 @@ public class CheatUI implements Screen {
 
     private void executeCommand(String command) {
         commandOutput.appendText("> " + command + "\n");
-        String[] commandParts = command.split(" ");
+        String[] commandParts = command.split("\\s+");
         Result result = null;
         if (commandParts[0].equals("cheat") && commandParts[1].equals("set") && commandParts[2].equals("friendship")) {
             result = animalController.cheatFriendshipAnimal(commandParts[3], Integer.parseInt(commandParts[4]));
+        } else if (commandParts[0].equals("cheat") && commandParts[1].equals("set" ) && commandParts[2].equals("energy")) {
+            result = new GameMenuController().cheatEnergySet(commandParts[3]);
+        } else if (commandParts[0].equals("cheat") && commandParts[1].equals("thor")) {
+            result = Weather.hitTileWithThunder(Objects.requireNonNull(Map.getTileWithCoordination(commandParts[2], commandParts[3])));
         }
         if(command.equals("go to next day"))
             try {

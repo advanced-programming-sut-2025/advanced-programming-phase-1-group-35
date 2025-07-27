@@ -47,6 +47,8 @@ public class Inventory {
     private static final int TOP_PADDING = 50;
     private int startX, startY;
 
+    ItemInterface clickedItem;
+
     private enum InventoryAction {
         SELL,
         MOVE_TO_TRASH,
@@ -81,7 +83,7 @@ public class Inventory {
 
                 for (Map.Entry<Rect, ItemInterface> entry : itemRects.entrySet()) {
                     Rect rect = entry.getKey();
-                    ItemInterface clickedItem = entry.getValue();
+                    clickedItem = entry.getValue();
                     if (rect.contains(stageX, stageY)) {
                         Gdx.app.log("InventoryUI", "Item clicked: " + clickedItem.getName());
                         showItemActionDialog(clickedItem);
@@ -220,6 +222,31 @@ public class Inventory {
             }
             currentItemIndex++;
         }
+    }
+    public void drawOnRight(SpriteBatch batch) {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        // Position inventory on the right with some padding
+        startX = screenWidth - TOTAL_WIDTH - 50; // 50 pixels from right edge
+        startY = (screenHeight - TOTAL_HEIGHT) / 2; // Center vertically
+
+        // Adjust trash can position for this layout
+        trashCanRect.x = startX + TOTAL_WIDTH - ICON_SIZE * 1.7f;
+        trashCanRect.y = startY - ICON_SIZE * 1.7f - 20;
+
+        batch.draw(inventoryBackgroundTexture, startX - 20, startY - 20, TOTAL_WIDTH + 40, TOTAL_HEIGHT + 40);
+        batch.draw(trashCanIconTexture, trashCanRect.x, trashCanRect.y, trashCanRect.width, trashCanRect.height);
+        drawInventoryItems(batch);
+    }
+    public ItemInterface getSelectedItem() {
+        // Return the currently selected item (you'll need to track this)
+        return clickedItem;
+    }
+
+    public void refresh() {
+        // Refresh the inventory display
+        itemRects.clear();
     }
 
     public Texture getItemTexture(ItemInterface item) {

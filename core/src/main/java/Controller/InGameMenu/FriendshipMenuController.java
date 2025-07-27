@@ -51,7 +51,7 @@ public class FriendshipMenuController {
     }
 
     public void increaseMutualXP(User sender, User receiver, int i) {
-        if (sender.getSpouse().equals(receiver)) {
+        if (sender.getSpouse() != null && sender.getSpouse().equals(receiver)) {
             sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
             receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
         }
@@ -60,18 +60,11 @@ public class FriendshipMenuController {
     }
 
     public Result talkHistory(String username) {
-        User me = App.getCurrentGame().getPlayingUser();
         User friend = getUserBYName(username);
-        StringBuilder m = new StringBuilder();
-        m.append("talk history with ").append(username).append(": \n═════════════════════════════════\n");
-        for (Message message : me.getMessages()) {
-            if (message.getSenderID() == friend.getID()) {
-                m.append("received: \n").append(message.getMessage()).append("\n═════════════════════════════════\n");
-            } else if (message.getReceiverID() == friend.getID()) {
-                m.append("sent: \n").append(message.getMessage()).append("\n═════════════════════════════════\n");
-            }
+        if (friend == null) {
+            return new Result(false, "user not found");
         }
-        return new Result(true, m.toString());
+        return new Result(true, "");
     }
 
     public Result friendShipStatus(String username) {

@@ -12,6 +12,7 @@ import Model.Tools.Tool;
 import Model.animal.Animal;
 import Model.animal.AnimalProduct;
 import Model.enums.Buildings.AnimalHouseEnum;
+import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
@@ -35,6 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,6 +56,7 @@ public class GameMenuUI implements Screen {
     private boolean isInInventory = false;
     private boolean isCook = false;
     private boolean isCheating = false;
+    private boolean isMiniGaming = false;
 
     private SpriteBatch toolsBatch;
     private ShapeRenderer toolsShapeRenderer;
@@ -86,6 +89,12 @@ public class GameMenuUI implements Screen {
     private Texture heartTexture;
     private CheatUI cheatUI;
 
+    private Animal animalToMove = null;
+    private Point moveTarget = null;
+    private float moveTimer = 0f;
+    private static final float TILE_MOVE_SPEED = 0.2f;
+    private Texture lightningTexture;
+
     public static boolean Crows = false;
     private float animationTime = 0f;
     private final float crowDuration = 6f;
@@ -114,6 +123,7 @@ public class GameMenuUI implements Screen {
         barnTexture = new Texture(Gdx.files.internal("assets/buildings/Barn.png"));
         coopTexture = new Texture(Gdx.files.internal("assets/buildings/Coop.png"));
         heartTexture = new Texture(Gdx.files.internal("assets/heart.png"));
+        lightningTexture = new Texture(Gdx.files.internal("assets/light.png"));
 
 
         mainMultiplexer = new InputMultiplexer();
@@ -140,8 +150,20 @@ public class GameMenuUI implements Screen {
                         toggleCheatMenu();
                         return true;
                     case Input.Keys.F:
-                        Result result = animalController.fishing();
-                        showDialog("Fishing Result", result.toString());
+                        if (!gameController.isCloseToSea()) {
+                            showDialog("Fishing Result", "You are not near to a sea!");
+                        } else if (!App.getCurrentGame().getPlayingUser().getCurrentTool().getToolType().equals(ToolTypes.FISHING_ROD)) {
+                            showDialog("Fishing Result", "you are not equipped by a fishing pole!");
+                        } else {
+                            toggleMiniGameMenu();
+                        }
+                        return true;
+                    case Input.Keys.B:
+                        try {
+                            gameModel.getGameCalender().cheatTime(1);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         return true;
                 }
                 return false;
@@ -247,22 +269,28 @@ public class GameMenuUI implements Screen {
             }
             @Override
             protected void result(Object object) {
+                if ("cancel".equals(object.toString())) return;
                 int moveDistance = 5;
                 Point currentLocation = animal.location;
+                int targetX = currentLocation.x;
+                int targetY = currentLocation.y;
+
                 switch (object.toString()) {
                     case "up":
-                        currentLocation.y += moveDistance;
+                        targetY += moveDistance;
                         break;
                     case "down":
-                        currentLocation.y -= moveDistance;
+                        targetY -= moveDistance;
                         break;
                     case "left":
-                        currentLocation.x -= moveDistance;
+                        targetX -= moveDistance;
                         break;
                     case "right":
-                        currentLocation.x += moveDistance;
+                        targetX += moveDistance;
                         break;
                 }
+                animalToMove = animal;
+                moveTarget = new Point(targetX, targetY);
             }
         }.show(stage);
     }
@@ -368,6 +396,8 @@ public class GameMenuUI implements Screen {
 
         gameModel.update(delta);
         gameView.render();
+        updateAnimalMovement(delta);
+        renderLightningEffects(delta);
         renderAnimals();
         renderPettedHearts(delta);
         gameMenuInputAdapter.update(delta);
@@ -425,6 +455,55 @@ public class GameMenuUI implements Screen {
         stage.act(delta);
         stage.draw();
     }
+
+    private void updateAnimalMovement(float delta) {
+        if (animalToMove == null || moveTarget == null) {
+            return;
+        }
+        moveTimer += delta;
+        if (moveTimer >= TILE_MOVE_SPEED) {
+            moveTimer -= TILE_MOVE_SPEED;
+            Point currentPos = animalToMove.location;
+
+            if (currentPos.x == moveTarget.x && currentPos.y == moveTarget.y) {
+                animalToMove = null;
+                moveTarget = null;
+                return;
+            }
+
+            if (currentPos.x < moveTarget.x) {
+                currentPos.x++;
+            } else if (currentPos.x > moveTarget.x) {
+                currentPos.x--;
+            }
+            if (currentPos.y < moveTarget.y) {
+                currentPos.y++;
+            } else if (currentPos.y > moveTarget.y) {
+                currentPos.y--;
+            }
+        }
+    }
+
+    private void renderLightningEffects(float delta) {
+        SpriteBatch batch = gameView.getBatch();
+        batch.begin();
+        for (Tile[] row : gameModel.getMap().getTiles()) {
+            for (Tile tile : row) {
+                if (tile.getLightningTimer() > 0) {
+                    float newTime = tile.getLightningTimer() - delta;
+                    tile.setLightningTimer(newTime);
+                    float x = tile.coordination.x * Main.TILE_SIZE;
+                    float y = tile.coordination.y * Main.TILE_SIZE;
+                    batch.draw(lightningTexture, x, y, Main.TILE_SIZE, Main.TILE_SIZE);
+                    if (tile.getLightningTimer() <= 0) {
+                        tile.setLightningTimer(0);
+                    }
+                }
+            }
+        }
+        batch.end();
+    }
+
 
     private void renderAnimals() {
         SpriteBatch batch = gameView.getBatch();
@@ -548,6 +627,7 @@ public class GameMenuUI implements Screen {
         if (stage != null) stage.dispose();
         if (barnTexture != null) barnTexture.dispose();
         if (coopTexture != null) coopTexture.dispose();
+        if (lightningTexture != null) lightningTexture.dispose();
     }
 
     public void startSleepTransition() {
@@ -582,6 +662,22 @@ public class GameMenuUI implements Screen {
             isToolsUIVisible = false;
         } else if (isCook) {
             isCook = false;
+            Main.getGame().setScreen(this);
+            mainMultiplexer.addProcessor(hotkeyAdapter);
+            mainMultiplexer.addProcessor(gameMenuInputAdapter);
+            Gdx.input.setInputProcessor(mainMultiplexer);
+        }
+    }
+
+    public void toggleMiniGameMenu() {
+        if (Main.getGame().getScreen() == this) {
+            this.isMiniGaming = true;
+            mainMultiplexer.removeProcessor(gameMenuInputAdapter);
+            mainMultiplexer.removeProcessor(hotkeyAdapter);
+            Main.getGame().setScreen(new FishingUI(this));
+            isToolsUIVisible = false;
+        } else if (isMiniGaming) {
+            isMiniGaming = false;
             Main.getGame().setScreen(this);
             mainMultiplexer.addProcessor(hotkeyAdapter);
             mainMultiplexer.addProcessor(gameMenuInputAdapter);
@@ -637,6 +733,10 @@ public class GameMenuUI implements Screen {
         ShopMenuController shopMenuController = new ShopMenuController(gameModel.getPlayingUser().getCurrentTile());
         ShopMenuUI shopMenuUI = new ShopMenuUI(shopMenuController, this);
         Main.getGame().setScreen(shopMenuUI);
+    }
+
+    public void goToFriendsMenu() {
+        Main.getGame().setScreen(new FriendshipMenuUI(this));
     }
 
     public InputMultiplexer getMainMultiplexer() {

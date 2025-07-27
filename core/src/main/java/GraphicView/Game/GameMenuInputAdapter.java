@@ -51,6 +51,9 @@ public class GameMenuInputAdapter extends InputAdapter {
         if(keycode == Input.Keys.P){
             gameMenuUI.goToShopMenu();
         }
+        if(keycode == Input.Keys.I){
+            gameMenuUI.goToFriendsMenu();
+        }
 
         if (keycode == Input.Keys.C) {
             gameMenuUI.toggleCookMenu();

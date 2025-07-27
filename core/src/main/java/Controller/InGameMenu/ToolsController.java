@@ -14,6 +14,7 @@ import Model.animal.Animal;
 import Model.enums.TileType;
 import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
+import Model.enums.animal.FishType;
 
 import java.util.ArrayList;
 
@@ -246,7 +247,7 @@ public class ToolsController {
         if (!energyCheck(player, 8)) {
             return new Result(false, "you don't have enough energy!");
         }
-        return new AnimalController().fishing();
+        return new AnimalController().fishing(FishType.getRandomFish(), false);
     }
 
     private Result useWateringCan(User player, Tile destenationTile) {

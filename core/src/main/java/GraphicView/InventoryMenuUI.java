@@ -38,15 +38,8 @@ public class InventoryMenuUI implements Screen {
     private Texture mapButtonTexture;
     private Texture menuBackgroundTexture;
 
-    private Rect inventoryRect;
-    private Rect skillsRect;
-    private Rect socialRect;
-    private Rect mapRect;
-
     private Inventory inventoryPanel;
-    // private SkillsUI skillsPanel;
-    // private SocialUI socialPanel;
-    // private MapUI mapPanel;
+    private Skills skillsPanel;
 
     private static final int BUTTON_SIZE = 100;
     private static final int START_X = 480;
@@ -83,24 +76,28 @@ public class InventoryMenuUI implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 currentState = MenuState.INVENTORY;
+                skillsPanel.setVisible(false);
             }
         });
         skillsBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 currentState = MenuState.SKILLS;
+                skillsPanel.setVisible(true);
             }
         });
         socialBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 currentState = MenuState.SOCIAL;
+                skillsPanel.setVisible(false);
             }
         });
         mapBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 currentState = MenuState.MAP;
+                skillsPanel.setVisible(false);
             }
         });
 
@@ -109,13 +106,8 @@ public class InventoryMenuUI implements Screen {
         stage.addActor(socialBtn);
         stage.addActor(mapBtn);
 
-
-        inventoryRect = new Rect(START_X, START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        skillsRect = new Rect(START_X + 60, START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        socialRect = new Rect(START_X + 2 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
-        mapRect = new Rect(START_X + 3 * (60), START_Y, BUTTON_SIZE, BUTTON_SIZE);
-
         inventoryPanel = new Inventory(game, stage, gameMenuUI.gameController);
+        skillsPanel = new Skills(stage);
 
         InputMultiplexer mainMultiplexer = gameMenuUI.getMainMultiplexer();
         mainMultiplexer.addProcessor(stage);
