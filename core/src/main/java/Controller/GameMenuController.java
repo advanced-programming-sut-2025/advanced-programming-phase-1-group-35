@@ -586,8 +586,9 @@ public class GameMenuController {
         Tree tree = (Tree) tile.getPlanted();
         App.getCurrentGame().getPlayingUser().backPack.items.put(CarpenterShopProducts.WOOD, 1);
         App.getCurrentGame().getPlayingUser().getForagingSkill().gainXp();
-        App.getCurrentGame().getMap().getTrees().remove(tree);
-        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+//        App.getCurrentGame().getMap().getTrees().remove(tree);
+//        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);
+        tree.setChopped(true);
         tile.setSymbol('.');
         tile.setPlanted(null);
         tile.getContents().remove(tree);
@@ -778,6 +779,10 @@ public class GameMenuController {
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
         farmingController.generateStartingPlants();
+        Crop crop = new Crop(CropEnum.COFFEE_BEAN,App.getCurrentGame().getPlayingUser().getCurrentTile());
+        crop.setCurrentState(crop.getStages().size());
+        App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
+        App.getCurrentGame().getMap().getCrops().add(crop);
         Main.getGame().setScreen(gameMenu);
     }
 }

@@ -10,6 +10,7 @@ import Model.animal.Animal;
 import Model.enums.Seasons;
 import Model.enums.TileType;
 import Model.enums.WeatherCondition;
+import View.GameMenu;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -122,7 +123,8 @@ public class GameCalender {
         }
     }
 
-    public void goToNextDay() throws IOException {
+    public Result goToNextDay() throws IOException {
+
         Game game = App.getCurrentGame();
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
@@ -183,6 +185,7 @@ public class GameCalender {
             for (int i = 0; i < App.getCurrentGame().getMap().getCrops().size(); i++) {
                 App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
+        }
             for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size(); i++) {
                 Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
                 tree.getTile().setWatered(false);
@@ -239,14 +242,16 @@ public class GameCalender {
                 if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                     GameMenuController controller = new GameMenuController();
                     controller.goToNextTurn(player);
-                     }
-            }
+                    GameMenu.print(controller.walk(player, String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
+                            String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
+                }
         }
         if (this.dayPassedFromSeason == 29) {
             goToNextSeason();
             this.dayPassedFromSeason = 0;
             gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
         }
+        return new Result(true, "went to next day");
     }
 
     public Result cheatTime(int hour) throws IOException {

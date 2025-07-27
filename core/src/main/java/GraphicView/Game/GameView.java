@@ -46,7 +46,7 @@ public class GameView {
     private TextureRegion treeRegion;
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
-
+    private Animation<TextureRegion> CrowAnimation;
     public GameView(Game game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -54,6 +54,10 @@ public class GameView {
         treeBatch = new SpriteBatch();
         loadTextures();
         loadFont();
+    }
+
+    public Animation<TextureRegion> getCrowAnimation() {
+        return CrowAnimation;
     }
 
     private void loadFont() {
@@ -65,8 +69,13 @@ public class GameView {
     }
 
     private void loadTextures() {
+        Array<TextureRegion> frames = new Array<>();
+        for(int i =1; i<14; i++){
+            frames.add(new TextureRegion(new Texture(Gdx.files.internal("crowAnimation/frame"+i+".png"))));
+        }
+        CrowAnimation = new Animation<>(0.13f,frames);
         textures = new HashMap<>();
-
+        textures.put("flooring/plowed_tile.png",new TextureRegion(new Texture(Gdx.files.internal("flooring/plowed_tile.png"))));
         for (TileType id : TileType.values()) {
             String path = id.getIconPath();
             textures.put(id.name(), new TextureRegion(new Texture(Gdx.files.internal(path))));
@@ -94,6 +103,7 @@ public class GameView {
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
             }
         }
+        textures.put("trees/Stump.png", new TextureRegion(new Texture(Gdx.files.internal("trees/Stump.png"))));
         String[] seasons = {"Spring","Summer","Fall","Winter"};
         for(TreeEnum treeEnum : TreeEnum.values()) {
             for (int i = 1; i <= treeEnum.getStages().size(); i++) {
@@ -186,6 +196,7 @@ public class GameView {
         int endX = Math.min(tiles.length, (int) ((camX + viewportWidth / 2) / tileSize) + 2);
         int endY = Math.min(tiles[0].length, (int) ((camY + viewportHeight / 2) / tileSize) + 2);
         Map<Point, Tile> outsideTiles = new HashMap<>();
+        ArrayList<Tile> plowedTiles = new ArrayList<>();
 
 //        FrameBuffer treeBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, worldWidth, worldHeight, false);
 
@@ -198,6 +209,15 @@ public class GameView {
                     float drawY = y * tileSize - cameraBottom;
                     if (id.getTileType().equals(TileType.OutSideFarm)) {
                         outsideTiles.put(new Point(x, y), id);
+                    }
+                    if(id.isPlowed()){
+                        plowedTiles.add(id);
+                    }
+                    if(id.isWatered){
+                        batch.setColor(0.6f, 0.6f, 0.9f, 1f);
+                    }
+                    if(id.isFertilized){
+                        batch.setColor(0.8f, 0.8f, 0.5f, 1f);
                     }
                     //TODO: also render crops
                     if (id.getPlanted() != null && id.getPlanted().getClass().equals(Crop.class)) {
@@ -218,6 +238,8 @@ public class GameView {
                             batch.setColor(1f, 1f, 1f, 1f);
                         }
                     }
+
+
                     TextureRegion texture = textures.get(id.getTileType().name());
                     if (texture != null) {
                         batch.draw(texture, drawX, drawY, tileSize, tileSize);
@@ -299,6 +321,23 @@ public class GameView {
 //            batch.draw(treeRegion, 0, 0);
 
 
+        for(Tile tile : plowedTiles){
+            int x = tile.getCoordination().x;
+            int y = tile.getCoordination().y;
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                float drawX = x * tileSize - cameraLeft;
+                float drawY = y * tileSize - cameraBottom;
+
+                TextureRegion cropTexture;
+                cropTexture = textures.get("flooring/plowed_tile.png");
+
+                if (cropTexture != null) {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.draw(cropTexture, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE);
+                }
+            }
+        }
+
         //TODO : render crops
         int cropSize = Main.TILE_SIZE;
         for (Crop crop : App.getCurrentGame().getMap().getCrops()) {
@@ -336,11 +375,11 @@ public class GameView {
                 TextureRegion treeTexture = textures.get(tree.stagePath());
                 if (treeTexture != null) {
                     batch.setColor(1f, 1f, 1f, 1f);
-                    float treeWidth = tileSize * 2f;
-                    float treeHeight = tileSize * 3f;
+                    float treeWidth = tree.getCurrentState() > 2 ? tileSize * 2f : tileSize;
+                    float treeHeight = tileSize * (float)tree.getCurrentState();
                     float adjustedX = drawX - (treeWidth - tileSize) / 2f;
                     float adjustedY = drawY; // - (treeHeight - tileSize);
-
+                    if (tree.isChopped()) treeHeight /=3;
                     batch.draw(treeTexture, adjustedX, adjustedY, treeWidth, treeHeight);
 
                 }

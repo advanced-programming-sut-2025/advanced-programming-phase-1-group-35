@@ -1,5 +1,6 @@
 package Controller.InGameMenu;
 
+import GraphicView.GameMenuUI;
 import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Sapling;
@@ -126,9 +127,9 @@ public class FarmingController {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
-//        if (!isFloorplowed(tile)) {
-//            return new Result(false, "Floor is not plowed");
-//        }
+        if (!isFloorplowed(tile)) {
+            return new Result(false, "Floor is not plowed");
+        }
         App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
             App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
@@ -231,7 +232,9 @@ public class FarmingController {
         }
 
         if (tile.getPlanted() instanceof Crop crop) {
-            if(crop.getCurrentState() < crop.getStages().size() || crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)){
+            if(crop.getCurrentState() < crop.getStages().size()
+                /* || (crop.getDaysSinceLastGrowth() < crop.getStages().get(crop.getStages().size()-1)&& !crop.isForaging())*/
+            ){
                 return new Result(false, crop.getName() + " is not fully developed yet!");
             }
             ArrayList <Crop> crops = new ArrayList<>();
@@ -343,7 +346,9 @@ public class FarmingController {
                 crop.getCropTile().setPlanted(null);
 //                crop.getCropTile().setSymbol('X');
                 crop.getCropTile().setContentSymbol('X');
+                GameMenuUI.Crows = true;
                 }
+            else GameMenuUI.Crows = false;
             }
         }
     }
@@ -371,7 +376,7 @@ public class FarmingController {
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
             if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)){
-                if(random1.nextInt(500) < 1){
+                if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);

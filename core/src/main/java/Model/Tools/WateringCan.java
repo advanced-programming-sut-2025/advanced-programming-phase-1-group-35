@@ -1,5 +1,6 @@
 package Model.Tools;
 
+import Model.ItemInterface;
 import Model.enums.ToolTypes;
 
 public class WateringCan extends Tool {

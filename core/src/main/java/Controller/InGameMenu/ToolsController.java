@@ -256,26 +256,31 @@ public class ToolsController {
         }
         for (ItemInterface item : player.backPack.items.keySet()) {
             if (item instanceof WateringCan can) {
-                if (destenationTile.getTileType() == TileType.Water) {
-                    if (can.getCapacity() < 55) {
-                        can.setCapacity(can.getCapacity() + 1);
+                try {
+                    if (destenationTile.getTileType() == TileType.Water) {
+                        if (can.getCapacity() < 55) {
+                            can.setCapacity(can.getCapacity() + 1);
+                        }
+                        return new Result(true, "You fill the can and its capacity now: " +
+                            can.getCapacity());
+                    } else if (!destenationTile.isWatered) {
+                        destenationTile.setWatered(true);
+                        if (destenationTile.getPlanted() instanceof Crop crop) {
+                            crop.setDaysSinceWatered(0);
+                        } else if (destenationTile.getPlanted() instanceof Tree tree) {
+                            tree.setDaysSinceWatered(0);
+                        }
+                        return new Result(true, "you watered this tile");
                     }
-                    return new Result(true, "You fill the can and its capacity now: " +
-                        can.getCapacity());
-                } else if (!destenationTile.isWatered) {
-                    destenationTile.setWatered(true);
-                    if (destenationTile.getPlanted() instanceof Crop crop) {
-                        crop.setDaysSinceWatered(0);
-                    } else if (destenationTile.getPlanted() instanceof Tree tree) {
-                        tree.setDaysSinceWatered(0);
-                    }
-                    return new Result(true, "you watered this tile");
+                }catch (Exception e){
+                    return new Result(false, "you can't water this tile");
                 }
             }
-        }
-        return new Result(false, "you cant use watering can on this tile");
-    }
+            }
 
+            return new Result(false, "you cant use watering can on this tile");
+
+    }
     private Result useScythe(Game game, User player, Tile destenationTile) {
         if (!energyCheck(player, 2)) {
             return new Result(false, "you don't have enough energy!");

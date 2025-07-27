@@ -2,6 +2,9 @@ package GraphicView;
 
 import Controller.GameMenuController;
 import Controller.InGameMenu.AnimalController;
+import Model.App;
+import Model.GameAssetManager;
+import Model.Result;
 import Model.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.io.IOException;
 
 import java.util.Objects;
 
@@ -86,6 +91,10 @@ public class CheatUI implements Screen {
         } else if (commandParts[0].equals("cheat") && commandParts[1].equals("thor")) {
             result = Weather.hitTileWithThunder(Objects.requireNonNull(Map.getTileWithCoordination(commandParts[2], commandParts[3])));
         }
+        if(command.equals("go to next day"))
+            try {
+            result = App.getCurrentGame().getGameCalender().goToNextDay();
+            } catch (IOException e){};
         if (result == null) {
             commandOutput.setText("invalid command!\n");
             return;
