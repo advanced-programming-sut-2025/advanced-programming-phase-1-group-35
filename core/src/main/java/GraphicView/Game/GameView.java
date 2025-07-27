@@ -45,6 +45,7 @@ public class GameView {
     private TextureRegion treeRegion;
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
+    private Animation<TextureRegion> CrowAnimation;
     public GameView(Game game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -52,6 +53,10 @@ public class GameView {
         treeBatch = new SpriteBatch();
         loadTextures();
         loadFont();
+    }
+
+    public Animation<TextureRegion> getCrowAnimation() {
+        return CrowAnimation;
     }
 
     private void loadFont() {
@@ -63,6 +68,11 @@ public class GameView {
     }
 
     private void loadTextures() {
+        Array<TextureRegion> frames = new Array<>();
+        for(int i =1; i<14; i++){
+            frames.add(new TextureRegion(new Texture(Gdx.files.internal("crowAnimation/frame"+i+".png"))));
+        }
+        CrowAnimation = new Animation<>(0.13f,frames);
         textures = new HashMap<>();
         textures.put("flooring/plowed_tile.png",new TextureRegion(new Texture(Gdx.files.internal("flooring/plowed_tile.png"))));
         for (TileType id : TileType.values()) {

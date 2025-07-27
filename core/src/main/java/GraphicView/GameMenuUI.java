@@ -86,6 +86,12 @@ public class GameMenuUI implements Screen {
     private Texture heartTexture;
     private CheatUI cheatUI;
 
+    public static boolean Crows = false;
+    private float animationTime = 0f;
+    private final float crowDuration = 6f;
+    private final float fadeDuration = 1f; // 1 second fade in/out
+
+
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -365,6 +371,45 @@ public class GameMenuUI implements Screen {
         renderAnimals();
         renderPettedHearts(delta);
         gameMenuInputAdapter.update(delta);
+
+        animationTime += delta;
+        if (Crows) {
+            animationTime += delta;
+
+            if (animationTime >= crowDuration) {
+                Crows = false;
+                animationTime = 0;
+            } else {
+                // Step 1: Clear the screen
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+                TextureRegion currentFrame = gameView.getCrowAnimation().getKeyFrame(animationTime, true);
+
+                float alpha = 1f;
+                if (animationTime < fadeDuration) {
+                    alpha = animationTime / fadeDuration; // Fade in
+                } else if (animationTime > crowDuration - fadeDuration) {
+                    alpha = (crowDuration - animationTime) / fadeDuration; // Fade out
+                }
+
+                gameView.getBatch().begin();
+                gameView.getBatch().setColor(1f, 1f, 1f, alpha); // White color with calculated alpha
+                gameView.getBatch().draw(
+                    currentFrame,
+                    Gdx.graphics.getWidth() / 4f,
+                    Gdx.graphics.getHeight() / 4f,
+                    Gdx.graphics.getWidth() / 2f,
+                    Gdx.graphics.getHeight() / 2f
+                );
+                gameView.getBatch().setColor(1f, 1f, 1f, 1f); // Reset to full opacity
+                gameView.getBatch().end();
+            }
+        }
+
+
+//        }
+//        else Crows = false;
 
 
         if (isToolsUIVisible) {

@@ -124,6 +124,7 @@ public class GameCalender {
     }
 
     public Result goToNextDay() throws IOException {
+
         Game game = App.getCurrentGame();
         game.getWeather().setWeatherCondition(game.getWeather().getTomorrowCondition());
         game.getWeather().setTomorrowCondition(game.getWeather().randomWeatherCondition(game.getGameCalender().getSeason()));
@@ -184,6 +185,7 @@ public class GameCalender {
             for (int i = 0; i < App.getCurrentGame().getMap().getCrops().size(); i++) {
                 App.getCurrentGame().getMap().getCrops().get(i).grow();
             }
+        }
             for (int i = 0; i < App.getCurrentGame().getMap().getTrees().size(); i++) {
                 Tree tree = App.getCurrentGame().getMap().getTrees().get(i);
                 tree.getTile().setWatered(false);
@@ -243,7 +245,6 @@ public class GameCalender {
                     GameMenu.print(controller.walk(player, String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
                             String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
                 }
-            }
         }
         if (this.dayPassedFromSeason == 29) {
             goToNextSeason();

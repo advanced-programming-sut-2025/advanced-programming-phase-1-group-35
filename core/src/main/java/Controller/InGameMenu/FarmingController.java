@@ -1,5 +1,6 @@
 package Controller.InGameMenu;
 
+import GraphicView.GameMenuUI;
 import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Sapling;
@@ -345,7 +346,9 @@ public class FarmingController {
                 crop.getCropTile().setPlanted(null);
 //                crop.getCropTile().setSymbol('X');
                 crop.getCropTile().setContentSymbol('X');
+                GameMenuUI.Crows = true;
                 }
+            else GameMenuUI.Crows = false;
             }
         }
     }
@@ -373,7 +376,7 @@ public class FarmingController {
     for(Tile[] tile1 : App.getCurrentGame().getMap().getTiles()){
         for (Tile tile : tile1) {
             if (tile.getPlanted() == null && tile.getTileType().equals(TileType.Soil)){
-                if(random1.nextInt(500) < 1){
+                if(random1.nextInt(100) < 1){
                     Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                     tile.setPlanted(tree);
                     App.getCurrentGame().getMap().addTrees(tree);
