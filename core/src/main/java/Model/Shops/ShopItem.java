@@ -15,7 +15,7 @@ import Model.enums.Crops.SeedEnum;
 import Model.enums.GameMenuCommands;
 import Model.enums.Seasons;
 import Model.enums.ToolTypes;
-import View.GameMenu;
+
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -47,18 +47,6 @@ public class ShopItem {
         } else if (type.equals("Item")) {
             return new Item(price, name);
         } else if (type.equals("AnimalHouse")) {
-            AnimalController animalController = new AnimalController();
-
-                GameMenu.print("where do you plan on putting this building buddy ?");
-                String input = GameMenu.scan();
-                Matcher matcher;
-                if (input.equals("cancel")) {
-                    return null;
-                }
-                if ((matcher = GameMenuCommands.buildABuilding.getMatcher(input)) == null) return null;
-                int x = Integer.parseInt(matcher.group("x"));
-                int y = Integer.parseInt(matcher.group("y"));
-                return animalController.buildAnimalHouse(name, x, y);
 
         } else if (type.equals("CraftingRecipe")) {
             //TODO : Update when crafting recipes added
@@ -100,25 +88,13 @@ public class ShopItem {
             assert tool != null;
             //TODO : update when tools completed
         } else if (type.equals("Animal")) {
-            String animalName = "";
-            GameMenu.print("Please enter the name of the animal: ");
-            animalName = GameMenu.scan();
-            if (name.equals("cancel")) return null;
-            AnimalController animalController = new AnimalController();
-            while (true) {
-                String input = GameMenu.scan();
-                Matcher matcher;
-                if (input.equals("cancel")) return null;
-                if ((matcher = GameMenuCommands.placeAnimal.getMatcher(input)) == null) continue;
-                Result result = animalController.buyAnimal(name, animalName);
-                if (result.isSuccess()) return result;
-            }
+
         } else if (type.equals("CookingRecipe")) {
             CookingRecipes cookingRecipe = null;
             try {
                 cookingRecipe = CookingRecipes.valueOf(name);
             } catch (IllegalArgumentException e) {
-                GameMenu.print("illegal Argument");
+
             }
             new CookingController().addCookingRecipe(cookingRecipe);
             assert cookingRecipe != null;

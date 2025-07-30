@@ -2,6 +2,7 @@ package Model.NPCs;
 
 import Model.App;
 import Model.Point;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,7 @@ public class NPC {
     public int friendshipLevel;
     public char symbol;
     public Point location;
+    public Texture texture;
 
     public NPC(String name, String job, ArrayList<Quest> quests, ArrayList<String> favorites, char symbol) {
         this.name = name;
@@ -24,11 +26,7 @@ public class NPC {
         this.friendshipPoint = 0;
         this.friendshipLevel = 1;
         this.location = getRandomLocation();
-        if (name.equals("Lia")) {
-            this.location = new Point(114, 109);
-        }
         this.symbol = symbol;
-        App.getCurrentGame().getMap().changeTileSymbol(App.getCurrentGame().getMap().getTiles()[location.x][location.y], symbol, symbol);
     }
 
     public void updateFriendLevel() {

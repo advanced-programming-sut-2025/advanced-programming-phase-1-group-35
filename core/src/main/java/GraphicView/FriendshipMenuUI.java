@@ -3,6 +3,7 @@ package GraphicView;
 import Controller.InGameMenu.FriendshipMenuController;
 import Model.*;
 import Model.TradeAndGift.Gift;
+import Model.enums.Gender;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -38,6 +39,8 @@ public class FriendshipMenuUI implements Screen {
     private Table chatHistoryPlayersTable;
     private Table chatHistoryMessagesTable;
     private ScrollPane chatHistoryScrollPane;
+
+    private int mode = 0; // 1 for generic selecting ;
 
     private Window giftHistoryWindow;
     private Table giftHistoryPlayersTable;
@@ -119,6 +122,7 @@ public class FriendshipMenuUI implements Screen {
 
         // Initialize inventory for gifting
         giftInventory = new Inventory(Main.getGame(), stage, gameMenuUI.gameController);
+        giftInventory.setMode(1);
 
         // Gift amount input
         Table giftInputTable = new Table();
@@ -178,23 +182,33 @@ public class FriendshipMenuUI implements Screen {
         // Player name
         Label nameLabel = new Label(player.getUsername(), skin);
         int xp = player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser()) == null ? 0 : player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser());
-        Label xpLabel = new Label(String.format("%d", xp),skin);
+        Label xpLabel = new Label(String.format("%d", xp), skin);
         playersTable.add(nameLabel).width(200).pad(5);
         playersTable.add(xpLabel).width(200).pad(5);
 
-        // Talk button
-        TextButton talkButton = new TextButton("Talk", skin);
-        talkButton.setUserObject(player);
-        talkButton.addListener(new ClickListener() {
+        // Select button
+        TextButton selectButton = new TextButton("Select", skin);
+        selectButton.setUserObject(player);
+        selectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selectPlayer(player);
             }
         });
-        playersTable.add(talkButton).width(100).pad(5);
+        playersTable.add(selectButton).width(100).pad(5);
+
+        // Action menu button (will show a popup with available actions)
+        TextButton actionsButton = new TextButton("Actions", skin);
+        actionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showPlayerActionsMenu(player);
+            }
+        });
+        playersTable.add(actionsButton).width(100).pad(5);
 
         // Chat History button
-        TextButton historyButton = new TextButton("Chat History", skin);
+        TextButton historyButton = new TextButton("Chat", skin);
         historyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -218,11 +232,92 @@ public class FriendshipMenuUI implements Screen {
         playersTable.row();
     }
 
+    private void showPlayerActionsMenu(User player) {
+        Dialog actionsDialog = new Dialog("Actions for " + player.getUsername(), skin);
+
+        // Hug button
+        TextButton hugButton = new TextButton("Hug", skin);
+        hugButton.setDisabled(!canHug(player));
+        hugButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                performHug(player);
+                actionsDialog.hide();
+            }
+        });
+        actionsDialog.getContentTable().add(hugButton).width(200).pad(5).row();
+
+        // Give Flower button
+        TextButton flowerButton = new TextButton("Give Flower", skin);
+        flowerButton.setDisabled(!canGiveFlower(player));
+        flowerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                performGiveFlower(player);
+                actionsDialog.hide();
+            }
+        });
+        actionsDialog.getContentTable().add(flowerButton).width(200).pad(5).row();
+
+        // Request Marriage button (only shown if conditions are met)
+        if (canRequestMarriage(player)) {
+            TextButton marryButton = new TextButton("Propose Marriage", skin);
+            marryButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    performMarriageRequest(player);
+                    actionsDialog.hide();
+                }
+            });
+            actionsDialog.getContentTable().add(marryButton).width(200).pad(5).row();
+        }
+
+        // Close button
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                actionsDialog.hide();
+            }
+        });
+        actionsDialog.getContentTable().add(closeButton).width(200).pad(5);
+
+        actionsDialog.show(stage);
+    }
+
+    private boolean canHug(User player) {
+        int xp = App.getCurrentGame().getPlayingUser().getFriendshipXPs().getOrDefault(player.getID(), 100);
+        return (xp / 100 - 1) >= 2; // Level 2 friendship required
+    }
+
+    private boolean canGiveFlower(User player) {
+        int xp = App.getCurrentGame().getPlayingUser().getFriendshipXPs().getOrDefault(player.getID(), 100);
+        return (xp / 100 - 1) >= 3; // Level 3 friendship required
+    }
+
     private void selectPlayer(User player) {
         messageField.setUserObject(player);
         messageField.setText("");
         messageField.setMessageText("Message to " + player.getUsername());
         selectedGiftRecipient = player; // Set as gift recipient
+    }
+
+    private boolean canRequestMarriage(User player) {
+        User currentUser = App.getCurrentGame().getPlayingUser();
+        int xp = currentUser.getFriendshipXPs().getOrDefault(player.getID(), 100);
+        return (xp >= 400) && // At least 400 XP (level 4)
+            currentUser.getGender() == Gender.male &&
+            player.getGender() == Gender.female &&
+            currentUser.getSpouse() == null &&
+            player.getSpouse() == null;
+    }
+
+    private boolean hasMarriageRequest() {
+        return App.getCurrentGame().getPlayingUser().getAskedMarriage() != null;
+    }
+
+    private User getMarriageRequester() {
+        return App.getCurrentGame().getPlayingUser().getAskedMarriage();
     }
 
     private void sendGift() {
@@ -269,6 +364,83 @@ public class FriendshipMenuUI implements Screen {
         refreshPlayersList();
     }
 
+    private void performHug(User player) {
+        Result result = controller.hug(player.getUsername());
+        statusLabel.setText(result.toString());
+        if (result.isSuccess()) {
+            statusLabel.setColor(0, 1, 0, 1); // Green for success
+        } else {
+            statusLabel.setColor(1, 0, 0, 1); // Red for error
+        }
+        refreshPlayersList();
+    }
+
+    private void performGiveFlower(User player) {
+        Result result = controller.flower(player.getUsername());
+        statusLabel.setText(result.toString());
+        if (result.isSuccess()) {
+            statusLabel.setColor(0, 1, 0, 1); // Green for success
+        } else {
+            statusLabel.setColor(1, 0, 0, 1); // Red for error
+        }
+        refreshPlayersList();
+    }
+
+    private void performMarriageRequest(User player) {
+        Result result = controller.askMarriage(player.getUsername());
+        statusLabel.setText(result.toString());
+        if (result.isSuccess()) {
+            statusLabel.setColor(0, 1, 0, 1);
+        } else {
+            statusLabel.setColor(1, 0, 0, 1);
+        }
+        refreshPlayersList();
+    }
+
+    private void showMarriageResponseDialog(User requester) {
+        Dialog responseDialog = new Dialog("Marriage Proposal", skin);
+        responseDialog.text(requester.getUsername() + " has proposed marriage to you!");
+
+        // Accept button
+        TextButton acceptButton = new TextButton("Accept", skin);
+        acceptButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Result result = controller.acceptMarriageRequest(App.getCurrentGame().getPlayingUser());
+                statusLabel.setText(result.toString());
+                if (result.isSuccess()) {
+                    statusLabel.setColor(0, 1, 0, 1);
+                } else {
+                    statusLabel.setColor(1, 0, 0, 1);
+                }
+                responseDialog.hide();
+                refreshPlayersList();
+            }
+        });
+
+        // Reject button
+        TextButton rejectButton = new TextButton("Reject", skin);
+        rejectButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Result result = controller.rejectMarriageRequest(App.getCurrentGame().getPlayingUser());
+                statusLabel.setText(result.toString());
+                if (result.isSuccess()) {
+                    statusLabel.setColor(0, 1, 0, 1);
+                } else {
+                    statusLabel.setColor(1, 0, 0, 1);
+                }
+                responseDialog.hide();
+                refreshPlayersList();
+            }
+        });
+
+        responseDialog.getContentTable().row();
+        responseDialog.getContentTable().add(acceptButton).width(150).pad(10);
+        responseDialog.getContentTable().add(rejectButton).width(150).pad(10);
+        responseDialog.show(stage);
+    }
+
     private void sendMessage() {
         User selectedPlayer = (User) messageField.getUserObject();
         if (selectedPlayer == null) {
@@ -298,11 +470,19 @@ public class FriendshipMenuUI implements Screen {
         hasNewMessages = currentUser.isHasNewMessages();
 
         if (hasNewMessages) {
-            showDialog("notification", "New Messages has been received");
+            showDialog("Notification", "You have new messages!");
         }
 
         if (currentUser.isHasNewGift()) {
-            showDialog("notification", "New Gift has been received");
+            showDialog("Notification", "You have received a new gift!");
+        }
+
+        // Check for marriage request
+        if (hasMarriageRequest()) {
+            User requester = getMarriageRequester();
+            showMarriageResponseDialog(requester);
+            // Reset the flag so it doesn't show repeatedly
+            currentUser.setAskedMarriage(null);
         }
     }
     public void showDialog(String title, String message) {
@@ -651,6 +831,7 @@ public class FriendshipMenuUI implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         checkNotifications(); // Check again when screen is shown
+        refreshPlayersList(); // Refresh to show any changes in relationship status
     }
 
     @Override
@@ -659,4 +840,12 @@ public class FriendshipMenuUI implements Screen {
     public void resume() {}
     @Override
     public void hide() {}
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
 }

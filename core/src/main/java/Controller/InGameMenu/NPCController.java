@@ -10,12 +10,24 @@ import Model.enums.Seasons;
 import Model.enums.WeatherCondition;
 
 public class NPCController {
+
+    public void init(){
+        Game game = App.getCurrentGame();
+        if (game.getNpcs().isEmpty()) {
+            game.getNpcs().add(NPCs.Abigail.createNPC());
+            game.getNpcs().add(NPCs.Sebastian.createNPC());
+            game.getNpcs().add(NPCs.Leah.createNPC());
+            game.getNpcs().add(NPCs.Robin.createNPC());
+            game.getNpcs().add(NPCs.Harvey.createNPC());
+        }
+    }
+
     public Result meetNPC(String npcName) {
         Game game = App.getCurrentGame();
         if (game.getNpcs().isEmpty()) {
             game.getNpcs().add(NPCs.Abigail.createNPC());
             game.getNpcs().add(NPCs.Sebastian.createNPC());
-            game.getNpcs().add(NPCs.Lia.createNPC());
+            game.getNpcs().add(NPCs.Leah.createNPC());
             game.getNpcs().add(NPCs.Robin.createNPC());
             game.getNpcs().add(NPCs.Harvey.createNPC());
         }

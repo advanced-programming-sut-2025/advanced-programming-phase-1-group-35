@@ -10,7 +10,6 @@ import Model.animal.Animal;
 import Model.enums.Seasons;
 import Model.enums.TileType;
 import Model.enums.WeatherCondition;
-import View.GameMenu;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -242,9 +241,7 @@ public class GameCalender {
                 if (!player.getFarm().getCabin().isTileInBounds(player.getCurrentTile())) {
                     GameMenuController controller = new GameMenuController();
                     controller.goToNextTurn(player);
-                    GameMenu.print(controller.walk(player, String.format("%d", player.getFarm().getCabin().getBounds().x + 3),
-                            String.format("%d", player.getFarm().getCabin().getBounds().y + 3)).toString());
-                }
+                     }
         }
         if (this.dayPassedFromSeason == 29) {
             goToNextSeason();

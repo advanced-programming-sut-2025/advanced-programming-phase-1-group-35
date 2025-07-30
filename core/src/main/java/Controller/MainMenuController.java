@@ -44,7 +44,6 @@ public class MainMenuController extends Controller {
         }
         else return null;
         Menu menu = switch (menuString) {
-            case "game menu" -> Menu.GameMenu;
             case "login menu" -> Menu.LoginMenu;
             case "profile menu" -> Menu.ProfileMenu;
             default -> null;

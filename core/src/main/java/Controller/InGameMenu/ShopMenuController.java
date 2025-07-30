@@ -114,10 +114,6 @@ public class ShopMenuController {
         return new Result(true, "added " + amount + " to your account");
     }
 
-    public Result goBack(){
-        App.setCurrentMenu(Menu.GameMenu);
-        return new Result(true, "going back to game menu");
-    }
 
     public void setShop(Shop shop) {
         this.shop = shop;

@@ -12,7 +12,6 @@ import java.util.Scanner;
 public enum Menu {
     MainMenu(new MainMenu()),
     LoginMenu(new LoginMenu()),
-    GameMenu(new GameMenu()),
     ProfileMenu(new ProfileMenu()),
     ExitMenu(new ExitMenu()),
     ShopMenu(new ShopMenu()),

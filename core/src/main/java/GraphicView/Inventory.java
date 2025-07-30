@@ -38,6 +38,8 @@ public class Inventory {
     private Map<Rect, ItemInterface> itemRects;
     private Rect trashCanRect;
 
+    private int mode = 0 ; // 1 for generic selecting ;
+
     private static final int INVENTORY_ROWS = 3;
     private static final int INVENTORY_COLS = 12;
     private static final int ICON_SIZE = 64;
@@ -48,6 +50,14 @@ public class Inventory {
     private int startX, startY;
 
     ItemInterface clickedItem;
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
 
     private enum InventoryAction {
         SELL,
@@ -160,10 +170,12 @@ public class Inventory {
             }
         };
         dialog.text("What would you like to do with " + item.getName() + "?");
-        dialog.button("To Trash", InventoryAction.MOVE_TO_TRASH);
-        dialog.button("To Fridge", InventoryAction.MOVE_TO_FRIDGE);
-        dialog.button("Eat", InventoryAction.EAT);
-        dialog.button("Sell", InventoryAction.SELL);
+        if(mode == 0) {
+            dialog.button("To Trash", InventoryAction.MOVE_TO_TRASH);
+            dialog.button("To Fridge", InventoryAction.MOVE_TO_FRIDGE);
+            dialog.button("Eat", InventoryAction.EAT);
+            dialog.button("Sell", InventoryAction.SELL);
+        }
         dialog.add(amountField).width(100);
         dialog.button("Cancel", InventoryAction.CANCEL) ;
         dialog.show(stage);

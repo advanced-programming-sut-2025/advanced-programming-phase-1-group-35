@@ -3,6 +3,7 @@ package GraphicView.Game;
 import Model.*;
 import Model.CropClasses.Crop;
 import Model.CropClasses.Tree;
+import Model.NPCs.NPC;
 import Model.Point;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.TreeEnum;
@@ -183,6 +184,7 @@ public class GameView {
         batch.begin();
         renderTiles();
         renderPlayer();
+        renderNPCs();
         renderCoordinates();
         renderDateTime();
         renderWeather();
@@ -430,6 +432,15 @@ public class GameView {
             TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
             batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+        }
+    }
+
+    private void renderNPCs() {
+        for (NPC npc : game.getNpcs()) {
+            if(npc.texture == null ) continue;
+            Pair<Float , Float> pos = new Pair<>((float)npc.location.x , (float)npc.location.y);
+            TextureRegion texture = new TextureRegion(npc.texture);
+            batch.draw(texture, pos.first* Main.TILE_SIZE, pos.second*Main.TILE_SIZE, Main.TILE_SIZE, Main.TILE_SIZE * 2);
         }
     }
 

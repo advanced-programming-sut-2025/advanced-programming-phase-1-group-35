@@ -31,9 +31,6 @@ public class ShopMenu extends AppMenu {
         else if((matcher = ShopMenuCommands.cheatAddMoney.getMatcher(input)) != null) {
             System.out.println(controller.cheatAddMoney(matcher.group("count")));
         }
-        else if((matcher = ShopMenuCommands.goBack.getMatcher(input)) != null) {
-            System.out.println(controller.goBack());
-        }
         else
             System.out.println("Invalid input");
     }
