@@ -100,7 +100,11 @@ public class GameMenuUI implements Screen {
     private final float crowDuration = 6f;
     private final float fadeDuration = 1f; // 1 second fade in/out
 
+    private ArtisanUI artisanUI = new ArtisanUI();
 
+    public ArtisanUI getArtisanUI() {
+        return artisanUI;
+    }
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -711,6 +715,15 @@ public class GameMenuUI implements Screen {
         dialog.button("OK");
         dialog.show(stage);
     }
+
+    public void toggleArtisanUI(){
+        if(artisanUI == null){
+            artisanUI = new ArtisanUI();
+        }
+        Main.getGame().setScreen(artisanUI);
+    }
+
+
 
     @Override
     public void resize(int i, int i1) {

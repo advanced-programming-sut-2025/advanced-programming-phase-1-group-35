@@ -1,5 +1,6 @@
 package Model.enums.machines;
 
+import Controller.Controller;
 import Model.ItemInterface;
 import Model.enums.Crops.CropEnum;
 import Model.enums.Crops.Fruit;
@@ -46,16 +47,18 @@ public enum ArtisanProductDetails implements ItemInterface, ItemConstant {
     public final int processingTime; //Hours
     public final HashMap<ItemInterface[],Integer> ingredients; // to be set manually in logic
     public final int sellPrice;
-    public final String path;
+//    public final String path;
     ArtisanProductDetails(String description, int energy, int processingTime, HashMap<ItemInterface[],Integer> ingredients, int sellPrice, String path) {
         this.description = description;
         this.energy = energy;
         this.processingTime = processingTime;
         this.ingredients = ingredients;
         this.sellPrice = sellPrice;
-        this.path = path;
+//        this.path = path;
     }
-
+    public String getPath(){
+        return "artisanGoods/"+ Controller.formatUpperSnakeCase(name()) +".png";
+    }
     public ArtisanProduct getArtisanProduct() {
         return new ArtisanProduct(this);
     }

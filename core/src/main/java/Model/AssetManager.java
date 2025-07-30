@@ -1,6 +1,9 @@
 package Model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class AssetManager {
     // Recipe assets
@@ -88,4 +91,10 @@ public class AssetManager {
         new Texture("Default (2).png"),
         new Texture("Default (3).png"),
     };
+
+    public static Image glow(){
+        TextureRegionDrawable glowT = new TextureRegionDrawable(new TextureRegion(new Texture("glow.png")));
+        return new Image(glowT);
+    }
+
 }
