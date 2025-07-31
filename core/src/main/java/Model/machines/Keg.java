@@ -11,7 +11,7 @@ public class Keg extends Machine {
         super.products.add(ArtisanProductDetails.Vinegar);
         super.products.add(ArtisanProductDetails.Coffee);
         super.products.add(ArtisanProductDetails.Mead);
-        super.products.add(ArtisanProductDetails.PaleAle);
+        super.products.add(ArtisanProductDetails.Pale_Ale);
         super.products.add(ArtisanProductDetails.Wine);
     }
 

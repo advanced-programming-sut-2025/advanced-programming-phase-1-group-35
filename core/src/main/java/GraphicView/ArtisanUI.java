@@ -1,20 +1,16 @@
+// ArtisanUI.java
 package GraphicView;
 
 import Controller.InGameMenu.ArtisanController;
-import Model.Item;
-import Model.enums.machines.ArtisanProductDetails;
-import Model.machines.BeeHouse;
-import Model.machines.Cheese_Press;
-import Model.machines.Keg;
+import Model.GameAssetManager;
+import Model.ItemInterface;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -23,173 +19,170 @@ import java.util.List;
 
 public class ArtisanUI implements Screen {
     private Stage stage;
-    private Table BeeHouseTable;
-    private Table CheesePressTable;
-    private Table KegTable;
-    private Label label;
-    private ArrayList<Texture> Items;
-    private ArtisanController controller;
-    private Keg keg = new Keg(controller);
-    private BeeHouse beeHouse = new BeeHouse(controller);
-    private Cheese_Press cheesePress = new Cheese_Press(controller);
+    private Table beeHouseTable, cheesePressTable, kegTable;
+    private Label beeHouseLabel, cheesePressLabel, kegLabel;
+    private Label selectedItemLabel;
+    private Image selectedItemTexture;
+    private final ArrayList<Texture> items = new ArrayList<>();
+    private final ArtisanController controller;
+    private ItemInterface selectedItem;
+
     public ArtisanUI() {
-        BeeHouseTable = new Table();
-        CheesePressTable = new Table();
-        KegTable = new Table();
-        BeeHouseTable.setFillParent(true);
-        CheesePressTable.setFillParent(true);
-        KegTable.setFillParent(true);
-        BeeHouseTable.add(label);
-        CheesePressTable.add(label);
-        KegTable.add(label);
-        Items = new ArrayList<>();
         this.controller = new ArtisanController(this);
-        BeeHouseTable.setVisible(false);
-        CheesePressTable.setVisible(false);
-        KegTable.setVisible(false);
+        initTables();
     }
 
-    public Table getBeeHouseTable() {
-        return BeeHouseTable;
+    private void initTables() {
+        beeHouseTable = createMachineTable();
+        cheesePressTable = createMachineTable();
+        kegTable = createMachineTable();
+
+        beeHouseLabel = new Label("", GameAssetManager.getDefaultSkin());
+        cheesePressLabel = new Label("", GameAssetManager.getDefaultSkin());
+        kegLabel = new Label("", GameAssetManager.getDefaultSkin());
+
+        beeHouseTable.add(beeHouseLabel).colspan(5).center().padBottom(20).row();
+        cheesePressTable.add(cheesePressLabel).colspan(5).center().padBottom(20).row();
+        kegTable.add(kegLabel).colspan(5).center().padBottom(20).row();
+
+        selectedItemLabel = new Label("", GameAssetManager.getDefaultSkin());
+
+        beeHouseTable.setVisible(false);
+        cheesePressTable.setVisible(false);
+        kegTable.setVisible(true); // Default
     }
 
-    public Table getCheesePressTable() {
-        return CheesePressTable;
+    private Table createMachineTable() {
+        Table table = new Table(GameAssetManager.getDefaultSkin());
+        table.setSize(800, 700);
+        table.setTransform(true);
+        table.setOrigin(Align.center);
+        table.setPosition((Gdx.graphics.getWidth() - table.getWidth()) / 2f,
+            (Gdx.graphics.getHeight() - table.getHeight()) / 2f);
+        table.pad(30);
+        table.defaults().space(10);
+        table.setBackground("window");
+        return table;
     }
 
-    public ArtisanController getController() {
-        return controller;
-    }
+    private void populateTable(Table table, List<Stack> stacks) {
+        table.clearChildren();
+        table.add(selectedItemTexture).colspan(5).center().padBottom(20).row();
+        table.add(selectedItemLabel).colspan(5).center().padBottom(20).row();
 
-    public ArrayList<Texture> getItems() {
-        return Items;
-    }
-
-    public Table getKegTable() {
-        return KegTable;
-    }
-
-    public Label getLabel() {
-        return label;
-    }
-
-    public Stage getStage() {
-        return stage;
+        int colCount = 0;
+        for (Stack s : stacks) {
+            table.add(s).size(64);
+            if (++colCount % 5 == 0) table.row();
+        }
     }
 
     @Override
     public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        KegTable = new Table(KegTable.getSkin());
-        KegTable.setSize(800, 700);
-        KegTable.setTransform(true);
-        KegTable.setOrigin(Align.center);
-        KegTable.setPosition(
-            (Gdx.graphics.getWidth() - KegTable.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - KegTable.getHeight()) / 2f
-        );
-        KegTable.pad(30);
-        KegTable.defaults().space(10);
-        KegTable.setBackground("window");
 
-        label.setAlignment(Align.center);
-        KegTable.add(label).colspan(5).center().padBottom(20).row();
+        List<Stack> recipeStacks = controller.getRecipes();
 
-        BeeHouseTable = new Table(BeeHouseTable.getSkin());
-        BeeHouseTable.setSize(800, 700);
-        BeeHouseTable.setTransform(true);
-        BeeHouseTable.setOrigin(Align.center);
-        BeeHouseTable.setPosition(
-            (Gdx.graphics.getWidth() - BeeHouseTable.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - BeeHouseTable.getHeight()) / 2f
-        );
-        BeeHouseTable.pad(30);
-        BeeHouseTable.defaults().space(10);
-        BeeHouseTable.setBackground("window");
+        if (kegTable.isVisible()) populateTable(kegTable, recipeStacks);
+        else if (cheesePressTable.isVisible()) populateTable(cheesePressTable, recipeStacks);
+        else if (beeHouseTable.isVisible()) populateTable(beeHouseTable, recipeStacks);
 
-        label.setAlignment(Align.center);
-        BeeHouseTable.add(label).colspan(5).center().padBottom(20).row();
-
-        CheesePressTable = new Table(CheesePressTable.getSkin());
-        CheesePressTable.setSize(800, 700);
-        CheesePressTable.setTransform(true);
-        CheesePressTable.setOrigin(Align.center);
-        CheesePressTable.setPosition(
-            (Gdx.graphics.getWidth() - CheesePressTable.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - CheesePressTable.getHeight()) / 2f
-        );
-        CheesePressTable.pad(30);
-        CheesePressTable.defaults().space(10);
-        CheesePressTable.setBackground("window");
-
-        label.setAlignment(Align.center);
-        CheesePressTable.add(label).colspan(5).center().padBottom(20).row();
-        int colcount = 0;
-        List<Stack> list = controller.getRecipes();
-        if (getKegTable().isVisible()) {
-            for (Stack s : list) {
-                getKegTable().add(s).size(64);
-                colcount++;
-                if (colcount == 5) {
-                    getKegTable().row();
-                    colcount = 0;
-                }
-            }
-        }
-        if (getCheesePressTable().isVisible()) {
-            for (Stack s : list) {
-                getCheesePressTable().add(s).size(64);
-                colcount++;
-                if (colcount == 5) {
-                    getCheesePressTable().row();
-                    colcount = 0;
-                }
-            }
-        }
-        if (getBeeHouseTable().isVisible()) {
-            for (Stack s : list) {
-                getCheesePressTable().add(s).size(64);
-                colcount++;
-                if (colcount == 5) {
-                    getBeeHouseTable().row();
-                    colcount = 0;
-                }
-            }
-        }
+        stage.addActor(kegTable);
+        stage.addActor(cheesePressTable);
+        stage.addActor(beeHouseTable);
     }
-    @Override
-    public void render(float v) {
+
+    @Override public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         Main.getBatch().begin();
         Main.getBatch().end();
-
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
-    @Override
-    public void resize(int i, int i1) {
+    @Override public void resize(int width, int height) {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+    @Override public void dispose() {}
 
+    public Table getBeeHouseTable() { return beeHouseTable; }
+    public Table getCheesePressTable() { return cheesePressTable; }
+    public Table getKegTable() { return kegTable; }
+    public Stage getStage() { return stage; }
+    public ArtisanController getController() { return controller; }
+    public ArrayList<Texture> getItems() { return items; }
+    public Label getSelectedItemLabel() { return selectedItemLabel; }
+    public void setSelectedItemLabel(Label label) { this.selectedItemLabel = label; }
+    public Image getSelectedItemTexture() { return selectedItemTexture; }
+    public void setSelectedItemTexture(Image texture) { this.selectedItemTexture = texture; }
+    public ItemInterface getSelectedItem() { return selectedItem; }
+    public void setSelectedItem(ItemInterface item) { this.selectedItem = item; }
+
+    public Label getBeeHouseLabel() {
+        return beeHouseLabel;
     }
 
-    @Override
-    public void pause() {
-
+    public void setBeeHouseLabel(Label beeHouseLabel) {
+        this.beeHouseLabel = beeHouseLabel;
     }
 
-    @Override
-    public void resume() {
-
+    public void setBeeHouseTable(Table beeHouseTable) {
+        this.beeHouseTable = beeHouseTable;
     }
 
-    @Override
-    public void hide() {
-
+    public Label getCheesePressLabel() {
+        return cheesePressLabel;
     }
 
-    @Override
-    public void dispose() {
-
+    public void setCheesePressLabel(Label cheesePressLabel) {
+        this.cheesePressLabel = cheesePressLabel;
     }
+
+    public void setCheesePressTable(Table cheesePressTable) {
+        this.cheesePressTable = cheesePressTable;
+    }
+
+    public Label getKegLabel() {
+        return kegLabel;
+    }
+
+    public void setKegLabel(Label kegLabel) {
+        this.kegLabel = kegLabel;
+    }
+
+    public void setKegTable(Table kegTable) {
+        this.kegTable = kegTable;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    // Inside ArtisanUI
+    public void refreshSelectedItemDisplay() {
+        Table activeTable = getActiveTable();
+        if (activeTable == null) return;
+
+        activeTable.clearChildren();
+
+        activeTable.add(selectedItemTexture).colspan(5).center().padBottom(20).row();
+        activeTable.add(selectedItemLabel).colspan(5).center().padBottom(20).row();
+
+        List<Stack> recipeStacks = controller.getRecipes();
+        int colCount = 0;
+        for (Stack s : recipeStacks) {
+            activeTable.add(s).size(64);
+            if (++colCount % 5 == 0) activeTable.row();
+        }
+    }
+
+    private Table getActiveTable() {
+        if(kegTable.isVisible()) return kegTable;
+        if(cheesePressTable.isVisible()) return cheesePressTable;
+        if(beeHouseTable.isVisible()) return beeHouseTable;
+        return null;
+    }
+
 }
+

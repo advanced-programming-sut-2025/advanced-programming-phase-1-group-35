@@ -1,5 +1,6 @@
 package Model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -92,9 +93,21 @@ public class AssetManager {
         new Texture("Default (3).png"),
     };
 
-    public static Image glow(){
-        TextureRegionDrawable glowT = new TextureRegionDrawable(new TextureRegion(new Texture("glow.png")));
+    private static Texture glowTexture;
+
+    public static void loadAssets() {
+        glowTexture = new Texture(Gdx.files.internal("assets/glow.png"));
+    }
+
+    public static void disposeAssets() {
+        if (glowTexture != null) glowTexture.dispose();
+    }
+
+    public static Image glow() {
+        if (glowTexture == null) loadAssets(); // Lazy load if needed
+        TextureRegionDrawable glowT = new TextureRegionDrawable(new TextureRegion(glowTexture));
         return new Image(glowT);
     }
+
 
 }

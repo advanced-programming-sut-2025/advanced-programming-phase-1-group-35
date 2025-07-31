@@ -8,7 +8,7 @@ public class Cheese_Press extends Machine {
         super();
         super.controller = controller;
         super.products.add(ArtisanProductDetails.Cheese);
-        super.products.add(ArtisanProductDetails.goatCheese);
+        super.products.add(ArtisanProductDetails.goat_Cheese);
     }
 
     @Override

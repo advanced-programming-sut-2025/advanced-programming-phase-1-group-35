@@ -122,35 +122,44 @@ public class ArtisanController {
                 getArtisanUI().getKegTable().setVisible(true);
                 getArtisanUI().getBeeHouseTable().setVisible(false);
                 getArtisanUI().getCheesePressTable().setVisible(false);
-                getArtisanUI().getLabel().setText("Keg");
+                getArtisanUI().getKegLabel().setText("Keg");
                 break;
             case "Cheese_Press":
                 getArtisanUI().getKegTable().setVisible(false);
                 getArtisanUI().getBeeHouseTable().setVisible(false);
                 getArtisanUI().getCheesePressTable().setVisible(true);
-                getArtisanUI().getLabel().setText("Cheese_Press");
+                getArtisanUI().getBeeHouseLabel().setText("Cheese_Press");
                 break;
             case "BeeHouse":
                 getArtisanUI().getKegTable().setVisible(false);
                 getArtisanUI().getBeeHouseTable().setVisible(true);
                 getArtisanUI().getCheesePressTable().setVisible(false);
-                getArtisanUI().getLabel().setText("BeeHouse");
+                getArtisanUI().getCheesePressLabel().setText("BeeHouse");
         }
         getGameMenuUI().toggleArtisanUI();
         return new Result(true,"artisan menu");
     }
 
+// ArtisanController.java – clean-up and polish version of getRecipes()
+// Note: We'll update only getRecipes(), assuming rest is unchanged
+
     public List<Stack> getRecipes() {
         List<Stack> list = new ArrayList<>();
         List<Image> glowList = new ArrayList<>();
 
-        Keg keg = new Keg(this);
-        BeeHouse beeHouse = new BeeHouse(this);
-        Cheese_Press cheesePress = new Cheese_Press(this);
+        Machine machine;
+        if (ArtisanUI.getKegTable().isVisible()) machine = new Keg(this);
+        else if (ArtisanUI.getBeeHouseTable().isVisible()) machine = new BeeHouse(this);
+        else machine = new Cheese_Press(this);
 
-        if(getArtisanUI().getKegTable().isVisible()){
-        for (ArtisanProductDetails pr : keg.getProducts()) {
-            Texture texture = new Texture(pr.getPath()); // Or use cached version
+        for (ArtisanProductDetails pr : machine.getProducts()) {
+            Texture texture;
+            try {
+                texture = new Texture(pr.getPath());
+            } catch (Exception e) {
+                texture = new Texture("Debug.png");
+            }
+
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
             style.imageUp = new TextureRegionDrawable(new TextureRegion(texture));
 
@@ -159,74 +168,22 @@ public class ArtisanController {
             glow.setVisible(false);
 
             ImageButton button = new ImageButton(style);
-            stack.add(glow);
-            stack.add(button);
-
-            glowList.add(glow);
-
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     for (Image g : glowList) g.setVisible(false);
                     glow.setVisible(true);
+                    ArtisanUI.setSelectedItem(pr);
+                    ArtisanUI.getSelectedItemLabel().setText(pr.getName());
+                    ArtisanUI.setSelectedItemTexture(new Image(new Texture(pr.getPath())));
+                    getArtisanUI().refreshSelectedItemDisplay();
                 }
             });
+
+            stack.add(glow);
+            stack.add(button);
+            glowList.add(glow);
             list.add(stack);
         }
-        }
-
-        else if(getArtisanUI().getBeeHouseTable().isVisible()){
-            for (ArtisanProductDetails pr : beeHouse.getProducts()) {
-                Texture texture = new Texture(pr.getPath()); // Or use cached version
-                ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-                style.imageUp = new TextureRegionDrawable(new TextureRegion(texture));
-
-                Stack stack = new Stack();
-                Image glow = AssetManager.glow();
-                glow.setVisible(false);
-
-                ImageButton button = new ImageButton(style);
-                stack.add(glow);
-                stack.add(button);
-
-                glowList.add(glow);
-
-                button.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        for (Image g : glowList) g.setVisible(false);
-                        glow.setVisible(true);
-                    }
-                });
-                list.add(stack);
-            }
-        }
-        else if(getArtisanUI().getCheesePressTable().isVisible()){
-            for (ArtisanProductDetails pr : cheesePress.getProducts()) {
-                Texture texture = new Texture(pr.getPath()); // Or use cached version
-                ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-                style.imageUp = new TextureRegionDrawable(new TextureRegion(texture));
-
-                Stack stack = new Stack();
-                Image glow = AssetManager.glow();
-                glow.setVisible(false);
-
-                ImageButton button = new ImageButton(style);
-                stack.add(glow);
-                stack.add(button);
-
-                glowList.add(glow);
-
-                button.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        for (Image g : glowList) g.setVisible(false);
-                        glow.setVisible(true);
-                    }
-                });
-                list.add(stack);
-            }
-        }
         return list;
-    }
-}
+    }}

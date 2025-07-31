@@ -138,6 +138,9 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
+                    case Input.Keys.O:
+                        toggleArtisanUI();
+                        return true;
                     case Input.Keys.T:
                         toggleToolsUI();
                         return true;

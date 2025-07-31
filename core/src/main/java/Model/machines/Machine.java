@@ -11,9 +11,10 @@ public abstract class Machine implements ItemInterface {
     protected boolean inUse = false;
     protected float timeInUse = 0;
     protected ArtisanController controller;
-    protected ArrayList<ArtisanProductDetails> products;
+    protected ArrayList<ArtisanProductDetails> products = new ArrayList<>();
     protected ArtisanProductDetails productBeingBuilt;
     protected boolean finished = false;
+
 
     public boolean isFinished() {
         return finished;
