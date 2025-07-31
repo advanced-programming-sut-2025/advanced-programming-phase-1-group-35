@@ -6,7 +6,7 @@ import common.Model.Shops.Shop;
 import common.Model.Shops.ShopItem;
 import common.Model.enums.Buildings.ShopBuildings;
 import common.Model.enums.NPCs.NPCs;
-import Model.enums.Shops.Products.*;
+import common.Model.enums.Shops.Products.*;
 import common.Model.enums.Shops.Products.*;
 
 import java.time.LocalTime;

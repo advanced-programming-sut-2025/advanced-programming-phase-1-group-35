@@ -1,7 +1,7 @@
 package common.Model.Tools;
 
 import tracker.Controller.InGameMenu.ShopMenuController;
-import Model.*;
+import common.Model.*;
 import common.Model.*;
 import common.Model.enums.CookingIngredient;
 import common.Model.enums.CookingRecipes;

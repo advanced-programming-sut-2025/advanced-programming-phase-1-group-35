@@ -9,7 +9,7 @@ import common.Model.Tools.SkillLevel;
 import common.Model.Tools.Tool;
 import common.Model.TradeAndGift.Gift;
 import common.Model.TradeAndGift.Trade;
-import Model.enums.*;
+import common.Model.enums.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import common.Model.enums.*;
 
