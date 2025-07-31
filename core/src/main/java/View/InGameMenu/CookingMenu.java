@@ -1,9 +1,7 @@
 package View.InGameMenu;
 
-import Controller.InGameMenu.CookingController;
-import Model.App;
-import Model.enums.Commands.CookingCommands;
-import Model.enums.Menu;
+import tracker.Controller.InGameMenu.CookingController;
+import common.Model.enums.Commands.CookingCommands;
 import View.AppMenu;
 
 import java.util.Scanner;

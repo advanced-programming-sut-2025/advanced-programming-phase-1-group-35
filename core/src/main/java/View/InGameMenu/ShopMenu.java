@@ -1,8 +1,8 @@
 package View.InGameMenu;
 
-import Controller.InGameMenu.ShopMenuController;
-import Model.Shops.Shop;
-import Model.enums.ShopMenuCommands;
+import tracker.Controller.InGameMenu.ShopMenuController;
+import common.Model.Shops.Shop;
+import common.Model.enums.ShopMenuCommands;
 import View.AppMenu;
 
 import java.io.IOException;

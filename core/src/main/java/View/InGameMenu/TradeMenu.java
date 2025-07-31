@@ -1,9 +1,8 @@
 package View.InGameMenu;
 
-import Controller.InGameMenu.TradeMenuController;
-import Model.App;
-import Model.enums.Commands.TradeMenuCommands;
-import Model.enums.Menu;
+import tracker.Controller.InGameMenu.TradeMenuController;
+import common.Model.App;
+import common.Model.enums.Commands.TradeMenuCommands;
 import View.AppMenu;
 
 import java.io.IOException;

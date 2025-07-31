@@ -1,29 +1,15 @@
 package com.StardewValley;
 
-import Controller.InGameMenu.CraftingController;
-import Controller.LoginMenuController;
-import Controller.MainMenuController;
-import GraphicView.CraftingUI;
-import GraphicView.MainMenuUI;
-import GraphicView.SignUpUI;
-import Model.App;
-import Model.GameAssetManager;
-import Model.User;
-import Model.enums.CraftingRecipes;
-import Model.enums.Gender;
-import Model.enums.SecurityQuestions;
-import View.AppView;
-import com.badlogic.gdx.ApplicationAdapter;
+import tracker.Controller.LoginMenuController;
+import tracker.Controller.MainMenuController;
+import peer.GraphicView.MainMenuUI;
+import peer.GraphicView.SignUpUI;
+import common.Model.App;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {

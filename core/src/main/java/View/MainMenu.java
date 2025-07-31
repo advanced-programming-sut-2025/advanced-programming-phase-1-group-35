@@ -1,7 +1,7 @@
 package View;
 
-import Controller.MainMenuController;
-import Model.enums.MainMenuCommands;
+import tracker.Controller.MainMenuController;
+import common.Model.enums.MainMenuCommands;
 
 import java.io.IOException;
 import java.util.Scanner;

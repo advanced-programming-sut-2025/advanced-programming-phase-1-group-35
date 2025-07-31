@@ -1,7 +1,7 @@
 package View;
 
-import Model.App;
-import Model.enums.Menu;
+import common.Model.App;
+import common.Model.enums.Menu;
 
 import java.io.IOException;
 import java.util.Scanner;

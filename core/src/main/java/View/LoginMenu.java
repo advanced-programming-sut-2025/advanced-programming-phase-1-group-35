@@ -1,8 +1,7 @@
 package View;
 
-import Controller.LoginMenuController;
-import Model.enums.LoginMenuCommands;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import tracker.Controller.LoginMenuController;
+import common.Model.enums.LoginMenuCommands;
 
 import java.io.IOException;
 import java.util.Scanner;

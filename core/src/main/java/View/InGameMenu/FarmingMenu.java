@@ -1,9 +1,9 @@
 package View.InGameMenu;
 
-import Controller.InGameMenu.CropController;
-import Controller.InGameMenu.FarmingController;
-import Model.App;
-import Model.enums.Commands.FarmingCommands;
+import tracker.Controller.InGameMenu.CropController;
+import tracker.Controller.InGameMenu.FarmingController;
+import common.Model.App;
+import common.Model.enums.Commands.FarmingCommands;
 import View.AppMenu;
 
 import java.util.Scanner;

@@ -1,9 +1,7 @@
 package View.InGameMenu;
 
-import Controller.InGameMenu.AnimalController;
-import Model.App;
-import Model.enums.Commands.AnimalCommands;
-import Model.enums.Menu;
+import tracker.Controller.InGameMenu.AnimalController;
+import common.Model.enums.Commands.AnimalCommands;
 import View.AppMenu;
 
 import java.util.Scanner;
