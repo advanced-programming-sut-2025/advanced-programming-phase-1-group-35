@@ -1,10 +1,10 @@
 package com.StardewValley;
 
-import tracker.Controller.LoginMenuController;
-import tracker.Controller.MainMenuController;
-import peer.GraphicView.MainMenuUI;
-import peer.GraphicView.SignUpUI;
-import common.Model.App;
+import core.Controller.LoginMenuController;
+import core.Controller.MainMenuController;
+import core.GraphicView.MainMenuUI;
+import core.GraphicView.SignUpUI;
+import core.Model.App;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
