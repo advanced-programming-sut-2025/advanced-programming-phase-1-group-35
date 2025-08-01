@@ -22,7 +22,7 @@ public class TrackerApp {
 		return exitFlag;
 	}
 
-	public static void setListenerThread(ListenerThread listenerThread) {
+	public static void setListenerThread(TrackerListenerThread listenerThread) {
 		TrackerApp.listenerThread = listenerThread;
 	}
 

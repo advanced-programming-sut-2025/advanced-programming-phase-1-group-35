@@ -8,6 +8,7 @@ import core.Model.App;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import peer.app.PeerApp;
 
 import java.io.IOException;
 
@@ -17,6 +18,11 @@ public class Main extends Game {
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
     public static int TILE_SIZE = 5;
+    public static String[] arguments ;
+
+    public static void main(String[] args) {
+        arguments = args;
+    }
 
     public static Main getGame() {
         return game;
@@ -56,6 +62,20 @@ public class Main extends Game {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        handleConnection();
+    }
+
+    private void handleConnection() {
+        try {
+            PeerApp.initFromArgs(arguments);
+            PeerApp.connectTracker();
+//            PeerApp.startListening();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error initializing peer: " + e.getMessage());
+            return;
         }
     }
 

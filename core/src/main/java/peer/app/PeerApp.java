@@ -1,7 +1,10 @@
 package peer.app;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class PeerApp {
@@ -22,35 +25,54 @@ public class PeerApp {
     }
 
     public static void initFromArgs(String[] args) throws Exception {
-        // 1. Parse self address (ip:port)
-        String[] peerAddress = args[0].split(":");
-        if (peerAddress.length != 2) {
-            throw new IllegalArgumentException("Invalid peer address format. Expected <ip:port>");
+        trackerIP = "127.0.0.1";
+        trackerPort = 2000;
+        if(args != null && args.length == 2) {
+            // 1. Parse self address (ip:port)
+            String[] peerAddress = args[0].split(":");
+            if (peerAddress.length != 2) {
+                throw new IllegalArgumentException("Invalid peer address format. Expected <ip:port>");
+            }
+            peerIP = peerAddress[0];
+            peerPort = Integer.parseInt(peerAddress[1]);
+
+            // 2. Parse tracker address (ip:port)
+            String[] trackerAddress = args[1].split(":");
+            if (trackerAddress.length != 2) {
+                throw new IllegalArgumentException("Invalid tracker address format. Expected <ip:port>");
+            }
+            trackerIP = trackerAddress[0];
+            trackerPort = Integer.parseInt(trackerAddress[1]);
+            // 4. Create tracker connection thread
         }
-        peerIP = peerAddress[0];
-        peerPort = Integer.parseInt(peerAddress[1]);
-
-        // 2. Parse tracker address (ip:port)
-        String[] trackerAddress = args[1].split(":");
-        if (trackerAddress.length != 2) {
-            throw new IllegalArgumentException("Invalid tracker address format. Expected <ip:port>");
+        else{
+            autoConfigure();
         }
-        trackerIP = trackerAddress[0];
-        trackerPort = Integer.parseInt(trackerAddress[1]);
+        trackerConnectionThread = new P2TConnectionThread(new Socket(trackerIP, trackerPort));
+    }
 
-        // 3. Set shared folder path
-        sharedFolderPath = args[2];
+    private static void autoConfigure() throws Exception {
+        // Get local IP address
+        try {
+            peerIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            peerIP = "127.0.0.1"; // fallback to localhost
+        }
 
-        // Create shared folder if it doesn't exist
-        java.io.File folder = new java.io.File(sharedFolderPath);
-        if (!folder.exists()) {
-            if (!folder.mkdirs()) {
-                throw new Exception("Could not create shared folder: " + sharedFolderPath);
+        // Find an available port
+        peerPort = findAvailablePort(50000, 51000); // Search between 50000-51000
+    }
+
+    private static int findAvailablePort(int minPort, int maxPort) throws Exception {
+        for (int port = minPort; port <= maxPort; port++) {
+            try (ServerSocket testSocket = new ServerSocket(port)) {
+                // If we get here, the port was available
+                return port;
+            } catch (Exception e) {
+                // Port in use, try next one
             }
         }
-
-        // 4. Create tracker connection thread
-        trackerConnectionThread = new P2TConnectionThread(new Socket(trackerIP, trackerPort));
+        throw new Exception("No available ports found in range " + minPort + "-" + maxPort);
     }
 
     public static void endAll() {
@@ -71,6 +93,7 @@ public class PeerApp {
                         trackerConnectionThread = new P2TConnectionThread(new Socket(trackerIP, trackerPort));
                     }
                     trackerConnectionThread.start();
+                    System.out.println("Tracker connection thread started");
                 } catch (Exception e) {
                     System.err.println("Failed to start tracker connection: " + e.getMessage());
                 }
@@ -95,6 +118,7 @@ public class PeerApp {
     public static P2TConnectionThread getP2TConnection() {
         return trackerConnectionThread;
     }
+
 
 }
 
