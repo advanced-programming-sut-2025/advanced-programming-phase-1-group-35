@@ -7,8 +7,8 @@ import Model.ItemInterface;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
@@ -22,14 +22,21 @@ public class ArtisanUI implements Screen {
     private Table beeHouseTable, cheesePressTable, kegTable;
     private Label beeHouseLabel, cheesePressLabel, kegLabel;
     private Label selectedItemLabel;
-    private Image selectedItemTexture;
+    private Image selectedItemTexture = new Image();
     private final ArrayList<Texture> items = new ArrayList<>();
-    private final ArtisanController controller;
+    private ArtisanController controller;
     private ItemInterface selectedItem;
-
+    private TextButton Craft;
+    private TextButton Back;
+    private Label craftState;
     public ArtisanUI() {
-        this.controller = new ArtisanController(this);
+        this.controller = new ArtisanController();
+        this.controller.setArtisanUI(this);
         initTables();
+    }
+
+    public void setController(ArtisanController controller) {
+        this.controller = controller;
     }
 
     private void initTables() {
@@ -46,6 +53,11 @@ public class ArtisanUI implements Screen {
         kegTable.add(kegLabel).colspan(5).center().padBottom(20).row();
 
         selectedItemLabel = new Label("", GameAssetManager.getDefaultSkin());
+        Craft = new TextButton("Craft", GameAssetManager.getDefaultSkin());
+        craftState = new Label("machine is in rest mode", GameAssetManager.getDefaultSkin());
+        craftState.setColor(Color.GREEN);
+
+        Back = new TextButton("Back", GameAssetManager.getDefaultSkin());
 
         beeHouseTable.setVisible(false);
         cheesePressTable.setVisible(false);
@@ -75,13 +87,17 @@ public class ArtisanUI implements Screen {
             table.add(s).size(64);
             if (++colCount % 5 == 0) table.row();
         }
+        table.row();
+        table.add(Craft).colspan(5).center().padBottom(20).row();
+        table.add(craftState).colspan(5).center().padBottom(20).row();
+        table.add(Back).colspan(5).center().padBottom(20).row();
     }
 
     @Override
     public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
+        controller.setArtisanUI(this);
         List<Stack> recipeStacks = controller.getRecipes();
 
         if (kegTable.isVisible()) populateTable(kegTable, recipeStacks);
@@ -97,6 +113,9 @@ public class ArtisanUI implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         Main.getBatch().begin();
         Main.getBatch().end();
+        controller.renderButtons();
+        controller.renderLabel();
+        controller.renderTimer(delta);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
@@ -160,10 +179,9 @@ public class ArtisanUI implements Screen {
         this.stage = stage;
     }
     // Inside ArtisanUI
-    public void refreshSelectedItemDisplay() {
+    public void refreshSelectedItemDisplay(Image glow) {
         Table activeTable = getActiveTable();
         if (activeTable == null) return;
-
         activeTable.clearChildren();
 
         activeTable.add(selectedItemTexture).colspan(5).center().padBottom(20).row();
@@ -175,6 +193,7 @@ public class ArtisanUI implements Screen {
             activeTable.add(s).size(64);
             if (++colCount % 5 == 0) activeTable.row();
         }
+        glow.setVisible(true);
     }
 
     private Table getActiveTable() {
@@ -184,5 +203,24 @@ public class ArtisanUI implements Screen {
         return null;
     }
 
+    public TextButton getCraft() {
+        return Craft;
+    }
+
+    public void setCraft(TextButton craft) {
+        Craft = craft;
+    }
+
+    public Label getCraftState() {
+        return craftState;
+    }
+
+    public void setCraftState(Label craftState) {
+        this.craftState = craftState;
+    }
+
+    public Button getBack() {
+        return Back;
+    }
 }
 

@@ -19,6 +19,7 @@ import Model.enums.animal.FishType;
 import java.util.ArrayList;
 
 public class ToolsController {
+
     public Result toolEquip(String toolName) {
         User playingUser = App.getCurrentGame().getPlayingUser();
         BackPack backPack = playingUser.backPack;

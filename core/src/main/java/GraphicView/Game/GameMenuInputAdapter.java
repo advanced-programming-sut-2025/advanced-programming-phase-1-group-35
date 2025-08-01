@@ -1,6 +1,7 @@
 package GraphicView.Game;
 
 import Controller.GameMenuController;
+import Controller.InGameMenu.ArtisanController;
 import Controller.InGameMenu.ToolsController;
 import GraphicView.GameMenuUI;
 import Model.Game;
@@ -21,6 +22,7 @@ public class GameMenuInputAdapter extends InputAdapter {
     private final Game game;
     private final GameMenuController gameController;
     private final ToolsController toolsController;
+    private ArtisanController artisanController;
     private final Set<Integer> keysHeld = new HashSet<>();
     public GameMenuUI gameMenuUI;
 
@@ -29,6 +31,7 @@ public class GameMenuInputAdapter extends InputAdapter {
         this.gameController = gameController;
         this.gameMenuUI = gameMenuUI;
         this.toolsController = new ToolsController();
+        this.artisanController = new ArtisanController();
     }
 
     @Override
@@ -117,7 +120,9 @@ public class GameMenuInputAdapter extends InputAdapter {
         int direction = calculateDirection(playerTileX, playerTileY, targetTileX, targetTileY);
 
         if (direction != 0) {
-            Result result = toolsController.useTool(direction);
+            Result result =  artisanController.clickedMachine(direction,gameMenuUI);
+            if(result == null) result = toolsController.useTool(direction);
+
             if (result != null) {
                 gameMenuUI.showDialog("Tool Used", result.toString());
             }

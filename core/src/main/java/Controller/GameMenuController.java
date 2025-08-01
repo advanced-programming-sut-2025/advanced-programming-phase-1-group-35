@@ -1,8 +1,10 @@
 package Controller;
 
+import Controller.InGameMenu.ArtisanController;
 import Controller.InGameMenu.CropController;
 import Controller.InGameMenu.FarmingController;
 import Controller.InGameMenu.ShopMenuController;
+import GraphicView.ArtisanUI;
 import GraphicView.GameMenuUI;
 import Model.*;
 import Model.CropClasses.Crop;
@@ -23,6 +25,7 @@ import Model.enums.Crops.*;
 import Model.enums.Shops.Products.*;
 import Model.enums.animal.AnimalProductDetails;
 import Model.enums.animal.FishType;
+import Model.machines.Keg;
 import View.InGameMenu.ShopMenu;
 import com.StardewValley.Main;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -779,10 +782,17 @@ public class GameMenuController {
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
         farmingController.generateStartingPlants();
-        Crop crop = new Crop(CropEnum.COFFEE_BEAN,App.getCurrentGame().getPlayingUser().getCurrentTile());
-        crop.setCurrentState(crop.getStages().size());
-        App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
-        App.getCurrentGame().getMap().getCrops().add(crop);
+//        Crop crop = new Crop(CropEnum.COFFEE_BEAN,App.getCurrentGame().getPlayingUser().getCurrentTile());
+//        crop.setCurrentState(crop.getStages().size());
+        Keg keg = new Keg(new ArtisanController());
+        keg.getController().setArtisanUI(new ArtisanUI());
+        keg.getController().setMachine(keg);
+        App.getCurrentGame().getPlayingUser().getCurrentTile().addContents(keg);
+        keg.setX(App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX());
+        keg.setY(App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY());
+        App.getCurrentGame().getMap().getMachines().add(keg);
+//        App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
+//        App.getCurrentGame().getMap().getCrops().add(crop);
         Main.getGame().setScreen(gameMenu);
     }
 }

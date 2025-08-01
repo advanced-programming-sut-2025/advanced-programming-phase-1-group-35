@@ -2,6 +2,7 @@ package GraphicView;
 
 import Controller.GameMenuController;
 import Controller.InGameMenu.AnimalController;
+import Controller.InGameMenu.ArtisanController;
 import Controller.InGameMenu.ShopMenuController;
 import Controller.InGameMenu.ToolsController;
 import GraphicView.Game.GameMenuInputAdapter;
@@ -14,6 +15,8 @@ import Model.animal.AnimalProduct;
 import Model.enums.Buildings.AnimalHouseEnum;
 import Model.enums.ToolTypes;
 import Model.enums.animal.AnimalType;
+import Model.machines.Keg;
+import Model.machines.Machine;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -100,7 +103,8 @@ public class GameMenuUI implements Screen {
     private final float crowDuration = 6f;
     private final float fadeDuration = 1f; // 1 second fade in/out
 
-    private ArtisanUI artisanUI = new ArtisanUI();
+    private ArtisanUI artisanUI;
+
 
     public ArtisanUI getArtisanUI() {
         return artisanUI;
@@ -139,7 +143,7 @@ public class GameMenuUI implements Screen {
 
                 switch (keycode) {
                     case Input.Keys.O:
-                        toggleArtisanUI();
+                        toggleArtisanUI(new Keg(new ArtisanController()));
                         return true;
                     case Input.Keys.T:
                         toggleToolsUI();
@@ -719,9 +723,12 @@ public class GameMenuUI implements Screen {
         dialog.show(stage);
     }
 
-    public void toggleArtisanUI(){
+    public void toggleArtisanUI(Machine machine) {
         if(artisanUI == null){
             artisanUI = new ArtisanUI();
+            artisanUI.setController(new ArtisanController());
+            artisanUI.getController().setGameMenuUI(this);
+            artisanUI.getController().setMachine(machine);
         }
         Main.getGame().setScreen(artisanUI);
     }
