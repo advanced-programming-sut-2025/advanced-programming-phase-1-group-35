@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -107,7 +108,7 @@ public class ArtisanController {
     public void renderTimer(float deltaTime) {
         for(Machine machine: App.getCurrentGame().getMap().getMachines()) {
             if (machine.isInUse()) {
-                if (machine.getTimeInUse() < machine.getProductBeingBuilt().processingTime) {
+                if (machine.getTimeInUse() <= machine.getProductBeingBuilt().processingTime) {
                     machine.setTimeInUse(machine.getTimeInUse() + deltaTime);
                 } else {
                     machine.setInUse(false);
@@ -210,17 +211,55 @@ public class ArtisanController {
             getArtisanUI().getBack().setChecked(false);
             Main.getGame().setScreen(getGameMenuUI());
         }
+        if(getArtisanUI().getGetItem().isChecked()){
+                getArtisanUI().getGetItem().setChecked(false);
+            if(machine.isFinished()){
+                App.getCurrentGame().getPlayingUser().getBackPack().items.put(machine.getProductBeingBuilt(),1);
+                machine.setFinished(false);
+                machine.setProductBeingBuilt(null);
+                getArtisanUI().setSelectedItem(null);
+                getArtisanUI().getSelectedItemTexture().setDrawable(null);
+                getArtisanUI().getSelectedItemLabel().setText("");
+            }
+        }
+        if(getArtisanUI().getQuickCraft().isChecked()){
+            getArtisanUI().getQuickCraft().setChecked(false);
+            if(!machine.isFinished() && (machine.isInUse() || getArtisanUI().getSelectedItem()!= null)) {
+                machine.setFinished(true);
+                machine.setInUse(false);
+                machine.setProductBeingBuilt((ArtisanProductDetails) getArtisanUI().getSelectedItem());
+                machine.setTimeInUse(machine.getProductBeingBuilt().processingTime);
+                getArtisanUI().getProgressBar().setVisible(false);
+            }
+        }
+        if(getArtisanUI().getCancel().isChecked()){
+            machine.setFinished(false);
+            machine.setInUse(false);
+            machine.setProductBeingBuilt(null);
+            getArtisanUI().setSelectedItem(null);
+            getArtisanUI().getCancel().setChecked(false);
+            getArtisanUI().getSelectedItemTexture().setDrawable(null);
+            getArtisanUI().getProgressBar().setVisible(false);
+            getArtisanUI().getSelectedItemLabel().setText("");
+        }
     }
     public void renderLabel(){
+        ProgressBar bar = getArtisanUI().getProgressBar();
+
         if(machine.isInUse()){
-            getArtisanUI().getCraftState().setText(machine.getProductBeingBuilt().getName() + " is " + (machine.getProductBeingBuilt().processingTime - machine.getTimeInUse())/100
-             + "% done");
+            float progress = machine.getTimeInUse() / machine.getProductBeingBuilt().processingTime;
+            getArtisanUI().getCraftState().setText(machine.getProductBeingBuilt().getName() + " is " + (int)(progress * 100) + "% done");
+            bar.setVisible(true);
+            bar.setValue(progress);
         }
         else if(machine.isFinished()){
             getArtisanUI().getCraftState().setText(machine.getProductBeingBuilt().getName() + " is finished");
+            bar.setVisible(false);
         }
         else {
             getArtisanUI().getCraftState().setText("machine is in rest mode");
+            bar.setVisible(false);
+            bar.setValue(0);
         }
     }
 

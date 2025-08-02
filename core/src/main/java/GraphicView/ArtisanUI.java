@@ -26,9 +26,10 @@ public class ArtisanUI implements Screen {
     private final ArrayList<Texture> items = new ArrayList<>();
     private ArtisanController controller;
     private ItemInterface selectedItem;
-    private TextButton Craft;
-    private TextButton Back;
+    private TextButton Craft , Back , QuickCraft , GetItem , Cancel;
     private Label craftState;
+    private ProgressBar progressBar;
+
     public ArtisanUI() {
         this.controller = new ArtisanController();
         this.controller.setArtisanUI(this);
@@ -58,6 +59,21 @@ public class ArtisanUI implements Screen {
         craftState.setColor(Color.GREEN);
 
         Back = new TextButton("Back", GameAssetManager.getDefaultSkin());
+        QuickCraft = new TextButton("Quick Craft", GameAssetManager.getDefaultSkin());
+        GetItem = new TextButton("Get Item", GameAssetManager.getDefaultSkin());
+        Cancel = new TextButton("Cancel", GameAssetManager.getDefaultSkin());
+
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle();
+        barStyle.background = GameAssetManager.getDefaultSkin().newDrawable("white", Color.DARK_GRAY);
+        barStyle.knob = GameAssetManager.getDefaultSkin().newDrawable("white", Color.CLEAR); // optional knob
+        barStyle.knobBefore = GameAssetManager.getDefaultSkin().newDrawable("white", Color.GREEN);
+
+        progressBar = new ProgressBar(0, 1, 0.01f, false, barStyle);
+        progressBar.setAnimateDuration(0.25f);
+        progressBar.setValue(0);
+        progressBar.setVisible(false); // hide by default
+        progressBar.setWidth(200); // optional
+
 
         beeHouseTable.setVisible(false);
         cheesePressTable.setVisible(false);
@@ -79,19 +95,32 @@ public class ArtisanUI implements Screen {
 
     private void populateTable(Table table, List<Stack> stacks) {
         table.clearChildren();
+
+        // Selected item preview
         table.add(selectedItemTexture).colspan(5).center().padBottom(20).row();
         table.add(selectedItemLabel).colspan(5).center().padBottom(20).row();
 
+        // Recipe grid (5 items per row)
         int colCount = 0;
         for (Stack s : stacks) {
             table.add(s).size(64);
             if (++colCount % 5 == 0) table.row();
         }
-        table.row();
-        table.add(Craft).colspan(5).center().padBottom(20).row();
-        table.add(craftState).colspan(5).center().padBottom(20).row();
+        table.row().padTop(10);
+
+        Table buttonRow = new Table();
+        buttonRow.add(Craft).padRight(10);
+        buttonRow.add(QuickCraft).padRight(10);
+        buttonRow.add(GetItem);
+        buttonRow.add(Cancel).padRight(10);
+        table.add(buttonRow).colspan(5).center().padBottom(20).row();
+
+        table.add(craftState).colspan(5).center().padBottom(10).row();
+        table.add(progressBar).colspan(5).center().padBottom(20).row();
+
         table.add(Back).colspan(5).center().padBottom(20).row();
     }
+
 
     @Override
     public void show() {
@@ -221,6 +250,37 @@ public class ArtisanUI implements Screen {
 
     public Button getBack() {
         return Back;
+    }
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setBack(TextButton back) {
+        Back = back;
+    }
+
+    public TextButton getGetItem() {
+        return GetItem;
+    }
+
+    public void setGetItem(TextButton getItem) {
+        GetItem = getItem;
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
+    public TextButton getQuickCraft() {
+        return QuickCraft;
+    }
+
+    public void setQuickCraft(TextButton quickCraft) {
+        QuickCraft = quickCraft;
+    }
+
+    public TextButton getCancel() {
+        return Cancel;
     }
 }
 
