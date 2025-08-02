@@ -121,7 +121,7 @@ public class GameMenuInputAdapter extends InputAdapter {
 
         if (direction != 0) {
             Result result =  artisanController.clickedMachine(direction,gameMenuUI);
-            if(result == null) result = toolsController.useTool(direction);
+            if(!result.isSuccess()) result = toolsController.useTool(direction);
 
             if (result != null) {
                 gameMenuUI.showDialog("Tool Used", result.toString());
