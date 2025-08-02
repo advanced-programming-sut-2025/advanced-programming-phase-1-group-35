@@ -9,6 +9,18 @@ import core.Model.Point;
 import core.Model.enums.Crops.CropEnum;
 import core.Model.enums.Crops.TreeEnum;
 import core.Model.enums.TileType;
+import core.Model.*;
+import core.Model.CropClasses.Crop;
+import core.Model.CropClasses.Tree;
+import core.Model.NPCs.NPC;
+import core.Model.Point;
+import core.Model.enums.Crops.CropEnum;
+import core.Model.enums.Crops.TreeEnum;
+import core.Model.User;
+import core.Model.enums.TileType;
+import core.Model.enums.machines.ArtisanProductDetails;
+import core.Model.machines.ArtisanProduct;
+import core.Model.machines.Machine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import core.Controller.Controller;
@@ -45,6 +57,7 @@ public class GameView {
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
     private Animation<TextureRegion> CrowAnimation;
+
     public GameView(Game game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -119,10 +132,21 @@ public class GameView {
                         try {
                 textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
                         }catch(Exception e) {
-                            textures.put("Debug.png", new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+                            textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
                         }
             }
         }
+        for(ArtisanProductDetails details : ArtisanProductDetails.values()) {
+            String path = "artisanGoods/" + Controller.formatUpperSnakeCase(details.getName()) + ".png";
+            try{
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal(path))));
+            } catch (Exception e) {
+                textures.put(path, new TextureRegion(new Texture(Gdx.files.internal("Debug.png"))));
+            }
+        }
+        textures.put("machines/Bee_House.png",new TextureRegion(new Texture(Gdx.files.internal("machines/Bee_House.png"))));
+        textures.put("machines/Cheese_Press.png",new TextureRegion(new Texture(Gdx.files.internal("machines/Cheese_Press.png"))));
+        textures.put("machines/Keg.png",new TextureRegion(new Texture(Gdx.files.internal("machines/keg.png"))));
 //        Tree test = new Tree(TreeEnum.APPLE_TREE);
 //        test.setTile(App.getCurrentGame().getPlayingUser().getCurrentTile());
 //        App.getCurrentGame().getMap().getTrees().add(test);
@@ -255,7 +279,7 @@ public class GameView {
         }
 
 
- //failed to put decorative trees maybe will return to it later
+        //failed to put decorative trees maybe will return to it later
 
 //        if (!treesRendered) {
 //            int worldWidth = tiles.length * tileSize;
@@ -318,6 +342,23 @@ public class GameView {
 //        }
 //            batch.draw(treeRegion, 0, 0);
 
+
+        for(Machine machine : App.getCurrentGame().getMap().getMachines()){
+        float x = machine.getX();
+        float y = machine.getY();
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                float drawX = x * tileSize - cameraLeft;
+                float drawY = y * tileSize - cameraBottom;
+
+                TextureRegion machineTexture;
+                machineTexture = textures.get("machines/"+Controller.formatUpperSnakeCase(machine.getName())+".png");
+
+                if (machineTexture != null) {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.draw(machineTexture, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE);
+                }
+            }
+        }
 
         for(Tile tile : plowedTiles){
             int x = tile.getCoordination().x;

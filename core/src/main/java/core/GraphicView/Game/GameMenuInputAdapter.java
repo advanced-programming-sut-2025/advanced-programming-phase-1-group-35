@@ -7,6 +7,14 @@ import core.Model.Game;
 import core.Model.Pair;
 import core.Model.Result;
 import core.Model.User;
+import core.Controller.GameMenuController;
+import core.Controller.InGameMenu.ArtisanController;
+import core.Controller.InGameMenu.ToolsController;
+import core.GraphicView.GameMenuUI;
+import core.Model.Game;
+import core.Model.Pair;
+import core.Model.Result;
+import core.Model.User;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,6 +29,7 @@ public class GameMenuInputAdapter extends InputAdapter {
     private final Game game;
     private final GameMenuController gameController;
     private final ToolsController toolsController;
+    private ArtisanController artisanController;
     private final Set<Integer> keysHeld = new HashSet<>();
     public GameMenuUI gameMenuUI;
 
@@ -29,6 +38,7 @@ public class GameMenuInputAdapter extends InputAdapter {
         this.gameController = gameController;
         this.gameMenuUI = gameMenuUI;
         this.toolsController = new ToolsController();
+        this.artisanController = new ArtisanController();
     }
 
     @Override
@@ -117,7 +127,9 @@ public class GameMenuInputAdapter extends InputAdapter {
         int direction = calculateDirection(playerTileX, playerTileY, targetTileX, targetTileY);
 
         if (direction != 0) {
-            Result result = toolsController.useTool(direction);
+            Result result =  artisanController.clickedMachine(direction,gameMenuUI);
+            if(!result.isSuccess()) result = toolsController.useTool(direction);
+
             if (result != null) {
                 gameMenuUI.showDialog("Tool Used", result.toString());
             }

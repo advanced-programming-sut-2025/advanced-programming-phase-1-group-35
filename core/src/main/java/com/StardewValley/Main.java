@@ -1,10 +1,19 @@
 package com.StardewValley;
 
+import core.Controller.InGameMenu.CraftingController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
+import core.GraphicView.CraftingUI;
 import core.GraphicView.MainMenuUI;
 import core.GraphicView.SignUpUI;
 import core.Model.App;
+import core.Model.GameAssetManager;
+import core.Model.User;
+import core.Model.enums.CraftingRecipes;
+import core.Model.enums.Gender;
+import core.Model.enums.SecurityQuestions;
+import core.View.AppView;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -10,8 +10,10 @@ import core.Model.Shops.Shop;
 import core.Model.enums.Shops.ShopEnum;
 import core.Model.enums.TileType;
 
-import java.util.ArrayList;
+import core.Model.machines.Machine;
 
+import java.util.ArrayList;
+import static core.Model.enums.Colors.RESET;
 public class Map {
     private Tile[][] tiles = new Tile[300][210];
     private ArrayList<Farm> farms = new ArrayList<>();
@@ -20,6 +22,7 @@ public class Map {
     public ArrayList<Shop> shops = new ArrayList<>();
     private ArrayList<Crop> Crop = new ArrayList<>();
     private ArrayList<Tree> trees = new ArrayList<>();
+    private ArrayList<Machine> machines = new ArrayList<>();
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
 
@@ -65,6 +68,10 @@ public class Map {
 //            }
 //            System.out.println();
 //        }
+    }
+
+    public ArrayList<Machine> getMachines() {
+        return machines;
     }
 
     private void DrawPathWays() {

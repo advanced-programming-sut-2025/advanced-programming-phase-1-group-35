@@ -15,6 +15,23 @@ import core.Model.animal.AnimalProduct;
 import core.Model.enums.Buildings.AnimalHouseEnum;
 import core.Model.enums.ToolTypes;
 import core.Model.enums.animal.AnimalType;
+import core.Controller.GameMenuController;
+import core.Controller.InGameMenu.AnimalController;
+import core.Controller.InGameMenu.ArtisanController;
+import core.Controller.InGameMenu.ShopMenuController;
+import core.Controller.InGameMenu.ToolsController;
+import core.GraphicView.Game.GameMenuInputAdapter;
+import core.GraphicView.Game.GameView;
+import core.Model.*;
+import core.Model.Tools.BackPack;
+import core.Model.Tools.Tool;
+import core.Model.animal.Animal;
+import core.Model.animal.AnimalProduct;
+import core.Model.enums.Buildings.AnimalHouseEnum;
+import core.Model.enums.ToolTypes;
+import core.Model.enums.animal.AnimalType;
+import core.Model.machines.Keg;
+import core.Model.machines.Machine;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -101,7 +118,12 @@ public class GameMenuUI implements Screen {
     private final float crowDuration = 6f;
     private final float fadeDuration = 1f; // 1 second fade in/out
 
+    private ArtisanUI artisanUI;
 
+
+    public ArtisanUI getArtisanUI() {
+        return artisanUI;
+    }
 
     public GameMenuUI(GameMenuController gameController, Game gameModel) {
         this.gameController = gameController;
@@ -135,6 +157,9 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
+                    case Input.Keys.O:
+                        toggleArtisanUI(new Keg(new ArtisanController()));
+                        return true;
                     case Input.Keys.T:
                         toggleToolsUI();
                         return true;
@@ -712,6 +737,18 @@ public class GameMenuUI implements Screen {
         dialog.button("OK");
         dialog.show(stage);
     }
+
+    public void toggleArtisanUI(Machine machine) {
+        if(artisanUI == null){
+            artisanUI = new ArtisanUI();
+            artisanUI.setController(new ArtisanController());
+            artisanUI.getController().setGameMenuUI(this);
+            artisanUI.getController().setMachine(machine);
+        }
+        Main.getGame().setScreen(artisanUI);
+    }
+
+
 
     @Override
     public void resize(int i, int i1) {
