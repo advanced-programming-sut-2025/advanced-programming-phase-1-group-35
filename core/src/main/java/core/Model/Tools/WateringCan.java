@@ -1,0 +1,25 @@
+package core.Model.Tools;
+
+import core.Model.enums.ToolTypes;
+
+public class WateringCan extends Tool {
+    private int capacity = 55;
+
+    public WateringCan(String name) {
+        super(1,1, ToolTypes.WATERING_CAN);
+    }
+
+
+    @Override
+    public String getName() {
+        return super.toolType.toString();
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+}

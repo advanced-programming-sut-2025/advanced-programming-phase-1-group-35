@@ -1,36 +1,38 @@
 package com.StardewValley;
 
-import Controller.InGameMenu.CraftingController;
-import Controller.LoginMenuController;
-import Controller.MainMenuController;
-import GraphicView.CraftingUI;
-import GraphicView.MainMenuUI;
-import GraphicView.SignUpUI;
-import Model.App;
-import Model.GameAssetManager;
-import Model.User;
-import Model.enums.CraftingRecipes;
-import Model.enums.Gender;
-import Model.enums.SecurityQuestions;
-import View.AppView;
+import core.Controller.InGameMenu.CraftingController;
+import core.Controller.LoginMenuController;
+import core.Controller.MainMenuController;
+import core.GraphicView.CraftingUI;
+import core.GraphicView.MainMenuUI;
+import core.GraphicView.SignUpUI;
+import core.Model.App;
+import core.Model.GameAssetManager;
+import core.Model.User;
+import core.Model.enums.CraftingRecipes;
+import core.Model.enums.Gender;
+import core.Model.enums.SecurityQuestions;
+import core.View.AppView;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import peer.app.PeerApp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
     private static Main game;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
-    public static int TILE_SIZE = 25;
+    public static int TILE_SIZE = 5;
+    public static String[] arguments ;
+    public static Thread peerThread;
+
+    public static void main(String[] args) {
+        arguments = args;
+    }
 
     public static Main getGame() {
         return game;
@@ -70,6 +72,20 @@ public class Main extends Game {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        handleConnection();
+    }
+
+    private void handleConnection() {
+        try {
+            PeerApp.initFromArgs(arguments);
+            PeerApp.connectTracker();
+//            PeerApp.startListening();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error initializing peer: " + e.getMessage());
+            return;
         }
     }
 
