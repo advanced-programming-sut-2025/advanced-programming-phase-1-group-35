@@ -1,6 +1,6 @@
 package core.Controller;
 
-import core.core.Model.*;
+import core.Model.*;
 import core.Model.enums.*;
 import core.Model.enums.Crops.*;
 import core.Model.enums.Shops.Products.*;

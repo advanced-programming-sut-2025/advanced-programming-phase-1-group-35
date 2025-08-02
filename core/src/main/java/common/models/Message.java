@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Message {
 	private Type type;
-	private HashMap<String, Object> body;
+	public HashMap<String, Object> body;
 
 	/*
 	 * Empty constructor needed for JSON Serialization/Deserialization

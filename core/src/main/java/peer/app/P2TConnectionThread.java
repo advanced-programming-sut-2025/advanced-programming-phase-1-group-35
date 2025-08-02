@@ -35,10 +35,16 @@ public class P2TConnectionThread extends ConnectionThread {
     @Override
     protected boolean handleMessage(Message message) throws Exception {
         if (message.getType().equals(Message.Type.command)) {
-            sendMessage(P2TConnectionController.handleCommand(message));
+            // P2TConnectionController.handleCommand may return null for broadcasts.
+            // Only send a response if one is provided.
+            Message response = P2TConnectionController.handleCommand(message);
+            if (response != null) {
+                sendMessage(response);
+            }
             return true;
         }
         else if(message.getType().equals(Message.Type.requestResponse)){
+            // This handles responses to requests this client has sent.
             P2TConnectionController.handleCommand(message);
             return true;
         }

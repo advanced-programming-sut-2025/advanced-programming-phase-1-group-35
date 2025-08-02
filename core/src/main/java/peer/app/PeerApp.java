@@ -26,7 +26,7 @@ public class PeerApp {
 
     public static void initFromArgs(String[] args) throws Exception {
         trackerIP = "127.0.0.1";
-        trackerPort = 2000;
+        trackerPort = 2223;
         if(args != null && args.length == 2) {
             // 1. Parse self address (ip:port)
             String[] peerAddress = args[0].split(":");

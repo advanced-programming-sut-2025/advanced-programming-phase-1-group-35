@@ -30,8 +30,13 @@ public class TrackerMain {
             TrackerApp.setListenerThread(new TrackerListenerThread(port));
             TrackerApp.startListening();
             System.out.println("Listening on port " + port);
+
+            // Start the heartbeat service
+            TrackerApp.startHealthCheckService();
+
         } catch (Exception e) {
-            System.err.println("Error starting tracker: " + e.getMessage());
+            int port = Integer.parseInt(args[0]);
+            System.err.println("Error starting tracker on port " + port + " : " + e.getMessage());
             return;
         }
 
