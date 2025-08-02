@@ -103,10 +103,6 @@ public class PeerApp {
         }
     }
 
-    public static String getSharedFolderPath() {
-        return sharedFolderPath;
-    }
-
     public static String getPeerIP() {
         return peerIP;
     }

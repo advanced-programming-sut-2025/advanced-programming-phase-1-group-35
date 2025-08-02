@@ -19,6 +19,7 @@ public class Main extends Game {
     private static OrthographicCamera camera;
     public static int TILE_SIZE = 5;
     public static String[] arguments ;
+    public static Thread peerThread;
 
     public static void main(String[] args) {
         arguments = args;

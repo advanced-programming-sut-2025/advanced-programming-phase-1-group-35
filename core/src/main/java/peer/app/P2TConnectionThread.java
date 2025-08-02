@@ -38,6 +38,10 @@ public class P2TConnectionThread extends ConnectionThread {
             sendMessage(P2TConnectionController.handleCommand(message));
             return true;
         }
+        else if(message.getType().equals(Message.Type.requestResponse)){
+            P2TConnectionController.handleCommand(message);
+            return true;
+        }
         return false;
     }
 

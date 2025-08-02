@@ -1,5 +1,6 @@
 package core.Controller;
 
+import common.models.Message;
 import core.Model.enums.*;
 import core.GraphicView.ForgotPasswordUI;
 import core.GraphicView.LoginUI;
@@ -12,12 +13,14 @@ import core.Model.User;
 import core.View.LoginMenu;
 import com.StardewValley.Main;
 import core.Model.enums.*;
+import peer.app.PeerApp;
 //import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -106,6 +109,13 @@ public class LoginMenuController extends Controller {
         LoginView.getAdvanceButton().setChecked(false);
         App.setLoggedInUser(user);
         App.setStayLoggedIn(stayLoggedIn);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "login");
+        body.put("username", username);
+        body.put("password", SHA256.hashString(password));
+        body.put("stayLoggedIn", stayLoggedIn);
+        Message message = new Message(body , Message.Type.command);
+        PeerApp.getP2TConnection().sendAndWaitForResponse(message, 500);
         App.setCurrentMenu(Menu.MainMenu);
         Main.getGame().getScreen().dispose();
         Main.getGame().setScreen(new MainMenuUI(new MainMenuController()));

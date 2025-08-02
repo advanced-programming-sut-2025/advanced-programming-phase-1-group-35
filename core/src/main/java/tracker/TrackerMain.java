@@ -1,5 +1,8 @@
 package tracker;
 
+import core.Controller.MainMenuController;
+import core.GraphicView.MainMenuUI;
+import core.Model.App;
 import tracker.app.TrackerApp;
 import tracker.app.TrackerListenerThread;
 import tracker.controller.TrackerCLIController;
@@ -11,6 +14,12 @@ public class TrackerMain {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
+        try {
+            App.deserializeApp();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (args.length < 1) {
             System.err.println("Usage: java tracker.TrackerMain <port>");
             return;

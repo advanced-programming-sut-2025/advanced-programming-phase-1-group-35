@@ -1,5 +1,6 @@
 package core.GraphicView;
 
+import common.models.Message;
 import core.Controller.GameMenuController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
@@ -16,8 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import peer.app.P2TConnectionThread;
+import peer.app.PeerApp;
+import tracker.app.PeerConnectionThread;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PregameMenuUI implements Screen {
     private Stage stage;
@@ -27,6 +32,10 @@ public class PregameMenuUI implements Screen {
     private Table mainTable;
     private TextButton newGameBtn, loadGameBtn, deleteGameBtn, backButton;
     ArrayList<Integer> mapNumbers = new ArrayList<>();
+
+    // Main layout
+    private Table rootTable;
+    private Cell<Table> mainContentCell;
 
     // Game creation UI elements
     private Table creationTable;
@@ -43,35 +52,82 @@ public class PregameMenuUI implements Screen {
         this.mainMenuController = mainMenuController;
         this.gameController = new GameMenuController();
 
-        createMainMenu();
+        setupLayout();
+        mainTable = createMainMenuTable();
+        mainContentCell.setActor(mainTable);
+
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void createMainMenu() {
-        mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.pad(20);
-        stage.addActor(mainTable);
+    private void setupLayout() {
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        stage.addActor(rootTable);
+
+        // Left panel for online players
+        Table onlinePlayersTable = createOnlinePlayersTable();
+        rootTable.add(onlinePlayersTable).width(250).growY().pad(15);
+
+        // A vertical line to separate the panels
+        Image separator = new Image(skin.newDrawable("white", 0, 0, 0, 0.75f));
+        rootTable.add(separator).width(2).growY().padTop(20).padBottom(20);
+
+        // Right panel for the main content
+        mainContentCell = rootTable.add((Table)null).grow().pad(15);
+    }
+
+    private Table createOnlinePlayersTable() {
+        HashMap<String , Object> body = new HashMap<>();
+        body.put("command", "onlineUsers");
+        PeerApp.getP2TConnection().sendAndWaitForResponse(new Message(body, Message.Type.command), 500);
+        Table table = new Table(skin);
+        table.top().left();
+        table.pad(10);
+
+        Label title = new Label("Online Players", skin, "title");
+        table.add(title).padBottom(20).row();
+
+        Table playersList = new Table(skin);
+        // Assumes App.onlineUsers is a static ArrayList<User>
+        ArrayList<User> onlineUsers = App.onlineUsers;
+        if (onlineUsers != null && !onlineUsers.isEmpty()) {
+            for (User user : onlineUsers) {
+                playersList.add(new Label(user.getUsername(), skin)).left().padBottom(5).row();
+            }
+        } else {
+            playersList.add(new Label("No players online", skin)).left().row();
+        }
+
+        ScrollPane scrollPane = new ScrollPane(playersList, skin);
+        scrollPane.setFadeScrollBars(false);
+        table.add(scrollPane).grow();
+
+        return table;
+    }
+
+    private Table createMainMenuTable() {
+        Table table = new Table();
+        table.pad(20);
 
         // Title
         Label title = new Label("Pregame Menu", skin, "title");
-        mainTable.add(title).colspan(2).padBottom(30).row();
+        table.add(title).colspan(2).padBottom(30).row();
 
         // New Game Button
         newGameBtn = new TextButton("Start New Game", skin);
-        mainTable.add(newGameBtn).colspan(2).width(300).padBottom(15).row();
+        table.add(newGameBtn).colspan(2).width(300).padBottom(15).row();
 
         // Load Game Button
         loadGameBtn = new TextButton("Load Last Saved Game", skin);
-        mainTable.add(loadGameBtn).colspan(2).width(300).padBottom(15).row();
+        table.add(loadGameBtn).colspan(2).width(300).padBottom(15).row();
 
         // Delete Game Button
         deleteGameBtn = new TextButton("Delete Game", skin);
-        mainTable.add(deleteGameBtn).colspan(2).width(300).padBottom(30).row();
+        table.add(deleteGameBtn).colspan(2).width(300).padBottom(30).row();
 
         // Back Button
         backButton = new TextButton("Back to Main Menu", skin);
-        mainTable.add(backButton).colspan(2);
+        table.add(backButton).colspan(2);
 
         // Button listeners
         newGameBtn.addListener(new ChangeListener() {
@@ -103,17 +159,13 @@ public class PregameMenuUI implements Screen {
                 goBackToMainMenu();
             }
         });
+        return table;
     }
 
     private void showGameCreationUI() {
-        // Remove main menu
-        mainTable.remove();
-
         // Create game creation UI
         creationTable = new Table();
-        creationTable.setFillParent(true);
         creationTable.pad(20);
-        stage.addActor(creationTable);
 
         // Title
         Label title = new Label("Create New Game", skin, "title");
@@ -264,11 +316,13 @@ public class PregameMenuUI implements Screen {
         creationBackBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Go back to main pregame menu
-                creationTable.remove();
-                createMainMenu();
+                // Go back to main pregame menu by switching the actor in the cell
+                mainContentCell.setActor(mainTable);
             }
         });
+
+        // Set the new creation table as the main content
+        mainContentCell.setActor(creationTable);
     }
 
     private void addPlayerToTable(String username, int farmType) {
@@ -300,8 +354,6 @@ public class PregameMenuUI implements Screen {
 
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        Main.getBatch().begin();
-        Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }

@@ -2,6 +2,7 @@ package tracker.app;
 
 import common.models.ConnectionThread;
 import common.models.Message;
+import core.Model.User;
 import tracker.controller.TrackerConnectionController;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.Map;
 import static tracker.app.TrackerApp.TIMEOUT_MILLIS;
 
 public class PeerConnectionThread extends ConnectionThread {
-    private HashMap<String, String> fileAndHashes;
+    public User user = null;
 
     public PeerConnectionThread(Socket socket) throws IOException {
         super(socket);
@@ -44,6 +45,7 @@ public class PeerConnectionThread extends ConnectionThread {
             otherSidePort = message2.getIntFromBody("listen_port");
         }
         catch (Exception e) {
+            System.out.println("Error during refresh status: " + e.getMessage());
             socket.close();
             TrackerApp.removePeerConnection(this);
             this.end.set(true);
@@ -51,9 +53,9 @@ public class PeerConnectionThread extends ConnectionThread {
     }
 
     @Override
-    protected boolean handleMessage(Message message) {
-        if (message.getType().equals(Message.Type.file_request)) {
-            sendMessage(TrackerConnectionController.handleCommand(message));
+    protected boolean handleMessage(Message message) throws IOException {
+        if (message.getType().equals(Message.Type.command)) {
+            sendMessage(TrackerConnectionController.handleCommand(message, this));
             return true;
         }
         return false;
@@ -63,9 +65,5 @@ public class PeerConnectionThread extends ConnectionThread {
     public void run() {
         super.run();
         TrackerApp.removePeerConnection(this);
-    }
-
-    public Map<String, String> getFileAndHashes() {
-        return Map.copyOf(fileAndHashes);
     }
 }
