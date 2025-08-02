@@ -142,9 +142,11 @@ public class ArtisanUI implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         Main.getBatch().begin();
         Main.getBatch().end();
-        controller.renderButtons();
-        controller.renderLabel();
-        controller.renderTimer(delta);
+        try {
+            controller.renderButtons();
+            controller.renderLabel();
+            controller.renderTimer(delta);
+        }catch (Exception e){}
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
