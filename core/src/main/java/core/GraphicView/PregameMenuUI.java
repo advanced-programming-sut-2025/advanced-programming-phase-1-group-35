@@ -231,7 +231,10 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         body.put("lobby_name", lobbyName);
         Message request = new Message(body, Message.Type.command);
         if (PeerApp.getP2TConnection() != null) {
-            PeerApp.getP2TConnection().sendAndWaitForResponse(request, 500);
+            // FIX: Use sendMessage instead of sendAndWaitForResponse.
+            // The client should not block waiting for a direct response.
+            // It will receive the update via the broadcast listener (onLobbyStateUpdated).
+            PeerApp.getP2TConnection().sendMessage(request);
         }
     }
 
@@ -259,22 +262,29 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
 
     @Override
     public void onLobbyListUpdated(List<Lobby> lobbies) {
+        if (lobbies == null) return;
         this.availableLobbies = lobbies;
+        // Only refresh the list view if we are not currently inside a lobby
         if (currentLobby == null) {
-            refreshLobbyListView();
+            // Ensure this runs on the main UI thread
+            Gdx.app.postRunnable(this::refreshLobbyListView);
         }
     }
 
     @Override
     public void onLobbyStateUpdated(Lobby lobby) {
+        if (lobby == null) return;
         this.currentLobby = lobby;
-        // If we aren't already in the lobby view, switch to it.
-        // Otherwise, just refresh the player list.
-        if (mainContentCell.getActor() != lobbyViewTable) {
-            showLobbyViewUI();
-        } else {
-            updateLobbyPlayersList();
-        }
+        // Ensure this runs on the main UI thread
+        Gdx.app.postRunnable(() -> {
+            // If we aren't already in the lobby view, switch to it.
+            // Otherwise, just refresh the player list.
+            if (mainContentCell.getActor() != lobbyViewTable) {
+                showLobbyViewUI();
+            } else {
+                updateLobbyPlayersList();
+            }
+        });
     }
 
     // --- Helper & Lifecycle Methods ---

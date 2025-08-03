@@ -77,4 +77,13 @@ public class App {
     public static void setCurrentGame(Game currentGame) {
         App.currentGame = currentGame;
     }
+
+    public static User findUserByUsername(String name) {
+        for (User user : users) {
+            if(user.getUsername().equals(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
