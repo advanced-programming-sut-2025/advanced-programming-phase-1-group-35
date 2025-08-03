@@ -48,7 +48,11 @@ public class ScoreBoardUI implements Screen {
         table.add(titleLabel).colspan(2).center().padBottom(20).row();
         table.add(new Label("Username", GameAssetManager.getDefaultSkin())).pad(10);
         table.add(selectBox).pad(10).row();
-
+        table.add(new Label("Farming\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Mining\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Foraging\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Fishing\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Games Played", GameAssetManager.getDefaultSkin())).pad(10);
         // Scrollable list of users
         scrollPane = new ScrollPane(new Table(), GameAssetManager.getDefaultSkin());
         scrollPane.setFadeScrollBars(false);
@@ -66,7 +70,14 @@ public class ScoreBoardUI implements Screen {
 
         for (User user : players) {
             content.add(new Label(user.getUsername(), GameAssetManager.getDefaultSkin())).pad(10);
-            content.add(new Label(String.valueOf(user.getHighScore()), GameAssetManager.getDefaultSkin())).pad(10).row();
+            content.add(new Label(String.valueOf(user.getHighScore()), GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getFarmingSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getMiningSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getForagingSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getFishingSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getGamesPlayed()+"", GameAssetManager.getDefaultSkin())).pad(10);
+//            content.add(new Label(user.get))
+
         }
 
         scrollPane.setWidget(content);

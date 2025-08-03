@@ -43,4 +43,9 @@ public class SkillLevel {
     public int getXpRate() {
         return xpRate;
     }
+
+    @Override
+    public String toString() {
+        return "lvl " + currentLevel;
+    }
 }
