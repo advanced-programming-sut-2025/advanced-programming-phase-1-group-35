@@ -34,20 +34,17 @@ public class P2TConnectionThread extends ConnectionThread {
 
     @Override
     protected boolean handleMessage(Message message) {
-        // FIX: Wrapped the message handling in a try-catch block.
-        // This prevents an exception in the controller from crashing the entire connection thread.
         try {
             if (message.getType().equals(Message.Type.command)) {
-                // P2TConnectionController.handleCommand may return null for broadcasts.
-                // Only send a response if one is provided.
                 Message response = P2TConnectionController.handleCommand(message);
                 if (response != null) {
                     sendMessage(response);
                 }
                 return true;
-            } else if (message.getType().equals(Message.Type.requestResponse)) {
-                // This handles responses to requests this client has sent.
-                // It should put the message in the queue for the waiting thread.
+                // FIX: Handle both 'response' and 'requestResponse' types.
+                // This is the critical fix that allows the manual refresh to work.
+                // It ensures that the response from the server is queued up for the waiting 'sendAndWaitForResponse' call.
+            } else if (message.getType().equals(Message.Type.requestResponse) || message.getType().equals(Message.Type.response)) {
                 receivedMessagesQueue.put(message);
                 return true;
             }
@@ -55,7 +52,6 @@ public class P2TConnectionThread extends ConnectionThread {
             System.err.println("Error processing message in P2TConnectionController. Message: " + message.body);
             e.printStackTrace();
         }
-        // Return false if the message was not of a known type or if an error occurred.
         return false;
     }
 

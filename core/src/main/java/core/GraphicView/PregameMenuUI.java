@@ -4,9 +4,11 @@ import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -17,7 +19,6 @@ import peer.LobbyUpdateListener;
 import peer.P2TConnectionController;
 import peer.app.PeerApp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,8 +76,13 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         TextButton createLobbyButton = new TextButton("Create New Lobby", skin);
         TextButton backButton = new TextButton("Back to Main Menu", skin);
 
+        // FIX: Add the Refresh Button
+        TextButton refreshButton = new TextButton("Refresh", skin);
+
         Table buttonTable = new Table();
         buttonTable.add(createLobbyButton).width(250).pad(10);
+        buttonTable.add(refreshButton).width(150).pad(10); // Add the button to the table
+
         lobbyListTable.add(buttonTable).padBottom(10).row();
         lobbyListTable.add(backButton).width(300);
 
@@ -84,6 +90,15 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showCreateLobbyDialog();
+            }
+        });
+
+        // FIX: Add the listener for the refresh button
+        refreshButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Call the method from PeerApp to request a manual refresh
+                PeerApp.requestLobbyRefresh();
             }
         });
 
@@ -95,7 +110,8 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         });
 
         mainContentCell.setActor(lobbyListTable);
-        requestLobbyList(); // Ask the server for the latest list of lobbies.
+        // Automatically refresh when the screen is shown
+        PeerApp.requestLobbyRefresh();
     }
 
     private void refreshLobbyListView() {
@@ -216,24 +232,12 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
 
     // --- Network Communication ---
 
-    private void requestLobbyList() {
-        HashMap<String, Object> body = new HashMap<>();
-        body.put("command", "get_lobbies");
-        Message request = new Message(body, Message.Type.command);
-        if (PeerApp.getP2TConnection() != null) {
-            PeerApp.getP2TConnection().sendMessage(request);
-        }
-    }
-
     private void createLobby(String lobbyName) {
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "create_lobby");
         body.put("lobby_name", lobbyName);
         Message request = new Message(body, Message.Type.command);
         if (PeerApp.getP2TConnection() != null) {
-            // FIX: Use sendMessage instead of sendAndWaitForResponse.
-            // The client should not block waiting for a direct response.
-            // It will receive the update via the broadcast listener (onLobbyStateUpdated).
             PeerApp.getP2TConnection().sendMessage(request);
         }
     }

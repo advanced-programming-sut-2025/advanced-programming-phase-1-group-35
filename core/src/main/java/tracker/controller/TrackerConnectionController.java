@@ -51,6 +51,17 @@ public class TrackerConnectionController {
             }
         }
 
+        // FIX: Proactively send a lobby list update to the newly logged-in user.
+        // This ensures they see existing lobbies immediately without needing a manual refresh.
+        HashMap<String, Object> updateBody = new HashMap<>();
+        updateBody.put("command", "lobby_list_update");
+        updateBody.put("lobbies", TrackerApp.getLobbies());
+        Message updateMessage = new Message(updateBody, Message.Type.command);
+        peerConnectionThread.sendMessage(updateMessage);
+        System.out.println("Sent initial lobby list to newly logged-in user: " + peerConnectionThread.user.getUsername());
+
+
+        // Send the standard synchronous response to confirm the login was successful.
         HashMap<String , Object> body = new HashMap<>();
         body.put("command", "login_response");
         body.put("response", "success");
@@ -89,6 +100,7 @@ public class TrackerConnectionController {
         System.out.println("User '" + host.getUsername() + "' created lobby '" + lobbyName + "'");
 
         broadcastLobbyListUpdate();
+        broadcastLobbyUpdate(newLobby);
 
         HashMap<String, Object> body = new HashMap<>();
         body.put("lobby", newLobby);
@@ -157,7 +169,6 @@ public class TrackerConnectionController {
         Message updateMessage = new Message(body, Message.Type.command);
 
         System.out.println("Broadcasting full lobby list update to all clients.");
-        // Iterate over a copy to avoid concurrency issues if a connection is removed.
         for (PeerConnectionThread connection : new ArrayList<>(TrackerApp.getConnections())) {
             connection.sendMessage(updateMessage);
         }
