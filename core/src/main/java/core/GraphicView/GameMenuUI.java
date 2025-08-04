@@ -15,11 +15,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.AnimalController;
@@ -75,6 +75,7 @@ public class GameMenuUI implements Screen {
     private Map<String, Rect> toolRects;
     private String equippedToolName = "hoe";
     private Stage stage;
+    private Stage boxStage;
     private final ToolsController toolsController = new ToolsController();
     private boolean isToolsUIVisible = false;
     private static final int TOOLS_Y_OFFSET = 65;
@@ -106,6 +107,20 @@ public class GameMenuUI implements Screen {
     private ArtisanUI artisanUI;
     private ReactionUI reactionUI;
 
+    private static class ChatMessage {
+        String text;
+        float timer;
+        Label label;
+
+        ChatMessage(String text, float timer, Label label) {
+            this.text = text;
+            this.timer = timer;
+            this.label = label;
+        }
+    }
+    private Array<ChatMessage> chatMessages = new Array<>();
+    private Table chatTable;
+
 
     public ArtisanUI getArtisanUI() {
         return artisanUI;
@@ -126,6 +141,7 @@ public class GameMenuUI implements Screen {
         toolsBatch = new SpriteBatch();
         toolsShapeRenderer = new ShapeRenderer();
         stage = new Stage(new ScreenViewport());
+        boxStage = new Stage(new ScreenViewport());
         toolsToggledPictureTexture = new Texture(Gdx.files.internal("assets/shelf.png"));
         toolRects = new HashMap<>();
 
@@ -135,6 +151,15 @@ public class GameMenuUI implements Screen {
         lightningTexture = new Texture(Gdx.files.internal("assets/light.png"));
 
         reactionUI = new ReactionUI(this);
+
+        Table chatContainer = new Table();
+        chatContainer.setFillParent(true);
+        chatContainer.right();
+        chatContainer.pad(10);
+        chatTable = new Table();
+        chatTable.setBackground(GameAssetManager.getDefaultSkin().getDrawable("window"));
+        chatContainer.add(chatTable).width(400).height(600);
+        boxStage.addActor(chatContainer);
 
         mainMultiplexer = new InputMultiplexer();
 
@@ -201,6 +226,7 @@ public class GameMenuUI implements Screen {
         };
 
         mainMultiplexer.addProcessor(stage);
+        mainMultiplexer.addProcessor(boxStage);
         mainMultiplexer.addProcessor(hotkeyAdapter);
         mainMultiplexer.addProcessor(gameMenuInputAdapter);
         Gdx.input.setInputProcessor(mainMultiplexer);
@@ -208,6 +234,22 @@ public class GameMenuUI implements Screen {
 
     public void showReactionForPlayer(Texture emojiTexture) {
         gameView.showReaction(emojiTexture);
+    }
+
+    public void showReactionForPlayer(Object reaction) {
+        if (reaction instanceof Texture) {
+            gameView.showReaction((Texture) reaction);
+        } else if (reaction instanceof String) {
+            addChatMessage((String) reaction);
+        }
+    }
+
+    private void addChatMessage(String message) {
+        String username = gameModel.getPlayingUser().getUsername();
+        Label messageLabel = new Label(username + ": " + message, GameAssetManager.getDefaultSkin());
+        messageLabel.setWrap(true);
+        chatTable.add(messageLabel).width(280).align(Align.left).pad(5).row();
+        chatMessages.add(new ChatMessage(message, 5f, messageLabel));
     }
 
     private void showBuildingSelectionDialog() {
@@ -414,6 +456,15 @@ public class GameMenuUI implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        for (int i = chatMessages.size - 1; i >= 0; i--) {
+            ChatMessage message = chatMessages.get(i);
+            message.timer -= delta;
+            if (message.timer <= 0) {
+                message.label.remove();
+                chatMessages.removeIndex(i);
+            }
+        }
+
         gameModel.update(delta);
         gameView.render(delta);
         updateAnimalMovement(delta);
@@ -468,6 +519,8 @@ public class GameMenuUI implements Screen {
 
         stage.act(delta);
         stage.draw();
+        boxStage.act(delta);
+        boxStage.draw();
     }
 
     private void updateAnimalMovement(float delta) {
@@ -638,6 +691,7 @@ public class GameMenuUI implements Screen {
         shearsTexture.dispose();
         if(heartTexture != null) heartTexture.dispose();
         if (stage != null) stage.dispose();
+        if (boxStage != null) boxStage.dispose();
         if (barnTexture != null) barnTexture.dispose();
         if (coopTexture != null) coopTexture.dispose();
         if (lightningTexture != null) lightningTexture.dispose();
@@ -741,6 +795,7 @@ public class GameMenuUI implements Screen {
         gameModel.camera.viewportHeight = i1;
         gameModel.camera.update();
         stage.getViewport().update(i, i1, true);
+        boxStage.getViewport().update(i, i1, true);
     }
 
     @Override

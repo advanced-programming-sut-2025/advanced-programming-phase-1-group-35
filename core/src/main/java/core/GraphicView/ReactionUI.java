@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -25,6 +26,7 @@ public class ReactionUI implements Screen {
     private SpriteBatch batch;
     private Table emojiTable;
     private boolean isFirstPage = true;
+    private TextField messageField;
 
     public ReactionUI(GameMenuUI gameMenuUI) {
         this.gameMenuUI = gameMenuUI;
@@ -54,8 +56,27 @@ public class ReactionUI implements Screen {
             }
         });
 
+        messageField = new TextField("", GameAssetManager.getDefaultSkin());
+        messageField.setMessageText("Type a message...");
+        TextButton sendButton = new TextButton("Send", GameAssetManager.getDefaultSkin());
+        sendButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String message = messageField.getText();
+                if (message != null && !message.trim().isEmpty()) {
+                    gameMenuUI.showReactionForPlayer(message);
+                    Main.getGame().setScreen(gameMenuUI);
+                }
+            }
+        });
+
+        Table textInputTable = new Table();
+        textInputTable.add(messageField).width(300).padRight(10);
+        textInputTable.add(sendButton);
+
         mainLayout.add(emojiTable).row();
-        mainLayout.add(changePageButton).padTop(20);
+        mainLayout.add(changePageButton).padTop(20).row();
+        mainLayout.add(textInputTable).padTop(20);
 
         stage.addActor(mainLayout);
     }
