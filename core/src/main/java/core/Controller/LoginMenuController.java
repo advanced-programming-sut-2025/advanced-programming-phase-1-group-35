@@ -94,7 +94,7 @@ public class LoginMenuController extends Controller {
     }
 
     public Result login(String username, String password, boolean stayLoggedIn) throws IOException {
-        if(!LoginView.getAdvanceButton().isChecked())return null;
+        if(LoginView != null && !LoginView.getAdvanceButton().isChecked())return null;
         User user = getUser(username);
         if(user == null) {
             showErrorDialog(Dialogues.ErrorUserDoesNotExist.title, Dialogues.ErrorUserDoesNotExist.message);
@@ -106,7 +106,7 @@ public class LoginMenuController extends Controller {
             LoginView.getAdvanceButton().setChecked(false);
             return new Result(false, "Wrong password");
         }
-        LoginView.getAdvanceButton().setChecked(false);
+        if(LoginView!= null) LoginView.getAdvanceButton().setChecked(false);
         App.setLoggedInUser(user);
         App.setStayLoggedIn(stayLoggedIn);
         HashMap<String, Object> body = new HashMap<>();

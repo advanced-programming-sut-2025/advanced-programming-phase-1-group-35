@@ -80,6 +80,10 @@ public class User {
         this.ID = IDCounter++;
         this.learnedRecipes = new ArrayList<>();
     }
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
 
     public ArrayList<CraftingRecipes> getCraftingRecipes() {
         return craftingRecipes;

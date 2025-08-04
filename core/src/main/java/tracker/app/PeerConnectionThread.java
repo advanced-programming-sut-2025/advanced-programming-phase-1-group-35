@@ -40,15 +40,21 @@ public class PeerConnectionThread extends ConnectionThread {
             HashMap<String, Object> map1 = new HashMap<>();
             map1.put("command", "status");
             Message message1 = new Message(map1, Message.Type.command);
+
+            // This call will throw an exception on timeout or if the peer closed the socket
             Message message2 = sendAndWaitForResponse(message1, TIMEOUT_MILLIS);
+
             otherSideIP = message2.getFromBody("peer");
             otherSidePort = message2.getIntFromBody("listen_port");
         }
         catch (Exception e) {
-            System.out.println("Error during refresh status: " + e.getMessage());
-            socket.close();
-            TrackerApp.removePeerConnection(this);
-            this.end.set(true);
+            // This block now triggers the cleanup for unresponsive peers
+            System.err.println("Peer " + (otherSideIP != null ? otherSideIP : "UNKNOWN") + " failed status check: " + e.getMessage());
+            this.end.set(true); // Signal the thread to stop its run loop
+            TrackerApp.removePeerConnection(this); // Use our centralized cleanup method
+
+            // Re-throw exception to notify the caller (like the health check loop) that it failed
+            throw new IOException("Peer is unresponsive. Connection terminated.", e);
         }
     }
 

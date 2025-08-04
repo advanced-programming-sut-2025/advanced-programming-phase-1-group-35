@@ -33,14 +33,24 @@ public class P2TConnectionThread extends ConnectionThread {
     }
 
     @Override
-    protected boolean handleMessage(Message message) throws Exception {
-        if (message.getType().equals(Message.Type.command)) {
-            sendMessage(P2TConnectionController.handleCommand(message));
-            return true;
-        }
-        else if(message.getType().equals(Message.Type.requestResponse)){
-            P2TConnectionController.handleCommand(message);
-            return true;
+    protected boolean handleMessage(Message message) {
+        try {
+            if (message.getType().equals(Message.Type.command)) {
+                Message response = P2TConnectionController.handleCommand(message);
+                if (response != null) {
+                    sendMessage(response);
+                }
+                return true;
+                // FIX: Handle both 'response' and 'requestResponse' types.
+                // This is the critical fix that allows the manual refresh to work.
+                // It ensures that the response from the server is queued up for the waiting 'sendAndWaitForResponse' call.
+            } else if (message.getType().equals(Message.Type.requestResponse) || message.getType().equals(Message.Type.response)) {
+                receivedMessagesQueue.put(message);
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println("Error processing message in P2TConnectionController. Message: " + message.body);
+            e.printStackTrace();
         }
         return false;
     }

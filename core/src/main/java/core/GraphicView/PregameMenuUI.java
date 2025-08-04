@@ -1,155 +1,104 @@
 package core.GraphicView;
 
-import common.models.Message;
-import core.Controller.GameMenuController;
-import core.Controller.LoginMenuController;
-import core.Controller.MainMenuController;
-import core.Model.App;
-import core.Model.GameAssetManager;
-import core.Model.Result;
-import core.Model.User;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import peer.app.P2TConnectionThread;
+import common.models.Message;
+import core.Controller.MainMenuController;
+import core.Model.*;
+import peer.LobbyUpdateListener;
+import peer.P2TConnectionController;
 import peer.app.PeerApp;
-import tracker.app.PeerConnectionThread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class PregameMenuUI implements Screen {
-    private Stage stage;
-    private Skin skin;
-    private MainMenuController mainMenuController;
-    private GameMenuController gameController;
-    private Table mainTable;
-    private TextButton newGameBtn, loadGameBtn, deleteGameBtn, backButton;
-    ArrayList<Integer> mapNumbers = new ArrayList<>();
+public class PregameMenuUI implements Screen, LobbyUpdateListener {
+    private final Stage stage;
+    private final Skin skin;
+    private final MainMenuController mainMenuController;
 
-    // Main layout
-    private Table rootTable;
-    private Cell<Table> mainContentCell;
+    private final Table rootTable;
+    private final Cell<Table> mainContentCell;
 
-    // Game creation UI elements
-    private Table creationTable;
-    private TextField usernameField;
-    private TextButton addPlayerBtn, advanceBtn;
-    private Label playersLabel;
-    private SelectBox<Integer> farmTypeSelect;
-    private ScrollPane playersScroll;
-    private Table playersTable;
+    // UI State
+    private Lobby currentLobby = null;
+    private List<Lobby> availableLobbies = new ArrayList<>();
+
+    // UI Components
+    private Table lobbiesContainer;
+    private Table lobbyPlayersTable;
+    private Table lobbyViewTable; // Keep a reference to check which view is active
 
     public PregameMenuUI(MainMenuController mainMenuController) {
         this.stage = new Stage(new ScreenViewport());
         this.skin = GameAssetManager.getDefaultSkin();
         this.mainMenuController = mainMenuController;
-        this.gameController = new GameMenuController();
 
-        setupLayout();
-        mainTable = createMainMenuTable();
-        mainContentCell.setActor(mainTable);
-
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    private void setupLayout() {
         rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        // Left panel for online players
-        Table onlinePlayersTable = createOnlinePlayersTable();
-        rootTable.add(onlinePlayersTable).width(250).growY().pad(15);
+        mainContentCell = rootTable.add((Table) null).grow().pad(15);
 
-        // A vertical line to separate the panels
-        Image separator = new Image(skin.newDrawable("white", 0, 0, 0, 0.75f));
-        rootTable.add(separator).width(2).growY().padTop(20).padBottom(20);
+        // Register this UI screen to listen for network updates.
+        P2TConnectionController.addLobbyUpdateListener(this);
 
-        // Right panel for the main content
-        mainContentCell = rootTable.add((Table)null).grow().pad(15);
+        Gdx.input.setInputProcessor(stage);
     }
 
-    private Table createOnlinePlayersTable() {
-        HashMap<String , Object> body = new HashMap<>();
-        body.put("command", "onlineUsers");
-        PeerApp.getP2TConnection().sendAndWaitForResponse(new Message(body, Message.Type.command), 500);
-        Table table = new Table(skin);
-        table.top().left();
-        table.pad(10);
+    // --- UI Creation and Refresh Logic ---
 
-        Label title = new Label("Online Players", skin, "title");
-        table.add(title).padBottom(20).row();
+    private void showLobbyListUI() {
+        currentLobby = null;
+        Table lobbyListTable = new Table(skin);
+        lobbyListTable.pad(20f);
 
-        Table playersList = new Table(skin);
-        // Assumes App.onlineUsers is a static ArrayList<User>
-        ArrayList<User> onlineUsers = App.onlineUsers;
-        if (onlineUsers != null && !onlineUsers.isEmpty()) {
-            for (User user : onlineUsers) {
-                playersList.add(new Label(user.getUsername(), skin)).left().padBottom(5).row();
-            }
-        } else {
-            playersList.add(new Label("No players online", skin)).left().row();
-        }
+        Label title = new Label("Game Lobbies", skin, "title");
+        lobbyListTable.add(title).padBottom(30).row();
 
-        ScrollPane scrollPane = new ScrollPane(playersList, skin);
-        scrollPane.setFadeScrollBars(false);
-        table.add(scrollPane).grow();
+        lobbiesContainer = new Table();
+        ScrollPane scrollPane = new ScrollPane(lobbiesContainer, skin);
+        lobbyListTable.add(scrollPane).grow().padBottom(20).row();
 
-        return table;
-    }
+        refreshLobbyListView(); // Populate with current data
 
-    private Table createMainMenuTable() {
-        Table table = new Table();
-        table.pad(20);
+        TextButton createLobbyButton = new TextButton("Create New Lobby", skin);
+        TextButton backButton = new TextButton("Back to Main Menu", skin);
 
-        // Title
-        Label title = new Label("Pregame Menu", skin, "title");
-        table.add(title).colspan(2).padBottom(30).row();
+        // FIX: Add the Refresh Button
+        TextButton refreshButton = new TextButton("Refresh", skin);
 
-        // New Game Button
-        newGameBtn = new TextButton("Start New Game", skin);
-        table.add(newGameBtn).colspan(2).width(300).padBottom(15).row();
+        Table buttonTable = new Table();
+        buttonTable.add(createLobbyButton).width(250).pad(10);
+        buttonTable.add(refreshButton).width(150).pad(10); // Add the button to the table
 
-        // Load Game Button
-        loadGameBtn = new TextButton("Load Last Saved Game", skin);
-        table.add(loadGameBtn).colspan(2).width(300).padBottom(15).row();
+        lobbyListTable.add(buttonTable).padBottom(10).row();
+        lobbyListTable.add(backButton).width(300);
 
-        // Delete Game Button
-        deleteGameBtn = new TextButton("Delete Game", skin);
-        table.add(deleteGameBtn).colspan(2).width(300).padBottom(30).row();
-
-        // Back Button
-        backButton = new TextButton("Back to Main Menu", skin);
-        table.add(backButton).colspan(2);
-
-        // Button listeners
-        newGameBtn.addListener(new ChangeListener() {
+        createLobbyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                showGameCreationUI();
+                showCreateLobbyDialog();
             }
         });
 
-        loadGameBtn.addListener(new ChangeListener() {
+        // FIX: Add the listener for the refresh button
+        refreshButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // Placeholder for load game functionality
-                showDialog("Info", "Load game functionality will be implemented later");
-            }
-        });
-
-        deleteGameBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // Placeholder for delete game functionality
-                showDialog("Info", "Delete game functionality will be implemented later");
+            public void clicked(InputEvent event, float x, float y) {
+                // Call the method from PeerApp to request a manual refresh
+                PeerApp.requestLobbyRefresh();
             }
         });
 
@@ -159,176 +108,190 @@ public class PregameMenuUI implements Screen {
                 goBackToMainMenu();
             }
         });
-        return table;
+
+        mainContentCell.setActor(lobbyListTable);
+        // Automatically refresh when the screen is shown
+        PeerApp.requestLobbyRefresh();
     }
 
-    private void showGameCreationUI() {
-        // Create game creation UI
-        creationTable = new Table();
-        creationTable.pad(20);
+    private void refreshLobbyListView() {
+        if (lobbiesContainer == null) return;
+        lobbiesContainer.clear();
+        lobbiesContainer.defaults().pad(5);
 
-        // Title
-        Label title = new Label("Create New Game", skin, "title");
-        creationTable.add(title).colspan(2).padBottom(20).row();
+        if (availableLobbies.isEmpty()) {
+            lobbiesContainer.add(new Label("No active lobbies. Why not create one?", skin));
+        } else {
+            for (Lobby lobby : availableLobbies) {
+                Label lobbyLabel = new Label(
+                    String.format("%s (%d/4)", lobby.getLobbyName(), lobby.getPlayers().size()),
+                    skin
+                );
+                TextButton joinButton = new TextButton("Join", skin);
+                joinButton.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        joinLobby(lobby.getId());
+                    }
+                });
+                lobbiesContainer.add(lobbyLabel).growX().padRight(20);
+                lobbiesContainer.add(joinButton).width(100).row();
+            }
+        }
+    }
 
-        // Username input
-        Table inputTable = new Table(skin);
-        inputTable.defaults().pad(5);
+    private void showLobbyViewUI() {
+        if (currentLobby == null) return;
 
-        inputTable.add(new Label("Add Player:", skin)).left().row();
+        lobbyViewTable = new Table(skin); // Assign to the class member
+        lobbyViewTable.pad(20f);
 
-        usernameField = new TextField("", skin);
-        inputTable.add(usernameField).growX().row();
+        Label lobbyTitleLabel = new Label(currentLobby.getLobbyName(), skin, "title");
+        lobbyViewTable.add(lobbyTitleLabel).padBottom(30).row();
 
-        addPlayerBtn = new TextButton("Add Player", skin);
-        inputTable.add(addPlayerBtn).right().row();
+        lobbyPlayersTable = new Table();
+        updateLobbyPlayersList();
+        ScrollPane scrollPane = new ScrollPane(lobbyPlayersTable, skin);
+        lobbyViewTable.add(scrollPane).grow().padBottom(20).row();
 
-        creationTable.add(inputTable).colspan(2).growX().padBottom(15).row();
+        Table buttonTable = new Table();
+        User currentUser = App.getLoggedInUser();
 
-        // Farm type selection
-        Table farmTable = new Table(skin);
-        farmTable.defaults().pad(5);
+        if (currentUser.equals(currentLobby.getHost())) {
+            TextButton startGameButton = new TextButton("Start Game", skin);
+            buttonTable.add(startGameButton).width(250).pad(10);
+            startGameButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    showDialog("Info", "Game would start now!");
+                }
+            });
+        }
 
-        farmTable.add(new Label("Select Farm Type (1-3):", skin)).left().row();
-
-        farmTypeSelect = new SelectBox<>(skin);
-        farmTypeSelect.setItems(1, 2, 3);
-        farmTypeSelect.setSelected(1);
-        farmTable.add(farmTypeSelect).left().row();
-
-        creationTable.add(farmTable).colspan(2).growX().padBottom(15).row();
-
-        // Players list
-        playersLabel = new Label("Players in Game:", skin);
-        creationTable.add(playersLabel).colspan(2).left().padBottom(5).row();
-
-        playersTable = new Table(skin);
-        playersTable.defaults().pad(5);
-
-        // Add the current user as the first player
-        addPlayerToTable(App.getLoggedInUser().getUsername(), 1);
-
-        playersScroll = new ScrollPane(playersTable, skin);
-        playersScroll.setFadeScrollBars(false);
-        creationTable.add(playersScroll).colspan(2).grow().padBottom(15).row();
-
-        // Advance button
-        advanceBtn = new TextButton("Start Game", skin);
-        creationTable.add(advanceBtn).colspan(2).width(300).padTop(20).row();
-
-        // Back button
-        TextButton creationBackBtn = new TextButton("Back to Pregame Menu", skin);
-        creationTable.add(creationBackBtn).colspan(2).padTop(10);
-
-        // Button listeners
-        addPlayerBtn.addListener(new ChangeListener() {
+        TextButton leaveLobbyButton = new TextButton("Leave Lobby", skin);
+        buttonTable.add(leaveLobbyButton).width(250).pad(10);
+        leaveLobbyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                String username = usernameField.getText();
-                if (username.isEmpty()) {
-                    showDialog("Error", "Please enter a username");
-                    return;
-                }
-
-                try {
-                    User user = new LoginMenuController().getUser(username);
-                    if (user == null) {
-                        showDialog("Error", "User not found");
-                        return;
-                    }
-
-                    if (user.equals(App.getLoggedInUser())) {
-                        showDialog("Error", "Cannot add yourself again");
-                        return;
-                    }
-
-                    // Check if player is already added
-                    for (Actor child : playersTable.getChildren()) {
-                        if (child instanceof Label) {
-                            Label label = (Label) child;
-                            if (label.getText().toString().contains(username)) {
-                                showDialog("Error", "Player already added");
-                                return;
-                            }
-                        }
-                    }
-
-                    int farmType = farmTypeSelect.getSelected();
-                    addPlayerToTable(username, farmType);
-                    mapNumbers.add(farmType);
-                    usernameField.setText("");
-
-                } catch (Exception e) {
-                    showDialog("Error", "An error occurred: " + e.getMessage());
-                }
+                leaveLobby(currentLobby.getId());
+                showLobbyListUI();
             }
         });
 
-        advanceBtn.addListener(new ChangeListener() {
+        lobbyViewTable.add(buttonTable).row();
+        mainContentCell.setActor(lobbyViewTable);
+    }
+
+    private void updateLobbyPlayersList() {
+        if (lobbyPlayersTable == null || currentLobby == null) return;
+        lobbyPlayersTable.clear();
+        lobbyPlayersTable.defaults().pad(5).align(Align.left);
+
+        for (User player : currentLobby.getPlayers()) {
+            String labelText = player.getUsername();
+            if (player.equals(currentLobby.getHost())) {
+                labelText += " (Host)";
+            }
+            lobbyPlayersTable.add(new Label(labelText, skin)).row();
+        }
+    }
+
+    private void showCreateLobbyDialog() {
+        Dialog dialog = new Dialog("Create Lobby", skin);
+        dialog.pad(40);
+        dialog.getContentTable().add(new Label("Enter lobby name:", skin)).row();
+        TextField lobbyNameField = new TextField(App.getLoggedInUser().getUsername() + "'s Game", skin);
+        dialog.getContentTable().add(lobbyNameField).width(300).padTop(10).row();
+
+        TextButton confirmButton = new TextButton("Create", skin);
+        dialog.getButtonTable().add(confirmButton).width(120);
+        TextButton cancelButton = new TextButton("Cancel", skin);
+        dialog.getButtonTable().add(cancelButton).width(120);
+
+        confirmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    // Get all added players (excluding the first one which is the current user)
-                    String player1 = null, player2 = null, player3 = null, player4 = null;
-                    int index = 0;
-
-                    for (Actor child : playersTable.getChildren()) {
-                        if (child instanceof Label) {
-                            Label label = (Label) child;
-                            String text = label.getText().toString();
-                            if (text.startsWith("- ")) {
-                                String username = text.substring(2).split(" \\(")[0];
-                                if (index == 0) {
-                                    player1 = username;
-                                } else if (index == 1) {
-                                    player2 = username;
-                                } else if (index == 2) {
-                                    player3 = username;
-                                } else if (index == 3) {
-                                    player4 = username;
-                                }
-                                index++;
-                            }
-                        }
-                    }
-
-                    // Create the game
-                    int[] mapTypes = {1,1,1,1};
-                    for (int i = 0; i < mapNumbers.size(); i++) {
-                        mapTypes[i] = mapNumbers.get(i);
-                    }
-                    Result result = gameController.createNewGame(player2, player3, player4,mapTypes);
-                    if (result.isSuccess()) {
-                        // Game created successfully, proceed to game screen
-                        Gdx.app.postRunnable(() -> {
-                            dispose();
-                            gameController.init();
-                        });
-                    } else {
-                        showDialog("Error", result.toString());
-                    }
-                } catch (Exception e) {
-                    showDialog("Error", "Failed to create game: " + e.getMessage());
+                String lobbyName = lobbyNameField.getText().trim();
+                if (!lobbyName.isEmpty()) {
+                    dialog.hide();
+                    createLobby(lobbyName);
+                } else {
+                    showDialog("Invalid Name", "Lobby name cannot be empty.");
                 }
             }
         });
-
-        creationBackBtn.addListener(new ChangeListener() {
+        cancelButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Go back to main pregame menu by switching the actor in the cell
-                mainContentCell.setActor(mainTable);
+                dialog.hide();
             }
         });
 
-        // Set the new creation table as the main content
-        mainContentCell.setActor(creationTable);
+        dialog.show(stage);
     }
 
-    private void addPlayerToTable(String username, int farmType) {
-        playersTable.add(new Label("- " + username + " (Farm " + farmType + ")", skin)).left().row();
-        playersTable.row();
+    // --- Network Communication ---
+
+    private void createLobby(String lobbyName) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "create_lobby");
+        body.put("lobby_name", lobbyName);
+        Message request = new Message(body, Message.Type.command);
+        if (PeerApp.getP2TConnection() != null) {
+            PeerApp.getP2TConnection().sendMessage(request);
+        }
     }
+
+    private void joinLobby(String lobbyId) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "join_lobby");
+        body.put("lobby_id", lobbyId);
+        Message request = new Message(body, Message.Type.command);
+        if (PeerApp.getP2TConnection() != null) {
+            PeerApp.getP2TConnection().sendMessage(request);
+        }
+    }
+
+    private void leaveLobby(String lobbyId) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "leave_lobby");
+        body.put("lobby_id", lobbyId);
+        Message request = new Message(body, Message.Type.command);
+        if (PeerApp.getP2TConnection() != null) {
+            PeerApp.getP2TConnection().sendMessage(request);
+        }
+    }
+
+    // --- Listener Implementation ---
+
+    @Override
+    public void onLobbyListUpdated(List<Lobby> lobbies) {
+        if (lobbies == null) return;
+        this.availableLobbies = lobbies;
+        // Only refresh the list view if we are not currently inside a lobby
+        if (currentLobby == null) {
+            // Ensure this runs on the main UI thread
+            Gdx.app.postRunnable(this::refreshLobbyListView);
+        }
+    }
+
+    @Override
+    public void onLobbyStateUpdated(Lobby lobby) {
+        if (lobby == null) return;
+        this.currentLobby = lobby;
+        // Ensure this runs on the main UI thread
+        Gdx.app.postRunnable(() -> {
+            // If we aren't already in the lobby view, switch to it.
+            // Otherwise, just refresh the player list.
+            if (mainContentCell.getActor() != lobbyViewTable) {
+                showLobbyViewUI();
+            } else {
+                updateLobbyPlayersList();
+            }
+        });
+    }
+
+    // --- Helper & Lifecycle Methods ---
 
     private void goBackToMainMenu() {
         dispose();
@@ -336,45 +299,37 @@ public class PregameMenuUI implements Screen {
     }
 
     public void showDialog(String title, String message) {
-        Skin skin = GameAssetManager.getDefaultSkin();
-        Dialog dialog = new Dialog(title, skin) {
-            @Override
-            protected void result(Object object) {
-            }
-        };
-
-        dialog.text(message);
-        dialog.button("OK");
-        dialog.show(stage);
+        new Dialog(title, skin, "dialog").text(message).button("OK").show(stage);
     }
 
     @Override
     public void show() {
+        showLobbyListUI();
     }
 
+    @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(0.1f, 0.1f, 0.15f, 1);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
+    @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
+    @Override
+    public void resume() {}
+    @Override
+    public void hide() {}
 
     @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
     public void dispose() {
+        // Unregister the listener to prevent memory leaks.
+        P2TConnectionController.removeLobbyUpdateListener(this);
         stage.dispose();
     }
 }

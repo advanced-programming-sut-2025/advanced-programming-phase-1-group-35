@@ -3,13 +3,15 @@ package common.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import common.models.Message;
+import core.Model.User;
+import core.Model.UserTypeAdapter;
 
 public class JSONUtils {
 	private static final GsonBuilder gsonBuilder = new GsonBuilder();
 	private static final Gson gson;
 
 	static {
-		gsonBuilder.setPrettyPrinting();
+		gsonBuilder.setPrettyPrinting().registerTypeAdapter(User.class , new UserTypeAdapter());
 		gson = gsonBuilder.create();
 	}
 

@@ -33,6 +33,10 @@ public class SignUpUI implements Screen {
     public Table table;
     private final LoginMenuController controller;
     private final TextButton testButton;
+    private final TextButton login1Button;
+    private final TextButton login2Button;
+    private final TextButton login3Button;
+    private final TextButton login4Button;
 
     public SignUpUI(LoginMenuController controller) {
         this.controller = controller;
@@ -78,6 +82,54 @@ public class SignUpUI implements Screen {
                 System.out.println("game created");
             }
         });
+        login1Button = new TextButton("Login 1", skin);
+        login1Button.setChecked(false);
+        login1Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    controller.login("player1", "Sadeghi12!", false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        login2Button = new TextButton("Login 2", skin);
+        login2Button.setChecked(false);
+        login2Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    controller.login("player2", "Sadeghi12!", false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        login3Button = new TextButton("Login 3", skin);
+        login3Button.setChecked(false);
+        login3Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    controller.login("player3", "Sadeghi12!", false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        login4Button = new TextButton("Login 4", skin);
+        login4Button.setChecked(false);
+        login4Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    controller.login("player4", "Sadeghi12!", false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         controller.setView(this);
     }
 
@@ -111,6 +163,14 @@ public class SignUpUI implements Screen {
         table.row().pad(10, 0 , 10 , 0);
         table.add(loginButton).width(300);
         table.add(testButton).width(300);
+        table.row().pad(10, 0 , 10 , 0);
+        table.add(login1Button).width(300);
+        table.row().pad(10, 0 , 10 , 0);
+        table.add(login2Button).width(300);
+        table.row().pad(10, 0 , 10 , 0);
+        table.add(login3Button).width(300);
+        table.row().pad(10, 0 , 10 , 0);
+        table.add(login4Button).width(300);
 
         stage.addActor(table);
     }
