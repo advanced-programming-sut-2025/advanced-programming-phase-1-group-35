@@ -38,7 +38,7 @@ public class CookUI implements Screen {
     private Stage stage;
     private Main game;
     private final CookingController cookingController;
-    private GameMenuUI gameMenuUI; // Reference to GameMenuUI
+    private GameMenuUI gameMenuUI;
 
     private static final int RECIPES_PER_ROW = 12;
     private static final int RECIPE_ICON_SIZE = 49;

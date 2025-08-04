@@ -57,6 +57,8 @@ public class GameView {
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
     private Animation<TextureRegion> CrowAnimation;
+    private Texture activeReaction;
+    private float reactionTimer = 0f;
 
     public GameView(Game game) {
         this.game = game;
@@ -186,7 +188,18 @@ public class GameView {
         pixmap.dispose();
     }
 
-    public void render() {
+    public void showReaction(Texture texture) {
+        this.activeReaction = texture;
+        this.reactionTimer = 5.0f;
+    }
+
+    public void render(float delta) {
+        if (reactionTimer > 0) {
+            reactionTimer -= delta;
+            if (reactionTimer <= 0) {
+                activeReaction = null;
+            }
+        }
         batch.setProjectionMatrix(game.camera.combined);
         batch.begin();
         renderTiles();
@@ -197,6 +210,17 @@ public class GameView {
         renderWeather();
         renderSeason();
         renderEnergyBar();
+
+        if (activeReaction != null) {
+            User playingUser = game.getPlayingUser();
+            if (playingUser != null && playingUser.getCurrentPoint() != null) {
+                float tileX = playingUser.getCurrentPoint().first;
+                float tileY = playingUser.getCurrentPoint().second;
+                float playerX = tileX * Main.TILE_SIZE;
+                float playerY = tileY * Main.TILE_SIZE;
+                batch.draw(activeReaction, playerX, playerY + (Main.TILE_SIZE * 5), Main.TILE_SIZE * 5, Main.TILE_SIZE * 5);
+            }
+        }
         batch.end();
     }
 

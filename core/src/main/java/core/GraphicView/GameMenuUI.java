@@ -1,37 +1,5 @@
 package core.GraphicView;
 
-import core.Model.*;
-import core.Controller.GameMenuController;
-import core.Controller.InGameMenu.AnimalController;
-import core.Controller.InGameMenu.ShopMenuController;
-import core.Controller.InGameMenu.ToolsController;
-import core.GraphicView.Game.GameMenuInputAdapter;
-import core.GraphicView.Game.GameView;
-import core.Model.*;
-import core.Model.Tools.BackPack;
-import core.Model.Tools.Tool;
-import core.Model.animal.Animal;
-import core.Model.animal.AnimalProduct;
-import core.Model.enums.Buildings.AnimalHouseEnum;
-import core.Model.enums.ToolTypes;
-import core.Model.enums.animal.AnimalType;
-import core.Controller.GameMenuController;
-import core.Controller.InGameMenu.AnimalController;
-import core.Controller.InGameMenu.ArtisanController;
-import core.Controller.InGameMenu.ShopMenuController;
-import core.Controller.InGameMenu.ToolsController;
-import core.GraphicView.Game.GameMenuInputAdapter;
-import core.GraphicView.Game.GameView;
-import core.Model.*;
-import core.Model.Tools.BackPack;
-import core.Model.Tools.Tool;
-import core.Model.animal.Animal;
-import core.Model.animal.AnimalProduct;
-import core.Model.enums.Buildings.AnimalHouseEnum;
-import core.Model.enums.ToolTypes;
-import core.Model.enums.animal.AnimalType;
-import core.Model.machines.Keg;
-import core.Model.machines.Machine;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -53,6 +21,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.Controller.GameMenuController;
+import core.Controller.InGameMenu.AnimalController;
+import core.Controller.InGameMenu.ArtisanController;
+import core.Controller.InGameMenu.ShopMenuController;
+import core.Controller.InGameMenu.ToolsController;
+import core.GraphicView.Game.GameMenuInputAdapter;
+import core.GraphicView.Game.GameView;
+import core.Model.*;
+import core.Model.Tools.BackPack;
+import core.Model.Tools.Tool;
+import core.Model.animal.Animal;
+import core.Model.animal.AnimalProduct;
+import core.Model.enums.Buildings.AnimalHouseEnum;
+import core.Model.enums.ToolTypes;
+import core.Model.enums.animal.AnimalType;
+import core.Model.machines.Keg;
+import core.Model.machines.Machine;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -116,9 +101,10 @@ public class GameMenuUI implements Screen {
     public static boolean Crows = false;
     private float animationTime = 0f;
     private final float crowDuration = 6f;
-    private final float fadeDuration = 1f; // 1 second fade in/out
+    private final float fadeDuration = 1f;
 
     private ArtisanUI artisanUI;
+    private ReactionUI reactionUI;
 
 
     public ArtisanUI getArtisanUI() {
@@ -148,6 +134,7 @@ public class GameMenuUI implements Screen {
         heartTexture = new Texture(Gdx.files.internal("assets/heart.png"));
         lightningTexture = new Texture(Gdx.files.internal("assets/light.png"));
 
+        reactionUI = new ReactionUI(this);
 
         mainMultiplexer = new InputMultiplexer();
 
@@ -157,6 +144,9 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
+                    case Input.Keys.R:
+                        Main.getGame().setScreen(reactionUI);
+                        return true;
                     case Input.Keys.O:
                         toggleArtisanUI(new Keg(new ArtisanController()));
                         return true;
@@ -214,6 +204,10 @@ public class GameMenuUI implements Screen {
         mainMultiplexer.addProcessor(hotkeyAdapter);
         mainMultiplexer.addProcessor(gameMenuInputAdapter);
         Gdx.input.setInputProcessor(mainMultiplexer);
+    }
+
+    public void showReactionForPlayer(Texture emojiTexture) {
+        gameView.showReaction(emojiTexture);
     }
 
     private void showBuildingSelectionDialog() {
@@ -421,7 +415,7 @@ public class GameMenuUI implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameModel.update(delta);
-        gameView.render();
+        gameView.render(delta);
         updateAnimalMovement(delta);
         renderLightningEffects(delta);
         renderAnimals();
@@ -436,7 +430,6 @@ public class GameMenuUI implements Screen {
                 Crows = false;
                 animationTime = 0;
             } else {
-                // Step 1: Clear the screen
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -444,13 +437,13 @@ public class GameMenuUI implements Screen {
 
                 float alpha = 1f;
                 if (animationTime < fadeDuration) {
-                    alpha = animationTime / fadeDuration; // Fade in
+                    alpha = animationTime / fadeDuration;
                 } else if (animationTime > crowDuration - fadeDuration) {
-                    alpha = (crowDuration - animationTime) / fadeDuration; // Fade out
+                    alpha = (crowDuration - animationTime) / fadeDuration;
                 }
 
                 gameView.getBatch().begin();
-                gameView.getBatch().setColor(1f, 1f, 1f, alpha); // White color with calculated alpha
+                gameView.getBatch().setColor(1f, 1f, 1f, alpha);
                 gameView.getBatch().draw(
                     currentFrame,
                     Gdx.graphics.getWidth() / 4f,
@@ -458,15 +451,10 @@ public class GameMenuUI implements Screen {
                     Gdx.graphics.getWidth() / 2f,
                     Gdx.graphics.getHeight() / 2f
                 );
-                gameView.getBatch().setColor(1f, 1f, 1f, 1f); // Reset to full opacity
+                gameView.getBatch().setColor(1f, 1f, 1f, 1f);
                 gameView.getBatch().end();
             }
         }
-
-
-//        }
-//        else Crows = false;
-
 
         if (isToolsUIVisible) {
             renderToolsUI();
@@ -529,7 +517,6 @@ public class GameMenuUI implements Screen {
         }
         batch.end();
     }
-
 
     private void renderAnimals() {
         SpriteBatch batch = gameView.getBatch();
@@ -747,8 +734,6 @@ public class GameMenuUI implements Screen {
         }
         Main.getGame().setScreen(artisanUI);
     }
-
-
 
     @Override
     public void resize(int i, int i1) {
