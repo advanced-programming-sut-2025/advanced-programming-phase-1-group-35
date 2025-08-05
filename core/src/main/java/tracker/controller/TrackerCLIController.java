@@ -1,6 +1,5 @@
 package tracker.controller;
 
-//import common.utils.FileUtils;
 import tracker.app.PeerConnectionThread;
 import tracker.app.TrackerApp;
 

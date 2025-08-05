@@ -1,6 +1,6 @@
 package core.GraphicView.Game;
 
-import core.Model.*;
+import com.badlogic.gdx.utils.ScreenUtils;
 import core.Model.*;
 import core.Model.CropClasses.Crop;
 import core.Model.CropClasses.Tree;
@@ -9,17 +9,8 @@ import core.Model.Point;
 import core.Model.enums.Crops.CropEnum;
 import core.Model.enums.Crops.TreeEnum;
 import core.Model.enums.TileType;
-import core.Model.*;
-import core.Model.CropClasses.Crop;
-import core.Model.CropClasses.Tree;
-import core.Model.NPCs.NPC;
-import core.Model.Point;
-import core.Model.enums.Crops.CropEnum;
-import core.Model.enums.Crops.TreeEnum;
 import core.Model.User;
-import core.Model.enums.TileType;
 import core.Model.enums.machines.ArtisanProductDetails;
-import core.Model.machines.ArtisanProduct;
 import core.Model.machines.Machine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -57,6 +48,9 @@ public class GameView {
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
     private Animation<TextureRegion> CrowAnimation;
+    private Texture activeEmoji;
+    private float reactionTimer = 0f;
+    private String activeText;
 
     public GameView(Game game) {
         this.game = game;
@@ -186,7 +180,27 @@ public class GameView {
         pixmap.dispose();
     }
 
-    public void render() {
+    public void showReaction(Texture texture) {
+        this.activeEmoji = texture;
+        this.activeText = null;
+        this.reactionTimer = 5.0f;
+    }
+
+    public void showReaction(String text) {
+        this.activeText = text;
+        this.activeEmoji = null;
+        this.reactionTimer = 5.0f;
+    }
+
+    public void render(float delta) {
+        if (reactionTimer > 0) {
+            reactionTimer -= delta;
+            if (reactionTimer <= 0) {
+                activeEmoji = null;
+                activeText = null;
+            }
+        }
+
         batch.setProjectionMatrix(game.camera.combined);
         batch.begin();
         renderTiles();
@@ -197,6 +211,17 @@ public class GameView {
         renderWeather();
         renderSeason();
         renderEnergyBar();
+
+        if (activeEmoji != null) {
+            User playingUser = game.getPlayingUser();
+            if (playingUser != null && playingUser.getCurrentPoint() != null) {
+                float tileX = playingUser.getCurrentPoint().first;
+                float tileY = playingUser.getCurrentPoint().second;
+                float playerX = tileX * Main.TILE_SIZE;
+                float playerY = tileY * Main.TILE_SIZE;
+                batch.draw(activeEmoji, playerX, playerY + (Main.TILE_SIZE * 5), Main.TILE_SIZE * 5, Main.TILE_SIZE * 5);
+            }
+        }
         batch.end();
     }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import core.Model.*;
+import core.Model.*;
 import core.Model.enums.*;
 import core.Model.enums.Crops.*;
 import core.Model.enums.Shops.Products.*;
