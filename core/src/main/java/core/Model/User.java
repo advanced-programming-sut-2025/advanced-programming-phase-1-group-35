@@ -66,6 +66,7 @@ public class User {
     private int movingDirection = 0;
     private float speed = 20f;
     float vx , vy ;
+    int votes = 0;
     public OrthographicCamera camera ;
 
     public User(String username, String password, String nickname, String email,
@@ -517,4 +518,13 @@ public class User {
         }
         return false;
     }
+
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
+
 }

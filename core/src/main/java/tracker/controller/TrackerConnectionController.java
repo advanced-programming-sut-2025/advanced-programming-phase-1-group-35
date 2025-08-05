@@ -35,6 +35,8 @@ public class TrackerConnectionController {
                 return leaveLobby(message, user);
             case "start_game":
                 return createSuccessResponse("start_game_response", new HashMap<>());
+            case "start_Vote":
+                return NotifyVoting(message.getFromBody("user"));
             default:
                 System.err.println("Unknown command received: " + command);
                 return createErrorResponse(command, "Unknown command.");
@@ -203,4 +205,12 @@ public class TrackerConnectionController {
         body.put("message", errorMessage);
         return new Message(body, Message.Type.response);
     }
+    private static Message NotifyVoting(User selectedUser) {
+        HashMap<String,Object> body = new HashMap<>();
+        body.put("command","start_Vote");
+        body.put("user", selectedUser.getUsername());
+        Message message = new Message(body,Message.Type.command);
+        return message;
+    }
+
 }

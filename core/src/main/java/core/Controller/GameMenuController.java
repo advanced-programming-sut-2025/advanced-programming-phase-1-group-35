@@ -1,5 +1,12 @@
 package core.Controller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import core.Model.*;
 import core.Model.enums.*;
 import core.Model.enums.Crops.*;
@@ -21,6 +28,7 @@ import core.Model.machines.ArtisanProduct;
 import core.Model.enums.animal.AnimalProductDetails;
 import core.Model.enums.animal.FishType;
 import core.View.InGameMenu.ShopMenu;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import core.Controller.InGameMenu.ArtisanController;
 import core.Controller.InGameMenu.CropController;
 import core.Controller.InGameMenu.FarmingController;
@@ -796,6 +804,33 @@ public class GameMenuController {
         }
         return false;
     }
+    public void showNotification(String message) {
+        Label notificationLabel = new Label(message, GameAssetManager.getDefaultSkin());
+        notificationLabel.setWrap(true);
+        notificationLabel.setAlignment(Align.center);
+
+        Table notificationTable = new Table(GameAssetManager.getDefaultSkin());
+        notificationTable.setBackground(GameAssetManager.getDefaultSkin().newDrawable("white", Color.DARK_GRAY));
+        notificationTable.add(notificationLabel).width(300).pad(10);
+        notificationTable.pack();
+
+        // Center top
+        notificationTable.setPosition(
+            Gdx.graphics.getWidth() / 2f - notificationTable.getWidth() / 2f,
+            Gdx.graphics.getHeight() - notificationTable.getHeight() - 20
+        );
+
+        notificationTable.getColor().a = 0;
+        gameMenu.getStage().addActor(notificationTable);
+
+        notificationTable.addAction(Actions.sequence(
+            Actions.fadeIn(0.3f),
+            Actions.delay(2f),
+            Actions.fadeOut(0.5f),
+            Actions.removeActor()
+        ));
+    }
+
 
     public void init() {
         gameMenu = new GameMenuUI(this, CurrentGame);
@@ -804,6 +839,8 @@ public class GameMenuController {
         crop.setCurrentState(crop.getStages().size());
         App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
         App.getCurrentGame().getMap().getCrops().add(crop);
+
+
         Main.getGame().setScreen(gameMenu);
     }
 }

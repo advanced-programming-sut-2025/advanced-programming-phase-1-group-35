@@ -2,6 +2,7 @@
 package core.GraphicView;
 
 import core.Controller.InGameMenu.ArtisanController;
+import core.GraphicView.Game.GameView;
 import core.Model.GameAssetManager;
 import core.Model.ItemInterface;
 import com.StardewValley.Main;
@@ -284,5 +285,6 @@ public class ArtisanUI implements Screen {
     public TextButton getCancel() {
         return Cancel;
     }
+
 }
 

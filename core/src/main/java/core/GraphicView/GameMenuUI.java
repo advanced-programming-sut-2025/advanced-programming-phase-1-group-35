@@ -157,6 +157,9 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
+                    case Input.Keys.G:
+                        gameController.showNotification("notification test!");
+                        return true;
                     case Input.Keys.O:
                         toggleArtisanUI(new Keg(new ArtisanController()));
                         return true;
@@ -779,5 +782,8 @@ public class GameMenuUI implements Screen {
 
     public InputMultiplexer getMainMultiplexer() {
         return mainMultiplexer;
+    }
+    public Stage getStage(){
+        return stage;
     }
 }
