@@ -22,6 +22,7 @@ public class MainMenuUI implements Screen {
     private final TextButton logoutButton;
     private final TextButton exitButton;
     private final TextButton profileButton;
+    private final TextButton loadGameButton;
     private final Table table;
     private Stage stage;
     private Skin skin;
@@ -39,6 +40,8 @@ public class MainMenuUI implements Screen {
         exitButton.setChecked(false);
         profileButton = new TextButton("Profile", skin);
         profileButton.setChecked(false);
+        loadGameButton = new TextButton("Load Game", skin);
+        loadGameButton.setChecked(false);
         table = new Table(skin);
         controller.setView(this);
     }
@@ -57,6 +60,8 @@ public class MainMenuUI implements Screen {
         table.row().pad(15 , 0 , 10 , 0);
         table.add(profileButton);
         table.row().pad(15 , 0 , 10 , 0);
+        table.add(loadGameButton);
+        table.row().pad(15 , 0 , 10 , 0);
         table.add(logoutButton);
         table.row().pad(15 , 0 , 10 , 0);
         table.add(exitButton);
@@ -73,6 +78,7 @@ public class MainMenuUI implements Screen {
         stage.draw();
         controller.goToMenu("what");
         controller.logout();
+        controller.loadGame();
         try {
             controller.exitMenu();
             controller.logout();
@@ -117,6 +123,9 @@ public class MainMenuUI implements Screen {
     }
     public TextButton getProfileButton() {
         return profileButton;
+    }
+    public TextButton getLoadGameButton() {
+        return loadGameButton;
     }
 
 }
