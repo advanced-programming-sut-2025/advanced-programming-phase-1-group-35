@@ -2,9 +2,11 @@ package core.GraphicView.Game;
 
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.ToolsController;
+import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
 import core.GraphicView.GameMenuUI;
 import core.GraphicView.MainMenuUI;
+import core.GraphicView.SignUpUI;
 import core.Model.Game;
 import core.Model.Pair;
 import core.Model.Result;

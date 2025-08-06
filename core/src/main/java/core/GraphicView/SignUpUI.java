@@ -2,6 +2,7 @@ package core.GraphicView;
 
 import core.Controller.GameMenuController;
 import core.Controller.LoginMenuController;
+import core.Model.App;
 import core.Model.GameAssetManager;
 import core.Model.enums.SecurityQuestions;
 import com.StardewValley.Main;
@@ -79,6 +80,7 @@ public class SignUpUI implements Screen {
                 int[] mapTypes = {1,2,3,3};
                 gameController.createNewGame("player2","player3", "player4",mapTypes);
                 gameController.init();
+                App.setCurrentGame(gameController.getGame());
                 System.out.println("game created");
             }
         });

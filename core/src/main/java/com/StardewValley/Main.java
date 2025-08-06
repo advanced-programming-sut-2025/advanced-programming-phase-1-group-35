@@ -1,9 +1,11 @@
 package com.StardewValley;
 
+import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.CraftingController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
 import core.GraphicView.CraftingUI;
+import core.GraphicView.GameMenuUI;
 import core.GraphicView.MainMenuUI;
 import core.GraphicView.SignUpUI;
 import core.Model.App;
@@ -63,15 +65,23 @@ public class Main extends Game {
         game = this;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        game.setScreen(new SignUpUI(new LoginMenuController()));
 
         try {
             App.deserializeApp();
-            if(App.isStayLoggedIn()){
+            // This logic is for automatically continuing a game if the user was logged in.
+            if (App.isStayLoggedIn() && App.getLoggedInUser() != null && App.getCurrentGame() != null) {
+                System.out.println("Continuing saved game for " + App.getLoggedInUser().getUsername());
+                game.setScreen(new GameMenuUI(new GameMenuController(), App.getCurrentGame()));
+            } else if (App.isStayLoggedIn() && App.getLoggedInUser() != null) {
+                System.out.println("Welcome back! Loading Main Menu.");
                 game.setScreen(new MainMenuUI(new MainMenuController()));
+            } else {
+                System.out.println("No user logged in. Loading SignUp/Login screen.");
+                game.setScreen(new SignUpUI(new LoginMenuController()));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Could not load saved data. Starting fresh.");
+            game.setScreen(new SignUpUI(new LoginMenuController()));
         }
 
         handleConnection();

@@ -806,4 +806,8 @@ public class GameMenuController {
         App.getCurrentGame().getMap().getCrops().add(crop);
         Main.getGame().setScreen(gameMenu);
     }
+
+    public Game getGame() {
+        return CurrentGame;
+    }
 }
