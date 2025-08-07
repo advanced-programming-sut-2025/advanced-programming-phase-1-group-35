@@ -1,16 +1,16 @@
 package core.Controller.InGameMenu;
 
-import core.Model.App;
-import core.Model.Game;
-import core.Model.ItemInterface;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import core.Model.*;
 import core.Model.NPCs.NPC;
 import core.Model.NPCs.Quest;
-import core.Model.Result;
 import core.Model.Tools.BackPack;
 import core.Model.Tools.Tool;
 import core.Model.enums.NPCs.NPCs;
 import core.Model.enums.Seasons;
 import core.Model.enums.WeatherCondition;
+
+import java.util.Random;
 
 public class NPCController {
 
@@ -27,13 +27,13 @@ public class NPCController {
 
     public Result meetNPC(String npcName) {
         Game game = App.getCurrentGame();
-        if (game.getNpcs().isEmpty()) {
-            game.getNpcs().add(NPCs.Abigail.createNPC());
-            game.getNpcs().add(NPCs.Sebastian.createNPC());
-            game.getNpcs().add(NPCs.Leah.createNPC());
-            game.getNpcs().add(NPCs.Robin.createNPC());
-            game.getNpcs().add(NPCs.Harvey.createNPC());
-        }
+//        if (game.getNpcs().isEmpty()) {
+//            game.getNpcs().add(NPCs.Abigail.createNPC());
+//            game.getNpcs().add(NPCs.Sebastian.createNPC());
+//            game.getNpcs().add(NPCs.Leah.createNPC());
+//            game.getNpcs().add(NPCs.Robin.createNPC());
+//            game.getNpcs().add(NPCs.Harvey.createNPC());
+//        }
         NPC npc = null;
         for (NPC eachNPC : game.getNpcs()) {
             if (eachNPC.name.equals(npcName)) {
@@ -47,16 +47,19 @@ public class NPCController {
             return new Result(false, "You are not close to the npc");
         }
         npc.friendshipPoint += 20;
-        return new Result(true, generateDialogue(npc.friendshipLevel,
-                game.getGameCalender().getGameDateTime().getHour(),
-                game.getGameCalender().getSeason(), game.getWeather().getWeatherCondition()));
+        return null;
     }
 
-    private String generateDialogue(int friendshipLevel, int hour, Seasons season, WeatherCondition weatherCondition) {
+    public String generateDialogue() {
+        int friendshipLevel = new Random().nextInt(4);
+        int hour = App.getCurrentGame().getGameCalender().getGameDateTime().getHour();
+        Seasons season = App.getCurrentGame().getGameCalender().getSeason();
+        WeatherCondition weather = App.getCurrentGame().getWeather().getWeatherCondition();
+
         return getGreetingDialogue(friendshipLevel) + "\n" +
                 getTimeDialogue(hour) + "\n" +
                 getSeasonDialogue(season) + "\n" +
-                getWeatherDialogue(weatherCondition);
+                getWeatherDialogue(weather);
     }
 
     private String getGreetingDialogue(int friendshipLevel) {

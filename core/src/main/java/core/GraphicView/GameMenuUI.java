@@ -26,10 +26,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.Controller.GameMenuController;
-import core.Controller.InGameMenu.AnimalController;
-import core.Controller.InGameMenu.ArtisanController;
-import core.Controller.InGameMenu.ShopMenuController;
-import core.Controller.InGameMenu.ToolsController;
+import core.Controller.InGameMenu.*;
 import core.GraphicView.Game.GameMenuInputAdapter;
 import core.GraphicView.Game.GameView;
 import core.Model.*;
@@ -47,6 +44,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 public class GameMenuUI implements Screen {
     private GameView gameView;
@@ -122,6 +120,7 @@ public class GameMenuUI implements Screen {
             this.label = label;
         }
     }
+
     private Array<ChatMessage> chatMessages = new Array<>();
     private Table chatTable;
 
@@ -211,6 +210,9 @@ public class GameMenuUI implements Screen {
                             throw new RuntimeException(e);
                         }
                         return true;
+                    case Input.Keys.G:
+                        addChatMessage(new NPCController().generateDialogue(), true);
+                        return true;
                 }
                 return false;
             }
@@ -245,16 +247,20 @@ public class GameMenuUI implements Screen {
         if (reaction instanceof Texture) {
             gameView.showReaction((Texture) reaction);
         } else if (reaction instanceof String) {
-            addChatMessage((String) reaction);
+            addChatMessage((String) reaction, false);
         }
     }
 
-    private void addChatMessage(String message) {
+    public void addChatMessage(String message, boolean isNPC) {
         if (!chatTable.isVisible()) {
             chatTable.setVisible(true);
         }
-        String username = gameModel.getPlayingUser().getUsername();
-        if (message.length() <= 10) {
+        String username;
+        String[] names = {"Sebastian", "Abigail", "Harvey", "Leah", "Robin"};
+        if (isNPC) username = names[new Random().nextInt(names.length)];
+        else username = gameModel.getPlayingUser().getUsername();
+
+        if (message.length() <= 100) {
             Label messageLabel = new Label(username + ": " + message, GameAssetManager.getDefaultSkin());
             messageLabel.setWrap(true);
             chatTable.add(messageLabel).width(280).align(Align.left).pad(5).row();
@@ -313,7 +319,7 @@ public class GameMenuUI implements Screen {
                         break;
                     case "pet":
                         Result petResult = animalController.nazTheAnimal(animal.getName());
-                        if(petResult.isSuccess()) {
+                        if (petResult.isSuccess()) {
                             pettedAnimals.put(animal, 5f);
                         }
                         showDialog("Pet", petResult.toString());
@@ -339,6 +345,7 @@ public class GameMenuUI implements Screen {
                 button("Right", "right");
                 button("Cancel", "cancel");
             }
+
             @Override
             protected void result(Object object) {
                 if ("cancel".equals(object.toString())) return;
@@ -377,6 +384,7 @@ public class GameMenuUI implements Screen {
                 button("Right", "right");
                 button("Cancel", "cancel");
             }
+
             @Override
             protected void result(Object object) {
                 int moveDistance = 5;
@@ -385,11 +393,20 @@ public class GameMenuUI implements Screen {
                 int newY = currentLocation.y;
 
                 switch (object.toString()) {
-                    case "up": newY += moveDistance; break;
-                    case "down": newY -= moveDistance; break;
-                    case "left": newX -= moveDistance; break;
-                    case "right": newX += moveDistance; break;
-                    default: return;
+                    case "up":
+                        newY += moveDistance;
+                        break;
+                    case "down":
+                        newY -= moveDistance;
+                        break;
+                    case "left":
+                        newX -= moveDistance;
+                        break;
+                    case "right":
+                        newX += moveDistance;
+                        break;
+                    default:
+                        return;
                 }
                 Result result = animalController.shepherdAnimal(animal.getName(), newX, newY);
                 showDialog("Shepherd", result.toString());
@@ -406,7 +423,7 @@ public class GameMenuUI implements Screen {
         info.append("House: ").append(type.getConfinement()).append("\n");
         info.append("Days between products: ").append(type.getProductionRate()).append("\n");
         info.append("Possible Products: \n");
-        for(AnimalProduct product : type.getProducts()){
+        for (AnimalProduct product : type.getProducts()) {
             info.append(" - ").append(product.getName()).append("\n");
         }
         showDialog(animal.getName() + " Info", info.toString());
@@ -602,13 +619,13 @@ public class GameMenuUI implements Screen {
         SpriteBatch batch = gameView.getBatch();
         batch.begin();
         Iterator<Map.Entry<Animal, Float>> iterator = pettedAnimals.entrySet().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<Animal, Float> entry = iterator.next();
             Animal animal = entry.getKey();
             float timer = entry.getValue();
 
             timer -= delta;
-            if(timer <= 0) {
+            if (timer <= 0) {
                 iterator.remove();
             } else {
                 pettedAnimals.put(animal, timer);
@@ -640,14 +657,30 @@ public class GameMenuUI implements Screen {
                 String toolName = tool.getName().toLowerCase();
                 Texture currentTexture = null;
                 switch (toolName) {
-                    case "pickaxe": currentTexture = pickaxeTexture; break;
-                    case "axe": currentTexture = axeTexture; break;
-                    case "scythe": currentTexture = scytheTexture; break;
-                    case "shears": currentTexture = shearsTexture; break;
-                    case "watering_can": currentTexture = wateringCanTexture; break;
-                    case "hoe": currentTexture = hoeTexture; break;
-                    case "fishing_rod": currentTexture = fishingRodTexture; break;
-                    case "milk_pail": currentTexture = milkPailTexture; break;
+                    case "pickaxe":
+                        currentTexture = pickaxeTexture;
+                        break;
+                    case "axe":
+                        currentTexture = axeTexture;
+                        break;
+                    case "scythe":
+                        currentTexture = scytheTexture;
+                        break;
+                    case "shears":
+                        currentTexture = shearsTexture;
+                        break;
+                    case "watering_can":
+                        currentTexture = wateringCanTexture;
+                        break;
+                    case "hoe":
+                        currentTexture = hoeTexture;
+                        break;
+                    case "fishing_rod":
+                        currentTexture = fishingRodTexture;
+                        break;
+                    case "milk_pail":
+                        currentTexture = milkPailTexture;
+                        break;
                 }
                 if (currentTexture != null) {
                     ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
@@ -703,7 +736,7 @@ public class GameMenuUI implements Screen {
         milkPailTexture.dispose();
         pickaxeTexture.dispose();
         shearsTexture.dispose();
-        if(heartTexture != null) heartTexture.dispose();
+        if (heartTexture != null) heartTexture.dispose();
         if (stage != null) stage.dispose();
         if (boxStage != null) boxStage.dispose();
         if (barnTexture != null) barnTexture.dispose();
@@ -794,7 +827,7 @@ public class GameMenuUI implements Screen {
     }
 
     public void toggleArtisanUI(Machine machine) {
-        if(artisanUI == null){
+        if (artisanUI == null) {
             artisanUI = new ArtisanUI();
             artisanUI.setController(new ArtisanController());
             artisanUI.getController().setGameMenuUI(this);
@@ -813,13 +846,16 @@ public class GameMenuUI implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     public void goToShopMenu() {
         ShopMenuController shopMenuController = new ShopMenuController(gameModel.getPlayingUser().getCurrentTile());
