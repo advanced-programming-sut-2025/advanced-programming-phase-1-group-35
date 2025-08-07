@@ -4,6 +4,7 @@ import core.Controller.GameMenuController;
 import core.Controller.LoginMenuController;
 import core.Model.App;
 import core.Model.GameAssetManager;
+import core.Model.Result;
 import core.Model.enums.SecurityQuestions;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
@@ -78,10 +79,10 @@ public class SignUpUI implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameMenuController gameController = new GameMenuController();
                 int[] mapTypes = {1,2,3,3};
-                gameController.createNewGame("player2","player3", "player4",mapTypes);
+                Result result = gameController.createNewGame(App.getLoggedInUser().getUsername(),"player2","player3", "player4",mapTypes);
                 gameController.init();
                 App.setCurrentGame(gameController.getGame());
-                System.out.println("game created");
+                System.out.println(result.toString());
             }
         });
         login1Button = new TextButton("Login 1", skin);

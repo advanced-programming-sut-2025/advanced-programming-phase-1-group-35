@@ -34,7 +34,17 @@ public class Map {
             }
         }
         for (int i = 0; i < 4; i++) {
-            farms.add(new Farm(i + 1, owners[i], types[i], tiles));
+            User owner ;
+            int type ;
+            if(i >= owners.length || i >= types.length) {
+                owner = null ;
+                type = 1 ;
+            }
+            else {
+                owner = owners[i];
+                type = types[i];
+            }
+            farms.add(new Farm(i + 1, owner, type, tiles));
             if (owners[i] != null) {
                 owners[i].setCurrentGameFarmIndex(i);
             }

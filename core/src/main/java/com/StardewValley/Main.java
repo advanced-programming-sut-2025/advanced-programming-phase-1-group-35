@@ -28,7 +28,7 @@ public class Main extends Game {
     private static Main game;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
-    public static int TILE_SIZE = 5;
+    public static int TILE_SIZE = 40;
     public static String[] arguments ;
     public static Thread peerThread;
 

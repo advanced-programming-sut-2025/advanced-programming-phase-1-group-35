@@ -33,13 +33,71 @@ public class TrackerConnectionController {
                 return joinLobby(message, user);
             case "leave_lobby":
                 return leaveLobby(message, user);
+            case "update_map_selection":
+                return updateUserMapSelection(message, user);
             case "start_game":
-                return createSuccessResponse("start_game_response", new HashMap<>());
+                return startGame(message, user);
             default:
                 System.err.println("Unknown command received: " + command);
                 return createErrorResponse(command, "Unknown command.");
         }
     }
+
+    private static Message updateUserMapSelection(Message message, User user) {
+        String lobbyId = message.getFromBody("lobby_id");
+        int mapNumber = message.getIntFromBody("map_number");
+
+        Optional<Lobby> lobbyOpt = TrackerApp.findLobbyById(lobbyId);
+        if (lobbyOpt.isEmpty() || user == null) {
+            return createErrorResponse("update_map_response", "Lobby not found or user not logged in.");
+        }
+
+        Lobby lobby = lobbyOpt.get();
+        lobby.updatePlayerMap(user, mapNumber);
+        System.out.println("User '" + user.getUsername() + "' in lobby '" + lobby.getLobbyName() + "' updated map to " + mapNumber);
+
+        broadcastLobbyUpdate(lobby);
+        return createSuccessResponse("update_map_response", new HashMap<>());
+    }
+
+    private static Message startGame(Message message, User user) {
+        String lobbyId = message.getFromBody("lobby_id");
+        Optional<Lobby> lobbyOpt = TrackerApp.findLobbyById(lobbyId);
+
+        if (lobbyOpt.isEmpty() || user == null) {
+            return createErrorResponse("start_game_response", "Lobby not found or user not logged in.");
+        }
+
+        Lobby lobby = lobbyOpt.get();
+        if (!lobby.getHost().equals(user)) {
+            return createErrorResponse("start_game_response", "Only the host can start the game.");
+        }
+
+        lobby.setStatus(Lobby.LobbyStatus.IN_GAME);
+        System.out.println("Host '" + user.getUsername() + "' started game in lobby '" + lobby.getLobbyName() + "'.");
+
+        broadcastLobbyUpdate(lobby);
+        broadcastGameStart(lobby);
+
+        return createSuccessResponse("start_game_response", new HashMap<>());
+    }
+
+    private static void broadcastGameStart(Lobby lobby) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "begin_game");
+        body.put("lobby", lobby);
+        Message updateMessage = new Message(body, Message.Type.command);
+
+        System.out.println("Broadcasting BEGIN GAME for lobby '" + lobby.getLobbyName() + "'.");
+
+        for (PeerConnectionThread connection : new ArrayList<>(TrackerApp.getConnections())) {
+            if (connection.user != null && lobby.getPlayers().contains(connection.user)) {
+                connection.sendMessage(updateMessage);
+            }
+        }
+    }
+
+    // --- Existing Methods (Unchanged) ---
 
     public static Message login(Message message, PeerConnectionThread peerConnectionThread) {
         for (User user : App.users) {
@@ -51,17 +109,12 @@ public class TrackerConnectionController {
             }
         }
 
-        // FIX: Proactively send a lobby list update to the newly logged-in user.
-        // This ensures they see existing lobbies immediately without needing a manual refresh.
         HashMap<String, Object> updateBody = new HashMap<>();
         updateBody.put("command", "lobby_list_update");
         updateBody.put("lobbies", TrackerApp.getLobbies());
         Message updateMessage = new Message(updateBody, Message.Type.command);
         peerConnectionThread.sendMessage(updateMessage);
-        System.out.println("Sent initial lobby list to newly logged-in user: " + peerConnectionThread.user.getUsername());
 
-
-        // Send the standard synchronous response to confirm the login was successful.
         HashMap<String , Object> body = new HashMap<>();
         body.put("command", "login_response");
         body.put("response", "success");
@@ -82,7 +135,6 @@ public class TrackerConnectionController {
     private static Message getLobbies() {
         HashMap<String, Object> body = new HashMap<>();
         body.put("lobbies", TrackerApp.getLobbies());
-        System.out.println("Sending " + TrackerApp.getLobbies().size() + " lobbies to a client.");
         return createSuccessResponse("get_lobbies_response", body);
     }
 
@@ -97,8 +149,6 @@ public class TrackerConnectionController {
 
         Lobby newLobby = new Lobby(lobbyName, host);
         TrackerApp.addLobby(newLobby);
-        System.out.println("User '" + host.getUsername() + "' created lobby '" + lobbyName + "'");
-
         broadcastLobbyListUpdate();
         broadcastLobbyUpdate(newLobby);
 
@@ -125,7 +175,6 @@ public class TrackerConnectionController {
 
         int mapNumber = message.body.containsKey("map_number") ? message.getIntFromBody("map_number") : 1;
         if (lobby.addPlayer(user, mapNumber)) {
-            System.out.println("User '" + user.getUsername() + "' joined lobby '" + lobby.getLobbyName() + "'");
             broadcastLobbyUpdate(lobby);
             broadcastLobbyListUpdate();
             HashMap<String, Object> body = new HashMap<>();
@@ -149,10 +198,8 @@ public class TrackerConnectionController {
 
         Lobby lobby = lobbyOpt.get();
         lobby.removePlayer(user);
-        System.out.println("User '" + user.getUsername() + "' left lobby '" + lobby.getLobbyName() + "'");
 
         if (lobby.getPlayers().isEmpty()) {
-            System.out.println("Lobby '" + lobby.getLobbyName() + "' is now empty and has been removed.");
             TrackerApp.removeLobby(lobby);
             broadcastLobbyListUpdate();
         } else {
@@ -168,7 +215,6 @@ public class TrackerConnectionController {
         body.put("lobbies", TrackerApp.getLobbies());
         Message updateMessage = new Message(body, Message.Type.command);
 
-        System.out.println("Broadcasting full lobby list update to all clients.");
         for (PeerConnectionThread connection : new ArrayList<>(TrackerApp.getConnections())) {
             connection.sendMessage(updateMessage);
         }
@@ -181,7 +227,6 @@ public class TrackerConnectionController {
         Message updateMessage = new Message(body, Message.Type.command);
 
         List<User> playersInLobby = lobby.getPlayers();
-        System.out.println("Broadcasting state of lobby '" + lobby.getLobbyName() + "' to " + playersInLobby.size() + " players.");
 
         for (PeerConnectionThread connection : new ArrayList<>(TrackerApp.getConnections())) {
             if (connection.user != null && playersInLobby.contains(connection.user)) {

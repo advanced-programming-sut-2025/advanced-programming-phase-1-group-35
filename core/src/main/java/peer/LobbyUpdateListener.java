@@ -18,8 +18,14 @@ public interface LobbyUpdateListener {
 
     /**
      * Called when the state of a specific lobby has changed.
-     * (e.g., a player joined or left).
+     * (e.g., a player joined, left, or changed their map).
      * @param lobby The updated Lobby object.
      */
     void onLobbyStateUpdated(Lobby lobby);
+
+    /**
+     * FIX: Called when the tracker issues the command to start the game.
+     * @param finalLobbyState The final, locked-in state of the lobby.
+     */
+    void onGameStarting(Lobby finalLobbyState);
 }
