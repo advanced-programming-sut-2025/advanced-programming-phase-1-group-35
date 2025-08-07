@@ -15,7 +15,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -154,11 +158,12 @@ public class GameMenuUI implements Screen {
 
         Table chatContainer = new Table();
         chatContainer.setFillParent(true);
-        chatContainer.right();
+        chatContainer.right().bottom();
         chatContainer.pad(10);
         chatTable = new Table();
         chatTable.setBackground(GameAssetManager.getDefaultSkin().getDrawable("window"));
-        chatContainer.add(chatTable).width(400).height(600);
+        chatTable.setVisible(false);
+        chatContainer.add(chatTable).width(500).height(300);
         boxStage.addActor(chatContainer);
 
         mainMultiplexer = new InputMultiplexer();
@@ -245,11 +250,16 @@ public class GameMenuUI implements Screen {
     }
 
     private void addChatMessage(String message) {
+        if (!chatTable.isVisible()) {
+            chatTable.setVisible(true);
+        }
         String username = gameModel.getPlayingUser().getUsername();
-        Label messageLabel = new Label(username + ": " + message, GameAssetManager.getDefaultSkin());
-        messageLabel.setWrap(true);
-        chatTable.add(messageLabel).width(280).align(Align.left).pad(5).row();
-        chatMessages.add(new ChatMessage(message, 5f, messageLabel));
+        if (message.length() <= 10) {
+            Label messageLabel = new Label(username + ": " + message, GameAssetManager.getDefaultSkin());
+            messageLabel.setWrap(true);
+            chatTable.add(messageLabel).width(280).align(Align.left).pad(5).row();
+            chatMessages.add(new ChatMessage(message, 5f, messageLabel));
+        }
     }
 
     private void showBuildingSelectionDialog() {
@@ -463,6 +473,10 @@ public class GameMenuUI implements Screen {
                 message.label.remove();
                 chatMessages.removeIndex(i);
             }
+        }
+
+        if (chatMessages.isEmpty() && chatTable.isVisible()) {
+            chatTable.setVisible(false);
         }
 
         gameModel.update(delta);

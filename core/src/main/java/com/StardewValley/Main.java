@@ -65,23 +65,18 @@ public class Main extends Game {
         game = this;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
+        game.setScreen(new SignUpUI(new LoginMenuController()));
 
         try {
             App.deserializeApp();
-            // This logic is for automatically continuing a game if the user was logged in.
-            if (App.isStayLoggedIn() && App.getLoggedInUser() != null && App.getCurrentGame() != null) {
-                System.out.println("Continuing saved game for " + App.getLoggedInUser().getUsername());
-                game.setScreen(new GameMenuUI(new GameMenuController(), App.getCurrentGame()));
-            } else if (App.isStayLoggedIn() && App.getLoggedInUser() != null) {
-                System.out.println("Welcome back! Loading Main Menu.");
+            if(App.isStayLoggedIn()){
                 game.setScreen(new MainMenuUI(new MainMenuController()));
             } else {
                 System.out.println("No user logged in. Loading SignUp/Login screen.");
                 game.setScreen(new SignUpUI(new LoginMenuController()));
             }
         } catch (IOException e) {
-            System.err.println("Could not load saved data. Starting fresh.");
-            game.setScreen(new SignUpUI(new LoginMenuController()));
+            throw new RuntimeException(e);
         }
 
         handleConnection();
