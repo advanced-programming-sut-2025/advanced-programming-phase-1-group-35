@@ -14,10 +14,11 @@ import core.Model.enums.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import core.Model.enums.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class User {
+public class User implements Serializable {
     private int ID ;
     private static int IDCounter = 1;
     private String username;
