@@ -47,6 +47,7 @@ public class UserTypeAdapter extends TypeAdapter<User> {
         }
 
         out.beginObject();
+        out.name("ID").value(user.getID());
         out.name("username").value(user.getUsername());
         out.name("password").value(user.getPassword());
         out.name("nickname").value(user.getNickname());
@@ -86,7 +87,7 @@ public class UserTypeAdapter extends TypeAdapter<User> {
         }
 
         in.beginObject();
-
+        int ID = 0;
         String username = null;
         String password = null;
         String nickname = null;
@@ -100,6 +101,9 @@ public class UserTypeAdapter extends TypeAdapter<User> {
         while (in.hasNext()) {
             String fieldName = in.nextName();
             switch (fieldName) {
+                case "ID":
+                    ID = in.nextInt();
+                    break;
                 case "username":
                     username = in.nextString();
                     break;
@@ -149,7 +153,7 @@ public class UserTypeAdapter extends TypeAdapter<User> {
             throw new IOException("Required user fields are missing");
         }
 
-        User user = new User(username, password, nickname, email, gender, securityQuestion, securityAnswer);
+        User user = new User(username, password, nickname, email, gender, securityQuestion, securityAnswer, ID);
         user.setHighScore(highScore);
         user.setGamesPlayed(gamesPlayed);
 

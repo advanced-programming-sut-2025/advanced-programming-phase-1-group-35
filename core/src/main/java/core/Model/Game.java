@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Game {
     private int gameID;
-    private int IDCounter = 1;
+    private static int IDCounter = 1;
     private ArrayList<User> players = new ArrayList<>();
     private User playingUser;
     private GameCalender gameCalender = new GameCalender();

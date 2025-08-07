@@ -100,4 +100,24 @@ public class App {
         }
         return null;
     }
+
+    public static User findUserByID(int id) {
+        if (users == null || id < 0) return null;
+        for (User user : users) {
+            if (user.getID() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static Game findGameByID(int id) {
+        if (games == null || id < 0) return null;
+        for (Game game : games) {
+            if(game.getGameID() == id) {
+                return game;
+            }
+        }
+        return null;
+    }
 }

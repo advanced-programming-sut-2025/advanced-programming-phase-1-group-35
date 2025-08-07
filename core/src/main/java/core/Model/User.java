@@ -34,13 +34,15 @@ public class User {
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 
-    private Game currentGame = null;
+    private int currentGame = 0;
     private int currentGameFarmIndex = -1;
-    private int currentGameID = 0;
-    private Tile currentTile = null;
+    private Pair<Integer, Integer> currentTile = null;
+    private ArrayList<Gift> Gifts = new ArrayList<>();
+    private ArrayList<Trade> trades = new ArrayList<>();
+    private ArrayList<Message> messages = new ArrayList<>();
+
     private Pair<Float, Float> currentPoint = new Pair<>(10f, 10f);
     private char symbol;
-    private Map map;
     private SkillLevel farmingSkill = Skill.farming.getSkillLevel();
     private SkillLevel miningSkill = Skill.mining.getSkillLevel();
     private SkillLevel foragingSkill = Skill.foraging.getSkillLevel();
@@ -48,14 +50,11 @@ public class User {
     public BackPack backPack = new BackPack();
     private HashMap<Integer , Integer> friendshipXPs = new HashMap<>();
     private ArrayList<Integer> lvl3FriendsID = new ArrayList<>();
-    private ArrayList<Message> messages = new ArrayList<>();
     private boolean hasNewMessages = false;
     private boolean hasNewGift = false;
     private boolean hasNewTradeRequest = false;
-    private User spouse = null;
-    private User askedMarriage = null;
-    private ArrayList<Gift> Gifts = new ArrayList<>();
-    private ArrayList<Trade> trades = new ArrayList<>();
+    private String spouse = null;
+    private String askedMarriage = null;
     private HashMap<NPC, Integer> npcFriendship = new HashMap<>();
     protected Tool currentTool;
     private Energy energy = new Energy();
@@ -66,7 +65,6 @@ public class User {
     private int movingDirection = 0;
     private float speed = 20f;
     float vx , vy ;
-    public OrthographicCamera camera ;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -80,6 +78,21 @@ public class User {
         this.ID = IDCounter++;
         this.learnedRecipes = new ArrayList<>();
     }
+
+    public User(String username, String password, String nickname, String email,
+                Gender gender , SecurityQuestions securityQuestion , String securityAnswer,
+                int ID ) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.gender = gender;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
+        this.ID = ID ;
+        this.learnedRecipes = new ArrayList<>();
+    }
+
     public User(String username, String password){
         this.username = username;
         this.password = password;
@@ -112,69 +125,6 @@ public class User {
     public void setBackPack(BackPack backPack) {
         this.backPack = backPack;
     }
-
-    public Cabin getCabin() {
-        return cabin;
-    }
-
-    public void setCabin(Cabin cabin) {
-        this.cabin = cabin;
-    }
-
-    public ArrayList<CookingRecipes> getLearnedRecipes() {
-        return learnedRecipes;
-    }
-
-    public void setLearnedRecipes(ArrayList<CookingRecipes> learnedRecipes) {
-        this.learnedRecipes = learnedRecipes;
-    }
-
-    public void talk (User user){
-
-    }
-    public void talkHistory(User user){
-
-    }
-    public Result gift (User user , ItemInterface itemInterface){
-        return null;
-    }
-    public Result RateGift(Gift gift){
-        return null;
-    }
-    public void showGiftList(User user){
-
-    }
-    public Result hug(User user){
-        return null;
-    }
-    public Result flower(User user){
-        return null;
-    }
-    public Result askMarriage(User user){
-        return null;
-    }
-    public Result respondToMarriageRequest(User user){
-        return null;
-    }
-    public Result trade(User user , String type , ItemInterface itemInterface, int amount , int price , ItemInterface itemInterface2){
-        return null;
-    }
-    public Result meetNPC(NPC npc){
-        return null;
-    }
-    public Result giftNPC(NPC npc){
-        return null;
-    }
-    public void npcFriendshipList(){
-
-    }
-    public void questList(){
-
-    }
-    public Result completeQuest(Quest quest){
-        return null;
-    }
-
 
     public String getUsername() {
         return username;
@@ -265,21 +215,19 @@ public class User {
     }
 
     public Game getCurrentGame() {
-        return currentGame;
+        return App.findGameByID(currentGame);
     }
 
     public void setCurrentGame(Game currentGame) {
-        this.currentGame = currentGame;
-        currentGameID = 0;
-        if(currentGame != null)currentGameID = currentGame.getGameID();
+        this.currentGame = currentGame.getGameID();
     }
 
     public Tile getCurrentTile() {
-        return currentTile;
+        return App.getCurrentGame().getMap().getTiles()[currentTile.first][currentTile.second];
     }
 
     public void setCurrentTile(Tile currentTile) {
-        this.currentTile = currentTile;
+        this.currentTile = new Pair<>(currentTile.coordination.x, currentTile.coordination.y);
     }
 
     public Energy getEnergy() {
@@ -346,14 +294,6 @@ public class User {
         this.ID = ID;
     }
 
-    public int getCurrentGameID() {
-        return currentGameID;
-    }
-
-    public void setCurrentGameID(int currentGameID) {
-        this.currentGameID = currentGameID;
-    }
-
     public Pair<Float, Float> getCurrentPoint() {
         return currentPoint;
     }
@@ -363,7 +303,7 @@ public class User {
     }
 
     public Farm getFarm(){
-        if(currentGame == null) return null;
+        if(App.findGameByID(currentGame) == null) return null;
         if(App.getCurrentGame() == null) return null;
         for (Farm farm1 : App.getCurrentGame().getMap().getFarms()) {
             if(farm1.getOwner().equals(this)) return farm1;
@@ -452,19 +392,19 @@ public class User {
     }
 
     public User getSpouse() {
-        return spouse;
+        return App.findUserByUsername(spouse);
     }
 
     public void setSpouse(User spouse) {
-        this.spouse = spouse;
+        this.spouse = spouse.getUsername();
     }
 
     public User getAskedMarriage() {
-        return askedMarriage;
+        return App.findUserByUsername(askedMarriage);
     }
 
     public void setAskedMarriage(User askedMarriage) {
-        this.askedMarriage = askedMarriage;
+        this.askedMarriage = askedMarriage.getUsername();
     }
 
     public void setSelectedSlot(int selectedSlot) {
@@ -509,8 +449,8 @@ public class User {
         int newY = (int) (currentPoint.second + dy);
 
         if (newX < 0 || newX >= tiles.length || newY < 0 || newY >= tiles[0].length) return false;
-        currentTile = tiles[newX][newY];
-        if (currentTile.isWalkable() && (currentTile.getOwner() == null || currentTile.getOwner().equals(this)) ) {
+        setCurrentTile(tiles[newX][newY]);
+        if (getCurrentTile().isWalkable() && (getCurrentTile().getOwner() == null || getCurrentTile().getOwner().equals(this)) ) {
             currentPoint.first += dx;
             currentPoint.second += dy;
             return true;
