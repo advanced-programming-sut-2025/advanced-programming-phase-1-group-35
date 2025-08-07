@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "ID": "1",
+      "ID": 1,
       "username": "player1",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
@@ -14,7 +14,7 @@
       "gamesPlayed": 0
     },
     {
-      "ID": "2",
+      "ID": 2,
       "username": "player2",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
@@ -27,7 +27,7 @@
       "gamesPlayed": 0
     },
     {
-      "ID": "3",
+      "ID": 3,
       "username": "player3",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
@@ -40,7 +40,7 @@
       "gamesPlayed": 0
     },
     {
-      "ID": "4",
+      "ID": 4,
       "username": "player4",
       "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
       "nickname": "mahdi",
@@ -53,7 +53,7 @@
       "gamesPlayed": 0
     },
     {
-      "ID": "5",
+      "ID": 5,
       "username": "Hosein",
       "password": "c4318372f98f4c46ed3a32c16ee4d7a76c832886d887631c0294b3314f34edf1",
       "nickname": "Hosein",
@@ -66,7 +66,7 @@
       "gamesPlayed": 0
     },
     {
-      "ID": "6",
+      "ID": 6,
       "username": "Mahdi",
       "password": "c4318372f98f4c46ed3a32c16ee4d7a76c832886d887631c0294b3314f34edf1",
       "nickname": "Mahdi",
@@ -80,8 +80,8 @@
     }
   ],
   "loggedInUser": {
-    "ID": "1",
-    "username": "player1",
+    "ID": 2,
+    "username": "player2",
     "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
     "nickname": "mahdi",
     "email": "mahdi@gmail.com",
