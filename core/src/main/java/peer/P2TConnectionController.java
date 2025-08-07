@@ -1,7 +1,9 @@
 package peer;
 
+import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import common.models.Message;
+import core.GraphicView.GameMenuUI;
 import core.Model.App;
 import core.Model.Lobby;
 import core.Model.User;
@@ -68,6 +70,9 @@ public class P2TConnectionController {
             case "lobby_state_update":
                 handleLobbyStateUpdate(message);
                 return null; // No response needed for a broadcast
+            case "start_Vote":
+                notifyVoting(message);
+                return null;
             default:
                 System.out.println("Unknown command from tracker: " + command);
                 return null;
@@ -152,6 +157,12 @@ public class P2TConnectionController {
         System.out.println("Client received state update for lobby: " + lobby.getLobbyName());
         for (LobbyUpdateListener listener : new ArrayList<>(listeners)) {
             Gdx.app.postRunnable(() -> listener.onLobbyStateUpdated(lobby));
+        }
+    }
+    public static void notifyVoting(Message message) {
+        String text = "voting for " + message.getFromBody("user") + " was started";
+        if(Main.getGame().getScreen().getClass().equals(GameMenuUI.class)){
+            ((GameMenuUI)Main.getGame().getScreen()).gameController.showNotification(text);
         }
     }
 

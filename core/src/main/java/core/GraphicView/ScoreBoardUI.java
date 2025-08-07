@@ -53,6 +53,8 @@ public class ScoreBoardUI implements Screen {
         table.add(new Label("Foraging\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
         table.add(new Label("Fishing\nSkill", GameAssetManager.getDefaultSkin())).pad(10);
         table.add(new Label("Games Played", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Money", GameAssetManager.getDefaultSkin())).pad(10);
+        table.add(new Label("Missions", GameAssetManager.getDefaultSkin())).pad(10);
         // Scrollable list of users
         scrollPane = new ScrollPane(new Table(), GameAssetManager.getDefaultSkin());
         scrollPane.setFadeScrollBars(false);
@@ -76,6 +78,8 @@ public class ScoreBoardUI implements Screen {
             content.add(new Label(user.getForagingSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
             content.add(new Label(user.getFishingSkill().toString(), GameAssetManager.getDefaultSkin())).pad(10);
             content.add(new Label(user.getGamesPlayed()+"", GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label(user.getMoney()+"", GameAssetManager.getDefaultSkin())).pad(10);
+            content.add(new Label("0", GameAssetManager.getDefaultSkin())).pad(10);
 //            content.add(new Label(user.get))
 
         }

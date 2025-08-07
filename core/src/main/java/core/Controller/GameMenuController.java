@@ -777,7 +777,13 @@ public class GameMenuController {
         }
         return null;
     }
-
+    public SerializableMap getSerializableMap() {
+        if (App.getCurrentGame() == null || App.getCurrentGame().getMap() == null) {
+            System.err.println("Current game or map is null, cannot serialize map.");
+            return null;
+        }
+        return new SerializableMap(App.getCurrentGame().getMap());
+    }
     public boolean isCloseToObject(String objectName) {
         Game game = App.getCurrentGame();
         User player = game.getPlayingUser();
