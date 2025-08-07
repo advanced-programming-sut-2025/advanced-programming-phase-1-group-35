@@ -204,6 +204,7 @@ public class GameMenuController {
             if (isUserInOtherGame(user)) return new Result(false, playerName + "is already in a game");
             players.add(user);
         }
+        System.out.println(players);
         Game game = new Game(players, App.getLoggedInUser());
         App.games.add(game);
         App.setCurrentGame(game);
