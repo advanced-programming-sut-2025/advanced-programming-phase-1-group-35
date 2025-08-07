@@ -1,6 +1,7 @@
 package core.GraphicView.Game;
 
 import core.Controller.GameMenuController;
+import core.Controller.InGameMenu.NPCController;
 import core.Controller.InGameMenu.ToolsController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
