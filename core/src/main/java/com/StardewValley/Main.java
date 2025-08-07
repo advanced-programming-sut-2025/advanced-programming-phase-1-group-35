@@ -1,9 +1,11 @@
 package com.StardewValley;
 
+import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.CraftingController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
 import core.GraphicView.CraftingUI;
+import core.GraphicView.GameMenuUI;
 import core.GraphicView.MainMenuUI;
 import core.GraphicView.SignUpUI;
 import core.Model.App;
@@ -26,7 +28,7 @@ public class Main extends Game {
     private static Main game;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
-    public static int TILE_SIZE = 5;
+    public static int TILE_SIZE = 40;
     public static String[] arguments ;
     public static Thread peerThread;
 
@@ -69,6 +71,9 @@ public class Main extends Game {
             App.deserializeApp();
             if(App.isStayLoggedIn()){
                 game.setScreen(new MainMenuUI(new MainMenuController()));
+            } else {
+                System.out.println("No user logged in. Loading SignUp/Login screen.");
+                game.setScreen(new SignUpUI(new LoginMenuController()));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

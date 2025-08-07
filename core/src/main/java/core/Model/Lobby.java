@@ -62,6 +62,18 @@ public class Lobby implements Serializable {
     }
 
     /**
+     * FIX: Updates an existing player's map selection.
+     * @param player The player to update.
+     * @param mapNumber The new map number.
+     */
+    public void updatePlayerMap(User player, int mapNumber) {
+        int index = players.indexOf(player);
+        if (index != -1 && mapNumber >= 1 && mapNumber <= 3) {
+            mapNumbers.set(index, mapNumber);
+        }
+    }
+
+    /**
      * Removes a player from the lobby. If the host leaves, a new host is assigned.
      * @param player The user to remove.
      */

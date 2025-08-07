@@ -70,12 +70,31 @@ public class P2TConnectionController {
             case "lobby_state_update":
                 handleLobbyStateUpdate(message);
                 return null; // No response needed for a broadcast
+            case "begin_game":
+                handleGameStart(message);
+                return null;
             case "start_Vote":
                 notifyVoting(message);
                 return null;
             default:
                 System.out.println("Unknown command from tracker: " + command);
                 return null;
+        }
+    }
+
+    private static void handleGameStart(Message message) {
+        Map<String, Object> lobbyMap = message.getFromBody("lobby");
+        Lobby finalLobby = lobbyFromMap(lobbyMap);
+
+        if (finalLobby == null) {
+            System.err.println("Received a null or invalid lobby for game start.");
+            return;
+        }
+
+        System.out.println("Client received BEGIN_GAME command for lobby: " + finalLobby.getLobbyName());
+        for (LobbyUpdateListener listener : new ArrayList<>(listeners)) {
+            // The UI's onGameStarting method already uses postRunnable
+            listener.onGameStarting(finalLobby);
         }
     }
 

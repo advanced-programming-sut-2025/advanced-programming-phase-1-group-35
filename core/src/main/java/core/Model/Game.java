@@ -29,7 +29,11 @@ public class Game {
         this.weather.setWeatherCondition(WeatherCondition.sunny);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(playingUser.getCurrentPoint().first, playingUser.getCurrentPoint().second, 0);
+
+        // *** FIX: Initialize camera position with world coordinates, not tile coordinates ***
+        Pair<Float, Float> playerPos = playingUser.getCurrentPoint();
+        camera.position.set(playerPos.first * Main.TILE_SIZE, playerPos.second * Main.TILE_SIZE, 0);
+
         npcController = new NPCController();
     }
 

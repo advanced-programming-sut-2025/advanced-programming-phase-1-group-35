@@ -1,8 +1,13 @@
 package core.GraphicView.Game;
 
 import core.Controller.GameMenuController;
+import core.Controller.InGameMenu.NPCController;
 import core.Controller.InGameMenu.ToolsController;
+import core.Controller.LoginMenuController;
+import core.Controller.MainMenuController;
 import core.GraphicView.GameMenuUI;
+import core.GraphicView.MainMenuUI;
+import core.GraphicView.SignUpUI;
 import core.Model.Game;
 import core.Model.Pair;
 import core.Model.Result;
@@ -14,7 +19,7 @@ import core.GraphicView.GameMenuUI;
 import core.Model.Game;
 import core.Model.Pair;
 import core.Model.Result;
-import core.Model.User;
+import core.Model.App;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,17 +56,17 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
-        if(keycode == Input.Keys.N){
+        if (keycode == Input.Keys.N) {
             try {
                 gameController.goToNextTurn(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        if(keycode == Input.Keys.P){
+        if (keycode == Input.Keys.P) {
             gameMenuUI.goToShopMenu();
         }
-        if(keycode == Input.Keys.I){
+        if (keycode == Input.Keys.I) {
             gameMenuUI.goToFriendsMenu();
         }
 
@@ -75,8 +80,18 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
-        if(keycode == Input.Keys.T){
+        if (keycode == Input.Keys.T) {
             return true;
+        }
+
+        if (keycode == Input.Keys.X) {
+            try {
+                App.serializeApp();
+                System.out.println("Game Saved!");
+                Main.getGame().setScreen(new MainMenuUI(new MainMenuController()));
+            } catch (IOException e) {
+                System.err.println("Error saving game: " + e.getMessage());
+            }
         }
 
         return true;
@@ -127,8 +142,8 @@ public class GameMenuInputAdapter extends InputAdapter {
         int direction = calculateDirection(playerTileX, playerTileY, targetTileX, targetTileY);
 
         if (direction != 0) {
-            Result result =  artisanController.clickedMachine(direction,gameMenuUI);
-            if(!result.isSuccess()) result = toolsController.useTool(direction);
+            Result result = artisanController.clickedMachine(direction, gameMenuUI);
+            if (!result.isSuccess()) result = toolsController.useTool(direction);
 
             if (result != null) {
                 gameMenuUI.showDialog("Tool Used", result.toString());

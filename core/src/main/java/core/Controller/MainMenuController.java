@@ -1,9 +1,7 @@
 package core.Controller;
 
-import core.GraphicView.LoginUI;
-import core.GraphicView.MainMenuUI;
-import core.GraphicView.PregameMenuUI;
-import core.GraphicView.ProfileMenuUI;
+import core.GraphicView.*;
+import core.GraphicView.Game.GameView;
 import core.Model.App;
 import core.Model.enums.Menu;
 import core.Model.Result;
@@ -59,5 +57,14 @@ public class MainMenuController extends Controller {
         }
         App.serializeApp();
         System.exit(0);
+    }
+
+    public void loadGame() {
+        if (!view.getLoadGameButton().isChecked()) return;
+        if (App.getCurrentGame() != null) {
+            Main.getGame().setScreen(new GameMenuUI(new GameMenuController(), App.getCurrentGame()));
+        } else {
+            System.out.println("No saved game found to load.");
+        }
     }
 }

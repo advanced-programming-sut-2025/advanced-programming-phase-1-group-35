@@ -197,15 +197,16 @@ public class GameMenuController {
         App.setCurrentMenu(Menu.ExitMenu);
     }
 
-    public Result createNewGame(String username1, String username2, String username3, int[] mapNumbers) {
+    public Result createNewGame(String username0 ,String username1, String username2, String username3, int[] mapNumbers) {
         LoginMenuController loginMenuController = new LoginMenuController();
         ArrayList<String> playerNames = new ArrayList<>();
         ArrayList<User> players = new ArrayList<>();
+        User host = loginMenuController.getUser(username0);
+        players.add(host);
+
         if (username1 != null) playerNames.add(username1);
         if (username2 != null) playerNames.add(username2);
         if (username3 != null) playerNames.add(username3);
-        players.add(App.getLoggedInUser());
-        if (playerNames.isEmpty()) return new Result(false, "You have to choose at least one player");
         for (String playerName : playerNames) {
             User user = loginMenuController.getUser(playerName);
             if (user == null) return new Result(false, playerName + "does not exist");
@@ -213,7 +214,8 @@ public class GameMenuController {
             if (isUserInOtherGame(user)) return new Result(false, playerName + "is already in a game");
             players.add(user);
         }
-        Game game = new Game(players, App.getLoggedInUser());
+
+        Game game = new Game(players, host);
         App.games.add(game);
         App.setCurrentGame(game);
         game.npcController.init();
@@ -221,6 +223,11 @@ public class GameMenuController {
         setFarmingController();
         for (User player : players) {
             player.setCurrentGame(game);
+        }
+        System.out.println("players:" + players);
+        System.out.println("mapNumbers:" );
+        for (int mapNumber : mapNumbers) {
+            System.out.println(mapNumber);
         }
         chooseMap(mapNumbers);
         return new Result(true, "You have created a new game . now redirecting to the game .");
@@ -849,5 +856,9 @@ public class GameMenuController {
 
 
         Main.getGame().setScreen(gameMenu);
+    }
+
+    public Game getGame() {
+        return CurrentGame;
     }
 }
