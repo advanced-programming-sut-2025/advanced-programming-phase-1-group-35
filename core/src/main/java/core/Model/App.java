@@ -100,4 +100,13 @@ public class App {
         }
         return null;
     }
+    // In App.java
+    public static User findUserByID(int id) {
+        for (User user : users) {
+            if (user.getID() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

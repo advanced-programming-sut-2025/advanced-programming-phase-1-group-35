@@ -205,9 +205,6 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
-                    case Input.Keys.G:
-                        gameController.showNotification("notification test!");
-                        return true;
                     case Input.Keys.R:
                         Main.getGame().setScreen(reactionUI);
                         return true;

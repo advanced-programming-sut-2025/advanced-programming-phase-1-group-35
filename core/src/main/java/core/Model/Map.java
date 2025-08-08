@@ -1,5 +1,6 @@
 package core.Model;
 
+import core.Controller.Controller;
 import core.Model.Buildings.Building;
 import core.Model.CropClasses.Crop;
 import core.Model.CropClasses.Tree;
@@ -7,6 +8,7 @@ import core.Model.FarmStuff.Farm;
 import core.Model.FarmStuff.Foraging;
 import core.Model.FarmStuff.Rock;
 import core.Model.Shops.Shop;
+import core.Model.enums.Crops.PlantAble;
 import core.Model.enums.Shops.ShopEnum;
 import core.Model.enums.TileType;
 
@@ -78,6 +80,49 @@ public class Map {
 //            }
 //            System.out.println();
 //        }
+    }
+    public void reconstructFromSerializableMap(SerializableMap serialMap) {
+        SerializableTile[][] serialTiles = serialMap.tiles;
+        int width = serialTiles.length;
+        int height = serialTiles[0].length;
+
+        this.tiles = new Tile[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                SerializableTile sTile = serialTiles[i][j];
+                Tile tile = new Tile(sTile.coordination);
+                tile.setOwnerID(sTile.ownerID);
+                tile.setTileType(sTile.tileType);
+                tile.setSymbol(sTile.symbol);
+                tile.setContentSymbol(sTile.contentSymbol);
+                tile.setWalkable(sTile.isWalkable);
+                tile.setPlowed(sTile.isPlowed);
+                tile.setFertilized(sTile.isFertilized);
+                tile.setWatered(sTile.isWatered);
+
+                // Restore planted item if present
+                if (sTile.plantedItemName != null) {
+                    PlantAble planted = PlantAble.getPlantAbleByName(sTile.plantedItemName,tile);
+                    tile.setPlanted(planted);
+                }
+
+                // Restore item contents
+                if (sTile.contentsMap != null) {
+                    ArrayList<ItemInterface> items = new ArrayList<>();
+                    for (String itemName : sTile.contentsMap.keySet()) {
+                        String className = sTile.contentsMap.get(itemName);
+                        ItemInterface item = Controller.createItem(itemName); // You must implement this method
+                        if (item != null) {
+                            items.add(item);
+                        }
+                    }
+                    tile.setContents(items);
+                }
+
+                this.tiles[i][j] = tile;
+            }
+        }
     }
 
     public ArrayList<Machine> getMachines() {

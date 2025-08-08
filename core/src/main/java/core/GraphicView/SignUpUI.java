@@ -79,7 +79,8 @@ public class SignUpUI implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameMenuController gameController = new GameMenuController();
                 int[] mapTypes = {1,2,3,3};
-                Result result = gameController.createNewGame(App.getLoggedInUser().getUsername(),"player2","player3", "player4",mapTypes);
+                Result result = null;
+                    result = gameController.createNewGame(App.getLoggedInUser().getUsername(), "player2", "player3", "player4", mapTypes);
                 gameController.init();
                 App.setCurrentGame(gameController.getGame());
                 System.out.println(result.toString());

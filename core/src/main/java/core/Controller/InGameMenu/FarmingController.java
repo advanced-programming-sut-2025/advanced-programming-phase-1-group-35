@@ -385,7 +385,8 @@ public class FarmingController {
                     tile.setSymbol(tree.getSymbol());
                     tile.addContents(tree);
                     tree.setTile(tile);
-                    System.out.println("tree spawned at " + tile.getCoordination().x + " " + tile.getCoordination().y);
+                    tree.setCurrentState(4);
+//                    System.out.println("tree spawned at " + tile.getCoordination().x + " " + tile.getCoordination().y);
                 }
             }
         }

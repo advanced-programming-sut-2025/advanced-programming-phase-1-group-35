@@ -1,9 +1,15 @@
 package core.Model;
 
+import core.Model.CropClasses.Crop;
+import core.Model.CropClasses.Tree;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SerializableMap implements Serializable {
     public SerializableTile[][] tiles;
+    public ArrayList<SerializableCrop> crops = new ArrayList<>();
+    public ArrayList<SerializableTree> trees = new ArrayList<>();
     // Add other simple map-wide properties here if needed later (e.g., map dimensions, global weather state)
 
     public SerializableMap(Map map) {
@@ -16,6 +22,12 @@ public class SerializableMap implements Serializable {
             for (int j = 0; j < height; j++) {
                 this.tiles[i][j] = new SerializableTile(originalTiles[i][j]);
             }
+        }
+        for(Crop crop : map.getCrops()) {
+            crops.add(new SerializableCrop(crop));
+        }
+        for (Tree tree : map.getTrees()) {
+            trees.add(new SerializableTree(tree));
         }
     }
 

@@ -37,7 +37,7 @@ public class TrackerConnectionController {
                 return updateUserMapSelection(message, user);
             case "start_game":
                 return startGame(message, user);
-                return createSuccessResponse("start_game_response", new HashMap<>());
+//                return createSuccessResponse("start_game_response", new HashMap<>());
             case "start_Vote":
                 return NotifyVoting(message.getFromBody("user"));
             default:

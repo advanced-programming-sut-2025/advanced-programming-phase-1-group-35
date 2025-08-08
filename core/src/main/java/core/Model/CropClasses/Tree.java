@@ -41,7 +41,20 @@ public class Tree implements PlantAble,ItemInterface {
         this.fertilizer = null;
         this.isChopped = false;
     }
-
+    public Tree(TreeEnum Tree,Tile tile){
+        this.name = Tree.getName();
+        this.source = Tree.getSource();
+        this.stages = Tree.getStages();
+        this.totalHarvestTime = Tree.getTotalHarvestTime();
+        this.fruit = Tree.getFruit();
+        this.seasons = Tree.getSeasons();
+        this.daysSinceLastGrowth = 0;
+        this.currentState = 1;
+        this.fertilized = false;
+        this.fertilizer = null;
+        this.isChopped = false;
+        this.tile = tile;
+    }
     public boolean isChopped() {
         return isChopped;
     }

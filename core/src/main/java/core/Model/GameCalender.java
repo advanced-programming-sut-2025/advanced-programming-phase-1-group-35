@@ -21,7 +21,7 @@ import java.util.Random;
 public class GameCalender {
     private LocalDateTime gameDateTime;
     private Seasons season;
-    private int dayPassedFromSeason;
+    public int dayPassedFromSeason;
 
     public GameCalender() {
         this.gameDateTime = LocalDateTime.of(2025, 1, 1, 9, 0);
@@ -269,5 +269,7 @@ public class GameCalender {
         return new Result(true, "it is " + formattedDate);
     }
 
-
+    public int getDayPassedFromSeason() {
+        return dayPassedFromSeason;
+    }
 }

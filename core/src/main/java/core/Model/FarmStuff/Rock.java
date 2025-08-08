@@ -1,12 +1,13 @@
 package core.Model.FarmStuff;
 
 import core.Model.Item;
+import core.Model.ItemInterface;
 import core.Model.Tile;
 import core.Model.enums.TileType;
 
 import java.util.ArrayList;
 
-public class Rock {
+public class Rock implements ItemInterface {
     private char symbol = 'R';
 
     public Rock() {
@@ -30,5 +31,15 @@ public class Rock {
 
     public char getSymbol() {
         return symbol;
+    }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "Rock";
     }
 }
