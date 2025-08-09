@@ -870,11 +870,13 @@ public class GameMenuUI implements Screen {
 
     @Override
     public void resize(int i, int i1) {
-        gameModel.camera.viewportWidth = i;
-        gameModel.camera.viewportHeight = i1;
-        gameModel.camera.update();
-        stage.getViewport().update(i, i1, true);
-        boxStage.getViewport().update(i, i1, true);
+        if(gameModel != null) {
+            gameModel.camera.viewportWidth = i;
+            gameModel.camera.viewportHeight = i1;
+            gameModel.camera.update();
+            stage.getViewport().update(i, i1, true);
+            boxStage.getViewport().update(i, i1, true);
+        }
     }
 
     @Override

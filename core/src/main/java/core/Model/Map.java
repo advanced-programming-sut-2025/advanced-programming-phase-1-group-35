@@ -17,6 +17,7 @@ import core.Model.enums.TileType;
 import core.Model.machines.Machine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Map {
     private Tile[][] tiles = new Tile[300][210];
@@ -64,25 +65,6 @@ public class Map {
         shops.add(ShopEnum.Saloon.createShop());
 
         DrawPathWays();
-//        for (int i = -1 ; i < 300 ; i++){
-//            System.out.printf("%4d", i);
-//        }
-//        System.out.println();
-//        for (int i = 0; i < 250; i++) {
-//            System.out.printf("%4d", i);
-//            for (int j = 0; j < 300; j++) {
-//                if (tiles[j][i].getTileType().equals(TileType.BuildingWall)) {
-//                    System.out.printf("%s%4c%s", Colors.YELLOW, tiles[j][i].getSymbol(), RESET);
-//                } else if (tiles[j][i].getTileType().equals(TileType.Water)) {
-//                    System.out.printf("%s%4c%s", Colors.BLUE, tiles[j][i].getSymbol(), RESET);
-//                } else if (tiles[j][i].getTileType().equals(TileType.Pathway)) {
-//                    System.out.printf("%s%s%4c%s", Colors.YELLOW_UNDERLINED, Colors.GREEN, tiles[j][i].getSymbol(), RESET);
-//                } else {
-//                    System.out.printf("%s%4c%s", Colors.WHITE, tiles[j][i].getSymbol(), RESET);
-//                }
-//            }
-//            System.out.println();
-//        }
     }
     public void reconstructFromSerializableMap(SerializableMap serialMap, Map map) {
         Tile[][] newTiles = map.getTiles();

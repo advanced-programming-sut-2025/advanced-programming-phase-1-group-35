@@ -181,12 +181,13 @@ public class GameMenuController {
         for (String playerName : playerNames) {
             User user = loginMenuController.getUser(playerName);
             if (user == null) return new Result(false, playerName + "does not exist");
-            if (user.equals(App.getLoggedInUser())) return new Result(false, "your bipolar shit doesn't make sense");
             if (isUserInOtherGame(user)) return new Result(false, playerName + "is already in a game");
             players.add(user);
         }
-
-        Game game = new Game(players, host);
+        User playingUser = App.getLoggedInUser();
+        System.out.println("playingUser = " + playingUser.getUsername());
+        System.out.println("players = " + players);
+        Game game = new Game(players, playingUser);
         App.games.add(game);
         App.setCurrentGame(game);
         game.npcController.init();
@@ -195,8 +196,6 @@ public class GameMenuController {
         for (User player : players) {
             player.setCurrentGame(game);
         }
-        System.out.println("players:" + players);
-        System.out.println("mapNumbers:" );
         for (int mapNumber : mapNumbers) {
             System.out.println(mapNumber);
         }

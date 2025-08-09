@@ -1,5 +1,6 @@
 package core.Model;
 
+import core.GameUpdater;
 import core.Model.FarmStuff.Farm;
 import core.Model.FarmStuff.Home.Cabin;
 import core.Model.NPCs.NPC;
@@ -456,6 +457,7 @@ public class User implements Serializable {
         if (getCurrentTile().isWalkable() && (getCurrentTile().getOwner() == null || getCurrentTile().getOwner().equals(this)) ) {
             currentPoint.first += dx;
             currentPoint.second += dy;
+            GameUpdater.sendPositionUpdate(currentPoint.first, currentPoint.second);
             return true;
         }
         return false;

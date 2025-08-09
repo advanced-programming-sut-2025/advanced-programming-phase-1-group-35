@@ -34,6 +34,12 @@ public class P2TConnectionThread extends ConnectionThread {
 
     @Override
     protected boolean handleMessage(Message message) {
+        // FIX: Add a null check to prevent the crash from malformed messages.
+        if (message == null) {
+            // System.err.println("Received a null or malformed message from the stream. Ignoring.");
+            return true; // Mark as handled to prevent further errors.
+        }
+
         try {
             if (message.getType().equals(Message.Type.command)) {
                 Message response = P2TConnectionController.handleCommand(message);
@@ -41,14 +47,12 @@ public class P2TConnectionThread extends ConnectionThread {
                     sendMessage(response);
                 }
                 return true;
-                // FIX: Handle both 'response' and 'requestResponse' types.
-                // This is the critical fix that allows the manual refresh to work.
-                // It ensures that the response from the server is queued up for the waiting 'sendAndWaitForResponse' call.
             } else if (message.getType().equals(Message.Type.requestResponse) || message.getType().equals(Message.Type.response)) {
                 receivedMessagesQueue.put(message);
                 return true;
             }
         } catch (Exception e) {
+            // The null check above also prevents a crash here if the original message was null.
             System.err.println("Error processing message in P2TConnectionController. Message: " + message.body);
             e.printStackTrace();
         }

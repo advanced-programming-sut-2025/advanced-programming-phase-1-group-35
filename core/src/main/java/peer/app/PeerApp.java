@@ -119,7 +119,7 @@ public class PeerApp {
             if (response != null && "success".equals(response.getFromBody("response"))) {
                 List<Map<String, Object>> lobbyMaps = response.getFromBody("lobbies");
                 // Use the public method in the controller to update the UI
-                P2TConnectionController.notifyLobbyListUpdated(lobbyMaps);
+//                P2TConnectionController.notifyLobbyListUpdated(lobbyMaps);
                 System.out.println("Successfully refreshed lobby list. Found " + (lobbyMaps != null ? lobbyMaps.size() : 0) + " lobbies.");
             } else {
                 System.err.println("Failed to get lobby list from tracker (request timed out or failed).");

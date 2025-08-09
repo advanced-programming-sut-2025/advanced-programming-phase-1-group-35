@@ -127,4 +127,13 @@ public class Game {
         camera.position.set(camX, camY, 0);
         camera.update();
     }
+
+    public User getPlayer(String username) {
+        for (User player : players) {
+            if (player.getUsername().equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

@@ -1,0 +1,82 @@
+package core;
+
+import common.models.Message;
+import core.Model.App;
+import core.Model.Tools.SkillLevel;
+import peer.app.PeerApp;
+
+import java.util.HashMap;
+
+/**
+ * A utility class for sending in-game state updates to the tracker.
+ * This sends small, specific messages rather than entire objects to be efficient.
+ */
+public class GameUpdater {
+
+    /**
+     * Sends an update for a specific field of the current user.
+     * @param field The name of the field that changed (e.g., "money", "energy").
+     * @param value The new value of the field.
+     */
+    public static void sendUpdate(String field, Object value) {
+        if (PeerApp.getP2TConnection() == null || !PeerApp.getP2TConnection().isAlive()) {
+            System.err.println("Cannot send game update, not connected to tracker.");
+            return;
+        }
+
+        // The payload contains the specific field and its new value.
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("field", field);
+        payload.put("value", value);
+
+        // This is the main message body sent to the server.
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "game_state_update");
+        body.put("payload", payload);
+
+        Message request = new Message(body, Message.Type.command);
+        PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    // --- Public Methods for Specific Updates ---
+
+    public static void sendMoneyUpdate(int newMoney) {
+        sendUpdate("money", newMoney);
+    }
+
+    public static void sendEnergyUpdate(int newEnergy) {
+        sendUpdate("energy", newEnergy);
+    }
+
+    public static void sendPositionUpdate(float x, float y) {
+        HashMap<String, Float> position = new HashMap<>();
+        position.put("x", x);
+        position.put("y", y);
+        sendUpdate("position", position);
+    }
+
+    // --- FIX: Added new methods for other User fields ---
+
+    /**
+     * Call this when the player's selected inventory slot changes.
+     * @param newSlotIndex The new index of the selected slot.
+     */
+    public static void sendSelectedSlotUpdate(int newSlotIndex) {
+        sendUpdate("selectedSlot", newSlotIndex);
+    }
+
+    /**
+     * Call this when a player's skill level changes.
+     * @param skillName The name of the skill (e.g., "farming", "mining").
+     * @param skillLevel The updated SkillLevel object.
+     */
+    public static void sendSkillUpdate(String skillName, SkillLevel skillLevel) {
+        // We send a map containing the level and XP for the specific skill.
+        HashMap<String, Object> skillData = new HashMap<>();
+        skillData.put("level", skillLevel.getCurrentLevel());
+        skillData.put("xp", skillLevel.getCurrentLevel());
+
+        // The field name is dynamic (e.g., "skill_farming", "skill_mining")
+        sendUpdate("skill_" + skillName, skillData);
+    }
+}

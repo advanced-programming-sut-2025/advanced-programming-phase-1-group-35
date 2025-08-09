@@ -404,7 +404,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     @Override
     public void onGameStarting(Lobby finalLobbyState) {
         Gdx.app.postRunnable(() -> {
-            User host = App.getLoggedInUser();
+            User host = finalLobbyState.getHost();
             List<String> otherPlayerNames = finalLobbyState.getPlayers().stream()
                 .filter(p -> !p.getUsername().equals(host.getUsername()))
                 .map(User::getUsername)
