@@ -2,6 +2,8 @@ package core;
 
 import common.models.Message;
 import core.Model.App;
+import core.Model.Serializables.SerializableTile;
+import core.Model.Tile;
 import core.Model.Tools.SkillLevel;
 import peer.app.PeerApp;
 
@@ -36,6 +38,10 @@ public class GameUpdater {
 
         Message request = new Message(body, Message.Type.command);
         PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void sendTileUpdate(Tile tile) {
+        sendUpdate("tile", new SerializableTile(tile));
     }
 
     // --- Public Methods for Specific Updates ---

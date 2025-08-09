@@ -75,36 +75,7 @@ public class Map {
 
                 SerializableTile sTile = serialTiles[i][j];
                 if (sTile != null) { // Only Soil tiles were serialized
-                    Tile tile = new Tile(sTile.coordination);
-                    tile.setOwnerID(sTile.ownerID);
-                    tile.setTileType(sTile.tileType);
-                    tile.setSymbol(sTile.symbol);
-                    tile.setContentSymbol(sTile.contentSymbol);
-                    tile.setWalkable(sTile.isWalkable);
-                    tile.setPlowed(sTile.isPlowed);
-                    tile.setFertilized(sTile.isFertilized);
-                    tile.setWatered(sTile.isWatered);
-
-                    // Restore planted item if present
-                    if (sTile.plantedItemName != null) {
-                        PlantAble planted = PlantAble.getPlantAbleByName(sTile.plantedItemName, tile);
-                        tile.setPlanted(planted);
-                    }
-
-                    // Restore item contents
-                    if (sTile.contentsMap != null) {
-                        ArrayList<ItemInterface> items = new ArrayList<>();
-                        for (String itemName : sTile.contentsMap.keySet()) {
-                            ItemInterface item = Controller.createItem(itemName);
-                            if (item != null) {
-                                items.add(item);
-                            }
-                        }
-                        tile.setContents(items);
-                    }
-
-                    // Replace the soil tile
-                    newTiles[i][j] = tile;
+                    newTiles[i][j] = SerializableTile.deserializeTile(sTile);
                 }
                 // else → leave existing non-soil tile unchanged
             }

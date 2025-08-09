@@ -1,10 +1,13 @@
 package core.Model.Serializables;
 
+import core.Controller.Controller;
 import core.Model.ItemInterface;
 import core.Model.Point;
 import core.Model.Tile;
+import core.Model.enums.Crops.PlantAble;
 import core.Model.enums.TileType;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SerializableTile implements Serializable {
@@ -46,6 +49,37 @@ public class SerializableTile implements Serializable {
                 }
             }
         }
+    }
+
+    public static Tile deserializeTile(SerializableTile sTile) {
+        Tile tile = new Tile(sTile.coordination);
+        tile.setOwnerID(sTile.ownerID);
+        tile.setTileType(sTile.tileType);
+        tile.setSymbol(sTile.symbol);
+        tile.setContentSymbol(sTile.contentSymbol);
+        tile.setWalkable(sTile.isWalkable);
+        tile.setPlowed(sTile.isPlowed);
+        tile.setFertilized(sTile.isFertilized);
+        tile.setWatered(sTile.isWatered);
+
+        // Restore planted item if present
+        if (sTile.plantedItemName != null) {
+            PlantAble planted = PlantAble.getPlantAbleByName(sTile.plantedItemName, tile);
+            tile.setPlanted(planted);
+        }
+
+        // Restore item contents
+        if (sTile.contentsMap != null) {
+            ArrayList<ItemInterface> items = new ArrayList<>();
+            for (String itemName : sTile.contentsMap.keySet()) {
+                ItemInterface item = Controller.createItem(itemName);
+                if (item != null) {
+                    items.add(item);
+                }
+            }
+            tile.setContents(items);
+        }
+        return tile;
     }
 
     // Default constructor for Gson deserialization

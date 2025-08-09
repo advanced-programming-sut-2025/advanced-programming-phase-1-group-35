@@ -2,10 +2,8 @@ package peer;
 
 import com.badlogic.gdx.Gdx;
 import common.models.Message;
-import core.Model.App;
-import core.Model.Game;
-import core.Model.Lobby;
-import core.Model.User;
+import core.Model.*;
+import core.Model.Serializables.SerializableTile;
 import peer.app.PeerApp;
 
 import java.lang.reflect.Field;
@@ -119,6 +117,11 @@ public class P2TConnectionController {
                     break;
                 case "askedMarriage":
                     userToUpdate.setAskedMarriage((User) value);
+                    break;
+                case "tile" :
+                    Tile tile = SerializableTile.deserializeTile((SerializableTile) value);
+                    App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile ;
+                    break;
             }
         });
     }
