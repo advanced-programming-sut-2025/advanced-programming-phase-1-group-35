@@ -123,16 +123,16 @@ public class FarmingController {
         if (seed == null && !seedName.toLowerCase().equals("mixed seed")) {
             return new Result(false, "please enter a valid seed name");
         }
-        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(seed.getSeedEnum())) {
+        if (!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(seed.getSeedEnum())) {
             return new Result(false, "you don't have the required seed in your inventory");
         }
 
         if (!isFloorplowed(tile)) {
             return new Result(false, "Floor is not plowed");
         }
-        App.getCurrentGame().getPlayingUser().backPack.items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().backPack.items.get(seed.getSeedEnum())-1);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(seed.getSeedEnum(), App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum())-1);
         if(App.getCurrentGame().getPlayingUser().getBackPack().items.get(seed.getSeedEnum()) == 0){
-            App.getCurrentGame().getPlayingUser().backPack.items.remove(seed.getSeedEnum());
+            App.getCurrentGame().getPlayingUser().getBackPack().items.remove(seed.getSeedEnum());
         }
         tile.setPlowed(false);
         Crop crop = new Crop(seed.getCropEnum(),tile);
@@ -196,13 +196,13 @@ public class FarmingController {
         if (sapling == null) {
             return new Result(false, "please enter a valid sapling name");
         }
-        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(sapling)) {
+        if (!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(sapling)) {
             return new Result(false, "you don't have the required sapling in your inventory");
         }
         Tree tree = new Tree(sapling.getTree());
         tile.changeTileContents(tree);
         tile.setPlanted(tree);
-        App.getCurrentGame().getPlayingUser().backPack.items.remove(sapling);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.remove(sapling);
         App.getCurrentGame().getMap().addTrees(tree);
         App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
         return new Result(true, "sapling planted");
@@ -278,11 +278,11 @@ public class FarmingController {
                 }
             }
                 for (Crop crop1 : crops) {
-                    App.getCurrentGame().getPlayingUser().backPack.items.put(crop1,
-                            App.getCurrentGame().getPlayingUser().backPack.items.getOrDefault(crop1, 0) + 1);
+                    App.getCurrentGame().getPlayingUser().getBackPack().items.put(crop1,
+                            App.getCurrentGame().getPlayingUser().getBackPack().items.getOrDefault(crop1, 0) + 1);
                     Seed seed = crop1.HarvestAndDropSeed();
                     if (seed != null) {
-                    App.getCurrentGame().getPlayingUser().backPack.items.put(seed, seed.getSeedAmount());
+                    App.getCurrentGame().getPlayingUser().getBackPack().items.put(seed, seed.getSeedAmount());
                     }
                     if (crop1.isOneTime()) {
                         crop1.getCropTile().setPlanted(null);
@@ -302,7 +302,7 @@ public class FarmingController {
             if (!(tree.getCurrentState() ==tree.getStages().size()) || tree.getDaysSinceLastGrowth()<7) {
                 return new Result(false, "fruits aren't developed yet");
             }
-            App.getCurrentGame().getPlayingUser().backPack.items.put(tree.getFruit(), 1);
+            App.getCurrentGame().getPlayingUser().getBackPack().items.put(tree.getFruit(), 1);
             tree.setDaysSinceLastGrowth(0);
             App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
             return new Result(true, "fruit picked! 8)");
@@ -590,7 +590,7 @@ public class FarmingController {
             default:
                 tile = App.getCurrentGame().getPlayingUser().getCurrentTile();
         }
-        if (App.getCurrentGame().getPlayingUser().backPack.items.containsKey(fertilizer)) {
+        if (App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(fertilizer)) {
             return new Result(false, "you don't have the said fertilizer");
         }
         if (tile.getPlanted() == null) {

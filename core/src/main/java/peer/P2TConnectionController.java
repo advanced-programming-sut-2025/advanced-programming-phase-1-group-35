@@ -108,6 +108,17 @@ public class P2TConnectionController {
                         listener.onPlayerPositionUpdated(userToUpdate, x, y);
                     }
                     break;
+                case "income":
+                    userToUpdate.setIncome(((Number) value).intValue());
+                    break;
+                case "movingDirection":
+                    userToUpdate.setMovingDirection(((Number) value).intValue());
+                    break;
+                case "spouse":
+                    userToUpdate.setSpouse((User) value);
+                    break;
+                case "askedMarriage":
+                    userToUpdate.setAskedMarriage((User) value);
             }
         });
     }

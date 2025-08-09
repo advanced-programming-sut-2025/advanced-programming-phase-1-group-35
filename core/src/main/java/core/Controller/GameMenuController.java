@@ -91,7 +91,7 @@ public class GameMenuController {
         if (fertilizer == null) {
             return new Result(false, "Fertilizer not found");
         }
-        if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(fertilizer)) {
+        if (!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(fertilizer)) {
             return new Result(false, "you don't have the fertilizer in your inventory");
         }
 
@@ -267,7 +267,7 @@ public class GameMenuController {
             return new Result(false, "you don't have any scarecrows");
         }
         tile.getContents().add(CraftingItems.Scarecrow);
-        App.getCurrentGame().getPlayingUser().getBackPack().items.put(CraftingItems.Scarecrow, App.getCurrentGame().getPlayingUser().backPack.items.get(CraftingItems.Scarecrow) - 1);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(CraftingItems.Scarecrow, App.getCurrentGame().getPlayingUser().getBackPack().items.get(CraftingItems.Scarecrow) - 1);
         if (App.getCurrentGame().getPlayingUser().getBackPack().items.get(CraftingItems.Scarecrow) == 0) {
             App.getCurrentGame().getPlayingUser().getBackPack().items.remove(CraftingItems.Scarecrow);
         }
@@ -351,8 +351,8 @@ public class GameMenuController {
         CraftingItems item = (CraftingItems) craftingRecipes.getItem();
         HashMap ingredients = item.getIngredients();
         for (Object item1 : ingredients.keySet()) {
-            if (!App.getCurrentGame().getPlayingUser().backPack.items.containsKey(item1) ||
-                    App.getCurrentGame().getPlayingUser().backPack.items.get(item1) < (int) ingredients.get(item1)) {
+            if (!App.getCurrentGame().getPlayingUser().getBackPack().items.containsKey(item1) ||
+                    App.getCurrentGame().getPlayingUser().getBackPack().items.get(item1) < (int) ingredients.get(item1)) {
                 return new Result(false, "you don't have the required ingredients");
             }
         }
@@ -362,9 +362,9 @@ public class GameMenuController {
         App.getCurrentGame().getPlayingUser().getEnergy().consumeEnergy(10);
         for (Object item1 : ingredients.keySet()) {
             CraftingItems item2 = (CraftingItems) item1;
-            App.getCurrentGame().getPlayingUser().backPack.items.put(item2, App.getCurrentGame().getPlayingUser().backPack.items.get(item2) - item2.getIngredients().get(item2));
+            App.getCurrentGame().getPlayingUser().getBackPack().items.put(item2, App.getCurrentGame().getPlayingUser().getBackPack().items.get(item2) - item2.getIngredients().get(item2));
         }
-        App.getCurrentGame().getPlayingUser().backPack.items.put(craftingRecipes.getItem(), 1);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(craftingRecipes.getItem(), 1);
         return new Result(true, itemName + " has been crafted");
     }
 
@@ -580,7 +580,7 @@ public class GameMenuController {
         ItemInterface item = getItemConstantByName(itemName).getItem();
         if (item == null) return new Result(false, "no item found via name " + itemName);
         int amount = Integer.parseInt(amountString);
-        App.getCurrentGame().getPlayingUser().backPack.items.put(item, amount);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(item, amount);
         return new Result(true, amount + " of " + itemName + " was given to player");
     }
 
@@ -593,7 +593,7 @@ public class GameMenuController {
             return new Result(false, "no tree found");
         }
         Tree tree = (Tree) tile.getPlanted();
-        App.getCurrentGame().getPlayingUser().backPack.items.put(CarpenterShopProducts.WOOD, 1);
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(CarpenterShopProducts.WOOD, 1);
         App.getCurrentGame().getPlayingUser().getForagingSkill().gainXp();
 //        App.getCurrentGame().getMap().getTrees().remove(tree);
 //        App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(tree);

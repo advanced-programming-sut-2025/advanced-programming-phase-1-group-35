@@ -32,6 +32,7 @@ public class User implements Serializable {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
+
     private int money = 10000;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
@@ -66,9 +67,8 @@ public class User implements Serializable {
     private int maxInventorySize = 9;
     private int movingDirection = 0;
     private float speed = 20f;
-    float vx , vy ;
-    int votes = 0;
-    public OrthographicCamera camera ;
+    private float vx , vy ;
+    private int votes = 0;
 
     public User(String username, String password, String nickname, String email,
                 Gender gender , SecurityQuestions securityQuestion , String securityAnswer) {
@@ -120,6 +120,7 @@ public class User implements Serializable {
 
     public void setMoney(int money) {
         this.money = money;
+        GameUpdater.sendUpdate("money", money);
     }
 
     public BackPack getBackPack() {
@@ -329,6 +330,7 @@ public class User implements Serializable {
 
     public void setIncome(int income) {
         this.income = income;
+        GameUpdater.sendUpdate("income", income);
     }
 
     public HashMap<Integer, Integer> getFriendshipXPs() {
@@ -401,6 +403,7 @@ public class User implements Serializable {
 
     public void setSpouse(User spouse) {
         this.spouse = spouse.getUsername();
+        GameUpdater.sendUpdate("spouse", spouse);
     }
 
     public User getAskedMarriage() {
@@ -409,6 +412,7 @@ public class User implements Serializable {
 
     public void setAskedMarriage(User askedMarriage) {
         this.askedMarriage = askedMarriage.getUsername();
+        GameUpdater.sendUpdate("askedMarriage", askedMarriage);
     }
 
     public void setSelectedSlot(int selectedSlot) {
@@ -429,6 +433,7 @@ public class User implements Serializable {
 
     public void setMovingDirection(int movingDirection) {
         this.movingDirection = movingDirection;
+        GameUpdater.sendUpdate("movingDirection", movingDirection);
     }
 
     public float getSpeed() {
