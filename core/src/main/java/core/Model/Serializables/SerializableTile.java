@@ -1,5 +1,8 @@
-package core.Model;
+package core.Model.Serializables;
 
+import core.Model.ItemInterface;
+import core.Model.Point;
+import core.Model.Tile;
 import core.Model.enums.TileType;
 import java.io.Serializable;
 import java.util.HashMap;

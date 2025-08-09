@@ -1,9 +1,9 @@
-package core.Model;
+package core.Model.Serializables;
 
-import core.Model.CropClasses.Crop;
-import core.Model.enums.WeatherCondition;
+import core.Model.Game;
+import core.Model.User;
+
 import java.io.Serializable;
-import java.time.LocalDateTime; // For GameCalender
 import java.util.ArrayList;
 
 public class SerializableGame implements Serializable {

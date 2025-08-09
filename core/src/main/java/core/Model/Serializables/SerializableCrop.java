@@ -1,7 +1,7 @@
-package core.Model;
+package core.Model.Serializables;
 
-import com.badlogic.gdx.graphics.Texture;
 import core.Model.CropClasses.Crop;
+import core.Model.Point;
 import core.Model.enums.Crops.CropEnum;
 import core.Model.enums.Crops.SeedEnum;
 import core.Model.enums.Seasons;

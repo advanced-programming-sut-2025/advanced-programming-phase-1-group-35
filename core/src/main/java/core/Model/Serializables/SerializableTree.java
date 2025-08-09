@@ -1,6 +1,7 @@
-package core.Model;
+package core.Model.Serializables;
 
 import core.Model.CropClasses.Tree;
+import core.Model.Point;
 import core.Model.enums.Crops.Fruit;
 import core.Model.enums.Seasons;
 

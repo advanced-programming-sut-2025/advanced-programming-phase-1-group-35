@@ -2,6 +2,7 @@ package core.Model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import core.Model.Serializables.SerializableGame;
 import core.Model.enums.Gender;
 import core.Model.enums.SecurityQuestions;
 import core.Model.enums.Seasons;
@@ -181,8 +182,10 @@ public class UserTypeAdapter extends TypeAdapter<User> {
                 reconstructedGame.setGameID(serializableGame.gameID);
 
                 if (serializableGame.map != null) {
-                    reconstructedGame.setMap(new Map());
-                    reconstructedGame.getMap().reconstructFromSerializableMap(serializableGame.map);
+                    Map map = new Map();
+                    map.buildMap(Map.users,Map.types);
+                    reconstructedGame.setMap(map);
+                    reconstructedGame.getMap().reconstructFromSerializableMap(serializableGame.map,map);
                 }
 
                 GameCalender reconstructedCalender = new GameCalender();

@@ -7,6 +7,8 @@ import core.Model.CropClasses.Tree;
 import core.Model.FarmStuff.Farm;
 import core.Model.FarmStuff.Foraging;
 import core.Model.FarmStuff.Rock;
+import core.Model.Serializables.SerializableMap;
+import core.Model.Serializables.SerializableTile;
 import core.Model.Shops.Shop;
 import core.Model.enums.Crops.PlantAble;
 import core.Model.enums.Shops.ShopEnum;
@@ -15,7 +17,7 @@ import core.Model.enums.TileType;
 import core.Model.machines.Machine;
 
 import java.util.ArrayList;
-import static core.Model.enums.Colors.RESET;
+
 public class Map {
     private Tile[][] tiles = new Tile[300][210];
     private ArrayList<Farm> farms = new ArrayList<>();
@@ -28,7 +30,8 @@ public class Map {
     private ArrayList<Rock> rocks;
     private ArrayList<Foraging> forages;
 
-
+    public static User[] users;
+    public static int[] types;
     public void buildMap(User[] owners , int[] types) {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
@@ -81,49 +84,63 @@ public class Map {
 //            System.out.println();
 //        }
     }
-    public void reconstructFromSerializableMap(SerializableMap serialMap) {
+    public void reconstructFromSerializableMap(SerializableMap serialMap, Map map) {
+        Tile[][] newTiles = map.getTiles();
         SerializableTile[][] serialTiles = serialMap.tiles;
-        int width = serialTiles.length;
-        int height = serialTiles[0].length;
 
-        this.tiles = new Tile[width][height];
+        for (int i = 0; i < newTiles.length; i++) {
+            for (int j = 0; j < newTiles[i].length; j++) {
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
                 SerializableTile sTile = serialTiles[i][j];
-                Tile tile = new Tile(sTile.coordination);
-                tile.setOwnerID(sTile.ownerID);
-                tile.setTileType(sTile.tileType);
-                tile.setSymbol(sTile.symbol);
-                tile.setContentSymbol(sTile.contentSymbol);
-                tile.setWalkable(sTile.isWalkable);
-                tile.setPlowed(sTile.isPlowed);
-                tile.setFertilized(sTile.isFertilized);
-                tile.setWatered(sTile.isWatered);
+                if (sTile != null) { // Only Soil tiles were serialized
+                    Tile tile = new Tile(sTile.coordination);
+                    tile.setOwnerID(sTile.ownerID);
+                    tile.setTileType(sTile.tileType);
+                    tile.setSymbol(sTile.symbol);
+                    tile.setContentSymbol(sTile.contentSymbol);
+                    tile.setWalkable(sTile.isWalkable);
+                    tile.setPlowed(sTile.isPlowed);
+                    tile.setFertilized(sTile.isFertilized);
+                    tile.setWatered(sTile.isWatered);
 
-                // Restore planted item if present
-                if (sTile.plantedItemName != null) {
-                    PlantAble planted = PlantAble.getPlantAbleByName(sTile.plantedItemName,tile);
-                    tile.setPlanted(planted);
-                }
-
-                // Restore item contents
-                if (sTile.contentsMap != null) {
-                    ArrayList<ItemInterface> items = new ArrayList<>();
-                    for (String itemName : sTile.contentsMap.keySet()) {
-                        String className = sTile.contentsMap.get(itemName);
-                        ItemInterface item = Controller.createItem(itemName); // You must implement this method
-                        if (item != null) {
-                            items.add(item);
-                        }
+                    // Restore planted item if present
+                    if (sTile.plantedItemName != null) {
+                        PlantAble planted = PlantAble.getPlantAbleByName(sTile.plantedItemName, tile);
+                        tile.setPlanted(planted);
                     }
-                    tile.setContents(items);
-                }
 
-                this.tiles[i][j] = tile;
+                    // Restore item contents
+                    if (sTile.contentsMap != null) {
+                        ArrayList<ItemInterface> items = new ArrayList<>();
+                        for (String itemName : sTile.contentsMap.keySet()) {
+                            ItemInterface item = Controller.createItem(itemName);
+                            if (item != null) {
+                                items.add(item);
+                            }
+                        }
+                        tile.setContents(items);
+                    }
+
+                    // Replace the soil tile
+                    newTiles[i][j] = tile;
+                }
+                // else → leave existing non-soil tile unchanged
             }
         }
     }
+
+
+    // Utility method to check if a coordinate is inside any farm rectangle
+    private boolean isInAnyFarm(int x, int y, int[][] farms) {
+        for (int[] farm : farms) {
+            int x1 = farm[0], y1 = farm[1], x2 = farm[2], y2 = farm[3];
+            if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public ArrayList<Machine> getMachines() {
         return machines;

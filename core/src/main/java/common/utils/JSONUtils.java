@@ -3,9 +3,6 @@ package common.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import common.models.Message;
-import core.Model.Point;
-import core.Model.SerializableMap;
-import core.Model.SerializableTile;
 import core.Model.User;
 import core.Model.UserTypeAdapter;
 
