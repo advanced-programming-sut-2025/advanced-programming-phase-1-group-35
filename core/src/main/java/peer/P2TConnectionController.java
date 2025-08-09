@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class P2TConnectionController {
-    // A thread-safe list to hold UI listeners
     private static final List<LobbyUpdateListener> listeners = Collections.synchronizedList(new ArrayList<>());
 
     public static void addLobbyUpdateListener(LobbyUpdateListener listener) {
@@ -30,11 +29,6 @@ public class P2TConnectionController {
         listeners.remove(listener);
     }
 
-    /**
-     * NEW: Public method to process a list of lobby data and notify the UI.
-     * This can be called from anywhere in the client application.
-     * @param lobbyMaps A list of maps, where each map is the raw data for a lobby from the server.
-     */
     public static void notifyLobbyListUpdated(List<Map<String, Object>> lobbyMaps) {
         List<Lobby> lobbies = new ArrayList<>();
         if (lobbyMaps != null) {
@@ -55,7 +49,6 @@ public class P2TConnectionController {
         }
     }
 
-
     public static Message handleCommand(Message message) {
         String command = message.getFromBody("command");
         switch (command) {
@@ -63,13 +56,12 @@ public class P2TConnectionController {
                 return status();
             case "onlineUsers":
                 return updateOnlineUsers(message);
-            // --- Broadcast Handlers ---
             case "lobby_list_update":
                 handleLobbyListUpdate(message);
-                return null; // No response needed for a broadcast
+                return null;
             case "lobby_state_update":
                 handleLobbyStateUpdate(message);
-                return null; // No response needed for a broadcast
+                return null;
             case "begin_game":
                 handleGameStart(message);
                 return null;
@@ -93,7 +85,6 @@ public class P2TConnectionController {
 
         System.out.println("Client received BEGIN_GAME command for lobby: " + finalLobby.getLobbyName());
         for (LobbyUpdateListener listener : new ArrayList<>(listeners)) {
-            // The UI's onGameStarting method already uses postRunnable
             listener.onGameStarting(finalLobby);
         }
     }
@@ -113,13 +104,16 @@ public class P2TConnectionController {
         User host = userFromMap((Map<String, Object>) map.get("host"));
         List<Map<String, Object>> playerMaps = (List<Map<String, Object>>) map.get("players");
         List<Number> mapNumbers = (List<Number>) map.get("mapNumbers");
+        // FIX: Get the password from the map (can be null)
+        String password = (String) map.get("password");
 
         if (lobbyId == null || lobbyName == null || host == null || playerMaps == null || mapNumbers == null) {
             System.err.println("Received incomplete lobby data from server.");
             return null;
         }
 
-        Lobby lobby = new Lobby(lobbyName, host);
+        // FIX: Use the new constructor that accepts a password
+        Lobby lobby = new Lobby(lobbyName, host, password);
 
         try {
             Field idField = Lobby.class.getDeclaredField("id");
@@ -129,6 +123,11 @@ public class P2TConnectionController {
             Field hostField = Lobby.class.getDeclaredField("host");
             hostField.setAccessible(true);
             hostField.set(lobby, host);
+
+            // FIX: Ensure the password field is correctly set via reflection as well
+            Field passwordField = Lobby.class.getDeclaredField("password");
+            passwordField.setAccessible(true);
+            passwordField.set(lobby, password);
 
             Field playersField = Lobby.class.getDeclaredField("players");
             playersField.setAccessible(true);
@@ -149,8 +148,7 @@ public class P2TConnectionController {
             }
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            System.err.println("FATAL: Could not reconstruct Lobby object due to reflection error. " +
-                "The Lobby class structure may have changed.");
+            System.err.println("FATAL: Could not reconstruct Lobby object due to reflection error.");
             e.printStackTrace();
             return null;
         }
@@ -158,10 +156,21 @@ public class P2TConnectionController {
         return lobby;
     }
 
-
     private static void handleLobbyListUpdate(Message message) {
         List<Map<String, Object>> lobbyMaps = message.getFromBody("lobbies");
-        notifyLobbyListUpdated(lobbyMaps);
+        List<Lobby> lobbies = new ArrayList<>();
+        if (lobbyMaps != null) {
+            for (Map<String, Object> map : lobbyMaps) {
+                Lobby lobby = lobbyFromMap(map);
+                if (lobby != null) {
+                    lobbies.add(lobby);
+                }
+            }
+        }
+
+        for (LobbyUpdateListener listener : new ArrayList<>(listeners)) {
+            Gdx.app.postRunnable(() -> listener.onLobbyListUpdated(lobbies));
+        }
     }
 
     private static void handleLobbyStateUpdate(Message message) {
@@ -173,7 +182,6 @@ public class P2TConnectionController {
             return;
         }
 
-        System.out.println("Client received state update for lobby: " + lobby.getLobbyName());
         for (LobbyUpdateListener listener : new ArrayList<>(listeners)) {
             Gdx.app.postRunnable(() -> listener.onLobbyStateUpdated(lobby));
         }
@@ -186,7 +194,6 @@ public class P2TConnectionController {
     }
 
     private static Message updateOnlineUsers(Message message) {
-        System.out.println("Updating online users");
         App.onlineUsers.clear();
         ArrayList<String> names = message.getFromBody("onlineUsers");
         for(String name : names){
@@ -195,7 +202,6 @@ public class P2TConnectionController {
                 App.onlineUsers.add(user);
             }
         }
-        System.out.println("online users updated");
         return new Message(new HashMap<>() , Message.Type.response);
     }
 

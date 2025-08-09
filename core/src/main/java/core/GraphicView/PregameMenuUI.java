@@ -33,11 +33,9 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     private final Table rootTable;
     private final Cell<Table> mainContentCell;
 
-    // UI State
     private Lobby currentLobby = null;
     private List<Lobby> availableLobbies = new ArrayList<>();
 
-    // UI Components
     private Table lobbiesContainer;
     private Table lobbyPlayersTable;
     private Table lobbyViewTable;
@@ -102,12 +100,21 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
             lobbiesContainer.add(new Label("No active lobbies. Why not create one?", skin));
         } else {
             for (Lobby lobby : availableLobbies) {
-                Label lobbyLabel = new Label(String.format("%s (%d/4)", lobby.getLobbyName(), lobby.getPlayers().size()), skin);
+                String lobbyText = String.format("%s (%d/4)", lobby.getLobbyName(), lobby.getPlayers().size());
+                if (lobby.isPrivate()) {
+                    lobbyText = "🔒 " + lobbyText;
+                }
+                Label lobbyLabel = new Label(lobbyText, skin);
+
                 TextButton joinButton = new TextButton("Join", skin);
                 joinButton.addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        showMapSelectionDialog("Join Lobby", (mapNumber) -> joinLobby(lobby.getId(), mapNumber));
+                        if (lobby.isPrivate()) {
+                            showPasswordPromptDialog(lobby);
+                        } else {
+                            showMapSelectionDialog("Join Lobby", (mapNumber) -> joinLobby(lobby.getId(), mapNumber, null));
+                        }
                     }
                 });
                 lobbiesContainer.add(lobbyLabel).growX().padRight(20);
@@ -155,11 +162,9 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         if (lobbyPlayersTable == null || currentLobby == null) return;
         lobbyPlayersTable.clear();
         lobbyPlayersTable.defaults().pad(5).align(Align.left);
-
         List<User> players = currentLobby.getPlayers();
         List<Integer> mapNumbers = currentLobby.getMapNumbers();
         User currentUser = App.getLoggedInUser();
-
         for (int i = 0; i < players.size(); i++) {
             User player = players.get(i);
             int mapNumber = (i < mapNumbers.size()) ? mapNumbers.get(i) : 1;
@@ -167,10 +172,8 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
             if (player.equals(currentLobby.getHost())) {
                 labelText += " (Host)";
             }
-
             Table playerRow = new Table();
             playerRow.add(new Label(labelText, skin)).expandX().align(Align.left);
-
             if (player.equals(currentUser)) {
                 TextButton changeMapButton = new TextButton("Change", skin);
                 playerRow.add(changeMapButton).width(100).padLeft(20);
@@ -188,23 +191,89 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     private void showCreateLobbyDialog() {
         Dialog dialog = new Dialog("Create Lobby", skin);
         dialog.pad(40);
-        dialog.getContentTable().add(new Label("Enter lobby name:", skin)).row();
+        Table content = dialog.getContentTable();
+        content.defaults().pad(5);
+
+        content.add(new Label("Lobby Name:", skin));
         TextField lobbyNameField = new TextField(App.getLoggedInUser().getUsername() + "'s Game", skin);
-        dialog.getContentTable().add(lobbyNameField).width(300).padTop(10).row();
+        content.add(lobbyNameField).width(250).row();
+
+        CheckBox privateCheckbox = new CheckBox(" Private Lobby", skin);
+        content.add(privateCheckbox).colspan(2).left().padTop(10).row();
+
+        TextField passwordField = new TextField("", skin);
+        passwordField.setMessageText("Password");
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        final Label passwordLabel = new Label("Password:", skin);
+
+        passwordLabel.setVisible(false);
+        passwordField.setVisible(false);
+
+        content.add(passwordLabel).left();
+        content.add(passwordField).width(250).row();
+
+        privateCheckbox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                boolean isChecked = privateCheckbox.isChecked();
+                passwordLabel.setVisible(isChecked);
+                passwordField.setVisible(isChecked);
+            }
+        });
+
         TextButton confirmButton = new TextButton("Create", skin);
-        dialog.getButtonTable().add(confirmButton).width(120);
         TextButton cancelButton = new TextButton("Cancel", skin);
+        dialog.getButtonTable().add(confirmButton).width(120);
         dialog.getButtonTable().add(cancelButton).width(120);
+
         confirmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 String lobbyName = lobbyNameField.getText().trim();
+                String password = privateCheckbox.isChecked() ? passwordField.getText() : null;
                 if (!lobbyName.isEmpty()) {
+                    if (privateCheckbox.isChecked() && (password == null || password.isEmpty())) {
+                        showDialog("Error", "Private lobbies require a password.");
+                        return;
+                    }
                     dialog.hide();
-                    createLobby(lobbyName);
+                    createLobby(lobbyName, password);
                 } else {
                     showDialog("Invalid Name", "Lobby name cannot be empty.");
                 }
+            }
+        });
+        cancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                dialog.hide();
+            }
+        });
+        dialog.show(stage);
+    }
+
+    private void showPasswordPromptDialog(Lobby lobby) {
+        Dialog dialog = new Dialog("Password Required", skin);
+        dialog.pad(40);
+        dialog.getContentTable().add(new Label("This lobby is private. Please enter the password:", skin)).row();
+        TextField passwordField = new TextField("", skin);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+        dialog.getContentTable().add(passwordField).width(300).padTop(10).row();
+
+        TextButton confirmButton = new TextButton("Join", skin);
+        dialog.getButtonTable().add(confirmButton).width(120);
+        TextButton cancelButton = new TextButton("Cancel", skin);
+        dialog.getButtonTable().add(cancelButton).width(120);
+
+        confirmButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String password = passwordField.getText();
+                dialog.hide();
+                showMapSelectionDialog("Join Lobby", (mapNumber) -> joinLobby(lobby.getId(), mapNumber, password));
             }
         });
         cancelButton.addListener(new ChangeListener() {
@@ -248,21 +317,27 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
 
     // --- Network Communication ---
 
-    private void createLobby(String lobbyName) {
+    private void createLobby(String lobbyName, String password) {
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "create_lobby");
         body.put("lobby_name", lobbyName);
+        if (password != null && !password.isEmpty()) {
+            body.put("password", password);
+        }
         Message request = new Message(body, Message.Type.command);
         if (PeerApp.getP2TConnection() != null) {
             PeerApp.getP2TConnection().sendMessage(request);
         }
     }
 
-    private void joinLobby(String lobbyId, int mapNumber) {
+    private void joinLobby(String lobbyId, int mapNumber, String password) {
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "join_lobby");
         body.put("lobby_id", lobbyId);
         body.put("map_number", mapNumber);
+        if (password != null) {
+            body.put("password", password);
+        }
         Message request = new Message(body, Message.Type.command);
         if (PeerApp.getP2TConnection() != null) {
             PeerApp.getP2TConnection().sendMessage(request);
@@ -316,12 +391,6 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     @Override
     public void onLobbyStateUpdated(Lobby lobby) {
         if (lobby == null) return;
-
-        if (lobby.getStatus() == Lobby.LobbyStatus.IN_GAME) {
-            onGameStarting(lobby);
-            return;
-        }
-
         this.currentLobby = lobby;
         Gdx.app.postRunnable(() -> {
             if (mainContentCell.getActor() != lobbyViewTable) {
@@ -332,26 +401,15 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         });
     }
 
-    // FIX: Implement the game creation and startup logic
+    @Override
     public void onGameStarting(Lobby finalLobbyState) {
         Gdx.app.postRunnable(() -> {
-            System.out.println("Game is starting for all players!");
-
-            // 1. Get the host (the current user)
             User host = App.getLoggedInUser();
-
-            // 2. Get the usernames of the other players
             List<String> otherPlayerNames = finalLobbyState.getPlayers().stream()
                 .filter(p -> !p.getUsername().equals(host.getUsername()))
                 .map(User::getUsername)
                 .collect(Collectors.toList());
-            System.out.println("other players :" + otherPlayerNames);
-
-            // 3. Get the map types in the correct player order
-            System.out.println("map numbers :" + finalLobbyState.getMapNumbers());
             int[] mapTypes = finalLobbyState.getMapNumbers().stream().mapToInt(i -> i).toArray();
-            System.out.println("players and map types are parsed starting the game ...");
-            // 4. Create and initialize the game controller
             GameMenuController gameController = new GameMenuController();
             Result result = gameController.createNewGame(
                 host.getUsername(),
