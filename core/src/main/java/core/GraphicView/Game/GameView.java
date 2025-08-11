@@ -36,11 +36,15 @@ import com.badlogic.gdx.utils.Array;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.StardewValley.Main;
+import peer.GameStateUpdateListener;
+import peer.P2TConnectionController;
 
-public class GameView {
+public class GameView implements GameStateUpdateListener {
     private final Game game;
     private SpriteBatch batch;
     private BitmapFont smallFont;
@@ -58,9 +62,25 @@ public class GameView {
     private boolean treesRendered = false;
     private SpriteBatch treeBatch;
     private Animation<TextureRegion> CrowAnimation;
-    private Texture activeEmoji;
-    private float reactionTimer = 0f;
-    private String activeText;
+
+    private static class Reaction {
+        Texture emoji;
+        String text;
+        float timer;
+
+        Reaction(Texture emoji) {
+            this.emoji = emoji;
+            this.text = null;
+            this.timer = 5.0f;
+        }
+
+        Reaction(String text) {
+            this.emoji = null;
+            this.text = text;
+            this.timer = 5.0f;
+        }
+    }
+    private final Map<User, Reaction> activeReactions = new ConcurrentHashMap<>();
 
     public GameView(Game game) {
         this.game = game;
@@ -69,6 +89,7 @@ public class GameView {
         treeBatch = new SpriteBatch();
         loadTextures();
         loadFont();
+        P2TConnectionController.addGameStateUpdateListener(this);
     }
 
     public Animation<TextureRegion> getCrowAnimation() {
@@ -177,51 +198,26 @@ public class GameView {
         pixmap.dispose();
     }
 
-    public void showReaction(Texture texture) {
-        this.activeEmoji = texture;
-        this.activeText = null;
-        this.reactionTimer = 5.0f;
-    }
-
-    public void showReaction(String text) {
-        this.activeText = text;
-        this.activeEmoji = null;
-        this.reactionTimer = 5.0f;
-    }
-
     public void render(float delta) {
-        if (reactionTimer > 0) {
-            reactionTimer -= delta;
-            if (reactionTimer <= 0) {
-                activeEmoji = null;
-                activeText = null;
+        for (Iterator<Map.Entry<User, Reaction>> it = activeReactions.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<User, Reaction> entry = it.next();
+            Reaction reaction = entry.getValue();
+            reaction.timer -= delta;
+            if (reaction.timer <= 0) {
+                if (reaction.emoji != null) {
+                    reaction.emoji.dispose();
+                }
+                it.remove();
             }
         }
-
-        // === World Rendering (moves with camera) ===
         batch.setProjectionMatrix(game.camera.combined);
         batch.begin();
         renderTiles();
         renderPlayer();
         renderNPCs();
-
-        if (activeEmoji != null) {
-            User playingUser = game.getPlayingUser();
-            if (playingUser != null && playingUser.getCurrentPoint() != null) {
-                float tileX = playingUser.getCurrentPoint().first;
-                float tileY = playingUser.getCurrentPoint().second;
-                float playerX = tileX * Main.TILE_SIZE;
-                float playerY = tileY * Main.TILE_SIZE;
-                batch.draw(activeEmoji, playerX, playerY + (Main.TILE_SIZE * 2), Main.TILE_SIZE, Main.TILE_SIZE);
-            }
-        }
-
-        // Render the night overlay on top of the world
+        renderReactions();
         renderNightOverlay();
-
         batch.end();
-
-        // === UI Rendering (fixed on screen) ===
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.begin();
         renderCoordinates();
@@ -230,6 +226,33 @@ public class GameView {
         renderSeason();
         renderEnergyBar();
         batch.end();
+    }
+
+    private void renderReactions() {
+        for (Map.Entry<User, Reaction> entry : activeReactions.entrySet()) {
+            User user = entry.getKey();
+            Reaction reaction = entry.getValue();
+            Pair<Float, Float> pos = user.getCurrentPoint();
+
+            if (pos != null) {
+                float playerX = pos.first * Main.TILE_SIZE;
+                float playerY = pos.second * Main.TILE_SIZE;
+
+                if (reaction.emoji != null) {
+                    batch.draw(reaction.emoji, playerX, playerY + (Main.TILE_SIZE * 2), Main.TILE_SIZE, Main.TILE_SIZE);
+                } else if (reaction.text != null) {
+                    GlyphLayout layout = new GlyphLayout(smallFont, reaction.text);
+                    float textX = playerX + (Main.TILE_SIZE - layout.width) / 2;
+                    float textY = playerY + (Main.TILE_SIZE * 2) + Main.TILE_SIZE / 2f + layout.height;
+
+                    batch.setColor(0, 0, 0, 0.5f);
+                    batch.draw(pixel, textX - 5, textY - layout.height - 5, layout.width + 10, layout.height + 10);
+                    batch.setColor(1, 1, 1, 1);
+
+                    smallFont.draw(batch, reaction.text, textX, textY);
+                }
+            }
+        }
     }
 
     /**
@@ -531,5 +554,40 @@ public class GameView {
         float textX = x + (width - layout.width) / 2;
         float textY = y + (height + layout.height) / 2;
         smallFont.draw(batch, energyText, textX, textY);
+    }
+
+    public void dispose() {
+        P2TConnectionController.removeGameStateUpdateListener(this);
+        batch.dispose();
+        smallFont.dispose();
+        pixel.dispose();
+        playerAtlas.dispose();
+        for (TextureRegion region : textures.values()) {
+            region.getTexture().dispose();
+        }
+        for(Reaction reaction : activeReactions.values()){
+            if(reaction.emoji != null){
+                reaction.emoji.dispose();
+            }
+        }
+    }
+
+    @Override
+    public void onPlayerMoneyUpdated(User user, int newMoney) {}
+
+    @Override
+    public void onPlayerEnergyUpdated(User user, int newEnergy) {}
+
+    @Override
+    public void onPlayerPositionUpdated(User user, float x, float y) {}
+
+    @Override
+    public void onPlayerReaction(User user, String type, String content) {
+        if ("emoji".equals(type)) {
+            Texture emojiTexture = new Texture(Gdx.files.internal(content));
+            activeReactions.put(user, new Reaction(emojiTexture));
+        } else if ("text".equals(type)) {
+            activeReactions.put(user, new Reaction(content));
+        }
     }
 }
