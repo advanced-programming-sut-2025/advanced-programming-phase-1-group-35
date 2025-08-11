@@ -1,5 +1,6 @@
 package core.Controller.InGameMenu;
 
+import core.GameUpdater;
 import core.Model.*;
 import core.Controller.GameMenuController;
 import core.Model.*;
@@ -161,6 +162,7 @@ public class ToolsController {
         if (destenationTile.getTileType() == TileType.Soil) {
             destenationTile.setPlowed(true);
             destenationTile.setSymbol('ɍ');
+            GameUpdater.sendTileUpdate(destenationTile);
             return new Result(true, "You used hoe and you can plant on that tile");
         } else {
             return new Result(false, "you cant use hoe on this tile");
@@ -175,6 +177,7 @@ public class ToolsController {
         if (destenationTile.getTileType() == TileType.Rock) {
             destenationTile.setSymbol('.');
             destenationTile.setTileType(TileType.Soil);
+            GameUpdater.sendTileUpdate(destenationTile);
             player.backPack.items.compute(Rock.mine(destenationTile), (k, v) -> v == null ? 1 : v + 1);
             return new Result(true, "You used pickaxe and destroyed a rock");
         } else {
@@ -192,6 +195,7 @@ public class ToolsController {
                 items.remove(content);
                 destenationTile.setContents(items);
                 destenationTile.setTileType(TileType.Soil);
+                GameUpdater.sendTileUpdate(destenationTile);
                 if (content instanceof Wood) {
                     return new Result(true, "You used axe and destroyed a wood stick");
                 } else {
@@ -272,6 +276,7 @@ public class ToolsController {
                         } else if (destenationTile.getPlanted() instanceof Tree tree) {
                             tree.setDaysSinceWatered(0);
                         }
+                        GameUpdater.sendTileUpdate(destenationTile);
                         return new Result(true, "you watered this tile");
                     }
                 }catch (Exception e){
