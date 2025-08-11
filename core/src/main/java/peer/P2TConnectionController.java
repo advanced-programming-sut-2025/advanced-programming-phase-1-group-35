@@ -1,6 +1,7 @@
 package peer;
 
 import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.*;
 import core.Model.Serializables.SerializableTile;
@@ -119,8 +120,10 @@ public class P2TConnectionController {
                     userToUpdate.setAskedMarriage((User) value);
                     break;
                 case "tile" :
-                    Tile tile = SerializableTile.deserializeTile((SerializableTile) value);
-                    App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile ;
+                    Gson gson = new Gson();
+                    SerializableTile sTile = gson.fromJson((String) value, SerializableTile.class);
+                        Tile tile = SerializableTile.deserializeTile(sTile);
+                        App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile;
                     break;
             }
         });
