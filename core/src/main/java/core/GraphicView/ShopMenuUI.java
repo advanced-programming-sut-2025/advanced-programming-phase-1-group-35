@@ -108,8 +108,11 @@ public class ShopMenuUI implements Screen {
             }
         });
         mainTable.add(backButton).width(200).height(50).pad(10);
-
-        refreshShopItems();
+        try {
+            refreshShopItems();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshShopItems() {

@@ -485,7 +485,7 @@ public class FarmingController {
                         Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                         tile.setPlanted(tree);
                         App.getCurrentGame().getMap().addTrees(tree);
-                        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
+//                        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
                         tile.addContents(tree);
                         tile.setContentSymbol(tree.getSymbol());
                         tree.setTile(tile);

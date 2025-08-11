@@ -827,7 +827,9 @@ public class GameMenuController {
         crop.setCurrentState(crop.getStages().size());
         App.getCurrentGame().getPlayingUser().getCurrentTile().setPlanted(crop);
         App.getCurrentGame().getMap().getCrops().add(crop);
-        }catch (Exception e){}
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
 
 
         Main.getGame().setScreen(gameMenu);

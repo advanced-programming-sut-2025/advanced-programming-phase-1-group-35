@@ -77,6 +77,19 @@
       "securityAnswer": "asdasd",
       "highScore": 0,
       "gamesPlayed": 0
+    },
+    {
+      "ID": 1,
+      "username": "mahdi",
+      "password": "13316a7446d3557d7a1ec81811c4861008af2c6a8c350110aa157b2d34864c04",
+      "nickname": "mahdi",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question1",
+      "securityQuestionText": "1- What is your greatest childhood trauma ?",
+      "securityAnswer": "yes",
+      "highScore": 0,
+      "gamesPlayed": 0
     }
   ],
   "loggedInUser": {
