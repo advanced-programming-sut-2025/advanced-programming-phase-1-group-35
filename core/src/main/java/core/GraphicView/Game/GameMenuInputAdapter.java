@@ -5,6 +5,7 @@ import core.Controller.InGameMenu.NPCController;
 import core.Controller.InGameMenu.ToolsController;
 import core.Controller.LoginMenuController;
 import core.Controller.MainMenuController;
+import core.GameUpdater;
 import core.GraphicView.GameMenuUI;
 import core.GraphicView.MainMenuUI;
 import core.GraphicView.SignUpUI;
@@ -54,6 +55,10 @@ public class GameMenuInputAdapter extends InputAdapter {
             int selectedSlot = keycode - Input.Keys.NUM_1;
             game.getPlayingUser().setSelectedSlot(selectedSlot);
             return true;
+        }
+
+        if(keycode == Input.Keys.L){
+            GameUpdater.sendTileUpdate(gameController.CurrentGame.getMap().getTiles()[50][50]);
         }
 
         if (keycode == Input.Keys.N) {

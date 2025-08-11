@@ -32,6 +32,9 @@ public class FishingUI implements Screen {
     private float catchingProgress;
     private final FishType fish;
     private boolean isOver = false;
+    private int lastDirectionMove = 0;
+    private int lastLastDirectionMove = 0;
+    private int kind;
 
     private final float gameAreaX = 50;
     private final float gameAreaY = 170;
@@ -70,6 +73,8 @@ public class FishingUI implements Screen {
         playerBarX = gameAreaX + gameAreaWidth / 2f - playerBarWidth / 2f;
         fishX = gameAreaX + gameAreaWidth / 2f;
         fishTargetX = fishX;
+
+        kind = MathUtils.random(1, 5);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -133,6 +138,26 @@ public class FishingUI implements Screen {
         if (!isOver) {
             float moveAmount = 50;
             float direction = MathUtils.random(-1, 1);
+
+            switch (kind) {
+                case 2:
+                    int chance = MathUtils.random(1, 10);
+                    if (chance <= 8) direction = lastDirectionMove;
+                    break;
+                case 3:
+                    if (lastDirectionMove == 0 && lastLastDirectionMove == 0) direction = -1;
+                    moveAmount = 80;
+                    break;
+                case 4:
+                    if (lastDirectionMove == 0 && lastLastDirectionMove == 0) direction = +1;
+                    moveAmount = 80;
+                    break;
+                case 5:
+                    moveAmount = 90;
+                    break;
+            }
+            lastLastDirectionMove = lastDirectionMove;
+            lastDirectionMove = (int) direction;
             fishTargetX += direction * moveAmount;
             fishTargetX = MathUtils.clamp(fishTargetX, gameAreaX, gameAreaX + gameAreaWidth - fishTexture.getWidth());
         }
@@ -215,11 +240,14 @@ public class FishingUI implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 }

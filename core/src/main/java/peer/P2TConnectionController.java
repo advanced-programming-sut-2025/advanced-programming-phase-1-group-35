@@ -1,6 +1,7 @@
 package peer;
 
 import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.*;
 import core.Model.Serializables.SerializableTile;
@@ -66,11 +67,8 @@ public class P2TConnectionController {
         String username = message.getFromBody("username");
         Map<String, Object> payload = message.getFromBody("payload");
         if (username == null || payload == null) return;
-
         Game currentGame = App.getCurrentGame();
         if (currentGame == null) return;
-
-        // FIX: Find the specific player who sent the update by their username.
         User userToUpdate = currentGame.getPlayer(username);
         if (userToUpdate == null) {
             System.err.println("Received update for a user not in the current game: " + username);
@@ -113,14 +111,16 @@ public class P2TConnectionController {
                     userToUpdate.setMovingDirection(((Number) value).intValue());
                     break;
                 case "spouse":
-                    userToUpdate.setSpouse((User) value);
+                    userToUpdate.setSpouse(App.findUserByID(((Number) value).intValue()));
                     break;
                 case "askedMarriage":
-                    userToUpdate.setAskedMarriage((User) value);
+                    userToUpdate.setAskedMarriage(App.findUserByID(((Number) value).intValue()));
                     break;
                 case "tile" :
-                    Tile tile = SerializableTile.deserializeTile((SerializableTile) value);
-                    App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile ;
+                    Gson gson = new Gson();
+                    SerializableTile sTile = gson.fromJson((String) value, SerializableTile.class);
+                        Tile tile = SerializableTile.deserializeTile(sTile);
+                        App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile;
                     break;
             }
         });

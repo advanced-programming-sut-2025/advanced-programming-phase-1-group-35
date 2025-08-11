@@ -135,7 +135,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         lobbyViewTable.add(scrollPane).grow().padBottom(20).row();
         Table buttonTable = new Table();
         User currentUser = App.getLoggedInUser();
-        if (currentUser.equals(currentLobby.getHost())) {
+        if (currentUser.getUsername().equals(currentLobby.getHost().getUsername())) {
             TextButton startGameButton = new TextButton("Start Game", skin);
             buttonTable.add(startGameButton).width(250).pad(10);
             startGameButton.addListener(new ChangeListener() {
@@ -318,6 +318,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     // --- Network Communication ---
 
     private void createLobby(String lobbyName, String password) {
+        System.out.println("creating lobby " + lobbyName);
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "create_lobby");
         body.put("lobby_name", lobbyName);
@@ -328,6 +329,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         if (PeerApp.getP2TConnection() != null) {
             PeerApp.getP2TConnection().sendMessage(request);
         }
+        System.out.println("created lobby " + lobbyName);
     }
 
     private void joinLobby(String lobbyId, int mapNumber, String password) {

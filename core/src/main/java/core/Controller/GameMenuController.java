@@ -379,34 +379,13 @@ public class GameMenuController {
         if (forceUser == null) {
             int i = App.getCurrentGame().getPlayers().indexOf(App.getCurrentGame().getPlayingUser());
             i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i + 1;
-            App.getCurrentGame().setPlayingUser(App.getCurrentGame().getPlayers().get(i));
             if (i == 0) {
                 App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
             }
             user = App.getCurrentGame().getPlayingUser();
         } else {
-            App.getCurrentGame().setPlayingUser(forceUser);
             user = forceUser;
         }
-        //TODO: handle marriage response
-//        if (user.getAskedMarriage() != null) {
-//            GameMenu.print(user.getAskedMarriage().getUsername() + " has asked you to marry him, you should respond now");
-//            while (true) {
-//                String input = GameMenu.scan();
-//                Matcher matcher = GameMenuCommands.respondToMarriageRequest.getMatcher(input);
-//                if (matcher == null) {
-//                    GameMenu.print("invalid input");
-//                    continue;
-//                }
-//                if (matcher.group("answer").equalsIgnoreCase("accept")) {
-//                    return acceptMarriageRequest(user);
-//                }
-//                if (matcher.group("answer").equalsIgnoreCase("reject")) {
-//                    return rejectMarriageRequest(user);
-//                }
-//                break;
-//            }
-//        }
         if (user.isHasNewMessages()) {
             notifications += "\nyou have new message(s), look your message history for more info";
         }

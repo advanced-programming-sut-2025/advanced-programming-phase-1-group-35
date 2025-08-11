@@ -1,5 +1,6 @@
 package core;
 
+import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.App;
 import core.Model.Serializables.SerializableTile;
@@ -41,7 +42,8 @@ public class GameUpdater {
     }
 
     public static void sendTileUpdate(Tile tile) {
-        sendUpdate("tile", new SerializableTile(tile));
+        Gson gson = new Gson();
+        sendUpdate("tile", gson.toJson(new SerializableTile(tile)));
     }
 
     // --- Public Methods for Specific Updates ---
