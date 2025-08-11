@@ -67,11 +67,8 @@ public class P2TConnectionController {
         String username = message.getFromBody("username");
         Map<String, Object> payload = message.getFromBody("payload");
         if (username == null || payload == null) return;
-
         Game currentGame = App.getCurrentGame();
         if (currentGame == null) return;
-
-        // FIX: Find the specific player who sent the update by their username.
         User userToUpdate = currentGame.getPlayer(username);
         if (userToUpdate == null) {
             System.err.println("Received update for a user not in the current game: " + username);
@@ -114,10 +111,10 @@ public class P2TConnectionController {
                     userToUpdate.setMovingDirection(((Number) value).intValue());
                     break;
                 case "spouse":
-                    userToUpdate.setSpouse((User) value);
+                    userToUpdate.setSpouse(App.findUserByID(((Number) value).intValue()));
                     break;
                 case "askedMarriage":
-                    userToUpdate.setAskedMarriage((User) value);
+                    userToUpdate.setAskedMarriage(App.findUserByID(((Number) value).intValue()));
                     break;
                 case "tile" :
                     Gson gson = new Gson();

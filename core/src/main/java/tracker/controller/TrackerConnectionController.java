@@ -1,9 +1,9 @@
 package tracker.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import common.models.Message;
-import core.Model.App;
-import core.Model.Lobby;
-import core.Model.User;
+import core.Model.*;
 import tracker.app.PeerConnectionThread;
 import tracker.app.TrackerApp;
 
@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class TrackerConnectionController {
+    static GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(User.class, new UserTypeAdapter()) ;
+
     public static Message handleCommand(Message message, PeerConnectionThread peerConnectionThread) throws IOException {
         String command = message.getFromBody("command");
         User user = peerConnectionThread.user;
@@ -45,9 +47,16 @@ public class TrackerConnectionController {
     }
 
     private static Message handleGameStateUpdate(Message message, User user) {
-        if (user == null) return null; // Ignore if user isn't logged in
+        Map<String, Object> payload = message.getFromBody("payload");
 
-        // Find the game this user is in. For simplicity, we assume they are in a lobby/game.
+        String field = (String) payload.get("field");
+        Object value = payload.get("value");
+
+        if(field.equals("newUser")){
+            App.users.add(gsonBuilder.create().fromJson(value.toString(), User.class));
+            return null ;
+        }
+
         Optional<Lobby> lobbyOpt = TrackerApp.findLobbyWithUser(user);
         if (lobbyOpt.isEmpty()) {
             System.err.println("User " + user.getUsername() + " sent a game update but is not in a lobby.");

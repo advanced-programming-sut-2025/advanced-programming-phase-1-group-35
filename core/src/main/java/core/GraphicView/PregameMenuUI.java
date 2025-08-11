@@ -124,7 +124,6 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     }
 
     private void showLobbyViewUI() {
-        System.out.println("switching to lobby menu");
         if (currentLobby == null) return;
         lobbyViewTable = new Table(skin);
         lobbyViewTable.pad(20f);

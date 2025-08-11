@@ -1,15 +1,15 @@
 package core.Controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import common.models.Message;
+import core.GameUpdater;
+import core.Model.*;
 import core.Model.enums.*;
 import core.GraphicView.ForgotPasswordUI;
 import core.GraphicView.LoginUI;
 import core.GraphicView.MainMenuUI;
 import core.GraphicView.SignUpUI;
-import core.Model.App;
-import core.Model.Result;
-import core.Model.SHA256;
-import core.Model.User;
 import core.View.LoginMenu;
 import com.StardewValley.Main;
 import core.Model.enums.*;
@@ -85,11 +85,14 @@ public class LoginMenuController extends Controller {
             default -> null;
         };
         view.getAdvanceButton().setChecked(false);
-        App.users.add(new User(view.getUsernameField().getText() , SHA256.hashString(password) ,
-            view.getUsernameField().getText(), view.getEmailField().getText() , genderEnum , question , answer));
+        User user = new User(view.getUsernameField().getText() , SHA256.hashString(password) ,
+            view.getUsernameField().getText(), view.getEmailField().getText() , genderEnum , question , answer) ;
+        App.users.add(user);
         Main.getGame().getScreen().dispose();
         Main.getGame().setScreen(new LoginUI(new LoginMenuController()));
         App.serializeApp();
+        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(User.class , new UserTypeAdapter());
+        GameUpdater.sendUpdate("newUser", gsonBuilder.create().toJson(user));
         return new Result(true , "user successfully registered , now you can log in");
     }
 
