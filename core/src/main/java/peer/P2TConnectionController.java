@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.*;
 import core.Model.Serializables.SerializableTile;
+import core.Model.Tools.BackPack;
 import peer.app.PeerApp;
 
 import java.lang.reflect.Field;
@@ -122,6 +123,17 @@ public class P2TConnectionController {
                         Tile tile = SerializableTile.deserializeTile(sTile);
                         App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile;
                     break;
+                case "email":
+                    userToUpdate.setEmail((String) value);
+                    break;
+                case "username":
+                    userToUpdate.setUsername((String) value);
+                    break;
+                case "password":
+                    userToUpdate.setPassword((String) value);
+                    break;
+                case "backpack":
+                    userToUpdate.setBackPack(new Gson().fromJson((String)value, BackPack.class));
             }
         });
     }

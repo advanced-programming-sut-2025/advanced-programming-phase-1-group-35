@@ -1,5 +1,6 @@
 package core.Controller;
 
+import core.GameUpdater;
 import core.GraphicView.ForgotPasswordUI;
 import core.GraphicView.LoginUI;
 import core.Model.SHA256;
@@ -26,6 +27,7 @@ public class ForgotPasswordMenuController extends Controller {
             }
             else {
                 view.getUser().setPassword(SHA256.hashString(view.getNewPasswordTextField().getText()));
+                GameUpdater.sendUpdate("password", view.getUser().getPassword());
                 Main.getGame().getScreen().dispose();
                 Main.getGame().setScreen(new LoginUI(new LoginMenuController()));
             }

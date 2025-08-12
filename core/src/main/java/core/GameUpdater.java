@@ -5,7 +5,9 @@ import common.models.Message;
 import core.Model.App;
 import core.Model.Serializables.SerializableTile;
 import core.Model.Tile;
+import core.Model.Tools.BackPack;
 import core.Model.Tools.SkillLevel;
+import core.Model.User;
 import peer.app.PeerApp;
 
 import java.util.HashMap;
@@ -35,10 +37,31 @@ public class GameUpdater {
         // This is the main message body sent to the server.
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "game_state_update");
+        body.put("otherUser", -1);
         body.put("payload", payload);
 
         Message request = new Message(body, Message.Type.command);
         PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void sendOtherUserUpdate(String field, Object value, User user) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("field", field);
+        payload.put("value", value);
+
+        // This is the main message body sent to the server.
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "game_state_update");
+        body.put("otherUser", user.getID());
+        body.put("payload", payload);
+
+        Message request = new Message(body, Message.Type.command);
+        PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void sendInventoryUpdate(BackPack backPack, User user) {
+        Gson gson = new Gson();
+        sendOtherUserUpdate("backpack", gson.toJson(backPack), user);
     }
 
     public static void sendTileUpdate(Tile tile) {

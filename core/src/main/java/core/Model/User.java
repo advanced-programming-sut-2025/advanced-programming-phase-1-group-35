@@ -119,8 +119,8 @@ public class User implements Serializable {
     }
 
     public void setMoney(int money) {
+        if(money != this.money) GameUpdater.sendUpdate("money", money);
         this.money = money;
-        GameUpdater.sendUpdate("money", money);
     }
 
     public BackPack getBackPack() {
@@ -329,8 +329,8 @@ public class User implements Serializable {
     }
 
     public void setIncome(int income) {
+        if(income != this.income) GameUpdater.sendUpdate("income", income);
         this.income = income;
-        GameUpdater.sendUpdate("income", income);
     }
 
     public HashMap<Integer, Integer> getFriendshipXPs() {
@@ -402,8 +402,8 @@ public class User implements Serializable {
     }
 
     public void setSpouse(User spouse) {
+        if(this.spouse != spouse.getUsername()) GameUpdater.sendUpdate("spouse", spouse);
         this.spouse = spouse.getUsername();
-        GameUpdater.sendUpdate("spouse", spouse);
     }
 
     public User getAskedMarriage() {
@@ -432,8 +432,8 @@ public class User implements Serializable {
     }
 
     public void setMovingDirection(int movingDirection) {
+        if(this.movingDirection != movingDirection)GameUpdater.sendUpdate("movingDirection", movingDirection);
         this.movingDirection = movingDirection;
-        GameUpdater.sendUpdate("movingDirection", movingDirection);
     }
 
     public float getSpeed() {
@@ -463,6 +463,7 @@ public class User implements Serializable {
             currentPoint.first += dx;
             currentPoint.second += dy;
             GameUpdater.sendPositionUpdate(currentPoint.first, currentPoint.second);
+            this.energy.setEnergyAmount(energy.getEnergyAmount() - (dx + dy)* 0.5);
             return true;
         }
         return false;
