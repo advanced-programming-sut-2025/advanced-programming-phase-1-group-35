@@ -110,4 +110,16 @@ public class GameUpdater {
         // The field name is dynamic (e.g., "skill_farming", "skill_mining")
         sendUpdate("skill_" + skillName, skillData);
     }
+
+    /**
+     * Sends a reaction update to other players.
+     * @param type The type of reaction ("emoji" or "text").
+     * @param content The content of the reaction (emoji path or message).
+     */
+    public static void sendReactionUpdate(String type, String content) {
+        HashMap<String, String> reactionData = new HashMap<>();
+        reactionData.put("type", type);
+        reactionData.put("content", content);
+        sendUpdate("reaction", reactionData);
+    }
 }

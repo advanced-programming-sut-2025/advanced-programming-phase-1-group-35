@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.GameUpdater;
 import core.Model.GameAssetManager;
 
 public class ReactionUI implements Screen {
@@ -64,7 +65,7 @@ public class ReactionUI implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 String message = messageField.getText();
                 if (message != null && !message.trim().isEmpty()) {
-                    gameMenuUI.showReactionForPlayer(message);
+                    GameUpdater.sendReactionUpdate("text", message);
                     Main.getGame().setScreen(gameMenuUI);
                 }
             }
@@ -91,15 +92,14 @@ public class ReactionUI implements Screen {
         for (int i = start; i <= end; i++) {
             String texturePath = "assets/emoji/" + i + ".png";
             Texture emojiTexture = new Texture(Gdx.files.internal(texturePath));
-            addEmojiButton(emojiTable, emojiTexture);
-
+            addEmojiButton(emojiTable, emojiTexture, texturePath);
             if (i % EMOJIS_PER_ROW == 0 && i != end) {
                 emojiTable.row();
             }
         }
     }
 
-    private void addEmojiButton(Table table, final Texture emojiTexture) {
+    private void addEmojiButton(Table table, final Texture emojiTexture, final String emojiPath) {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.imageUp = new TextureRegionDrawable(new TextureRegion(emojiTexture));
         ImageButton button = new ImageButton(style);
@@ -107,7 +107,7 @@ public class ReactionUI implements Screen {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameMenuUI.showReactionForPlayer(emojiTexture);
+                GameUpdater.sendReactionUpdate("emoji", emojiPath);
                 Main.getGame().setScreen(gameMenuUI);
             }
         });
@@ -150,6 +150,8 @@ public class ReactionUI implements Screen {
     public void dispose() {
         stage.dispose();
         batch.dispose();
-        backgroundTexture.dispose();
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+        }
     }
 }
