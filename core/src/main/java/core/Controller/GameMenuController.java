@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import core.GameUpdater;
 import core.Model.*;
 import core.Model.Serializables.SerializableMap;
 import core.Model.enums.*;
@@ -381,6 +382,7 @@ public class GameMenuController {
             i = i + 1 == App.getCurrentGame().getPlayers().size() ? 0 : i + 1;
             if (i == 0) {
                 App.getCurrentGame().getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
+                GameUpdater.passTime();
             }
             user = App.getCurrentGame().getPlayingUser();
         } else {

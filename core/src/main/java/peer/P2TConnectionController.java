@@ -8,6 +8,7 @@ import core.Model.Serializables.SerializableTile;
 import core.Model.Tools.BackPack;
 import peer.app.PeerApp;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,6 +142,17 @@ public class P2TConnectionController {
                     break;
                 case "backpack":
                     userToUpdate.setBackPack(new Gson().fromJson((String)value, BackPack.class));
+                    break;
+                case "shopUpdate":
+                    HashMap<String, Object> values = (HashMap<String, Object>) value;
+                    currentGame.getShopByName((String)values.get("shop")).getItemByName((String)values.get("item")).setDailyBoughtCount((int) values.get("stock"));
+                    break;
+                case "passTime":
+                    try {
+                        currentGame.getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
             }
         });
     }

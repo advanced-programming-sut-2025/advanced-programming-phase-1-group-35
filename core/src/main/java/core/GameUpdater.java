@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.App;
 import core.Model.Serializables.SerializableTile;
+import core.Model.Shops.Shop;
+import core.Model.Shops.ShopItem;
 import core.Model.Tile;
 import core.Model.Tools.BackPack;
 import core.Model.Tools.SkillLevel;
@@ -121,5 +123,38 @@ public class GameUpdater {
         reactionData.put("type", type);
         reactionData.put("content", content);
         sendUpdate("reaction", reactionData);
+    }
+
+    public static void sendShopUpdate(Shop shop, ShopItem item) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("field", "shopUpdate");
+        HashMap<String, Object> value = new HashMap<>();
+        value.put("shop", shop.getName());
+        value.put("item", item.getName());
+        value.put("stock", item.getDailyBoughtCount());
+        payload.put("value", value);
+
+        // This is the main message body sent to the server.
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "game_state_update");
+        body.put("otherUser", -1);
+        body.put("payload", payload);
+
+        Message request = new Message(body, Message.Type.command);
+        PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void passTime() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("field", "passTime");
+        payload.put("value", "passTime");
+
+        // This is the main message body sent to the server.
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "game_state_update");
+        body.put("payload", payload);
+
+        Message request = new Message(body, Message.Type.command);
+        PeerApp.getP2TConnection().sendMessage(request);
     }
 }

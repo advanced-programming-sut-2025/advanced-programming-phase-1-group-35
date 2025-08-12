@@ -69,4 +69,13 @@ public class Shop {
     public ArrayList<ShopItem> getProducts() {
         return products;
     }
+
+    public ShopItem getItemByName(String item) {
+        for (ShopItem product : products) {
+            if (product.getName().equals(item)) {
+                return product;
+            }
+        }
+        return null;
+    }
 }

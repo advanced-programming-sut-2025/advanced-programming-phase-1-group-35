@@ -119,7 +119,7 @@ public class User implements Serializable {
     }
 
     public void setMoney(int money) {
-        if(money != this.money) GameUpdater.sendUpdate("money", money);
+        if(money != this.money) GameUpdater.sendOtherUserUpdate("money", money,this);
         this.money = money;
     }
 
@@ -329,7 +329,7 @@ public class User implements Serializable {
     }
 
     public void setIncome(int income) {
-        if(income != this.income) GameUpdater.sendUpdate("income", income);
+        if(income != this.income) GameUpdater.sendOtherUserUpdate("income", income, this);
         this.income = income;
     }
 
@@ -402,7 +402,7 @@ public class User implements Serializable {
     }
 
     public void setSpouse(User spouse) {
-        if(this.spouse != spouse.getUsername()) GameUpdater.sendUpdate("spouse", spouse);
+        if(this.spouse != spouse.getUsername()) GameUpdater.sendOtherUserUpdate("spouse", spouse, this);
         this.spouse = spouse.getUsername();
     }
 
@@ -412,7 +412,7 @@ public class User implements Serializable {
 
     public void setAskedMarriage(User askedMarriage) {
         this.askedMarriage = askedMarriage.getUsername();
-        GameUpdater.sendUpdate("askedMarriage", askedMarriage);
+        GameUpdater.sendOtherUserUpdate("askedMarriage", askedMarriage, this);
     }
 
     public void setSelectedSlot(int selectedSlot) {
@@ -432,7 +432,7 @@ public class User implements Serializable {
     }
 
     public void setMovingDirection(int movingDirection) {
-        if(this.movingDirection != movingDirection)GameUpdater.sendUpdate("movingDirection", movingDirection);
+        if(this.movingDirection != movingDirection)GameUpdater.sendOtherUserUpdate("movingDirection", movingDirection, this);
         this.movingDirection = movingDirection;
     }
 

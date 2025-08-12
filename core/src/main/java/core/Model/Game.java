@@ -2,6 +2,7 @@ package core.Model;
 
 import core.Controller.InGameMenu.NPCController;
 import core.Model.NPCs.NPC;
+import core.Model.Shops.Shop;
 import core.Model.enums.WeatherCondition;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
@@ -132,6 +133,15 @@ public class Game {
         for (User player : players) {
             if (player.getUsername().equals(username)) {
                 return player;
+            }
+        }
+        return null;
+    }
+
+    public Shop getShopByName(String name) {
+        for (Shop shop : map.getShops()) {
+            if(shop.getName().equals(name)) {
+                return shop;
             }
         }
         return null;
