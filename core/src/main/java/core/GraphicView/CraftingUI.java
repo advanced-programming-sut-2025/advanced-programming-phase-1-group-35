@@ -27,8 +27,9 @@ private Image selectedRecipe;
 private Label selectedRecipeLabel;
 private TextButton Back;
 private TextButton Craft;
+private TextButton addRecipes;
 private Label craftMessage;
-
+private GameMenuUI gameMenuUI;
 
 public CraftingUI(Skin skin, User user, CraftingController controller) {
     this.knownRecipes = user.getCraftingRecipes();
@@ -37,6 +38,7 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
     this.title = new Label("what you craftin?",skin);
     this.Back = new TextButton("Back", skin);
     this.Craft = new TextButton("Craft", skin);
+    this.addRecipes = new TextButton("Add Recipes", skin);
     this.selectedRecipe = new Image();
     this.selectedRecipeLabel = new Label("", skin);
     this.controller = controller;
@@ -50,6 +52,18 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
 
     public void setSelectedRecipeLabel(Label selectedRecipeLabel) {
         this.selectedRecipeLabel = selectedRecipeLabel;
+    }
+
+    public GameMenuUI getGameMenuUI() {
+        return gameMenuUI;
+    }
+
+    public void setGameMenuUI(GameMenuUI gameMenuUI) {
+        this.gameMenuUI = gameMenuUI;
+    }
+
+    public TextButton getAddRecipes() {
+        return addRecipes;
     }
 
     @Override
@@ -98,7 +112,8 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
 
         table.add(craftMessage).colspan(5).center().padTop(10).row();
 
-        table.add(Back).colspan(5).center().padTop(20).height(40).width(120);
+        table.add(Back).colspan(5).center().padTop(20).height(40).width(120).row();
+        table.add(addRecipes).colspan(5).center().height(40).width(120);
         bg.setFillParent(true);
         stage.addActor(bg);
         table.setScale(0f); // Start scaled down
@@ -194,4 +209,29 @@ public CraftingUI(Skin skin, User user, CraftingController controller) {
     public Label getCraftMessage() {
         return craftMessage;
     }
+    public void refreshRecipes() {
+
+        table.clearChildren();
+
+        table.add(title).colspan(5).center().padBottom(20).row();
+        table.add(selectedRecipe).colspan(5).center().padBottom(10).row();
+        table.add(selectedRecipeLabel).colspan(5).center().padBottom(20).row();
+
+        int colCount = 0;
+        for (ImageButton ib : controller.showRecipes()) {
+            table.add(ib).size(64);
+            colCount++;
+            if (colCount == 5) {
+                table.row();
+                colCount = 0;
+            }
+        }
+
+        table.row().padTop(30);
+        table.add(Craft).colspan(5).center().height(40).width(120).row();
+        table.add(craftMessage).colspan(5).center().padTop(10).row();
+        table.add(Back).colspan(5).center().padTop(20).height(40).width(120).row();
+        table.add(addRecipes).colspan(5).center().height(40).width(120);
+    }
+
 }

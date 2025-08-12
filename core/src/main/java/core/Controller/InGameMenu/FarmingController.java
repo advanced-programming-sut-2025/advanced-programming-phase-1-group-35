@@ -336,7 +336,7 @@ public class FarmingController {
         if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
             Random rand = new Random();
             int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
-            if (rand.nextInt(100) < 25) {
+            if (rand.nextInt(100) < 250) {
             Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
             boolean scareCrow = false;
             for(Tile tile : findCloseTiles(crop.getcropTile())){

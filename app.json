@@ -198,14 +198,14 @@
   ],
   "loggedInUser": {
     "ID": 1,
-    "username": "eeyybaba",
+    "username": "player1",
     "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
-    "nickname": "eeyybaba",
-    "email": "mahdi@mail.com",
+    "nickname": "mahdi",
+    "email": "mahdi@gmail.com",
     "gender": "male",
     "securityQuestion": "Question1",
     "securityQuestionText": "1- What is your greatest childhood trauma ?",
-    "securityAnswer": "asdf",
+    "securityAnswer": "nope",
     "highScore": 0,
     "gamesPlayed": 0
   },

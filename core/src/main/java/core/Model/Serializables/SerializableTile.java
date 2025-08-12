@@ -70,6 +70,7 @@ public class SerializableTile implements Serializable {
 
         // Restore item contents
         if (sTile.contentsMap != null) {
+        try{
             ArrayList<ItemInterface> items = new ArrayList<>();
             for (String itemName : sTile.contentsMap.keySet()) {
                 ItemInterface item = Controller.createItem(itemName);
@@ -78,6 +79,9 @@ public class SerializableTile implements Serializable {
                 }
             }
             tile.setContents(items);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         }
         return tile;
     }
