@@ -48,6 +48,10 @@ public class TrackerConnectionController {
 
     private static Message handleGameStateUpdate(Message message, User user) {
         Map<String, Object> payload = message.getFromBody("payload");
+        int ID = message.getIntFromBody("otherUser") ;
+        if(ID != -1){
+            user = App.findUserByID(ID);
+        }
 
         String field = (String) payload.get("field");
         Object value = payload.get("value");

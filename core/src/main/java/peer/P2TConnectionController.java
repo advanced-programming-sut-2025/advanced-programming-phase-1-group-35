@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import common.models.Message;
 import core.Model.*;
 import core.Model.Serializables.SerializableTile;
+import core.Model.Tools.BackPack;
 import peer.app.PeerApp;
 
 import java.lang.reflect.Field;
@@ -79,18 +80,17 @@ public class P2TConnectionController {
         Object value = payload.get("value");
 
         Gdx.app.postRunnable(() -> {
+            List<GameStateUpdateListener> listenersCopy = new ArrayList<>(gameStateListeners);
             switch (field) {
                 case "money":
                     userToUpdate.setMoney(((Number) value).intValue());
-                    for (GameStateUpdateListener listener : gameStateListeners) {
+                    for (GameStateUpdateListener listener : listenersCopy) {
                         listener.onPlayerMoneyUpdated(userToUpdate, ((Number) value).intValue());
                     }
                     break;
                 case "energy":
-                    // NOTE: Assuming your Energy class has a method like setEnergy() or setEnergyAmount()
-                    // If the method is different (e.g., setEnergyAmount), you need to change it here.
                     userToUpdate.getEnergy().setEnergyAmount(((Number) value).intValue());
-                    for (GameStateUpdateListener listener : gameStateListeners) {
+                    for (GameStateUpdateListener listener : listenersCopy) {
                         listener.onPlayerEnergyUpdated(userToUpdate, ((Number) value).intValue());
                     }
                     break;
@@ -100,7 +100,7 @@ public class P2TConnectionController {
                     float y = pos.get("y").floatValue();
                     userToUpdate.getCurrentPoint().first = x;
                     userToUpdate.getCurrentPoint().second = y;
-                    for (GameStateUpdateListener listener : gameStateListeners) {
+                    for (GameStateUpdateListener listener : listenersCopy) {
                         listener.onPlayerPositionUpdated(userToUpdate, x, y);
                     }
                     break;
@@ -119,9 +119,28 @@ public class P2TConnectionController {
                 case "tile" :
                     Gson gson = new Gson();
                     SerializableTile sTile = gson.fromJson((String) value, SerializableTile.class);
-                        Tile tile = SerializableTile.deserializeTile(sTile);
-                        App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile;
+                    Tile tile = SerializableTile.deserializeTile(sTile);
+                    App.getCurrentGame().getMap().getTiles()[tile.coordination.x][tile.coordination.y] = tile;
                     break;
+                case "reaction":
+                    Map<String, String> reactionData = (Map<String, String>) value;
+                    String type = reactionData.get("type");
+                    String content = reactionData.get("content");
+                    for (GameStateUpdateListener listener : listenersCopy) {
+                        listener.onPlayerReaction(userToUpdate, type, content);
+                    }
+                    break;
+                case "email":
+                    userToUpdate.setEmail((String) value);
+                    break;
+                case "username":
+                    userToUpdate.setUsername((String) value);
+                    break;
+                case "password":
+                    userToUpdate.setPassword((String) value);
+                    break;
+                case "backpack":
+                    userToUpdate.setBackPack(new Gson().fromJson((String)value, BackPack.class));
             }
         });
     }

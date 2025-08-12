@@ -7,7 +7,6 @@ import core.Model.User;
  * for other players.
  */
 public interface GameStateUpdateListener {
-
     /**
      * Called when another player's money has been updated.
      * @param user The user whose state was updated.
@@ -30,4 +29,11 @@ public interface GameStateUpdateListener {
      */
     void onPlayerPositionUpdated(User user, float x, float y);
 
+    /**
+     * Called when a player sends a reaction.
+     * @param user The user who sent the reaction.
+     * @param type The type of reaction ("emoji" or "text").
+     * @param content The content of the reaction (the emoji's file path or the text message).
+     */
+    void onPlayerReaction(User user, String type, String content);
 }

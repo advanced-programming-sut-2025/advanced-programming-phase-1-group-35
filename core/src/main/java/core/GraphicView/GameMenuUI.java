@@ -279,18 +279,6 @@ public class GameMenuUI implements Screen {
         Gdx.input.setInputProcessor(mainMultiplexer);
     }
 
-    public void showReactionForPlayer(Texture emojiTexture) {
-        gameView.showReaction(emojiTexture);
-    }
-
-    public void showReactionForPlayer(Object reaction) {
-        if (reaction instanceof Texture) {
-            gameView.showReaction((Texture) reaction);
-        } else if (reaction instanceof String) {
-            addChatMessage((String) reaction, false);
-        }
-    }
-
     public void addChatMessage(String message, boolean isNPC) {
         if (!chatTable.isVisible()) {
             chatTable.setVisible(true);
@@ -768,7 +756,7 @@ public class GameMenuUI implements Screen {
     @Override
     public void dispose() {
         if (gameView != null) {
-            //gameView.dispose();
+            gameView.dispose();
         }
         if (toolsBatch != null) toolsBatch.dispose();
         if (toolsShapeRenderer != null) toolsShapeRenderer.dispose();

@@ -5,7 +5,9 @@ import common.models.Message;
 import core.Model.App;
 import core.Model.Serializables.SerializableTile;
 import core.Model.Tile;
+import core.Model.Tools.BackPack;
 import core.Model.Tools.SkillLevel;
+import core.Model.User;
 import peer.app.PeerApp;
 
 import java.util.HashMap;
@@ -35,10 +37,31 @@ public class GameUpdater {
         // This is the main message body sent to the server.
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "game_state_update");
+        body.put("otherUser", -1);
         body.put("payload", payload);
 
         Message request = new Message(body, Message.Type.command);
         PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void sendOtherUserUpdate(String field, Object value, User user) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("field", field);
+        payload.put("value", value);
+
+        // This is the main message body sent to the server.
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "game_state_update");
+        body.put("otherUser", user.getID());
+        body.put("payload", payload);
+
+        Message request = new Message(body, Message.Type.command);
+        PeerApp.getP2TConnection().sendMessage(request);
+    }
+
+    public static void sendInventoryUpdate(BackPack backPack, User user) {
+        Gson gson = new Gson();
+        sendOtherUserUpdate("backpack", gson.toJson(backPack), user);
     }
 
     public static void sendTileUpdate(Tile tile) {
@@ -86,5 +109,17 @@ public class GameUpdater {
 
         // The field name is dynamic (e.g., "skill_farming", "skill_mining")
         sendUpdate("skill_" + skillName, skillData);
+    }
+
+    /**
+     * Sends a reaction update to other players.
+     * @param type The type of reaction ("emoji" or "text").
+     * @param content The content of the reaction (emoji path or message).
+     */
+    public static void sendReactionUpdate(String type, String content) {
+        HashMap<String, String> reactionData = new HashMap<>();
+        reactionData.put("type", type);
+        reactionData.put("content", content);
+        sendUpdate("reaction", reactionData);
     }
 }

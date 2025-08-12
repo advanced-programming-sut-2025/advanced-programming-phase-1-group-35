@@ -1,5 +1,6 @@
 package core.Controller;
 
+import core.GameUpdater;
 import core.Model.App;
 import core.Model.Result;
 import core.Model.SHA256;
@@ -29,6 +30,7 @@ public class ProfileMenuController {
         if(loginMenuController.getUser(username) != null){
             return new Result(false , "username is already taken");
         }
+        GameUpdater.sendUpdate("username", App.getLoggedInUser().getUsername());
         App.getLoggedInUser().setUsername(username);
         return new Result(true , "username has been changed");
     }
@@ -44,6 +46,7 @@ public class ProfileMenuController {
         if(!managePasswordResult.isSuccess()) return managePasswordResult;
         else newPassword = managePasswordResult.toString();
         App.getLoggedInUser().setPassword(SHA256.hashString(newPassword));
+        GameUpdater.sendUpdate("password", App.getLoggedInUser().getPassword());
         return new Result(true , "password has been changed");
     }
 
@@ -63,6 +66,7 @@ public class ProfileMenuController {
             return new Result(false , "new email is invalid");
         }
         App.getLoggedInUser().setEmail(email);
+        GameUpdater.sendUpdate("email", App.getLoggedInUser().getEmail());
         return new Result(true , "email has been changed");
     }
 }
