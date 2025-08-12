@@ -1,6 +1,6 @@
 package core.Controller.InGameMenu;
 
-import core.Model.*;
+import core.GameUpdater;
 import core.Model.*;
 import core.Model.Tools.BackPack;
 import core.Model.TradeAndGift.Gift;
@@ -23,7 +23,7 @@ public class FriendshipMenuController {
     }
     public Result rejectMarriageRequest(User user) {
         int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
-        increaseMutualXP(user, user.getAskedMarriage(), -xp);
+        increaseMutualXPUpdate(user, user.getAskedMarriage(), -xp);
         user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity() / 2);
         user.setAskedMarriage(null);
         return new Result(true, "damn , so we breaking hearts now ?");
@@ -43,7 +43,7 @@ public class FriendshipMenuController {
         sender.getMessages().add(m);
         receiver.getMessages().add(m);
         receiver.setHasNewMessages(true);
-        increaseMutualXP(sender, receiver, 20);
+        increaseMutualXPUpdate(sender, receiver, 20);
         return new Result(true, "your message was sent");
     }
     public boolean notCloseEnough(User sender, User receiver) {
@@ -51,7 +51,17 @@ public class FriendshipMenuController {
             Math.abs(receiver.getCurrentTile().coordination.y - sender.getCurrentTile().coordination.y) > 2);
     }
 
-    public void increaseMutualXP(User sender, User receiver, int i) {
+    public static void increaseMutualXPUpdate(User sender, User receiver, int i) {
+        if (sender.getSpouse() != null && sender.getSpouse().equals(receiver)) {
+            sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
+            receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
+        }
+        sender.getFriendshipXPs().put(receiver.getID(), sender.getFriendshipXPs().getOrDefault(receiver.getID(), 100) + i);
+        receiver.getFriendshipXPs().put(sender.getID(), receiver.getFriendshipXPs().getOrDefault(sender.getID(), 100) + i);
+        GameUpdater.increaseFriendXP(sender, receiver, i);
+    }
+
+    public static void increaseMutualXP(User sender, User receiver, int i) {
         if (sender.getSpouse() != null && sender.getSpouse().equals(receiver)) {
             sender.getEnergy().setEnergyAmount(sender.getEnergy().getEnergyAmount() + 50);
             receiver.getEnergy().setEnergyAmount(receiver.getEnergy().getEnergyAmount() + 50);
@@ -161,7 +171,7 @@ public class FriendshipMenuController {
         }
         gift.setRate(rate);
         int xp = (rate - 3) * 10 + 15;
-        increaseMutualXP(sender, receiver, xp);
+        increaseMutualXPUpdate(sender, receiver, xp);
         return new Result(true, "rating has been set");
     }
 
@@ -185,7 +195,7 @@ public class FriendshipMenuController {
         if (me.getFriendshipXPs().getOrDefault(friend.getID(), 100) / 100 - 1 < 2) {
             return new Result(false, "you should be at least level two friends");
         }
-        increaseMutualXP(friend, me, 60);
+        increaseMutualXPUpdate(friend, me, 60);
         return new Result(true, "awww that's totally platonic");
     }
 
@@ -208,8 +218,6 @@ public class FriendshipMenuController {
         if (!friend.backPack.doesBackPackHasSpace()) {
             return new Result(false, "your friend's backpack is full");
         }
-        me.getLvl3FriendsID().add(friend.getID());
-        friend.getLvl3FriendsID().add(me.getID());
         addToBackPack(item, friend.backPack, 1);
         removeFromBackPack(item, me.backPack, 1);
         return new Result(true, "wow you are really making a move don't you ?");

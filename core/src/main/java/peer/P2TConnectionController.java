@@ -3,6 +3,7 @@ package peer;
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import common.models.Message;
+import core.Controller.InGameMenu.FriendshipMenuController;
 import core.Model.*;
 import core.Model.Serializables.SerializableTile;
 import core.Model.Tools.BackPack;
@@ -79,7 +80,15 @@ public class P2TConnectionController {
 
         String field = (String) payload.get("field");
         Object value = payload.get("value");
+        HashMap<String, Object> values = new HashMap<>();
+        try{
+            values = (HashMap<String, Object>) value;
+        }
+        catch (ClassCastException ignored){
 
+        }
+
+        HashMap<String, Object> finalValues = values;
         Gdx.app.postRunnable(() -> {
             List<GameStateUpdateListener> listenersCopy = new ArrayList<>(gameStateListeners);
             switch (field) {
@@ -144,8 +153,8 @@ public class P2TConnectionController {
                     userToUpdate.setBackPack(new Gson().fromJson((String)value, BackPack.class));
                     break;
                 case "shopUpdate":
-                    HashMap<String, Object> values = (HashMap<String, Object>) value;
-                    currentGame.getShopByName((String)values.get("shop")).getItemByName((String)values.get("item")).setDailyBoughtCount((int) values.get("stock"));
+
+                    currentGame.getShopByName((String) finalValues.get("shop")).getItemByName((String) finalValues.get("item")).setDailyBoughtCount(Integer.parseInt((String) finalValues.get("dailyBoughtCount")));
                     break;
                 case "passTime":
                     try {
@@ -153,6 +162,10 @@ public class P2TConnectionController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    break;
+                case "increaseFriendXP" :
+                    FriendshipMenuController.increaseMutualXP(App.findUserByID(Integer.parseInt((String) finalValues.get("sender"))),
+                        App.findUserByID(Integer.parseInt((String) finalValues.get("receiver"))), Integer.parseInt((String) finalValues.get("xp")));
             }
         });
     }

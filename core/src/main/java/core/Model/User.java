@@ -52,7 +52,6 @@ public class User implements Serializable {
     private SkillLevel fishingSkill = Skill.fishing.getSkillLevel();
     public BackPack backPack = new BackPack();
     private HashMap<Integer , Integer> friendshipXPs = new HashMap<>();
-    private ArrayList<Integer> lvl3FriendsID = new ArrayList<>();
     private boolean hasNewMessages = false;
     private boolean hasNewGift = false;
     private boolean hasNewTradeRequest = false;
@@ -371,14 +370,6 @@ public class User implements Serializable {
 
     public void setHasNewTradeRequest(boolean hasNewTradeRequest) {
         this.hasNewTradeRequest = hasNewTradeRequest;
-    }
-
-    public ArrayList<Integer> getLvl3FriendsID() {
-        return lvl3FriendsID;
-    }
-
-    public void setLvl3FriendsID(ArrayList<Integer> lvl3FriendsID) {
-        this.lvl3FriendsID = lvl3FriendsID;
     }
 
     public int getEnergyConsumedInTurn() {
