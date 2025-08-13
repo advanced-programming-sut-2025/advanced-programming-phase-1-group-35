@@ -168,6 +168,7 @@ public class GameView {
         renderWeather();
         renderSeason();
         renderEnergyBar();
+        renderMoney();
         batch.end();
     }
 
@@ -407,5 +408,25 @@ public class GameView {
         float textX = x + (width - layout.width) / 2;
         float textY = y + (height + layout.height) / 2;
         smallFont.draw(batch, energyText, textX, textY);
+    }
+    private void renderMoney(){
+        User player = game.getPlayingUser();
+        if (player == null) return;
+
+        String moneyText = String.format("$%d", player.getMoney());
+
+        float padding = 10f;
+        float x = Gdx.graphics.getWidth() - padding - 150;
+        // Position it below the energy bar
+        float y = Gdx.graphics.getHeight() - padding - (smallFont.getLineHeight() + 5) * 6 - 20;
+
+        // Draw background box
+        batch.setColor(0.8f, 0.8f, 0.2f, 0.7f); // Gold-ish color
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+            160, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, moneyText, x, y);
     }
 }
