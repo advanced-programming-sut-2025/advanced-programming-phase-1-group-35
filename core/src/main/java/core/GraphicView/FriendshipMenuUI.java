@@ -173,7 +173,7 @@ public class FriendshipMenuUI implements Screen {
 
         // Players
         for (User player : App.getCurrentGame().getPlayers()) {
-            if (player.getID() != App.getCurrentGame().getPlayingUser().getID()) {
+            if (!player.getUsername().equals(App.getCurrentGame().getPlayingUser().getUsername())) {
                 addPlayerRow(player);
             }
         }

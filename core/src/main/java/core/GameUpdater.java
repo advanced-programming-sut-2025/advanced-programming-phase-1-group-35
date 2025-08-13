@@ -129,10 +129,13 @@ public class GameUpdater {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("field", "shopUpdate");
         HashMap<String, Object> value = new HashMap<>();
+        System.out.println("shop: " + shop.getName() + " item: " + item.getName());
         value.put("shop", shop.getName());
         value.put("item", item.getName());
         value.put("stock", item.getDailyBoughtCount());
-        payload.put("value", value);
+        String serial = new Gson().toJson(value);
+        System.out.println(serial);
+        payload.put("value", serial);
 
         // This is the main message body sent to the server.
         HashMap<String, Object> body = new HashMap<>();

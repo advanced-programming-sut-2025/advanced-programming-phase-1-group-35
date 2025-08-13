@@ -144,6 +144,7 @@ public class Game {
                 return shop;
             }
         }
+        System.out.println(name);
         return null;
     }
 }

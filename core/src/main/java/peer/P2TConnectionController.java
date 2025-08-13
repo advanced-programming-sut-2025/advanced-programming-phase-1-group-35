@@ -80,15 +80,6 @@ public class P2TConnectionController {
 
         String field = (String) payload.get("field");
         Object value = payload.get("value");
-        HashMap<String, Object> values = new HashMap<>();
-        try{
-            values = (HashMap<String, Object>) value;
-        }
-        catch (ClassCastException ignored){
-
-        }
-
-        HashMap<String, Object> finalValues = values;
         Gdx.app.postRunnable(() -> {
             List<GameStateUpdateListener> listenersCopy = new ArrayList<>(gameStateListeners);
             switch (field) {
@@ -110,6 +101,7 @@ public class P2TConnectionController {
                     float y = pos.get("y").floatValue();
                     userToUpdate.getCurrentPoint().first = x;
                     userToUpdate.getCurrentPoint().second = y;
+                    userToUpdate.setCurrentTile(currentGame.getMap().getTiles()[(int) x][(int) y]);
                     for (GameStateUpdateListener listener : listenersCopy) {
                         listener.onPlayerPositionUpdated(userToUpdate, x, y);
                     }
@@ -152,10 +144,6 @@ public class P2TConnectionController {
                 case "backpack":
                     userToUpdate.setBackPack(new Gson().fromJson((String)value, BackPack.class));
                     break;
-                case "shopUpdate":
-
-                    currentGame.getShopByName((String) finalValues.get("shop")).getItemByName((String) finalValues.get("item")).setDailyBoughtCount(Integer.parseInt((String) finalValues.get("dailyBoughtCount")));
-                    break;
                 case "passTime":
                     try {
                         currentGame.getGameCalender().updateTimeAndDateAndSeasonAfterTurns();
@@ -163,11 +151,22 @@ public class P2TConnectionController {
                         throw new RuntimeException(e);
                     }
                     break;
+                case "shopUpdate":
+                    System.out.println((String)value);
+                    HashMap<String , Object> values = new Gson().fromJson((String)value, HashMap.class);
+                    currentGame.getShopByName((String) values.get("shop")).getItemByName((String) values.get("item")).setDailyBoughtCount(getIntFromHashMap(values, "stock"));
+                    break;
                 case "increaseFriendXP" :
-                    FriendshipMenuController.increaseMutualXP(App.findUserByID(Integer.parseInt((String) finalValues.get("sender"))),
-                        App.findUserByID(Integer.parseInt((String) finalValues.get("receiver"))), Integer.parseInt((String) finalValues.get("xp")));
+                    HashMap<String , Object> values2 = new Gson().fromJson((String)value, HashMap.class) ;
+                    FriendshipMenuController.increaseMutualXP(App.findUserByID(getIntFromHashMap(values2, "sender")),
+                        App.findUserByID(getIntFromHashMap(values2, "receiver")), getIntFromHashMap(values2, "xp"));
+                    break;
             }
         });
+    }
+
+    public static int getIntFromHashMap(HashMap<String , Object> hashMap, String field) {
+        return (int)((double)((Double) hashMap.get(field)));
     }
 
     private static void handleGameStart(Message message) {
