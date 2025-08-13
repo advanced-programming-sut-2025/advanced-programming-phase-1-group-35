@@ -81,6 +81,7 @@ public class SerializableTile implements Serializable {
             tile.setContents(items);
         }catch (Exception e){
             e.printStackTrace();
+            System.err.println(sTile.contentsMap.toString());
         }
         }
         return tile;

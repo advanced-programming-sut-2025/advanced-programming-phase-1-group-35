@@ -15,6 +15,7 @@ import core.Model.CropClasses.Crop;
 import core.Model.CropClasses.Seed;
 import core.Model.enums.Crops.CropEnum;
 import core.Model.enums.Crops.SeedEnum;
+import core.Model.enums.WeatherCondition;
 
 import java.io.IOException;
 
@@ -117,6 +118,10 @@ public class CheatUI implements Screen {
         else if(command.contains("info")){
             String cropName = command.substring(command.indexOf(" ") + 1);
             result = new Result(true, gameController.showCropInfo(cropName));
+        }
+        else if(command.equals("rain")){
+            App.getCurrentGame().setWeather(new Weather(WeatherCondition.rain, WeatherCondition.rain));
+            result = new Result(true, "rainy!");
         }
         if (result == null) {
             commandOutput.setText("invalid command!\n");

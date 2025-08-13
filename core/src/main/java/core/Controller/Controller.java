@@ -46,10 +46,12 @@ public class Controller {
             for (Class<? extends ItemConstant> enumClass : enumClasses) {
                 for (ItemConstant constant : enumClass.getEnumConstants()) {
                     try {
+                        if(constant.getItem() == null) return constant;
                         if (constant.getItem().getName().equalsIgnoreCase(itemName)) {
                             return constant;
                         }
                     } catch (IOException e) {
+                        System.err.println(constant.toString());
                     }
                 }
             }
