@@ -454,7 +454,7 @@ public class User implements Serializable {
             currentPoint.first += dx;
             currentPoint.second += dy;
             GameUpdater.sendPositionUpdate(currentPoint.first, currentPoint.second);
-            this.energy.setEnergyAmount(energy.getEnergyAmount() - ((Math.abs(dx) + Math.abs(dy))* 0.2));
+            this.energy.setEnergyAmount(energy.getEnergyAmount() - Math.abs((dx + dy)* 0.2));
             return true;
         }
         return false;
