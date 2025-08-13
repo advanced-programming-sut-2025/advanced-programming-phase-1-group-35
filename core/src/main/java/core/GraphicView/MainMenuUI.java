@@ -1,15 +1,13 @@
 package core.GraphicView;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import core.Controller.MainMenuController;
 import core.Model.GameAssetManager;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -19,6 +17,7 @@ public class MainMenuUI implements Screen {
     private final MainMenuController controller;
     private final Label title;
     private final TextButton preGameButton;
+    private Image bgImage = new Image(new Texture(Gdx.files.internal("bg1.png")));
     private final TextButton logoutButton;
     private final TextButton exitButton;
     private final TextButton profileButton;
@@ -66,6 +65,8 @@ public class MainMenuUI implements Screen {
         table.row().pad(15 , 0 , 10 , 0);
         table.add(exitButton);
         table.row().pad(15 , 0 , 10 , 0);
+        bgImage.setFillParent(true);
+        stage.addActor(bgImage);
         stage.addActor(table);
     }
 

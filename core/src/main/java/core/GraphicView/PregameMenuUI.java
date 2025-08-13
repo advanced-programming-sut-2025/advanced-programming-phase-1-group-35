@@ -3,6 +3,7 @@ package core.GraphicView;
 import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,7 +30,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     private final Stage stage;
     private final Skin skin;
     private final MainMenuController mainMenuController;
-
+    private final Image bg = new Image(new Texture(Gdx.files.internal("lobbybg.png")));
     private final Table rootTable;
     private final Cell<Table> mainContentCell;
 
@@ -44,6 +45,12 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         this.stage = new Stage(new ScreenViewport());
         this.skin = GameAssetManager.getDefaultSkin();
         this.mainMenuController = mainMenuController;
+        bg.setFillParent(true);
+        stage.addActor(bg);
+        Image overlay = new Image(new Texture(Gdx.files.internal("black_overlay.png")));
+        overlay.setFillParent(true);
+        overlay.getColor().a = 0.5f; // half-transparent
+        stage.addActor(overlay);
         this.rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
@@ -57,6 +64,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         Table lobbyListTable = new Table(skin);
         lobbyListTable.pad(20f);
         Label title = new Label("Game Lobbies", skin, "title");
+        title.setAlignment(Align.center);
         lobbyListTable.add(title).padBottom(30).row();
         lobbiesContainer = new Table();
         ScrollPane scrollPane = new ScrollPane(lobbiesContainer, skin);
@@ -90,6 +98,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         });
         mainContentCell.setActor(lobbyListTable);
         PeerApp.requestLobbyRefresh();
+
     }
 
     private void refreshLobbyListView() {

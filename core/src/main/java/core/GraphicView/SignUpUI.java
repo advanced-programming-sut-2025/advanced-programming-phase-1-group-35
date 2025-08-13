@@ -1,5 +1,6 @@
 package core.GraphicView;
 
+import com.badlogic.gdx.graphics.Texture;
 import core.Controller.GameMenuController;
 import core.Controller.LoginMenuController;
 import core.Model.App;
@@ -39,7 +40,7 @@ public class SignUpUI implements Screen {
     private final TextButton login2Button;
     private final TextButton login3Button;
     private final TextButton login4Button;
-
+    private final Image bg = new Image(new Texture(Gdx.files.internal("firstMenubg.png")));
     public SignUpUI(LoginMenuController controller) {
         this.controller = controller;
         skin = GameAssetManager.getDefaultSkin();
@@ -145,37 +146,38 @@ public class SignUpUI implements Screen {
 
         table.setFillParent(true);
         table.center();
-        table.add(title);
+//        table.add(title).right().center();
         table.row().pad(15, 0 , 15 , 0);
-        table.add(usernameField).width(600);
+        table.add(usernameField).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(passwordField).width(600);
+        table.add(passwordField).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(confirmPasswordField).width(600);
+        table.add(confirmPasswordField).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(emailField).width(600);
+        table.add(emailField).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(randomPasswordButton).width(300);
+        table.add(randomPasswordButton).width(300).right();
         table.row().pad(15, 0 , 10 , 0);
-        table.add(genderBox).width(150);
+        table.add(genderBox).width(150).right();
+        table.row().pad(10, 0 , 10 , 0).expandX();
+        table.add(securityQuestionBox).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(securityQuestionBox).width(800);
+        table.add(securityAnswerField).width(600).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(securityAnswerField).width(600);
+        table.add(advanceButton).width(300).right();
         table.row().pad(10, 0 , 10 , 0);
-        table.add(advanceButton).width(300);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(loginButton).width(300);
-        table.add(testButton).width(300);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(login1Button).width(300);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(login2Button).width(300);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(login3Button).width(300);
-        table.row().pad(10, 0 , 10 , 0);
-        table.add(login4Button).width(300);
-
+        table.add(loginButton).width(300).right().row();
+        table.add(testButton).width(300).right();
+        table.row().pad(10, 0 , 10 , 150);
+        table.add(login1Button).width(300).right();
+        table.pad(10, 0 , 10 , 0);
+        table.add(login2Button).width(300).right();
+        table.row().pad(10, 0 , 10 , 150);
+        table.add(login3Button).width(300).right();
+        table.pad(10, 0 , 10 , 0);
+        table.add(login4Button).width(300).right();
+        bg.setFillParent(true);
+        stage.addActor(bg);
         stage.addActor(table);
     }
 
