@@ -76,7 +76,7 @@ public enum ArtisanProductDetails implements ItemInterface, ItemConstant {
 
     @Override
     public ItemInterface getItem() {
-        return null;
+        return this;
         //TODO
     }
 }

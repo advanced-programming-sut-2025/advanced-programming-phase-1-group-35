@@ -36,6 +36,10 @@ public class Weather {
         weatherCondition = randomWeatherCondition(Seasons.Spring);
         tomorrowCondition = randomWeatherCondition(Seasons.Spring);
     }
+    public Weather(WeatherCondition weatherCondition, WeatherCondition tomorrowCondition) {
+        this.weatherCondition = weatherCondition;
+        this.tomorrowCondition = tomorrowCondition;
+    }
 
     public Result cheatWeatherSet(String weatherString) {
         WeatherCondition weather;
