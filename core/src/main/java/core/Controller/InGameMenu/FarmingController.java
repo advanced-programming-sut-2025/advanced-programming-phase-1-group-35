@@ -1,5 +1,6 @@
 package core.Controller.InGameMenu;
 
+import core.GameUpdater;
 import core.Model.*;
 import core.Model.enums.Crops.*;
 import core.GraphicView.GameMenuUI;
@@ -30,6 +31,7 @@ public class FarmingController {
 
     private void plowFloor(Tile tile) {
         tile.setPlowed(true);
+        GameUpdater.sendTileUpdate(tile);
     }
 
     private Tile[] findTilesWithSameSeed(Tile tile) {
@@ -155,9 +157,12 @@ public class FarmingController {
                 temp.setGiant(true);
                 tile1.setSymbol('&');
                 tile1.setContentSymbol('&');
+                GameUpdater.sendTileUpdate(tile1);
             }
+            GameUpdater.sendTileUpdate(tile);
             return new Result(true, "seed planted,giant crop incoming");
         }
+        GameUpdater.sendTileUpdate(tile);
         return new Result(true, "seed planted");
     }
 
@@ -289,10 +294,12 @@ public class FarmingController {
                         App.getCurrentGame().getMap().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop1);
                         App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
+                        GameUpdater.sendTileUpdate(crop1.getCropTile());
                         return new Result(true, "crop harvested");
                     } else {
                         crop1.setCurrentState(crop1.getCurrentState() - 1);
                         crop1.setDaysSinceLastGrowth(0);
+                        GameUpdater.sendTileUpdate(crop1.getCropTile());
                         return new Result(true, "crop harvested and is now regrowing");
                     }
                 }
@@ -305,6 +312,7 @@ public class FarmingController {
             App.getCurrentGame().getPlayingUser().getBackPack().items.put(tree.getFruit(), 1);
             tree.setDaysSinceLastGrowth(0);
             App.getCurrentGame().getPlayingUser().getFarmingSkill().gainXp();
+            GameUpdater.sendTileUpdate(tree.getTile());
             return new Result(true, "fruit picked! 8)");
         }
         return new Result(false, "no crop nor tree found there");
@@ -328,7 +336,7 @@ public class FarmingController {
         if (App.getCurrentGame().getPlayingUser().getFarm().getCrops().size() > 16) {
             Random rand = new Random();
             int random = rand.nextInt(App.getCurrentGame().getPlayingUser().getFarm().getCrops().size());
-            if (rand.nextInt(100) < 25) {
+            if (rand.nextInt(100) < 250) {
             Crop crop = App.getCurrentGame().getPlayingUser().getFarm().getCrops().get(random);
             boolean scareCrow = false;
             for(Tile tile : findCloseTiles(crop.getcropTile())){
@@ -347,7 +355,8 @@ public class FarmingController {
 //                crop.getCropTile().setSymbol('X');
                 crop.getCropTile().setContentSymbol('X');
                 GameMenuUI.Crows = true;
-                }
+               GameUpdater.sendTileUpdate(crop.getCropTile());
+            }
             else GameMenuUI.Crows = false;
             }
         }
@@ -386,6 +395,7 @@ public class FarmingController {
                     tile.addContents(tree);
                     tree.setTile(tile);
                     tree.setCurrentState(4);
+                    GameUpdater.sendTileUpdate(tree.getTile());
 //                    System.out.println("tree spawned at " + tile.getCoordination().x + " " + tile.getCoordination().y);
                 }
             }
@@ -410,7 +420,7 @@ public class FarmingController {
                                 App.getCurrentGame().getMap().AddCrop(crop);
                                 App.getCurrentGame().getPlayingUser().getFarm().AddCrop(crop);
                                 tile.addContents(crop);
-
+                                GameUpdater.sendTileUpdate(crop.getCropTile());
                     }
                 }
             }
@@ -456,6 +466,7 @@ public class FarmingController {
                         mineral = new Mineral(Minerals.getRandomForagingMineral(),tile);
                         tile.setContentSymbol(mineral.getSymbol());
                         tile.addContents(mineral);
+                        GameUpdater.sendTileUpdate(mineral.getTile());
                     }
                 }
             }
@@ -474,10 +485,11 @@ public class FarmingController {
                         Tree tree = new Tree(TreeEnum.getRandomForagingTree());
                         tile.setPlanted(tree);
                         App.getCurrentGame().getMap().addTrees(tree);
-                        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
+//                        App.getCurrentGame().getPlayingUser().getFarm().addTrees(tree);
                         tile.addContents(tree);
                         tile.setContentSymbol(tree.getSymbol());
                         tree.setTile(tile);
+                        GameUpdater.sendTileUpdate(tree.getTile());
 //                        System.out.println("tree planted, location : " + tile.coordination);
                     }
                 }
@@ -498,6 +510,7 @@ public class FarmingController {
                         tile.addContents(crop);
                         tile.setContentSymbol(crop.getSymbol());
 //                        System.out.println("crop planted, location : " + tile.coordination);
+                        GameUpdater.sendTileUpdate(tile);
                     }
                 }
             }

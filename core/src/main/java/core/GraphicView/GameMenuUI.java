@@ -1,5 +1,6 @@
 package core.GraphicView;
 
+import com.badlogic.gdx.audio.Sound;
 import core.Model.*;
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.AnimalController;
@@ -135,11 +136,15 @@ public class GameMenuUI implements Screen {
 
     public static boolean Crows = false;
     private float animationTime = 0f;
-    private final float crowDuration = 6f;
+    private final float crowDuration = 10f;
     private final float fadeDuration = 1f;
 
     private ArtisanUI artisanUI;
     private ReactionUI reactionUI;
+    private CraftingUI craftingUI;
+
+    private Sound crowSound;
+    private boolean crowSoundPlayed = false;
 
     private static class ChatMessage {
         String text;
@@ -205,6 +210,9 @@ public class GameMenuUI implements Screen {
                 if (buildingPlacementMode) return false;
 
                 switch (keycode) {
+                    case Input.Keys.L:
+                        toggleCraftingUI();
+                        return true;
                     case Input.Keys.R:
                         Main.getGame().setScreen(reactionUI);
                         return true;
@@ -496,6 +504,7 @@ public class GameMenuUI implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(mainMultiplexer);
+        crowSound = Gdx.audio.newSound(Gdx.files.internal("crow.mp3"));
     }
 
     @Override
@@ -527,10 +536,14 @@ public class GameMenuUI implements Screen {
         animationTime += delta;
         if (Crows) {
             animationTime += delta;
-
+            if(!crowSoundPlayed) {
+                crowSound.play(2.0f);
+                crowSoundPlayed = true;
+            }
             if (animationTime >= crowDuration) {
                 Crows = false;
                 animationTime = 0;
+                crowSoundPlayed = false;
             } else {
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -854,6 +867,14 @@ public class GameMenuUI implements Screen {
             artisanUI.getController().setMachine(machine);
         }
         Main.getGame().setScreen(artisanUI);
+    }
+    public void toggleCraftingUI(){
+        if (craftingUI == null) {
+            craftingUI = new CraftingUI(GameAssetManager.getDefaultSkin(),App.getCurrentGame().getPlayingUser(),
+                new CraftingController());
+            craftingUI.setGameMenuUI(this);
+        }
+        Main.getGame().setScreen(craftingUI);
     }
 
     @Override

@@ -11,6 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.Model.*;
+import core.Model.CropClasses.Crop;
+import core.Model.CropClasses.Seed;
+import core.Model.enums.Crops.CropEnum;
+import core.Model.enums.Crops.SeedEnum;
 
 import java.io.IOException;
 
@@ -89,10 +93,31 @@ public class CheatUI implements Screen {
         } else if (commandParts[0].equals("cheat") && commandParts[1].equals("thor")) {
             result = Weather.hitTileWithThunder(Objects.requireNonNull(Map.getTileWithCoordination(commandParts[2], commandParts[3])));
         }
-        if(command.equals("go to next day"))
+        else if(command.equals("go to next day")){
             try {
             result = App.getCurrentGame().getGameCalender().goToNextDay();
-            } catch (IOException e){};
+            } catch (IOException e){
+                e.printStackTrace();
+            };
+        }
+        else if(command.equals("giant")){
+            result = spawnGiantCrop();
+        }
+        else if(command.equals("mixed")){
+            result = plantMixedSeed();
+        }
+        else if(command.equals("fertilize")){
+            App.getCurrentGame().getPlayingUser().getCurrentTile().setFertilized(true);
+            result = new Result(true, "fertilized");
+        }
+        else if(command.equals("water")){
+            App.getCurrentGame().getPlayingUser().getCurrentTile().setWatered(true);
+            result = new Result(true, "watered");
+        }
+        else if(command.contains("info")){
+            String cropName = command.substring(command.indexOf(" ") + 1);
+            result = new Result(true, gameController.showCropInfo(cropName));
+        }
         if (result == null) {
             commandOutput.setText("invalid command!\n");
             return;
@@ -128,5 +153,41 @@ public class CheatUI implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private Result spawnGiantCrop(){
+        App.getCurrentGame().getPlayingUser().getBackPack().items.put(SeedEnum.POWDERMELON,1);
+        Tile[][] map = App.getCurrentGame().getMap().getTiles();
+
+        App.getCurrentGame().getMap().getCrops().add(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y]));
+
+        App.getCurrentGame().getMap().getCrops().add(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y]));
+
+        App.getCurrentGame().getMap().getCrops().add(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y+1]));
+
+        map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x]
+            [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y].setPlanted(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y]));
+
+        map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+            [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y].setPlanted(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y]));
+
+        map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+            [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y+1].setPlanted(new Crop(CropEnum.POWDERMELON,
+            map[App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.x+1]
+                [App.getCurrentGame().getPlayingUser().getCurrentTile().coordination.y+1]));
+        return gameController.plantSeed("POWDERMELON","up");
+    }
+    private Result plantMixedSeed(){
+        return gameController.plantSeed("mixed seed","here");
     }
 }

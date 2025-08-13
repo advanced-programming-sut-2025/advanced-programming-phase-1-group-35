@@ -1,5 +1,6 @@
 package core.Controller.InGameMenu;
 
+import com.StardewValley.Main;
 import core.GraphicView.CraftingUI;
 import core.Model.App;
 import core.Model.ItemInterface;
@@ -16,7 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class CraftingController {
     private CraftingUI craftingUI;
@@ -136,7 +139,20 @@ public class CraftingController {
 
         else if(craftingUI.getBack().isChecked()){
             craftingUI.getBack().setChecked(false);
-            //TODO:return to the game menu
+            Main.getGame().setScreen(craftingUI.getGameMenuUI());
+        }
+        else if(craftingUI.getAddRecipes().isChecked()){
+            craftingUI.getAddRecipes().setChecked(false);
+            List<CraftingRecipes> unknownRecipes = Arrays.stream(CraftingRecipes.values())
+                .filter(r -> !App.getCurrentGame().getPlayingUser().getCraftingRecipes().contains(r))
+                .toList();
+
+            if (!unknownRecipes.isEmpty()) {
+                CraftingRecipes cr = unknownRecipes.get(new Random().nextInt(unknownRecipes.size()));
+                App.getCurrentGame().getPlayingUser().getCraftingRecipes().add(cr);
+            }
+
+            craftingUI.refreshRecipes();
         }
 
     }

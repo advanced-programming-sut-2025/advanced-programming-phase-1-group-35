@@ -2,6 +2,10 @@ package core.Model.enums;
 
 import core.Model.ItemInterface;
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 public enum CraftingRecipes implements ItemConstant {
     CherryBomb("4 copper ore + 1 coal",CraftingItems.CherryBomb),
     Bomb("4 iron ore + 1 coal",CraftingItems.Bomb),
@@ -55,5 +59,11 @@ public enum CraftingRecipes implements ItemConstant {
     @Override
     public String toString() {
         return name() + ": " + getRecipe();
+    }
+
+    public static CraftingRecipes getRandomRecipe(){
+        List<CraftingRecipes> recipes = List.of(CraftingRecipes.values()).stream().collect(Collectors.toList());
+        Random random = new Random();
+        return recipes.get(random.nextInt(recipes.size()));
     }
 }
