@@ -163,6 +163,7 @@ public class GameView {
         // === UI Rendering (fixed on screen) ===
         batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.begin();
+        renderNightOverlay();
         renderCoordinates();
         renderDateTime();
         renderWeather();
@@ -170,6 +171,51 @@ public class GameView {
         renderEnergyBar();
         renderMoney();
         batch.end();
+    }
+
+    private void renderNightOverlay() {
+        // Assuming game.getGameCalender().getGameDateTime() has a getHour() method.
+        int hour = game.getGameCalender().getGameDateTime().getHour();
+        float alpha = 0f;
+
+        // The sky starts getting dark at 6 PM (18:00)
+        if (hour >= 18 && hour < 19) {
+            // Stage 1 of darkness
+            alpha = 0.2f;
+        } else if (hour >= 19 && hour < 20) {
+            // Stage 2 of darkness
+            alpha = 0.4f;
+        } else if (hour >= 20 || hour < 6) {
+            // Maximum darkness from 8 PM (20:00) until 6 AM
+            alpha = 0.6f;
+        }
+
+        // If it's dark enough to render the overlay
+        if (alpha > 0) {
+            // Enable blending to allow for transparency
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+            // Set the color of the overlay (dark blueish tint for night)
+            batch.setColor(0, 0, 0.1f, alpha);
+
+            // Get camera position to draw the overlay over the entire viewport
+            float camX = game.camera.position.x;
+            float camY = game.camera.position.y;
+            float viewportWidth = game.camera.viewportWidth;
+            float viewportHeight = game.camera.viewportHeight;
+            float startX = camX - viewportWidth / 2;
+            float startY = camY - viewportHeight / 2;
+
+            // Draw a 1x1 pixel texture stretched to cover the screen
+            batch.draw(pixel, startX, startY, viewportWidth, viewportHeight);
+
+            // Reset the batch color to white to not affect subsequent draw calls
+            batch.setColor(1, 1, 1, 1);
+
+            // It's good practice to disable blending when done, though SpriteBatch manages this.
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
     }
 
     private void renderTiles() {
