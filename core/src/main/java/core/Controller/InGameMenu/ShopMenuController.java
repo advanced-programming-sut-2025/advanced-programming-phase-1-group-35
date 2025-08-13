@@ -1,5 +1,6 @@
 package core.Controller.InGameMenu;
 
+import core.GameUpdater;
 import core.Model.*;
 import core.Model.*;
 import core.Model.Shops.Shop;
@@ -91,6 +92,7 @@ public class ShopMenuController {
         user.getBackPack().items.compute((ItemInterface) product , (k, v) -> v == null ? count : v + count );
         item.setDailyBoughtCount(item.getDailyBoughtCount() + count);
         user.setMoney(user.getMoney() - price);
+        GameUpdater.sendShopUpdate(shop, item);
         return new Result(true, "you successfully purchased " + count + " of " + item.getName());
     }
     public ShopItem findShopItemByName(String name) {
