@@ -30,7 +30,7 @@ public class User {
     private int highScore = 0;
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
-    private int money = 10000;
+    private int money = 20000;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 
@@ -509,6 +509,7 @@ public class User {
         if (currentTile.isWalkable() && (currentTile.getOwner() == null || currentTile.getOwner().equals(this)) ) {
             currentPoint.first += dx;
             currentPoint.second += dy;
+            energy.setEnergyAmount(energy.getEnergyAmount() - Math.abs((dx + dy) * 0.2));
             return true;
         }
         return false;

@@ -30,6 +30,7 @@ public class FriendshipMenuUI implements Screen {
     private TextField messageField;
     private Label statusLabel;
     private boolean hasNewMessages;
+    User requester ;
 
     private Inventory giftInventory;
     private TextField giftAmountField;
@@ -181,7 +182,10 @@ public class FriendshipMenuUI implements Screen {
     private void addPlayerRow(User player) {
         // Player name
         Label nameLabel = new Label(player.getUsername(), skin);
-        int xp = player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser()) == null ? 0 : player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser());
+        int xp = 100 ;
+        if(gameMenuUI.gameModel.getPlayingUser().getFriendshipXPs().get(player.getID()) != null){
+            xp = gameMenuUI.gameModel.getPlayingUser().getFriendshipXPs().get(player.getID());
+        }
         Label xpLabel = new Label(String.format("%d", xp), skin);
         playersTable.add(nameLabel).width(200).pad(5);
         playersTable.add(xpLabel).width(200).pad(5);
@@ -306,8 +310,8 @@ public class FriendshipMenuUI implements Screen {
         User currentUser = App.getCurrentGame().getPlayingUser();
         int xp = currentUser.getFriendshipXPs().getOrDefault(player.getID(), 100);
         return (xp >= 400) && // At least 400 XP (level 4)
-            currentUser.getGender() == Gender.male &&
-            player.getGender() == Gender.female &&
+//            currentUser.getGender() == Gender.male &&
+//            player.getGender() == Gender.female &&
             currentUser.getSpouse() == null &&
             player.getSpouse() == null;
     }
@@ -406,7 +410,7 @@ public class FriendshipMenuUI implements Screen {
         acceptButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Result result = controller.acceptMarriageRequest(App.getCurrentGame().getPlayingUser());
+                Result result = controller.acceptMarriageRequest(App.getCurrentGame().getPlayingUser(), requester);
                 statusLabel.setText(result.toString());
                 if (result.isSuccess()) {
                     statusLabel.setColor(0, 1, 0, 1);
@@ -423,7 +427,7 @@ public class FriendshipMenuUI implements Screen {
         rejectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Result result = controller.rejectMarriageRequest(App.getCurrentGame().getPlayingUser());
+                Result result = controller.rejectMarriageRequest(App.getCurrentGame().getPlayingUser(), requester);
                 statusLabel.setText(result.toString());
                 if (result.isSuccess()) {
                     statusLabel.setColor(0, 1, 0, 1);
@@ -479,9 +483,8 @@ public class FriendshipMenuUI implements Screen {
 
         // Check for marriage request
         if (hasMarriageRequest()) {
-            User requester = getMarriageRequester();
+            requester = getMarriageRequester();
             showMarriageResponseDialog(requester);
-            // Reset the flag so it doesn't show repeatedly
             currentUser.setAskedMarriage(null);
         }
     }

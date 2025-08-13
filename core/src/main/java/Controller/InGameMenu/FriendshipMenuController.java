@@ -8,22 +8,22 @@ import Model.enums.Gender;
 import java.util.Map;
 
 public class FriendshipMenuController {
-    public Result acceptMarriageRequest(User user) {
-        Map.Entry<ItemInterface, Integer> ring = getItemFromBackPack("WEDDING_RING", user.getAskedMarriage().backPack);
+    public Result acceptMarriageRequest(User user, User requester) {
+        Map.Entry<ItemInterface, Integer> ring = getItemFromBackPack("WEDDING_RING", requester.backPack);
         if (ring == null) {
-            return new Result(false, "that stupid boy forgot the ring");
+           return new Result(false, "that stupid boy forgot the ring");
         }
-        user.setSpouse(user.getAskedMarriage());
+        user.setSpouse(requester);
         user.getSpouse().setSpouse(user);
         user.setAskedMarriage(null);
         removeFromBackPack(ring, user.getSpouse().backPack, 1);
         addToBackPack(ring, user.backPack, 1);
         return new Result(true, "You have successfully accepted the marriage");
     }
-    public Result rejectMarriageRequest(User user) {
-        int xp = user.getFriendshipXPs().get(user.getAskedMarriage().getID());
-        increaseMutualXP(user, user.getAskedMarriage(), -xp);
-        user.getAskedMarriage().getEnergy().setEnergyCapacity(user.getAskedMarriage().getEnergy().getEnergyCapacity() / 2);
+    public Result rejectMarriageRequest(User user, User requester) {
+        int xp = user.getFriendshipXPs().get(requester.getID());
+        increaseMutualXP(user, requester, -xp);
+        requester.getEnergy().setEnergyCapacity(requester.getEnergy().getEnergyCapacity() / 2);
         user.setAskedMarriage(null);
         return new Result(true, "damn , so we breaking hearts now ?");
     }
@@ -230,9 +230,9 @@ public class FriendshipMenuController {
         if (!me.getGender().equals(Gender.male)) {
             return new Result(false, "you are not a male");
         }
-        if (!friend.getGender().equals(Gender.female)) {
-            return new Result(false, "that's fucking gay");
-        }
+//        if (!friend.getGender().equals(Gender.female)) {
+//            return new Result(false, "that's fucking gay");
+//        }
         if (me.getFriendshipXPs().getOrDefault(friend.getID(), 100) < 400) {
             return new Result(false, "you are not intimate enough");
         }
