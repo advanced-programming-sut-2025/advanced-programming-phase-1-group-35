@@ -33,7 +33,7 @@ public class User implements Serializable {
     private int gamesPlayed = 0;
     private int energyConsumedInTurn = 0;
 
-    private int money = 10000;
+    private int money = 15000;
     private int income = 0;
     private ArrayList<CraftingRecipes> craftingRecipes = new ArrayList<>();
 

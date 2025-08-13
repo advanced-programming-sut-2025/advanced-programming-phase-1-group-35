@@ -157,6 +157,7 @@ public class P2TConnectionController {
                     currentGame.getShopByName((String) values.get("shop")).getItemByName((String) values.get("item")).setDailyBoughtCount(getIntFromHashMap(values, "stock"));
                     break;
                 case "increaseFriendXP" :
+                    System.out.println("increasing xp");
                     HashMap<String , Object> values2 = new Gson().fromJson((String)value, HashMap.class) ;
                     FriendshipMenuController.increaseMutualXP(App.findUserByID(getIntFromHashMap(values2, "sender")),
                         App.findUserByID(getIntFromHashMap(values2, "receiver")), getIntFromHashMap(values2, "xp"));
