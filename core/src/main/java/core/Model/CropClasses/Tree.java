@@ -1,6 +1,7 @@
 package core.Model.CropClasses;
 
 import core.Controller.Controller;
+import core.GameUpdater;
 import core.Model.App;
 import core.Model.ItemInterface;
 import core.Model.Tile;
@@ -150,6 +151,7 @@ public class Tree implements PlantAble,ItemInterface {
     }
 
     public boolean grow() {
+        boolean result;
         if (daysSinceWatered <= 1) {
             if (this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
                 this.currentState++;
@@ -160,7 +162,7 @@ public class Tree implements PlantAble,ItemInterface {
             daysSinceWatered++;
             daysSincePlanted++;
             this.getTile().setWatered(false);
-            return true;
+            result = true;
         }
         else{
             tile.setPlanted(null);
@@ -168,10 +170,12 @@ public class Tree implements PlantAble,ItemInterface {
             tile.setContentSymbol('.');
             tile.setSymbol('.');
             tile.changeTileContents(null);
-            App.getCurrentGame().getMap().getCrops().remove(this);
-            App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(this);
-            return false;
+            App.getCurrentGame().getMap().getTrees().remove(this);
+            App.getCurrentGame().getPlayingUser().getFarm().getTrees().remove(this);
+            result = false;
         }
+        GameUpdater.sendTileUpdate(tile);
+        return result;
     }
     public String saplingPath(){
         return "trees/" + Controller.formatUpperSnakeCase(getName()) + "_Sapling.png";

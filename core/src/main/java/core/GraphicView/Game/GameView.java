@@ -410,8 +410,8 @@ public class GameView implements GameStateUpdateListener {
 
                 TextureRegion treeTexture = textures.get(tree.stagePath());
                 if (treeTexture != null) {
-                    float treeWidth = tree.getCurrentState() > 2 ? tileSize * 2f : tileSize;
-                    float treeHeight = tileSize * (float)tree.getCurrentState();
+                    float treeWidth = tree.getCurrentState() > 2 ? tileSize * 1.5f : tileSize;
+                    float treeHeight = tileSize * (float)tree.getCurrentState()*0.8f;
                     float adjustedX = drawX - (treeWidth - tileSize) / 2f;
                     float adjustedY = drawY;
                     if (tree.isChopped()) treeHeight /=3;

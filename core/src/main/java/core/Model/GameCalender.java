@@ -130,7 +130,8 @@ public class GameCalender {
         gameDateTime = gameDateTime.plusDays(1).withHour(9).withMinute(0);
         this.dayPassedFromSeason++;
         FarmingController farmingController = new FarmingController(App.getCurrentGame().getMap().getTiles());
-        farmingController.crowAttack();
+//        farmingController.crowAttack();
+        farmingController.handlePlantRemoval();
         Random rand = new Random();
         if (App.getCurrentGame().getWeather().getWeatherCondition().equals(WeatherCondition.storm)) {
             for (int i = 0; i < 20; i++) {
@@ -158,7 +159,7 @@ public class GameCalender {
                     App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(crop);
                 }
             }
-            boolean temp = crop.grow();
+//            boolean temp = crop.grow();
             if (crop.isFertilized()) {
                 boolean fertilizer = false;
                 if (crop.getFertilizer().getName().equals("Speed-Gro")) {

@@ -1,6 +1,7 @@
 package core.Model.CropClasses;
 
 import core.Controller.Controller;
+import core.GameUpdater;
 import core.Model.App;
 import core.Model.ItemInterface;
 import core.Model.Tile;
@@ -208,6 +209,7 @@ public class Crop implements PlantAble, ItemInterface {
     //actually this is pretty complicated because i need to keep in mind how many days have passed and then use this;
     //my current idea is this
     public boolean grow() {
+        boolean result;
         if (daysSinceWatered <= 1) {
             if (this.currentState != this.stages.size() && this.daysSinceLastGrowth >= this.stages.get(this.currentState)) {
                 this.currentState++;
@@ -219,7 +221,7 @@ public class Crop implements PlantAble, ItemInterface {
             daysSinceWatered++;
             daysSincePlanted++;
             this.getCropTile().setWatered(false);
-            return true;
+            result = true;
         }
         else{
             cropTile.setPlanted(null);
@@ -229,8 +231,10 @@ public class Crop implements PlantAble, ItemInterface {
             cropTile.changeTileContents(null);
             App.getCurrentGame().getMap().getCrops().remove(this);
             App.getCurrentGame().getPlayingUser().getFarm().getCrops().remove(this);
-            return false;
+            result =  false;
         }
+        GameUpdater.sendTileUpdate(cropTile);
+        return result;
     }
     public void addDaysSincePlanted() {
         this.daysSincePlanted++;

@@ -1,5 +1,6 @@
 package core.GraphicView;
 
+import core.Controller.InGameMenu.ArtisanController;
 import core.Model.*;
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.AnimalController;
@@ -16,6 +17,7 @@ import core.Model.CropClasses.Seed;
 import core.Model.enums.Crops.CropEnum;
 import core.Model.enums.Crops.SeedEnum;
 import core.Model.enums.WeatherCondition;
+import core.Model.machines.Keg;
 
 import java.io.IOException;
 
@@ -122,6 +124,23 @@ public class CheatUI implements Screen {
         else if(command.equals("rain")){
             App.getCurrentGame().setWeather(new Weather(WeatherCondition.rain, WeatherCondition.rain));
             result = new Result(true, "rainy!");
+        }
+        else if(command.equals("keg")){
+            Keg keg = new Keg(new ArtisanController());
+            keg.getController().setArtisanUI(new ArtisanUI());
+            keg.getController().setMachine(keg);
+            App.getCurrentGame().getPlayingUser().getCurrentTile().addContents(keg);
+            keg.setX(App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getX());
+            keg.setY(App.getCurrentGame().getPlayingUser().getCurrentTile().getCoordination().getY());
+            App.getCurrentGame().getMap().getMachines().add(keg);
+            result = new Result(true, "keg placed!");
+        }
+        else if(command.equals("inventory")){
+            StringBuilder sb = new StringBuilder("Inventory:\n");
+            for (ItemInterface item: App.getCurrentGame().getPlayingUser().backPack.items.keySet()){
+                sb.append(item.getName() + "\n");
+            }
+            result = new Result(true, sb.toString());
         }
         if (result == null) {
             commandOutput.setText("invalid command!\n");
