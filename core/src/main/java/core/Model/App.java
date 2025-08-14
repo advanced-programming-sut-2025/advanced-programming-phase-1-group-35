@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class App {
     public static ArrayList<User> users = new ArrayList<>();
     public static ArrayList<User> onlineUsers = new ArrayList<>();
+    public static ArrayList<String> onlineUserNames = new ArrayList<>();
     public static ArrayList<Game> games = new ArrayList<>();
     private static Game currentGame = null;
     private static User loggedInUser = null;

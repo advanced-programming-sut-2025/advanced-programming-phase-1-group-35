@@ -25,6 +25,8 @@ public class TrackerConnectionController {
         switch (command) {
             case "login":
                 return login(message, peerConnectionThread);
+            case "update_online_users":
+                return updateOnlineUsers();
             case "get_lobbies":
                 return getLobbies();
             case "create_lobby":
@@ -44,6 +46,17 @@ public class TrackerConnectionController {
                 System.err.println("Unknown command received: " + command);
                 return createErrorResponse(command, "Unknown command.");
         }
+    }
+
+    private static Message updateOnlineUsers() {
+        ArrayList<String> onlineUserNames = new ArrayList<>();
+        for (PeerConnectionThread connection : TrackerApp.getConnections()) {
+            onlineUserNames.add(connection.user.getUsername());
+        }
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("command", "update_online_users");
+        body.put("online_users", onlineUserNames);
+        return new Message(body , Message.Type.command);
     }
 
     private static Message handleGameStateUpdate(Message message, User user) {

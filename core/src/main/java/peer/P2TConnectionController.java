@@ -48,6 +48,8 @@ public class P2TConnectionController {
         switch (command) {
             case "status":
                 return status();
+            case "update_online_users":
+                return updateOnlineUserNames(message);
             case "lobby_list_update":
                 handleLobbyListUpdate(message);
                 return null;
@@ -64,6 +66,14 @@ public class P2TConnectionController {
                 System.out.println("Unknown command from tracker: " + command);
                 return null;
         }
+    }
+
+    private static Message updateOnlineUserNames(Message message) {
+        App.onlineUserNames = message.getFromBody("online_users");
+        for (String onlineUserName : App.onlineUserNames) {
+            App.onlineUsers.add(App.findUserByUsername(onlineUserName));
+        }
+        return null ;
     }
 
     private static void handleGameStateBroadcast(Message message) {

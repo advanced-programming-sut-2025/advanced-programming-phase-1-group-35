@@ -60,6 +60,9 @@ public class PeerConnectionThread extends ConnectionThread {
 
     @Override
     protected boolean handleMessage(Message message) throws IOException {
+        if(message == null){
+            return true;
+        }
         if (message.getType().equals(Message.Type.command)) {
             sendMessage(TrackerConnectionController.handleCommand(message, this));
             return true;

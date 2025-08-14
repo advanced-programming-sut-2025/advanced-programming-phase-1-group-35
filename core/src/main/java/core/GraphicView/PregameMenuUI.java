@@ -19,6 +19,7 @@ import core.Controller.MainMenuController;
 import core.Model.*;
 import peer.LobbyUpdateListener;
 import peer.P2TConnectionController;
+import peer.app.P2TConnectionThread;
 import peer.app.PeerApp;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
     private Table lobbiesContainer;
     private Table lobbyPlayersTable;
     private Table lobbyViewTable;
+    private Table onlinePlayersTable;
 
     public PregameMenuUI(MainMenuController mainMenuController) {
         this.stage = new Stage(new ScreenViewport());
@@ -61,50 +63,109 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
 
     private void showLobbyListUI() {
         currentLobby = null;
-        Table lobbyListTable = new Table(skin);
-        lobbyListTable.pad(20f);
-        Label title = new Label("Game Lobbies", skin, "title");
+        Table layoutTable = new Table(skin); // Main container for this view
+        layoutTable.pad(20f);
+
+        Label title = new Label("Game Browser", skin, "title");
         title.setAlignment(Align.center);
-        lobbyListTable.add(title).padBottom(30).row();
+        layoutTable.add(title).colspan(2).padBottom(30).row();
+
+        // Left side: Lobbies
         lobbiesContainer = new Table();
-        ScrollPane scrollPane = new ScrollPane(lobbiesContainer, skin);
-        lobbyListTable.add(scrollPane).grow().padBottom(20).row();
+        ScrollPane lobbiesScrollPane = new ScrollPane(lobbiesContainer, skin);
+        lobbiesScrollPane.setFadeScrollBars(false);
+        lobbiesScrollPane.setScrollingDisabled(true, false);
+
+
+        // Right side: Online Players
+        onlinePlayersTable = new Table(skin);
+        onlinePlayersTable.pad(10f).top();
+        ScrollPane playersScrollPane = new ScrollPane(onlinePlayersTable, skin);
+        playersScrollPane.setFadeScrollBars(false);
+        playersScrollPane.setScrollingDisabled(true, false);
+
+
+        // SplitPane to hold both
+        SplitPane splitPane = new SplitPane(lobbiesScrollPane, playersScrollPane, false, skin);
+        splitPane.setSplitAmount(0.75f); // 75% for lobbies, 25% for players
+
+        layoutTable.add(splitPane).grow().padBottom(20).row();
+
         refreshLobbyListView();
+        refreshOnlinePlayersList();
+
         TextButton createLobbyButton = new TextButton("Create New Lobby", skin);
         TextButton backButton = new TextButton("Back to Main Menu", skin);
         TextButton refreshButton = new TextButton("Refresh", skin);
+
         Table buttonTable = new Table();
         buttonTable.add(createLobbyButton).width(250).pad(10);
         buttonTable.add(refreshButton).width(150).pad(10);
-        lobbyListTable.add(buttonTable).padBottom(10).row();
-        lobbyListTable.add(backButton).width(300);
+
+        layoutTable.add(buttonTable).colspan(2).padBottom(10).row();
+        layoutTable.add(backButton).width(300).colspan(2);
+
         createLobbyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showCreateLobbyDialog();
             }
         });
+
         refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PeerApp.requestLobbyRefresh();
             }
         });
+
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 goBackToMainMenu();
             }
         });
-        mainContentCell.setActor(lobbyListTable);
-        PeerApp.requestLobbyRefresh();
 
+        mainContentCell.setActor(layoutTable);
+        PeerApp.requestLobbyRefresh();
     }
+
+    private void refreshOnlinePlayersList() {
+        if (onlinePlayersTable == null) return;
+        onlinePlayersTable.clear();
+        onlinePlayersTable.defaults().align(Align.left).pad(2);
+        onlinePlayersTable.add(new Label("Online Players", skin)).align(Align.center).padBottom(10).row();
+        // Assuming App.getOnlineUsers() is a static method that returns a list of online users.
+        HashMap<String , Object> body = new HashMap<>();
+        body.put("command", "update_online_users");
+        PeerApp.getP2TConnection().sendAndWaitForResponse(new Message(body , Message.Type.command), 500);
+        List<User> currentOnlineUsers = App.onlineUsers;
+
+        if (currentOnlineUsers == null || currentOnlineUsers.isEmpty()) {
+            onlinePlayersTable.add(new Label("No players online.", skin)).row();
+        } else {
+            User loggedInUser = App.getLoggedInUser();
+            boolean otherPlayersFound = false;
+            for (User user : currentOnlineUsers) {
+                // Don't show the current player in the list of "other" online players
+                if (user.equals(loggedInUser)) continue;
+                Label userLabel = new Label(user.getUsername(), skin);
+                onlinePlayersTable.add(userLabel).growX().row();
+                otherPlayersFound = true;
+            }
+            if (!otherPlayersFound) {
+                onlinePlayersTable.add(new Label("You are the only one here.", skin)).row();
+            }
+        }
+    }
+
 
     private void refreshLobbyListView() {
         if (lobbiesContainer == null) return;
         lobbiesContainer.clear();
         lobbiesContainer.defaults().pad(5);
+        lobbiesContainer.add(new Label("Lobbies", skin)).align(Align.center).padBottom(10).row();
+
         if (availableLobbies.isEmpty()) {
             lobbiesContainer.add(new Label("No active lobbies. Why not create one?", skin));
         } else {
@@ -395,7 +456,10 @@ public class PregameMenuUI implements Screen, LobbyUpdateListener {
         if (lobbies == null) return;
         this.availableLobbies = lobbies;
         if (currentLobby == null) {
-            Gdx.app.postRunnable(this::refreshLobbyListView);
+            Gdx.app.postRunnable(() -> {
+                refreshLobbyListView();
+                refreshOnlinePlayersList(); // Also refresh players when lobbies are updated
+            });
         }
     }
 
