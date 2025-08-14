@@ -168,11 +168,12 @@ public class GameUpdater {
         value.put("sender", sender.getID());
         value.put("receiver", receiver.getID());
         value.put("xp", i);
-        payload.put("value", value);
+        payload.put("value", new Gson().toJson(value));
 
         // This is the main message body sent to the server.
         HashMap<String, Object> body = new HashMap<>();
         body.put("command", "game_state_update");
+        body.put("otherUser", -1);
         body.put("payload", payload);
 
         Message request = new Message(body, Message.Type.command);

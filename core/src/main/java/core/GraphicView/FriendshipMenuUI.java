@@ -182,7 +182,10 @@ public class FriendshipMenuUI implements Screen {
     private void addPlayerRow(User player) {
         // Player name
         Label nameLabel = new Label(player.getUsername(), skin);
-        int xp = player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser()) == null ? 0 : player.getFriendshipXPs().get(gameMenuUI.gameModel.getPlayingUser());
+        int xp = 0 ;
+        if(gameMenuUI.gameModel.getPlayingUser().getFriendshipXPs().get(player.getID()) != null){
+            xp = gameMenuUI.gameModel.getPlayingUser().getFriendshipXPs().get(player.getID());
+        }
         Label xpLabel = new Label(String.format("%d", xp), skin);
         playersTable.add(nameLabel).width(200).pad(5);
         playersTable.add(xpLabel).width(200).pad(5);

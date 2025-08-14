@@ -225,6 +225,7 @@ public class GameView implements GameStateUpdateListener {
         renderWeather();
         renderSeason();
         renderEnergyBar();
+        renderMoney(); // Called the new method here
         batch.end();
     }
 
@@ -465,7 +466,7 @@ public class GameView implements GameStateUpdateListener {
 
         batch.setColor(0, 0, 0, 0.5f);
         batch.draw(pixel, x - 5, y - smallFont.getLineHeight()*2 - 5,
-            160, smallFont.getLineHeight()*2 + 10);
+                160, smallFont.getLineHeight()*2 + 10);
         batch.setColor(1, 1, 1, 1);
 
         smallFont.draw(batch, coordText, x, y);
@@ -479,7 +480,7 @@ public class GameView implements GameStateUpdateListener {
 
         batch.setColor(0, 0, 0, 0.5f);
         batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
-            150, smallFont.getLineHeight() + 10);
+                150, smallFont.getLineHeight() + 10);
         batch.setColor(1, 1, 1, 1);
 
         smallFont.draw(batch, dateTimeText, x, y);
@@ -494,7 +495,7 @@ public class GameView implements GameStateUpdateListener {
 
         batch.setColor(0, 0, 0, 0.5f);
         batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
-            150, smallFont.getLineHeight() + 10);
+                150, smallFont.getLineHeight() + 10);
         batch.setColor(1, 1, 1, 1);
 
         smallFont.draw(batch, weatherText, x, y);
@@ -509,7 +510,7 @@ public class GameView implements GameStateUpdateListener {
 
         batch.setColor(0, 0, 0, 0.5f);
         batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
-            150, smallFont.getLineHeight() + 10);
+                150, smallFont.getLineHeight() + 10);
         batch.setColor(1, 1, 1, 1);
 
         smallFont.draw(batch, seasonText, x, y);
@@ -547,13 +548,33 @@ public class GameView implements GameStateUpdateListener {
 
         batch.setColor(1f, 1f, 1f, 1f);
         String energyText = String.format("%d/%d",
-            (int)player.getEnergy().getEnergyAmount(),
-            (int)player.getEnergy().getEnergyCapacity());
+                (int)player.getEnergy().getEnergyAmount(),
+                (int)player.getEnergy().getEnergyCapacity());
 
         GlyphLayout layout = new GlyphLayout(smallFont, energyText);
         float textX = x + (width - layout.width) / 2;
         float textY = y + (height + layout.height) / 2;
         smallFont.draw(batch, energyText, textX, textY);
+    }
+    private void renderMoney(){
+        User player = game.getPlayingUser();
+        if (player == null) return;
+
+        String moneyText = String.format("$%d", player.getMoney());
+
+        float padding = 10f;
+        float x = Gdx.graphics.getWidth() - padding - 150;
+        // Position it below the energy bar
+        float y = Gdx.graphics.getHeight() - padding - (smallFont.getLineHeight() + 5) * 6 - 20;
+
+        // Draw background box
+        batch.setColor(0.8f, 0.8f, 0.2f, 0.7f); // Gold-ish color
+        batch.draw(pixel, x - 5, y - smallFont.getLineHeight() - 5,
+                160, smallFont.getLineHeight() + 10);
+        batch.setColor(1, 1, 1, 1);
+
+        // Draw text
+        smallFont.draw(batch, moneyText, x, y);
     }
 
     public void dispose() {
