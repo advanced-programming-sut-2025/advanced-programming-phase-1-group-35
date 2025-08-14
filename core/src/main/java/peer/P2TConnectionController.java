@@ -139,6 +139,7 @@ public class P2TConnectionController {
                     userToUpdate.setUsername((String) value);
                     break;
                 case "password":
+                    System.out.println("updating password");
                     userToUpdate.setPassword((String) value);
                     break;
                 case "backpack":

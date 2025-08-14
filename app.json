@@ -194,18 +194,31 @@
       "securityAnswer": "asdf",
       "highScore": 0,
       "gamesPlayed": 0
+    },
+    {
+      "ID": 1,
+      "username": "absol",
+      "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
+      "nickname": "abso",
+      "email": "mahdi@gmail.com",
+      "gender": "male",
+      "securityQuestion": "Question2",
+      "securityQuestionText": "2- Which trauma or insecurity has led you to be a TA ?",
+      "securityAnswer": "asdf",
+      "highScore": 0,
+      "gamesPlayed": 0
     }
   ],
   "loggedInUser": {
-    "ID": 2,
-    "username": "player2",
+    "ID": 1,
+    "username": "absol",
     "password": "8f2d661c0df7cf46ab40a224fd418f37e3a54fc5fa52c1729cd27cc677b57bfd",
-    "nickname": "mahdi",
+    "nickname": "abso",
     "email": "mahdi@gmail.com",
     "gender": "male",
-    "securityQuestion": "Question1",
-    "securityQuestionText": "1- What is your greatest childhood trauma ?",
-    "securityAnswer": "nope",
+    "securityQuestion": "Question2",
+    "securityQuestionText": "2- Which trauma or insecurity has led you to be a TA ?",
+    "securityAnswer": "asdf",
     "highScore": 0,
     "gamesPlayed": 0
   },

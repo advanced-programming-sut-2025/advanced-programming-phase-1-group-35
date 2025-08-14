@@ -60,6 +60,18 @@ public class TrackerConnectionController {
             App.users.add(gsonBuilder.create().fromJson(value.toString(), User.class));
             return null ;
         }
+        else if(field.equals("password")){
+            user.setPassword(value.toString());
+            return null;
+        }
+        else if(field.equals("username")){
+            user.setUsername(value.toString());
+            return null;
+        }
+        else if(field.equals("email")){
+            user.setEmail(value.toString());
+            return null;
+        }
 
         Optional<Lobby> lobbyOpt = TrackerApp.findLobbyWithUser(user);
         if (lobbyOpt.isEmpty()) {

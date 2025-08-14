@@ -1,5 +1,6 @@
 package com.StardewValley;
 
+import common.models.Message;
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.CraftingController;
 import core.Controller.LoginMenuController;
@@ -12,9 +13,11 @@ import core.Model.App;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import core.Model.SHA256;
 import peer.app.PeerApp;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
@@ -59,10 +62,17 @@ public class Main extends Game {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         game.setScreen(new SignUpUI(new LoginMenuController()));
-
+        handleConnection();
         try {
             App.deserializeApp();
             if(App.isStayLoggedIn()){
+                HashMap<String, Object> body = new HashMap<>();
+                body.put("command", "login");
+                body.put("username", App.getLoggedInUser().getUsername());
+                body.put("password", App.getLoggedInUser().getPassword());
+                body.put("stayLoggedIn", true);
+                Message message = new Message(body , Message.Type.command);
+                PeerApp.getP2TConnection().sendAndWaitForResponse(message, 500);
                 game.setScreen(new MainMenuUI(new MainMenuController()));
             } else {
                 System.out.println("No user logged in. Loading SignUp/Login screen.");
@@ -72,7 +82,7 @@ public class Main extends Game {
 //            throw new RuntimeException(e); //TODO
         }
 
-        handleConnection();
+
     }
 
     private void handleConnection() {
