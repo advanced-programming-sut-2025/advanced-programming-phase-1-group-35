@@ -89,7 +89,7 @@ public class FarmingController {
         Seed seed = null;
         Tile tile;
         Tile[][] map = App.getCurrentGame().getMap().getTiles();
-        if (!direction.matches("up|down|left|right|\\d+ \\d+")) {
+        if (!direction.matches("up|down|left|right|here|\\d+ \\d+")) {
             return new Result(false, "Invalid direction,you can use\"up\",\"down\",\"left\",\"right\"");
         }
         switch (direction) {
@@ -408,9 +408,9 @@ public class FarmingController {
         for (Tile[] tile1 : App.getCurrentGame().getMap().getTiles()) {
             for (Tile tile : tile1) {
                 if (tile.getPlanted() == null
-                    && tile.isPlowed() //todo
+//                    && tile.isPlowed() //todo
                     && tile.getTileType().equals(TileType.Soil)) {
-                    if (random1.nextInt(100) < 1) {
+                    if (random1.nextInt(300) < 1) {
                         Crop crop;
                         do {
                                 crop = new Crop(CropEnum.getRandomForagingCrop(), tile);
@@ -619,5 +619,27 @@ public class FarmingController {
         return "yay water!";
     }
 
+    public void handlePlantRemoval(){
+        for (Tile[] tiles : App.getCurrentGame().getMap().getTiles()) {
+            for (Tile tile : tiles) {
+                if (tile.getPlanted() != null) {
+                    if (tile.getPlanted().getClass() == Crop.class) {
+                        if(((Crop)tile.getPlanted()).getDaysSinceWatered() > 1){
+                            App.getCurrentGame().getMap().getCrops().remove(tile.getPlanted());
+                            tile.setPlanted(null);
+                            GameUpdater.sendTileUpdate(tile);
+                        }
+                    }
+                    else if(tile.getPlanted().getClass() == Tree.class) {
+                        if(((Tree)tile.getPlanted()).getDaysSinceWatered() > 1){
+                            App.getCurrentGame().getMap().getTrees().remove(tile.getPlanted());
+                            tile.setPlanted(null);
+                            GameUpdater.sendTileUpdate(tile);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

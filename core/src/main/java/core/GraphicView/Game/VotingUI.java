@@ -1,5 +1,6 @@
 package core.GraphicView.Game;
 
+import com.StardewValley.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,7 +29,9 @@ public class VotingUI implements Screen {
     private User selectedUser;
     private TextButton start;
     private GameMenuUI gameMenuUI;
-
+    public VotingUI(GameMenuUI gameMenuUI) {
+        this.gameMenuUI = gameMenuUI;
+    }
     public GameMenuUI getGameMenuUI() {
         return gameMenuUI;
     }
@@ -65,7 +68,14 @@ public class VotingUI implements Screen {
         table.add(title).pad(10).expandX().fillX().row();
         table.add(users).pad(10).expandX().fillX().row();
         table.add(start).pad(10).width(150).height(40).row();
-
+        TextButton exitButton = new TextButton("Back", GameAssetManager.getDefaultSkin());
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                Main.getGame().setScreen(gameMenuUI);
+            }
+        });
+        table.add(exitButton).colspan(9).center().padTop(15);
         stage.addActor(table);
     }
 

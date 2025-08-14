@@ -1,13 +1,12 @@
 package core.GraphicView;
 
 import com.badlogic.gdx.audio.Sound;
+import core.GraphicView.Game.*;
 import core.Model.*;
 import core.Controller.GameMenuController;
 import core.Controller.InGameMenu.AnimalController;
 import core.Controller.InGameMenu.ShopMenuController;
 import core.Controller.InGameMenu.ToolsController;
-import core.GraphicView.Game.GameMenuInputAdapter;
-import core.GraphicView.Game.GameView;
 import core.Model.*;
 import core.Model.Tools.BackPack;
 import core.Model.Tools.Tool;
@@ -253,6 +252,13 @@ public class GameMenuUI implements Screen {
                     case Input.Keys.G:
                         addChatMessage(new NPCController().generateDialogue(), true);
                         return true;
+
+                    case Input.Keys.TAB:
+                        toggleScoreBoard();
+                        return true;
+
+                    case Input.Keys.V:
+                        toggleVotingUI();
                 }
                 return false;
             }
@@ -277,6 +283,14 @@ public class GameMenuUI implements Screen {
         mainMultiplexer.addProcessor(hotkeyAdapter);
         mainMultiplexer.addProcessor(gameMenuInputAdapter);
         Gdx.input.setInputProcessor(mainMultiplexer);
+    }
+
+    private void toggleVotingUI() {
+        Main.getGame().setScreen(new VotingUI(this));
+    }
+
+    private void toggleScoreBoard() {
+        Main.getGame().setScreen(new ScoreBoardUI(this));
     }
 
     public void addChatMessage(String message, boolean isNPC) {
