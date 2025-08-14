@@ -7,6 +7,7 @@ import Controller.InGameMenu.ToolsController;
 import GraphicView.Game.GameMenuInputAdapter;
 import GraphicView.Game.GameView;
 import Model.*;
+import Model.NPCs.NPC;
 import Model.Tools.BackPack;
 import Model.Tools.Tool;
 import Model.animal.Animal;
@@ -741,5 +742,16 @@ public class GameMenuUI implements Screen {
 
     public InputMultiplexer getMainMultiplexer() {
         return mainMultiplexer;
+    }
+
+    public void talkToNPC() {
+        for (NPC npc : gameModel.getNpcs()) {
+            if(Math.abs(npc.location.x - gameModel.getPlayingUser().getCurrentPoint().first) < 2 &&
+               Math.abs(npc.location.y - gameModel.getPlayingUser().getCurrentPoint().second) < 2) {
+                showDialog(npc.name , gameModel.npcController.meetNPC(npc.name).toString());
+                return;
+            }
+        }
+        showDialog("error", "you are not close to any npc");
     }
 }
