@@ -74,6 +74,11 @@ public class GameMenuInputAdapter extends InputAdapter {
             return true;
         }
 
+        if(keycode == Input.Keys.H){
+            gameMenuUI.goToNPCInteractionUI();
+            return true;
+        }
+
         return true;
     }
 

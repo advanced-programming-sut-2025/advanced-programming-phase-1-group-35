@@ -754,4 +754,19 @@ public class GameMenuUI implements Screen {
         }
         showDialog("error", "you are not close to any npc");
     }
+
+    public void goToNPCInteractionUI() {
+        NPC npc1 = null;
+        for (NPC npc : gameModel.getNpcs()) {
+            if(Math.abs(npc.location.x - gameModel.getPlayingUser().getCurrentPoint().first) < 2 &&
+                Math.abs(npc.location.y - gameModel.getPlayingUser().getCurrentPoint().second) < 2) {
+                npc1 = npc;
+            }
+        }
+        if (npc1 == null){
+            showDialog("error", "you are not close to any npc");
+            return;
+        }
+        Main.getGame().setScreen(new NPCInteractionUI(this, npc1));
+    }
 }
